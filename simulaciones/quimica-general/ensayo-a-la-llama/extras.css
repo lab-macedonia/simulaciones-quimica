@@ -1,0 +1,26 @@
+/* Extras de Ensayo a la llama: reubica la barra y la lección del kit para no tapar paneles, y estiliza «Muestra problema». */
+html .sk-bar{bottom:104px;right:auto;left:50%;transform:translateX(-50%)}
+html .sk-dock{bottom:168px;width:min(600px,calc(100vw - 780px));min-width:340px}
+@media (max-width:1100px){html .sk-dock{width:calc(100vw - 16px);min-width:0;bottom:104px}html .sk-bar{left:auto;right:8px;transform:none;bottom:104px}}
+#mystery-card{position:absolute;z-index:12;left:50%;top:64px;transform:translateX(-50%);width:min(520px,calc(100vw - 24px));background:rgba(13,18,30,.94);border:1px solid rgba(129,140,248,.5);border-radius:14px;padding:14px 16px;box-shadow:0 14px 40px -8px rgba(0,0,0,.8);color:#e2e8f0}
+#mystery-card[hidden]{display:none}
+#mystery-card h3{margin:0 0 4px;font-size:.95rem;font-weight:700;color:#fff}
+#mystery-card p{margin:0 0 8px;font-size:.78rem;line-height:1.5;color:#cbd5e1}
+#mystery-card .opts{display:flex;flex-wrap:wrap;gap:6px}
+#mystery-card .opts button{padding:6px 11px;border-radius:8px;border:1px solid #475569;background:#1e293b;color:#e2e8f0;font-size:.78rem;cursor:pointer}
+#mystery-card .opts button:hover:not(:disabled){border-color:#a5b4fc}
+#mystery-card .opts button.ok{background:#047857;border-color:#34d399;color:#fff}
+#mystery-card .opts button.no{background:#7f1d1d;border-color:#f87171;color:#fff}
+#mystery-card .row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:8px}
+#mystery-card .fb{font-size:.8rem;line-height:1.45;min-height:2.6em}
+#mystery-card .fb.ok{color:#6ee7b7}#mystery-card .fb.no{color:#fca5a5}
+#mystery-card .tools button{padding:5px 10px;border-radius:8px;border:1px solid #475569;background:#1e293b;color:#e2e8f0;font-size:.74rem;cursor:pointer}
+#btn-mystery{padding:6px 12px;border-radius:6px;border:1px solid rgba(251,191,36,.5);background:rgba(120,53,15,.5);color:#fde68a;font-size:.75rem;display:flex;align-items:center;gap:6px;cursor:pointer}
+#btn-mystery:hover{background:rgba(146,64,14,.7)}
+@media (max-width:640px){
+  body>header{padding-left:8px;padding-right:8px}
+  body>header h1{display:none}
+  body>header .space-x-3>div:first-child{padding:4px}
+  #btn-cobalt>span:first-of-type{display:none}
+  #btn-audio,#btn-cobalt,#btn-clean,#btn-mystery{padding-left:7px;padding-right:7px}
+}

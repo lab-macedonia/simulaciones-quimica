@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%237654a4%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2244%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-weight%3D%22700%22%20font-size%3D%2236%22%20fill%3D%22%23fff%22%3E%CF%80%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Simulador educativo interactivo de enlaces sigma y pi, hibridación, geometría molecular y ángulos de enlace.">
+  <meta name="theme-color" content="#1f2937">
+  <title>Simulador de enlaces σ y π</title>
+  <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="../shared/suite.css">
+</head>
+<body data-module="sigma-pi" data-module-title="Enlaces σ y π">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div>
+        <p class="eyebrow">Química orgánica · recurso interactivo</p>
+        <h1>Simulador de enlaces σ y π</h1>
+        <p class="subtitle">
+          Explora enlaces simples, dobles y triples, su hibridación, geometría,
+          ángulos de enlace y posibilidad de rotación.
+        </p>
+      </div>
+      <button id="themeToggle" class="secondary-btn" type="button" aria-label="Cambiar tema">
+        Cambiar tema
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="tabs" aria-label="Secciones del simulador">
+      <button class="tab active" data-tab="simulador" type="button">Simulador</button>
+      <button class="tab" data-tab="comparar" type="button">Comparar</button>
+      <button class="tab" data-tab="aprender" type="button">Aprender</button>
+      <button class="tab" data-tab="quiz" type="button">Mini‑quiz</button>
+    </nav>
+
+    <section id="simulador" class="tab-panel active">
+      <div class="control-panel">
+        <label>
+          <span>Tipo de enlace C–C</span>
+          <select id="bondSelect">
+            <option value="single">Simple — C–C</option>
+            <option value="double">Doble — C=C</option>
+            <option value="triple">Triple — C≡C</option>
+            <option value="benzene">Benceno (aromático) — C₆H₆</option>
+          </select>
+        </label>
+
+        <label class="switch-row">
+          <input id="orbitalToggle" type="checkbox" checked>
+          <span>Mostrar orbitales</span>
+        </label>
+
+        <label class="switch-row">
+          <input id="animationToggle" type="checkbox" checked>
+          <span>Animar solapamiento</span>
+        </label>
+
+        <label class="switch-row">
+          <input id="labelsToggle" type="checkbox" checked>
+          <span>Mostrar etiquetas</span>
+        </label>
+      </div>
+
+      <div class="stats-grid" aria-live="polite">
+        <article class="stat-card">
+          <span class="stat-label">Enlaces σ</span>
+          <strong id="sigmaCount">1</strong>
+          <small>entre los carbonos</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Enlaces π</span>
+          <strong id="piCount">0</strong>
+          <small>entre los carbonos</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Hibridación</span>
+          <strong id="hybridValue">sp³</strong>
+          <small id="geometryValue">tetraédrica</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Ángulo ideal</span>
+          <strong id="angleValue">109,5°</strong>
+          <small>alrededor de cada C</small>
+        </article>
+      </div>
+
+      <section class="visual-section" style="margin-bottom:10px">
+        <div class="visual-heading">
+          <p class="muted" style="margin:0">¿De dónde salen los orbitales híbridos?</p>
+        </div>
+        <canvas id="hybridDiagram" width="700" height="120" role="img" style="width:100%;height:auto;display:block"
+                aria-label="Diagrama esquemático: orbitales atómicos puros s y p se combinan (mezclan) para formar orbitales híbridos equivalentes"></canvas>
+      </section>
+
+      <section class="visual-section">
+        <div class="visual-heading">
+          <div>
+            <span id="bondBadge" class="badge">Enlace simple</span>
+            <span id="formulaBadge" class="badge outline">Etano · C₂H₆</span>
+          </div>
+          <p id="visualCaption" class="muted">
+            El enlace σ se forma por solapamiento frontal.
+          </p>
+        </div>
+
+        <div class="diagram-wrap">
+          <canvas id="bondCanvas" width="820" height="470"
+                  role="img" tabindex="0"
+                  aria-label="Modelo 3D del enlace carbono-carbono. Arrastra con el mouse, usa dos dedos en pantalla táctil, o las flechas para rotar."></canvas>
+        </div>
+        <p class="muted" style="margin:.3rem 0 0">En pantalla táctil: un dedo desplaza la página, dos dedos rotan el modelo.</p>
+
+        <div class="action-row">
+          <button id="rotateButton" class="primary-btn" type="button">
+            Probar rotación C–C
+          </button>
+          <button id="resetButton" class="secondary-btn" type="button">
+            Reiniciar vista
+          </button>
+        </div>
+        <p id="twistReadout" class="muted" style="margin:.4rem 0 0"></p>
+        <canvas id="energyBar" width="600" height="54" style="width:100%;max-width:600px;display:block;margin-top:6px" role="img" aria-label="Barra cualitativa de energía del enlace pi según el ángulo de giro"></canvas>
+        <p id="cisTransNote" class="muted" style="margin:.5rem 0 0"></p>
+        <p id="rotationFeedback" class="feedback" aria-live="polite"></p>
+      </section>
+
+      <section class="explanation-grid">
+        <article class="info-card">
+          <h2>¿Qué está ocurriendo?</h2>
+          <p id="explanation"></p>
+        </article>
+
+        <article class="info-card">
+          <h2>Relación estructura ↔ enlace</h2>
+          <dl class="property-list">
+            <div><dt>Enlace σ</dt><dd id="sigmaOrigin"></dd></div>
+            <div><dt>Orbitales p sin hibridar</dt><dd id="pOrbitals"></dd></div>
+            <div><dt>Geometría</dt><dd id="geometryDetail"></dd></div>
+            <div><dt>Rotación C–C</dt><dd id="rotationDetail"></dd></div>
+          </dl>
+        </article>
+      </section>
+    </section>
+
+    <section id="comparar" class="tab-panel">
+      <div class="section-heading">
+        <h2>Comparación rápida</h2>
+        <p>Observa cómo cambia la estructura electrónica al aumentar el orden de enlace.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Ejemplo</th>
+              <th>σ</th>
+              <th>π</th>
+              <th>Hibridación</th>
+              <th>Geometría</th>
+              <th>Ángulo</th>
+              <th>p sin hibridar</th>
+              <th>Rotación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Simple</td>
+              <td>Etano, C₂H₆</td>
+              <td>1</td>
+              <td>0</td>
+              <td>sp³</td>
+              <td>Tetraédrica</td>
+              <td>109,5°</td>
+              <td>0</td>
+              <td>Relativamente libre</td>
+            </tr>
+            <tr>
+              <td>Doble</td>
+              <td>Eteno, C₂H₄</td>
+              <td>1</td>
+              <td>1</td>
+              <td>sp²</td>
+              <td>Trigonal plana</td>
+              <td>120°</td>
+              <td>1 por C</td>
+              <td>Restringida</td>
+            </tr>
+            <tr>
+              <td>Triple</td>
+              <td>Etino, C₂H₂</td>
+              <td>1</td>
+              <td>2</td>
+              <td>sp</td>
+              <td>Lineal</td>
+              <td>180°</td>
+              <td>2 por C</td>
+              <td>No equivalente a un enlace simple</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="key-rule">
+        <strong>Regla clave:</strong>
+        un enlace múltiple siempre posee un solo enlace σ; los enlaces adicionales son π.
+      </div>
+    </section>
+
+    <section id="aprender" class="tab-panel">
+      <div class="section-heading">
+        <h2>Ruta conceptual</h2>
+        <p>Sigue la secuencia que conecta hibridación, orbitales y geometría.</p>
+      </div>
+
+      <div class="learning-flow">
+        <article>
+          <span class="step-number">1</span>
+          <h3>Hibridación</h3>
+          <p>Determina cuántos orbitales atómicos se combinan para producir orbitales híbridos.</p>
+        </article>
+        <article>
+          <span class="step-number">2</span>
+          <h3>Orbitales p disponibles</h3>
+          <p>Los orbitales p que no se hibridan pueden participar en enlaces π.</p>
+        </article>
+        <article>
+          <span class="step-number">3</span>
+          <h3>Solapamiento</h3>
+          <p>El solapamiento frontal produce σ; el solapamiento lateral produce π.</p>
+        </article>
+        <article>
+          <span class="step-number">4</span>
+          <h3>Geometría</h3>
+          <p>sp³ → tetraédrica; sp² → trigonal plana; sp → lineal.</p>
+        </article>
+        <article>
+          <span class="step-number">5</span>
+          <h3>Ángulos ideales</h3>
+          <p>109,5° para sp³; 120° para sp²; 180° para sp.</p>
+        </article>
+        <article>
+          <span class="step-number">6</span>
+          <h3>Rotación</h3>
+          <p>La presencia de enlaces π restringe la rotación porque depende de la orientación paralela de orbitales p.</p>
+        </article>
+      </div>
+
+      <div class="concept-note">
+        <h3>Nota didáctica</h3>
+        <p>
+          La representación orbital es un modelo. En moléculas reales las densidades electrónicas
+          no son superficies rígidas y los ángulos pueden desviarse de los valores ideales.
+        </p>
+      </div>
+    </section>
+
+    <section id="quiz" class="tab-panel">
+      <div class="section-heading">
+        <h2>Mini‑quiz</h2>
+        <p>Comprueba si puedes relacionar orden de enlace, hibridación y geometría.</p>
+      </div>
+
+      <div id="quizContainer" class="quiz-container"></div>
+
+      <div class="quiz-actions">
+        <button id="checkQuiz" class="primary-btn" type="button">Revisar respuestas</button>
+        <button id="newQuiz" class="secondary-btn" type="button">Reiniciar quiz</button>
+        <button id="printAnswers" class="secondary-btn" type="button">Clave de respuestas (docente)</button>
+      </div>
+
+      <div id="quizResult" class="quiz-result" aria-live="polite"></div>
+      <div id="answerKey" class="answer-key" hidden></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        Recurso educativo abierto para la enseñanza de química.
+        Diseñado para ejecutarse directamente en GitHub Pages.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../shared/canvas-utils.js"></script><script src="../shared/embed.js"></script><script src="../shared/palette.js"></script>
+  <script src="js/simulator.js"></script>
+
+<script src="../../_kit/simkit-lite.js"></script><script src="../shared/suite-lite.js"></script>
+</body>
+</html>

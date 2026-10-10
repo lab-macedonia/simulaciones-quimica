@@ -1,0 +1,43 @@
+/* Extras de Isomería: tema claro y contador de isómeros (Werner). Las tarjetas 3D se mantienen oscuras en ambos temas. */
+html[data-theme="light"]{--bg:#f2f6f9;--ink:#13222e;--mute:#4a5f71;--line:#c9d6e0;--teal:#0f7f6c;--gold:#946308;--blue:#2a6fd0;--rose:#c0334a;--cyan:#0a7d96;--violet:#6a4fd0;--coral:#c4562c;--panel:#fff;color-scheme:light}
+html[data-theme="light"] body{background:radial-gradient(1000px 520px at 85% -10%,#bfe5ee66,transparent 70%),radial-gradient(800px 500px at -10% 30%,#d6d4f545,transparent 70%),var(--bg)}
+html[data-theme="light"] h1{background:linear-gradient(100deg,#13222e 10%,#0f7f6c 55%,#946308);-webkit-background-clip:text;background-clip:text;color:transparent}
+html[data-theme="light"] .badge{border-color:#9db2c2;background:#fff}
+html[data-theme="light"] button,html[data-theme="light"] select{background:#fff;border-color:#a9bccb;color:#13222e}
+html[data-theme="light"] button:hover:not(:disabled){border-color:var(--teal)}
+html[data-theme="light"] button[aria-pressed=true]{background:var(--teal);color:#fff;border-color:var(--teal)}
+html[data-theme="light"] .legend{color:#3d5264}
+html[data-theme="light"] .builder{background:linear-gradient(160deg,#ffffff,#eef4f8);border-color:#b8cad8}
+html[data-theme="light"] .super{background:#fff;border-color:#b8cad8}
+html[data-theme="light"] .super button{background:linear-gradient(135deg,#2c8fb0,#2bab9c);border-color:#1f8a8a;color:#fff}
+html[data-theme="light"] #supres.ok,html[data-theme="light"] #bstatus.ok{color:#0b7a46}
+html[data-theme="light"] #supres.no{color:#b3243b}
+html[data-theme="light"] #bstatus.no{color:#946308}
+html[data-theme="light"] .note{background:#fff;color:#3d5264}
+html[data-theme="light"] details{border-color:#b8cad8;background:#fff}
+html[data-theme="light"] .werner{background:linear-gradient(160deg,#ffffff,#eef4f8);border-color:#b8cad8}
+html[data-theme="light"] th,html[data-theme="light"] td{border-bottom-color:#cbd9e3}
+html[data-theme="light"] tr.win td{color:#0b7a46}
+html[data-theme="light"] footer{color:#566b7d}
+html[data-theme="light"] a{color:#0b6e8a}
+html[data-theme="light"] ul.how{color:#4a5f71}
+html[data-theme="light"] .card{--ink:#ecf3f8;--mute:#a9bccb;--teal:#72cebb;--gold:#eabb6b;--cyan:#7fe8ff;color:#ecf3f8}
+html[data-theme="light"] .card button{background:#18293a;border-color:#405568;color:#ecf3f8}
+html[data-theme="light"] .card button:hover:not(:disabled){border-color:#83e3d0}
+
+/* Contador de isómeros */
+.wcount{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+.wcount h4{margin:0 0 4px;font-size:16px}
+.wseg{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.wrow{display:grid;grid-template-columns:150px 1fr 90px;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.wrow:last-child{border-bottom:0}
+.wrow .nm{font-weight:600}
+.wbar{display:flex;height:22px;border-radius:7px;overflow:hidden;background:#ffffff10;gap:2px}
+.wbar span{display:grid;place-items:center;font-size:11px;font-weight:700;color:#07202a;min-width:22px}
+.wbar span:nth-child(1){background:#72cebb}.wbar span:nth-child(2){background:#eabb6b}.wbar span:nth-child(3){background:#b9a2ff}.wbar span:nth-child(4){background:#ff9a73}
+.wres{text-align:right;font-weight:700}
+.wres.ok{color:#7be3a8}.wres.no{color:#ffb3bc}
+html[data-theme="light"] .wres.ok{color:#0b7a46}html[data-theme="light"] .wres.no{color:#b3243b}
+html[data-theme="light"] .wbar{background:#dbe6ee}
+.wverdict{margin-top:10px;font-size:15px;color:var(--ink)}
+@media(max-width:760px){.wrow{grid-template-columns:1fr;gap:4px}.wres{text-align:left}}

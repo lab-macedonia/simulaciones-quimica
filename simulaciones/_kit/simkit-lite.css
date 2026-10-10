@@ -1,0 +1,64 @@
+/* simkit-lite.css — estilos de la capa común (aislados con prefijo sk-) */
+.sk-root { --sk-bg: #ffffff; --sk-ink: #14202b; --sk-muted: #5a6b7b; --sk-line: rgba(20, 32, 43, .16); --sk-acc: #1f8a8a; --sk-acc-ink: #fff; --sk-shadow: 0 10px 34px rgba(20, 40, 60, .22);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--sk-ink); }
+.sk-root[data-sk-theme="dark"] { --sk-bg: #131c26; --sk-ink: #e8f0f6; --sk-muted: #9db0c0; --sk-line: rgba(255, 255, 255, .15); --sk-acc: #3ecfcf; --sk-acc-ink: #05181a; --sk-shadow: 0 10px 40px rgba(0, 0, 0, .55); }
+.sk-root *, .sk-root *::before, .sk-root *::after { box-sizing: border-box; }
+.sk-ic { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; display: block; }
+
+.sk-bar { position: fixed; right: 12px; bottom: 12px; z-index: 9000; display: flex; gap: 6px; padding: 6px; background: var(--sk-bg); border: 1px solid var(--sk-line); border-radius: 16px; box-shadow: var(--sk-shadow); }
+.sk-btn { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 11px; border: 1px solid var(--sk-line); background: transparent; color: var(--sk-ink); cursor: pointer; text-decoration: none; transition: background .15s, transform .1s; }
+.sk-btn:hover { background: color-mix(in srgb, var(--sk-acc) 16%, transparent); }
+.sk-btn:active { transform: scale(.94); }
+.sk-btn[aria-pressed="true"] { background: color-mix(in srgb, var(--sk-acc) 24%, transparent); border-color: var(--sk-acc); color: var(--sk-acc); }
+.sk-btn.sm { width: 34px; height: 34px; flex: none; }
+.sk-btn:focus-visible, .sk-play:focus-visible, .sk-seg:focus-visible, .sk-x:focus-visible, .sk-primary:focus-visible, #sk-speed:focus-visible { outline: 2px solid var(--sk-acc); outline-offset: 2px; }
+
+.sk-dock { position: fixed; left: 50%; transform: translateX(-50%); bottom: 12px; width: min(720px, calc(100vw - 150px)); max-height: 46vh; overflow: auto; z-index: 9001; background: var(--sk-bg); border: 1px solid var(--sk-line); border-radius: 18px; box-shadow: var(--sk-shadow); padding: 12px 16px 14px; }
+.sk-dock[hidden] { display: none; }
+.sk-dock-head { display: flex; align-items: center; justify-content: space-between; }
+.sk-kick { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--sk-acc); font-weight: 700; }
+.sk-x { border: 0; background: transparent; color: var(--sk-muted); cursor: pointer; width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; }
+.sk-x:hover { background: color-mix(in srgb, var(--sk-acc) 14%, transparent); color: var(--sk-ink); }
+.sk-dock h3 { margin: 2px 0 6px; font-size: 1.05rem; line-height: 1.25; }
+.sk-text { font-size: .92rem; line-height: 1.55; color: var(--sk-ink); }
+.sk-text p { margin: 0 0 6px; }
+.sk-text b { color: var(--sk-acc); }
+.sk-ctl { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.sk-play { width: 44px; height: 44px; flex: none; border-radius: 50%; border: 0; display: grid; place-items: center; background: var(--sk-acc); color: var(--sk-acc-ink); cursor: pointer; box-shadow: 0 6px 18px color-mix(in srgb, var(--sk-acc) 40%, transparent); }
+.sk-play:hover { filter: brightness(1.08); }
+.sk-segs { flex: 1; display: flex; gap: 4px; min-width: 60px; }
+.sk-seg { flex: 1; height: 22px; border: 0; background: transparent; padding: 8px 0; cursor: pointer; }
+.sk-seg i { display: block; height: 6px; width: 0; border-radius: 99px; background: var(--sk-acc); }
+.sk-seg { position: relative; }
+.sk-seg::before { content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 6px; border-radius: 99px; background: var(--sk-line); }
+.sk-seg i { position: relative; z-index: 1; }
+.sk-seg.on::before { background: color-mix(in srgb, var(--sk-acc) 28%, var(--sk-line)); }
+.sk-seg.done i { width: 100% !important; }
+#sk-speed { width: auto; flex: none; margin: 0; border: 1px solid var(--sk-line); background: var(--sk-bg); color: var(--sk-ink); border-radius: 99px; padding: 5px 8px; font: inherit; font-size: .8rem; }
+
+.sk-ring { position: fixed; z-index: 8999; pointer-events: none; border: 3px solid var(--sk-acc); border-radius: 14px; box-shadow: 0 0 0 4px color-mix(in srgb, var(--sk-acc) 25%, transparent), 0 0 28px color-mix(in srgb, var(--sk-acc) 55%, transparent); transition: all .25s ease; animation: sk-pulse 1.6s ease-in-out infinite; }
+.sk-ring[hidden] { display: none; }
+@keyframes sk-pulse { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--sk-acc) 18%, transparent), 0 0 38px color-mix(in srgb, var(--sk-acc) 70%, transparent); } }
+
+.sk-dlg { border: 1px solid var(--sk-line); border-radius: 20px; background: var(--sk-bg); color: var(--sk-ink); padding: 0; width: min(520px, calc(100% - 28px)); box-shadow: var(--sk-shadow); }
+.sk-dlg::backdrop { background: rgba(5, 8, 16, .6); backdrop-filter: blur(4px); }
+.sk-dlg form { padding: 20px 22px; }
+.sk-dlg h2 { margin: 0 0 8px; font-size: 1.15rem; }
+.sk-dlg p, .sk-dlg li { font-size: .9rem; line-height: 1.55; }
+.sk-dlg ul { padding-left: 18px; }
+.sk-dlg menu { margin: 14px 0 0; padding: 0; display: flex; justify-content: flex-end; }
+.sk-primary { border: 0; background: var(--sk-acc); color: var(--sk-acc-ink); padding: 8px 18px; border-radius: 11px; font: inherit; font-weight: 700; cursor: pointer; }
+.sk-keys { font-size: .84rem; border-collapse: collapse; width: 100%; }
+.sk-keys td { padding: 4px 0; }
+.sk-keys td:first-child { white-space: nowrap; padding-right: 12px; }
+.sk-dlg kbd { font: inherit; font-size: .78rem; padding: 1px 6px; border-radius: 6px; border: 1px solid var(--sk-line); box-shadow: 0 1px 0 var(--sk-line); }
+.sk-toast { position: fixed; left: 50%; bottom: 76px; transform: translateX(-50%); background: var(--sk-bg); color: var(--sk-ink); border: 1px solid var(--sk-line); border-radius: 99px; padding: 8px 16px; font-size: .84rem; box-shadow: var(--sk-shadow); z-index: 9100; }
+
+@media (max-width: 760px) {
+  .sk-bar { right: 8px; bottom: 8px; padding: 4px; gap: 4px; }
+  .sk-btn { width: 34px; height: 34px; }
+  .sk-dock { width: calc(100vw - 16px); bottom: 60px; max-height: 50vh; padding: 10px 12px 12px; }
+}
+body.sk-lesson-open { padding-bottom: 0; }
+@media (prefers-reduced-motion: reduce) { .sk-ring, .sk-btn { animation: none; transition: none; } }
+@media print { .sk-root { display: none !important; } }
