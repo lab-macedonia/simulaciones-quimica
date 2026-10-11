@@ -34,7 +34,7 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 ```
 simulaciones/
 ├── index.html                  Portada con las tres áreas
-├── _kit/                       Kit común: lección guiada, captura, ayuda, tema
+├── kit/                       Kit común: lección guiada, captura, ayuda, tema
 ├── quimica-organica/
 │   └── mecanismos-sn-e/
 ├── quimica-general/
@@ -58,7 +58,7 @@ Aunque se usó asistencia de IAGen, se recomienda que docentes y estudiantes con
 
 ## Funciones comunes
 
-Todas las simulaciones comparten un kit de interfaz (`simulaciones/_kit/`) que ofrece, según el caso:
+Todas las simulaciones comparten un kit de interfaz (`simulaciones/kit/`) que ofrece, según el caso:
 
 - **Lección guiada por etapas** (botón del libro o tecla `L`): cada etapa mueve la propia simulación (pestaña, molécula, experimento) y resalta la zona relevante; con pausa, avance, retroceso y velocidad.
 - **Captura PNG** de la vista actual, **pantalla completa**, **tema claro/oscuro** y **ayuda con atajos** (`?`).
