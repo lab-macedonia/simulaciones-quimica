@@ -1,7 +1,0 @@
-.viewport canvas { position: absolute; inset: 0; }
-.labels-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.elec-label { padding: 3px 9px; border-radius: 12px; font: 700 0.68rem system-ui, sans-serif; white-space: nowrap; pointer-events: none; box-shadow: 0 2px 6px rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.15); transform: translateY(-4px); }
-.label-cathode { background: rgba(88,166,255,.92); color: #04121f; }
-.label-anode { background: rgba(248,81,73,.92); color: #210302; }
-.label-battery { background: rgba(230,237,243,.94); color: #0d1117; }
-.label-gas { background: rgba(255,255,255,.14); color: var(--ink); backdrop-filter: blur(4px); }
