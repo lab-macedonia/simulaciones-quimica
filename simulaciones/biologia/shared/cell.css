@@ -1,0 +1,26 @@
+/* Estilos comunes de los simuladores de célula 3D */
+.labels-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.viewport canvas { position: absolute; inset: 0; }
+.cell-label { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px 2px 6px; border-radius: 12px; font: 700 0.68rem system-ui, sans-serif; white-space: nowrap; color: #e9f1f8; background: rgba(12, 18, 26, .78); border: 1px solid rgba(255,255,255,.18); box-shadow: 0 2px 6px rgba(0,0,0,.35); transform: translateY(-6px); transition: opacity .2s, border-color .2s; cursor: pointer; }
+.cell-label i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.cell-label.sel, .cell-label.foc { border-color: #fff; font-size: .74rem; background: rgba(12, 18, 26, .94); }
+:root[data-theme="light"] .cell-label { color: #10202e; background: rgba(255,255,255,.88); border-color: rgba(0,0,0,.16); }
+.selbox h3 { margin: 0; font-size: 1.15rem; }
+.sel-head { display: flex; align-items: center; gap: 9px; margin-bottom: 6px; }
+.sel-dot { width: 14px; height: 14px; border-radius: 50%; flex: none; box-shadow: 0 0 0 2px rgba(255,255,255,.25); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+.chip { font-size: .72rem; font-weight: 700; padding: 2px 9px; border-radius: 10px; border: 1px solid var(--line); color: var(--muted); }
+.chip[style*="--cc"] { border-color: var(--cc); color: var(--ink); }
+.selbox p { margin: 6px 0; font-size: .9rem; line-height: 1.5; }
+.selbox p.fun { color: var(--muted); font-size: .86rem; }
+.sel-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.comp-grp { margin: 12px 0 4px; }
+.comp-h { display: flex; align-items: center; gap: 7px; font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 6px; }
+.comp-h i { width: 10px; height: 10px; border-radius: 3px; background: var(--cc); }
+.comp-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.comp-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; font-size: .82rem; cursor: pointer; }
+.comp-btn i { width: 9px; height: 9px; border-radius: 50%; }
+.comp-btn:hover { border-color: var(--accent); }
+.comp-btn.on { background: var(--accent); color: #07121c; border-color: var(--accent); font-weight: 700; }
+.game .q { font-size: 1.05rem; margin: 8px 0; }
+.game .score { font-size: .8rem; color: var(--muted); }

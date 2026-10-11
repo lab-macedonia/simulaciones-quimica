@@ -290,6 +290,7 @@ a{color:#87d6c7}
 <br>Modelo idealizado de configuración. La reflexión, la torsión y las rotaciones son transformaciones geométricas del modelo; no representan energías ni una reacción de interconversión real.</footer>
 </main>
 
+<script src="../../kit/vendor/three.min.js"></script><script src="../../kit/mol3d.js"></script>
 <script>
 // ============================================================
 // UTILIDADES MATEMÁTICAS
@@ -562,6 +563,10 @@ function render(i){
   const pts=sc.pts.map(T), PP=pts.map(P), C0=P([0,0,0]);
   const al=k=>(sc.dim>=0&&k%3!==sc.dim)?.2:1;
   const O=[];                                   // lista de objetos a dibujar, ordenados por profundidad
+  // Three.js (Mol3D): esferas y tubos opacos con z-buffer. Las guías translúcidas (planos, hélice, polígonos) siguen en 2D,
+  // dibujadas detrás (z<0) o delante (z>=0) de la imagen WebGL.
+  const useGL=!!(window.Mol3D&&Mol3D.available()), G=[], W3=p=>viewVec(p,v.rx,v.ry), fogc=(c,z)=>{const f=fog(z),a=c[0]==='#'?[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)):c.match(/\d+/g).map(Number),g=[16,32,46];
+    return 'rgb('+a.slice(0,3).map((x,i)=>Math.round(x*f+g[i]*(1-f))).join(',')+')';};
 
   // Letra de fondo (Δ / Λ)
   if(sc.glyph){
@@ -613,6 +618,7 @@ function render(i){
     const L=Math.hypot(p[0],p[1],p[2])||1, u=[p[0]/L,p[1]/L,p[2]/L];
     const a=P(u.map(x=>x*rCo*.97)), b=P(p.map((x,j)=>x-u[j]*rN*.97));   // de la superficie del Co a la del N
     O.push({t:'seg',a,b,z:(a[3]+b[3])/2,w:5,col:'#9fb4c6',alpha:al(k),tube:true});
+    if(useGL){const q=W3(p);G.push({t:'c',a:[0,0,0],b:q,r:2.6*pw/scale,color:fogc('#9fb4c6',q[2]/2),opacity:al(k),shin:50});}
   });
   // Quelatos N–C–C–N
   if(showB){
@@ -627,8 +633,10 @@ function render(i){
         const m=[0,1,2].map(c=>(path3[k-1][c]+path3[k][c])/2);
         if(balls.some(([q,r])=>Math.hypot(m[0]-q[0],m[1]-q[1],m[2]-q[2])<r*.97)) continue;  // tramo dentro de un átomo
         O.push({t:'seg',a:path[k-1],b:path[k],z:(path[k-1][3]+path[k][3])/2,w:7*(.35+.65*b1),col,alpha:A,tube:true});
+        if(useGL){const q0=W3(path3[k-1]),q1=W3(path3[k]);G.push({t:'c',a:q0,b:q1,r:3.4*(.35+.65*b1)*pw/scale,color:fogc(col,(q0[2]+q1[2])/2),opacity:A,shin:60});}
       }
-      if(showC) for(const idx of [12,24]) O.push({t:'atom',p:path[idx],z:path[idx][3],r:8,mid:'#8a96a3',edge:'#2f3841',alpha:A});
+      if(showC) for(const idx of [12,24]){O.push({t:'atom',p:path[idx],z:path[idx][3],r:8,mid:'#8a96a3',edge:'#2f3841',alpha:A});
+        if(useGL){const q=W3(path3[idx]);G.push({t:'s',p:q,r:8*pw/scale,color:fogc('#9aa6b3',q[2]),opacity:A,shin:60});}}
     }
   }
   // Estructura comparada (etapa 03)
@@ -651,11 +659,27 @@ function render(i){
     if(sc.only>=0&&k%3!==sc.only){O.push({t:'atom',kind:'ghost',p:q,z:q[3],r:13,col:'rgba(190,210,225,.7)',alpha:.8});return;}
     const mid=(showB&&!sc.mono)?mixHex('#e4edf4',LIG[k%3],.55*Math.min(1,sc.bridge)):'#e4edf4';
     O.push({t:'atom',p:q,z:q[3],r:14,mid,edge:'#6e8aa1',label:showL?'N':'',alpha:al(k)});
+    if(useGL){const w3=W3(p);G.push({t:'s',p:w3,r:14*pw/scale,color:fogc(mid,w3[2]),opacity:al(k),shin:80});}
   });
+  if(useGL)G.push({t:'s',p:[0,0,0],r:22*pw/scale,color:'#75a9f4',shin:90});
 
   // Dibujo en orden de profundidad (de atrás hacia adelante)
   O.sort((a,b)=>a.z-b.z);
+  let glDone=!useGL, glImg=null;
+  if(useGL) glImg=Mol3D.render(Math.round(w*dpr),Math.round(H*dpr),{yaw:0,pitch:0,world:1,camd:4,focpx:4*scale*dpr},G);
+  const solid=o=>glImg&&((o.t==='seg'&&o.tube)||(o.t==='atom'&&o.kind!=='ghost'));
   for(const o of O){
+    if(!glDone&&o.z>=0){ctx.drawImage(glImg,0,0,w,H);glDone=true;}
+    if(solid(o)){
+      if(o.t==='atom'&&(o.glow||o.label)){ // brillo del metal y rótulos quedan en 2D sobre la esfera
+        ctx.save();const x=o.p[0],y=o.p[1],R=o.r*o.p[2]*pw;
+        if(o.glow){const gl=ctx.createRadialGradient(x,y,R*.4,x,y,R*2.7);gl.addColorStop(0,'rgba(117,169,244,.28)');gl.addColorStop(1,'rgba(117,169,244,0)');
+          ctx.fillStyle=gl;ctx.beginPath();ctx.arc(x,y,R*2.7,0,TAU);ctx.fill();}
+        ctx.restore();
+        if(o.label)(O.labels=O.labels||[]).push({x,y,R,s:o.label,a:o.alpha*fog(o.z)});
+      }
+      continue;
+    }
     ctx.save();
     if(o.t==='seg'){
       const f=(o.a[2]+o.b[2])/2, wd=o.w*f*pw;
@@ -702,6 +726,9 @@ function render(i){
     }
     ctx.restore();
   }
+  if(glImg&&!glDone) ctx.drawImage(glImg,0,0,w,H);
+  if(O.labels){O.labels.forEach(l=>{ctx.save();ctx.globalAlpha=clamp(l.a,0,1);ctx.font='600 '+Math.max(9,l.R*.8)+'px system-ui,sans-serif';ctx.fillStyle='#10283a';
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(l.s,l.x,l.y+.5);ctx.restore();});O.labels=null;}
   // Aviso de vista axial
   if(Math.abs(v.rx)<.01&&Math.abs(v.ry)<.01){
     ctx.fillStyle='#b8cddd'; ctx.font='13px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
