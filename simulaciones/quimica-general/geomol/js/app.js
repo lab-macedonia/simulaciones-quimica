@@ -203,7 +203,7 @@ function drawMolecule(canvas, key, mode){
     minY=Math.min(minY,a.pr[1]-r); maxY=Math.max(maxY,a.pr[1]+r);
   });
   const extent=Math.max(maxX-minX, maxY-minY, 1);
-  const zoom=Math.max(0.9, Math.min(1.55, (Math.min(W,H)*0.66)/extent));
+  const zoom=Math.max(0.9, Math.min(1.55, (Math.min(W,H)*0.78)/extent));
 
   // sombra de contacto: ancla la molécula al "suelo" del lienzo
   const shW=(maxX-minX)*0.5*zoom+30;
@@ -216,46 +216,34 @@ function drawMolecule(canvas, key, mode){
   ctx.save();
   ctx.translate(W/2,H/2); ctx.scale(zoom,zoom); ctx.translate(-W/2,-H/2);
 
-  // z-sorting: pintamos de atrás hacia adelante
-  const zsorted = atoms.map(a=>({...a, z:a.pr[2]})).sort((a,b)=>a.z-b.z);
-
   const dip = showDipole ? netDipole(m) : null;
+  const rc = elem(m.center).radius*40*C[3];
 
-  // 1) enlaces (detrás de los átomos)
-  zsorted.forEach(a=>{
-    const w = 6 * a.pr[3] * 0.9;               // grosor con perspectiva
-    drawBond(ctx, C[0], C[1], a.pr[0], a.pr[1], Math.max(3,w));
-  });
-
-  // 2) pares libres
-  if(showLone) lps.forEach(l=>drawLonePair(ctx, C[0], C[1], l.pr[0], l.pr[1], l.pr[2]));
-
-  // 3) dipolos de enlace
+  // Escena 3D con Three.js (kit/mol3d.js): enlaces, pares libres, dipolos y esferas con iluminación y buffer de profundidad
+  const items=[];
+  atoms.forEach(a=>{ items.push({t:"c", a:[0,0,0], b:a.u, r:0.032, color:"#aab4bf"}); });
+  if(showLone) g.lp.forEach(p=>{ const u=norm(p); items.push({t:"e", c:[u[0]*0.78,u[1]*0.78,u[2]*0.78], dir:u, len:0.34, wid:0.19, color:P.purpleLight, opacity:0.62, shin:30}); });
   if(showDipole){
-    zsorted.forEach(a=>{
-      const b = dip.bonds[a.i];
-      const t1=0.30, t2=0.72;
-      let ax1=C[0]+(a.pr[0]-C[0])*t1, ay1=C[1]+(a.pr[1]-C[1])*t1;
-      let ax2=C[0]+(a.pr[0]-C[0])*t2, ay2=C[1]+(a.pr[1]-C[1])*t2;
-      if(b.dir<0){ const tx=ax1,ty=ay1; ax1=ax2; ay1=ay2; ax2=tx; ay2=ty; }   // hacia el centro si el central es más electronegativo
-      if(b.mag>0.02) drawArrow(ctx, ax1,ay1, ax2,ay2, P.accent, 2.4);
+    atoms.forEach(a=>{
+      const b=dip.bonds[a.i]; if(b.mag<=0.02) return;
+      let p1=a.u.map(v=>v*0.30), p2=a.u.map(v=>v*0.72);
+      if(b.dir<0){ const t=p1; p1=p2; p2=t; }
+      items.push({t:"a", a:p1, b:p2, r:0.044, head:0.17, color:P.accent, shin:20});
     });
   }
+  atoms.forEach(a=>{ const e=elem(a.sym); items.push({t:"s", p:a.u, r:e.radius*0.2824, color:e.color}); });
+  items.push({t:"s", p:[0,0,0], r:elem(m.center).radius*0.332, color:elem(m.center).color});
+  const gl = window.Mol3D && Mol3D.render(W,H,{yaw,pitch,world:2.15,camd:CAM,focpx:56*FOC},items);
+  if(gl) ctx.drawImage(gl,0,0,W,H);
 
-  // 4) átomos (esferas), de atrás hacia adelante
-  zsorted.forEach(a=>{
-    const e=elem(a.sym);
-    const r=e.radius*34*a.pr[3];
-    drawSphere(ctx, a.pr[0], a.pr[1], r, e.color, a.pr[2]);
+  // rótulos 2D (símbolo de cada átomo)
+  atoms.forEach(a=>{
+    const e=elem(a.sym), r=e.radius*34*a.pr[3];
     ctx.fillStyle = a.sym==="H" ? "#2a3440" : P.labelLight;
     ctx.font = `bold ${Math.max(11, r*0.62)}px Inter, sans-serif`;
     ctx.textAlign="center"; ctx.textBaseline="middle";
     ctx.fillText(a.sym, a.pr[0], a.pr[1]);
   });
-
-  // 5) átomo central (dibujado encima, en el origen z=0)
-  const ec=elem(m.center), rc=ec.radius*40*C[3];
-  drawSphere(ctx, C[0], C[1], rc, ec.color, 0.15);
   ctx.fillStyle = m.center==="H" ? "#2a3440" : P.labelLight;
   ctx.font=`bold ${Math.max(13, rc*0.6)}px Inter, sans-serif`;
   ctx.textAlign="center"; ctx.textBaseline="middle";

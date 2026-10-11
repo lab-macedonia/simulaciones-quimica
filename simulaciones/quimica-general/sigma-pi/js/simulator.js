@@ -185,7 +185,23 @@ function ringCloud(ctx,y,W,H,alpha){
 function renderBenzene(ctx,W,H,showOrb,showLab){
   const Cs=RING.map(t=>[RBEN*Math.cos(t),0,RBEN*Math.sin(t)]);
   const Hs=Cs.map(c=>{const L=Math.hypot(c[0],c[2])||1; return [c[0]+(c[0]/L)*0.95,0,c[2]+(c[2]/L)*0.95];});
+  const items=[];
+  for(let i=0;i<6;i++){ items.push({t:"c",a:Cs[i],b:Cs[(i+1)%6],r:0.066,color:"#aab4bf"});
+    items.push({t:"c",a:Cs[i],b:Hs[i],r:0.042,color:"#aab4bf"}); }
+  if(showOrb){
+    Cs.forEach(c=>{ items.push(lobeItem(c,[0,1,0],0.85,true,0.62)); items.push(lobeItem(c,[0,-1,0],0.85,false,0.62)); });
+    [0.62,-0.62].forEach(y=>items.push({t:"e",c:[0,y,0],dir:[0,1,0],len:0.05,wid:RBEN*0.92,color:"#9a6ee0",opacity:0.22,shin:10}));
+  }
+  Cs.forEach(c=>items.push({t:"s",p:c,r:0.25,color:P.carbon}));
+  Hs.forEach(h=>items.push({t:"s",p:h,r:0.133,color:P.nearWhite}));
+  const useGL=gl3d(ctx,W,H,items);
+  if(useGL){
+    const lab=(q,rad,t,col)=>{const pr=project(q,W,H); const r=rad*105*pr[3];
+      ctx.fillStyle=col; ctx.font=`bold ${Math.max(9,r*0.62)}px Inter,sans-serif`; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(t,pr[0],pr[1]);};
+    Cs.forEach(c=>lab(c,0.25,"C",P.labelLight)); Hs.forEach(h=>lab(h,0.133,"H","#2a3440"));
+  }
   const prims=[];
+  if(!useGL){
   prims.push({z:-2.0, draw:()=>ringCloud(ctx,-0.55,W,H,1)});
   prims.push({z:-1.9, draw:()=>ringCloud(ctx, 0.55,W,H,1)});
   for(let i=0;i<6;i++){
@@ -218,7 +234,8 @@ function renderBenzene(ctx,W,H,showOrb,showLab){
       ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText("H",pr[0],pr[1]);
     }});
   });
-  prims.sort((pa,pb)=>pa.z-pb.z).forEach(pp=>pp.draw());
+  }
+  if(!useGL) prims.sort((pa,pb)=>pa.z-pb.z).forEach(pp=>pp.draw());
   if(showLab){
     ctx.font="bold 16px Inter,sans-serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
     ctx.fillStyle=P.purple; ctx.fillText("π deslocalizado (6 e⁻ sobre y bajo el anillo)", W/2, 22);
@@ -243,6 +260,19 @@ function piCloud(ctx,axis,side,W,H,strength){
   ctx.fillStyle=g; ctx.fill();
 }
 
+
+/* ---------- Capa 3D (Three.js vía Mol3D): copia el render WebGL al canvas 2D ---------- */
+function gl3d(ctx,W,H,items){
+  if(!(window.Mol3D && Mol3D.available())) return false;
+  const gl=Mol3D.render(W,H,{yaw,pitch,world:1,camd:CAM,focpx:FOC*105},items);
+  if(!gl) return false;
+  ctx.drawImage(gl,0,0,W,H); return true;
+}
+function lobeItem(center,dir,len,positive,op){
+  const d=norm(dir);
+  return {t:"e", c:add(center,scale(d,len*0.5)), dir:d, len:len*0.6, wid:len*0.32,
+          color:positive?"#d9534a":"#3a74dc", opacity:op, shin:30};
+}
 /* ---------- Render ---------- */
 function currentType(){ return document.getElementById("bondSelect").value; }
 
@@ -281,8 +311,25 @@ function render(){
 
   const align=Math.abs(Math.cos(twist));   // 1 alineado → 0 perpendicular
 
-  // orden por profundidad de todas las piezas
+  // 3D real (Three.js); piCloud queda como banda 2D detrás
+  const items=[{t:"c",a:A,b:B,r:0.066,color:"#aab4bf"}];
+  Hpos.forEach(h=>{ items.push({t:"c",a:h.c,b:h.p,r:0.042,color:"#aab4bf"}); items.push({t:"s",p:h.p,r:0.143,color:P.nearWhite}); });
+  items.push({t:"s",p:A,r:0.286,color:P.carbon},{t:"s",p:B,r:0.286,color:P.carbon});
+  if(showOrb && type!=="single"){
+    dirs.porbsA.forEach((ax,idx)=>{
+      const axB=rotX(dirs.porbsB[idx],twist);
+      items.push(lobeItem(A,ax,0.95,true,0.68),lobeItem(A,scale(ax,-1),0.95,false,0.68));
+      items.push(lobeItem(B,axB,0.95,true,0.68),lobeItem(B,scale(axB,-1),0.95,false,0.68));
+    });
+    dirs.porbsA.forEach(ax=>{ piCloud(ctx,ax,1,W,H,align); piCloud(ctx,ax,-1,W,H,align); });
+  }
+  const useGL=gl3d(ctx,W,H,items);
   const prims=[];
+  if(useGL){
+    const lab=(q,rad,t,col)=>{const pr=project(q,W,H); const r=rad*105*pr[3];
+      ctx.fillStyle=col; ctx.font=`bold ${Math.max(9,r*0.62)}px Inter,sans-serif`; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(t,pr[0],pr[1]);};
+    lab(A,0.286,"C",P.labelLight); lab(B,0.286,"C",P.labelLight); Hpos.forEach(h=>lab(h.p,0.143,"H","#2a3440"));
+  } else {
 
   // enlace C–C (una sola línea σ)
   prims.push({z:0, draw:()=>bond3d(ctx,A,B,W,H,7)});
@@ -324,6 +371,7 @@ function render(){
   });
 
   prims.sort((a,b)=>a.z-b.z).forEach(p=>p.draw());
+  }
 
   // etiquetas σ / π
   if(showLab){
