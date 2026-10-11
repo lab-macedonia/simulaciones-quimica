@@ -14,7 +14,7 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 
 | Simulación | Descripción |
 |---|---|
-| [AtomLab: modelos atómicos](simulaciones/quimica-general/atomlab/) | Modelos atómicos, Millikan, Davisson–Germer y espectro del H. |
+| [AtomLab: modelos atómicos](simulaciones/quimica-general/atomlab/) | Modelos atómicos en 3D (Dalton a Schrödinger), orbitales s, p y d con nodos y distribución radial, y experimentos de Millikan, Davisson–Germer y espectro del H. |
 | [Configuración electrónica](simulaciones/quimica-general/configuracion-electronica/) | Orbitales, notación completa/reducida e iones. |
 | [Propiedades periódicas](simulaciones/quimica-general/propiedades-periodicas/) | Siete propiedades con datos de referencia y gráfico interactivo. |
 | [LewisLab](simulaciones/quimica-general/lewislab/) | Estructuras de Lewis, cargas formales, resonancia y polaridad. |
@@ -22,6 +22,19 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Enlaces sigma y pi](simulaciones/quimica-general/sigma-pi/) | Hibridación y enlaces simples, dobles y triples; benceno. |
 | [Ensayo a la llama y transiciones cuánticas](simulaciones/quimica-general/ensayo-a-la-llama/) | Color de la llama y transiciones electrónicas. |
 | [Electrólisis del agua 3D](simulaciones/quimica-general/electrolisis-agua/) | Celda electrolítica, semirreacciones y vista molecular. |
+| [Enlace químico 3D](simulaciones/quimica-general/enlace-quimico/) | Enlace iónico, covalente y metálico; curvas de energía, ciclo de Born–Haber y predictor por ΔEN. |
+| [Colisiones y estado de transición 3D](simulaciones/quimica-general/colisiones-estado-transicion/) | Teoría de las colisiones, Maxwell–Boltzmann, Arrhenius, coordenada de reacción y catálisis. |
+
+### Biología
+| Simulación | Descripción |
+|---|---|
+| [Célula animal 3D](simulaciones/biologia/celula-animal/) | Modelo 3D con 19 componentes (núcleo, retículos, Golgi, mitocondrias, lisosomas, centrosoma, citoesqueleto), corte, modo por funciones, lección, comparación y desafío. |
+| [Célula vegetal 3D](simulaciones/biologia/celula-vegetal/) | Modelo 3D con 21 componentes (pared, vacuola, cloroplastos, plasmodesmos, etc.), fotosíntesis animada, comparación con la animal y desafío. |
+
+### Física
+| Simulación | Descripción |
+|---|---|
+| [Sistema Solar 3D](simulaciones/fisica/sistema-solar/) | Sol, 8 planetas, Plutón, 8 satélites y cinturones de asteroides y de Kuiper; fichas con datos de cada astro, modo «a escala», tiempo simulado, leyes de Kepler (áreas barridas y gráfico T–a), calculadora de peso y desafío. |
 
 ### Química inorgánica
 | Simulación | Descripción |
@@ -42,10 +55,17 @@ simulaciones/
 │   ├── lewislab/ geomol/ sigma-pi/
 │   ├── shared/                         (estilos y utilidades comunes de esos seis módulos)
 │   ├── ensayo-a-la-llama/
-│   └── electrolisis-agua/
-└── quimica-inorganica/
-    ├── isomeria-complejos/
-    └── quiralidad-delta-lambda/
+│   ├── electrolisis-agua/
+│   ├── enlace-quimico/
+│   └── colisiones-estado-transicion/
+├── quimica-inorganica/
+│   ├── isomeria-complejos/
+│   └── quiralidad-delta-lambda/
+├── biologia/
+│   ├── celula-animal/ celula-vegetal/
+│   └── shared/                         (motor de células en Three.js)
+└── fisica/
+    └── sistema-solar/
 ```
 
 Cada simulación vive en su propia carpeta y usa rutas relativas, por lo que funciona igual en la raíz del dominio o bajo `usuario.github.io/repositorio/`.
@@ -53,6 +73,8 @@ Cada simulación vive en su propia carpeta y usa rutas relativas, por lo que fun
 ## Cómo se desarrollaron
 
 Las simulaciones se trabajaron **inicialmente con Gemini y ChatGPT**, y posteriormente se **optimizaron y mejoraron con Claude** (Anthropic): revisión del contenido químico, corrección de errores, mejoras de interfaz, accesibilidad y rendimiento. La dirección pedagógica, la selección de contenidos y la validación química estuvieron a cargo del Laboratorio MACEDONIA.
+
+Las simulaciones *Enlace químico* y *Colisiones y estado de transición*, las de Biología (*Célula animal* y *Célula vegetal*) y la de Física (*Sistema Solar*) fueron propuestas por el Laboratorio MACEDONIA y programadas con Claude sobre el kit común.
 
 Aunque se usó asistencia de IAGen, se recomienda que docentes y estudiantes contrasten los datos con fuentes de referencia (por ejemplo, IUPAC, CRC Handbook, NIST).
 
@@ -69,6 +91,7 @@ El **Simulador SN1 · SN2 · E1 · E2** es la referencia de nivel de detalle; la
 ## Requisitos y notas técnicas
 
 - Navegador moderno con WebGL (Chrome, Edge, Firefox, Safari), en computador, tablet o celular.
+- **Motor 3D con Three.js**: *GeoMol*, *Enlaces σ y π*, *Isomería de complejos*, *Quiralidad Δ/Λ*, *AtomLab* (modelos y orbitales), *Mecanismos SN/E*, *Enlace químico*, *Colisiones y estado de transición*, *Célula animal*, *Célula vegetal* y *Sistema Solar* renderizan con Three.js (iluminación real y z-buffer). Los experimentos de AtomLab y los módulos que son diagramas o gráficos 2D (LewisLab, Configuración electrónica, Propiedades periódicas) se mantienen en Canvas 2D, donde Three.js no aporta. La capa compartida está en `simulaciones/kit/mol3d.js`.
 - **Ninguna simulación depende de CDN ni de internet**: Three.js, Tailwind (compilado), Lucide y las fuentes (Inter, JetBrains Mono) están incluidos en cada carpeta `vendor/`.
 
 ## Uso local

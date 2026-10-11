@@ -1,0 +1,18 @@
+.viewport canvas { position: absolute; inset: 0; }
+.labels-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.elec-label { padding: 3px 9px; border-radius: 12px; font: 700 0.68rem system-ui, sans-serif; white-space: nowrap; pointer-events: none; box-shadow: 0 2px 6px rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.15); transform: translateY(-4px); }
+.label-cathode { background: rgba(88,166,255,.92); color: #04121f; }
+.label-anode { background: rgba(248,81,73,.92); color: #210302; }
+.label-battery { background: rgba(230,237,243,.94); color: #0d1117; }
+.label-gas { background: rgba(255,255,255,.14); color: var(--ink); backdrop-filter: blur(4px); }
+.bond-label { padding: 3px 9px; border-radius: 12px; font: 700 0.72rem system-ui, sans-serif; white-space: nowrap; pointer-events: none; border: 1px solid rgba(255,255,255,.18); box-shadow: 0 2px 6px rgba(0,0,0,.35); transform: translateY(-4px); }
+.bl-pos { background: rgba(255,170,90,.93); color: #2a1200; }
+.bl-neg { background: rgba(94,227,162,.93); color: #04210f; }
+.bl-d { background: rgba(255,255,255,.16); color: var(--ink); backdrop-filter: blur(4px); }
+.bl-warn { background: rgba(248,81,73,.93); color: #210302; }
+.zone-bar { position: relative; height: 26px; border-radius: 8px; overflow: hidden; display: flex; margin: 8px 0 4px; border: 1px solid var(--line); }
+.zone-bar i { display: grid; place-items: center; font: 700 0.62rem system-ui, sans-serif; color: #07101c; font-style: normal; }
+.zone-mark { position: absolute; top: -3px; bottom: -3px; width: 3px; background: var(--ink); border-radius: 2px; transition: left .25s; }
+.pair-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pair-row label { display: block; font-size: 0.74rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+.pair-row select { width: 100%; margin-top: 4px; padding: 7px 8px; border-radius: 9px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; font-size: 0.9rem; }
