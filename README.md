@@ -8,6 +8,7 @@ Colección de simulaciones interactivas para la enseñanza de la química, la bi
 | Simulación | Descripción |
 |---|---|
 | [Mecanismos SN1 · SN2 · E1 · E2](simulaciones/quimica-organica/mecanismos-sn-e/) | Geometrías 3D, flechas de electrones, orbitales, perfiles de energía y predictor de mecanismo. |
+| [Carbohidratos: Fischer → Haworth → silla](simulaciones/quimica-organica/carbohidratos-fischer-haworth/) | Fischer, giro de 90°, ciclación a piranosas y furanosas (aldosas y cetosas), carbono anomérico α/β, conformación silla o sobre y repulsión 1,3-diaxial. |
 
 ### Química general
 Cada simulación es independiente; no hay portada de colección ni seguimiento de progreso.
@@ -49,7 +50,8 @@ simulaciones/
 ├── index.html                  Portada con las tres áreas
 ├── kit/                       Kit común: lección guiada, captura, ayuda, tema
 ├── quimica-organica/
-│   └── mecanismos-sn-e/
+│   ├── mecanismos-sn-e/
+│   └── carbohidratos-fischer-haworth/
 ├── quimica-general/
 │   ├── atomlab/ configuracion-electronica/ propiedades-periodicas/
 │   ├── lewislab/ geomol/ sigma-pi/
@@ -74,7 +76,7 @@ Cada simulación vive en su propia carpeta y usa rutas relativas, por lo que fun
 
 Las simulaciones se trabajaron **inicialmente con Gemini y ChatGPT**, y posteriormente se **optimizaron y mejoraron con Claude** (Anthropic): revisión del contenido químico, corrección de errores, mejoras de interfaz, accesibilidad y rendimiento. La dirección pedagógica, la selección de contenidos y la validación química estuvieron a cargo del Laboratorio MACEDONIA.
 
-Las simulaciones *Enlace químico* y *Colisiones y estado de transición*, las de Biología (*Célula animal* y *Célula vegetal*) y la de Física (*Sistema Solar*) fueron propuestas por el Laboratorio MACEDONIA y programadas con Claude sobre el kit común.
+Las simulaciones *Enlace químico* y *Colisiones y estado de transición*, las de Biología (*Célula animal* y *Célula vegetal*) y la de Física (*Sistema Solar*) fueron propuestas por el Laboratorio MACEDONIA y programadas con Claude sobre el kit común; *Carbohidratos: Fischer → Haworth → silla* también (su geometría se calcula a partir de la quiralidad de Fischer y se verificó con descriptores CIP de RDKit).
 
 Aunque se usó asistencia de IAGen, se recomienda que docentes y estudiantes contrasten los datos con fuentes de referencia (por ejemplo, IUPAC, CRC Handbook, NIST).
 
