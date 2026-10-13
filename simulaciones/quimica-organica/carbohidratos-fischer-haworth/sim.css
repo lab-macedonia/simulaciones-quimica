@@ -1,0 +1,24 @@
+/* Carbohidratos Fischer → Haworth → silla · estilos propios sobre el kit común */
+.viewport canvas { position: absolute; inset: 0; }
+.viewport .labels-cv { pointer-events: none; }
+.viewport { cursor: grab; user-select: none; -webkit-user-select: none; }
+.viewport:active { cursor: grabbing; }
+
+.eqline { font-size: 0.92rem; margin-bottom: 4px; }
+.eqline small { margin-top: 0; }
+
+/* tablas y bloques del texto de la lección */
+.cl-kv { display: grid; gap: 6px; margin: 8px 0 12px; }
+.cl-kv > div { display: flex; flex-direction: column; gap: 1px; font-size: 0.86rem; padding: 7px 9px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); }
+.cl-kv .a { border-color: var(--warn); } .cl-kv .a b { color: var(--warn); }
+.cl-kv .r { border-color: var(--ok); } .cl-kv .r b { color: var(--ok); }
+table.cl-t { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 6px 0 10px; }
+table.cl-t th { text-align: left; color: var(--muted); font-weight: 650; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 6px; border-bottom: 1px solid var(--line); }
+table.cl-t td { padding: 4px 6px; border-bottom: 1px solid var(--line); }
+table.cl-t tr.hl td { background: color-mix(in srgb, var(--warn) 14%, transparent); }
+table.cl-t td.ax { color: var(--bad); font-weight: 700; }
+table.cl-t td.eq { color: var(--accent); font-weight: 700; }
+.cl-sum { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 10px; }
+.cl-sum span { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; }
+.cl-box { border-left: 3px solid var(--accent); background: var(--card); padding: 8px 10px; border-radius: 0 10px 10px 0; font-size: 0.85rem; line-height: 1.5; margin: 8px 0; }
+.cl-box.amber { border-color: var(--warn); } .cl-box.teal { border-color: var(--ok); }
