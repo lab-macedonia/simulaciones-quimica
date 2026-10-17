@@ -25,6 +25,9 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Electrólisis del agua 3D](simulaciones/quimica-general/electrolisis-agua/) | Celda electrolítica, semirreacciones y vista molecular. |
 | [Enlace químico 3D](simulaciones/quimica-general/enlace-quimico/) | Enlace iónico, covalente y metálico; curvas de energía, ciclo de Born–Haber y predictor por ΔEN. |
 | [Colisiones y estado de transición 3D](simulaciones/quimica-general/colisiones-estado-transicion/) | Teoría de las colisiones, Maxwell–Boltzmann, Arrhenius, coordenada de reacción y catálisis. |
+| [Estequiometría y reactivo limitante 3D](simulaciones/quimica-general/estequiometria/) | Ecuaciones balanceadas por tandas, reactivo limitante y en exceso, sobrante, masa, rendimiento. |
+| [Ácido–base, pH y titulación 3D](simulaciones/quimica-general/acido-base-titulacion/) | Curvas de titulación (fuerte/débil/poliprótico), tampones, distribución de especies, equivalencia e indicadores. |
+| [Equilibrio químico y Le Châtelier 3D](simulaciones/quimica-general/equilibrio-quimico/) | Q frente a K, perturbaciones (concentración, volumen, temperatura), catalizador, tabla ICE y K(T). |
 
 ### Biología
 | Simulación | Descripción |
@@ -59,7 +62,10 @@ simulaciones/
 │   ├── ensayo-a-la-llama/
 │   ├── electrolisis-agua/
 │   ├── enlace-quimico/
-│   └── colisiones-estado-transicion/
+│   ├── colisiones-estado-transicion/
+│   ├── estequiometria/
+│   ├── acido-base-titulacion/
+│   └── equilibrio-quimico/
 ├── quimica-inorganica/
 │   ├── isomeria-complejos/
 │   └── quiralidad-delta-lambda/
