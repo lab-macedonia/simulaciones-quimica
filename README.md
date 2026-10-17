@@ -28,6 +28,12 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Estequiometría y reactivo limitante 3D](simulaciones/quimica-general/estequiometria/) | Ecuaciones balanceadas por tandas, reactivo limitante y en exceso, sobrante, masa, rendimiento. |
 | [Ácido–base, pH y titulación 3D](simulaciones/quimica-general/acido-base-titulacion/) | Curvas de titulación (fuerte/débil/poliprótico), tampones, distribución de especies, equivalencia e indicadores. |
 | [Equilibrio químico y Le Châtelier 3D](simulaciones/quimica-general/equilibrio-quimico/) | Q frente a K, perturbaciones (concentración, volumen, temperatura), catalizador, tabla ICE y K(T). |
+| [Gases ideales y reales 3D](simulaciones/quimica-general/gases/) | Recipiente con partículas: leyes de Boyle, Charles, Gay-Lussac y Avogadro, mezcla de gases (Dalton), distribución de Maxwell–Boltzmann y desviaciones de van der Waals. |
+| [Disoluciones y propiedades coligativas 3D](simulaciones/quimica-general/coligativas/) | Ley de Raoult, descenso de la presión de vapor, ascenso ebulloscópico, descenso crioscópico y presión osmótica con factor de van 't Hoff, en vasos y membrana semipermeable. |
+| [Termoquímica y calorimetría 3D](simulaciones/quimica-general/termoquimica/) | Calorímetro, calor específico, entalpía de reacción, ley de Hess y entalpías de formación con diagramas de niveles de energía. |
+| [Cinética: órdenes de reacción 3D](simulaciones/quimica-general/cinetica-ordenes/) | Leyes de velocidad integradas de orden 0, 1 y 2, vida media, linealización ([A], ln[A], 1/[A]) y experimento misterioso para determinar el orden por velocidades iniciales. |
+| [Pilas galvánicas y ecuación de Nernst 3D](simulaciones/quimica-general/pilas-galvanicas/) | Celdas con puente salino y voltímetro: potenciales estándar, E°celda, ecuación de Nernst, Q frente a K, ΔG° = −nFE° y masa transferida al descargar la pila. |
+| [Diagramas de fase 3D](simulaciones/quimica-general/diagramas-de-fase/) | Diagramas P–T de agua y CO₂: fases, curvas de equilibrio, punto triple y crítico, fluido supercrítico, curva de calentamiento y Clausius–Clapeyron. |
 
 ### Biología
 | Simulación | Descripción |
@@ -66,6 +72,12 @@ simulaciones/
 │   ├── estequiometria/
 │   ├── acido-base-titulacion/
 │   └── equilibrio-quimico/
+│   ├── gases/
+│   ├── coligativas/
+│   ├── termoquimica/
+│   ├── cinetica-ordenes/
+│   ├── pilas-galvanicas/
+│   ├── diagramas-de-fase/
 ├── quimica-inorganica/
 │   ├── isomeria-complejos/
 │   └── quiralidad-delta-lambda/
