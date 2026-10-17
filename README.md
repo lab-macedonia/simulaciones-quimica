@@ -71,13 +71,13 @@ simulaciones/
 │   ├── colisiones-estado-transicion/
 │   ├── estequiometria/
 │   ├── acido-base-titulacion/
-│   └── equilibrio-quimico/
+│   ├── equilibrio-quimico/
 │   ├── gases/
 │   ├── coligativas/
 │   ├── termoquimica/
 │   ├── cinetica-ordenes/
 │   ├── pilas-galvanicas/
-│   ├── diagramas-de-fase/
+│   └── diagramas-de-fase/
 ├── quimica-inorganica/
 │   ├── isomeria-complejos/
 │   └── quiralidad-delta-lambda/
