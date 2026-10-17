@@ -198,6 +198,7 @@
       options: function (o) {
         var f = h('div', { class: 'fld' }); if (o.label) f.appendChild(h('span', { class: 'lbl' }, o.label));
         var grid = h('div', { class: 'opts' + (o.cols === 2 ? ' two' : '') }); f.appendChild(grid);
+        if (o.cols > 2) { grid.style.gridTemplateColumns = 'repeat(' + o.cols + ', minmax(0, 1fr))'; grid.classList.add('dense'); }
         var cur = o.value;
         function paint() { grid.querySelectorAll('.opt').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === String(cur) ? 'true' : 'false'); }); }
         o.options.forEach(function (op) {

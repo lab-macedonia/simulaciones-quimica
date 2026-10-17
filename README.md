@@ -46,6 +46,11 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 |---|---|
 | [Célula animal 3D](simulaciones/biologia/celula-animal/) | Modelo 3D con 19 componentes (núcleo, retículos, Golgi, mitocondrias, lisosomas, centrosoma, citoesqueleto), corte, modo por funciones, lección, comparación y desafío. |
 | [Célula vegetal 3D](simulaciones/biologia/celula-vegetal/) | Modelo 3D con 21 componentes (pared, vacuola, cloroplastos, plasmodesmos, etc.), fotosíntesis animada, comparación con la animal y desafío. |
+| [Aminoácidos y estructura de proteínas 3D](simulaciones/biologia/aminoacidos-proteinas/) | Aminoácidos con carga según pH y pI, enlace peptídico, mapa de Ramachandran por impedimento estérico, hélice α y lámina β con puentes de hidrógeno. |
+| [ADN: estructura, replicación y transcripción 3D](simulaciones/biologia/adn/) | Doble hélice B-DNA con pares de bases, horquilla de replicación, transcripción y traducción con tabla de codones. |
+| [Lípidos y membrana celular 3D](simulaciones/biologia/lipidos-membrana/) | Fosfolípidos, bicapa fluida, efecto de temperatura y colesterol, transporte pasivo y activo con canales, GLUT y bomba Na⁺/K⁺. |
+| [Enzimas y cinética enzimática 3D](simulaciones/biologia/enzimas-cinetica/) | Llave–cerradura y ajuste inducido, ciclo catalítico, Michaelis–Menten con población de enzimas, inhibición competitiva y no competitiva, Lineweaver–Burk, pH y temperatura. |
+| [Metabolismo energético 3D](simulaciones/biologia/metabolismo/) | Glucólisis, ciclo de Krebs, cadena respiratoria y ATP sintasa, balance aerobio frente a fermentación e inhibidores (rotenona, cianuro, oligomicina, DNP). |
 
 ### Física
 | Simulación | Descripción |
@@ -92,9 +97,15 @@ simulaciones/
 │   └── diagramas-de-fase/
 ├── quimica-inorganica/
 │   ├── isomeria-complejos/
-│   └── quiralidad-delta-lambda/
+│   ├── quiralidad-delta-lambda/
+│   └── campo-cristalino/
 ├── biologia/
 │   ├── celula-animal/ celula-vegetal/
+│   ├── aminoacidos-proteinas/
+│   ├── adn/
+│   ├── lipidos-membrana/
+│   ├── enzimas-cinetica/
+│   ├── metabolismo/
 │   └── shared/                         (motor de células en Three.js)
 └── fisica/
     └── sistema-solar/
@@ -142,3 +153,4 @@ Distribuido bajo licencia **MIT**. Consulta el archivo [LICENSE](LICENSE). Las l
 ## Créditos
 
 Laboratorio MACEDONIA · Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile.
+| [Teoría del campo cristalino 3D](simulaciones/quimica-inorganica/campo-cristalino/) | Desdoblamiento d en campos octaédrico, tetraédrico y plano-cuadrado, serie espectroquímica, alto/bajo espín, EECC y color del complejo a partir de Δ. |

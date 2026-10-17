@@ -281,7 +281,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       ui.mol = kit.ui.options({ label: 'Molécula', cols: 3, value: S.mol, options: M.map(function (m) { return { v: m.id, label: m.n.split(' (')[0] }; }), onChange: function (v) { ctx.goManual(); S.mol = v; S.sel = 0; ui.draw(); } }); c.appendChild(ui.mol);
       var box = document.createElement('div'); c.appendChild(box);
       ui.draw = function () { box.innerHTML = ''; var m = mol(); var mk = function (title, arr, kind) { var h = document.createElement('div'); h.className = 'small muted'; h.style.margin = '8px 0 4px'; h.textContent = title; box.appendChild(h); var w = document.createElement('div'); w.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px'; arr.forEach(function (p, i) { var b = document.createElement('button'); b.className = 'btn' + (S.kind === kind && S.sel === i ? ' primary' : ''); b.textContent = kind === 'ir' ? p.v + ' cm⁻¹' : 'δ ' + p.d; b.onclick = function () { ctx.goManual(); S.kind = kind; S.sel = i; ui.draw(); }; w.appendChild(b); }); box.appendChild(w); }; mk('Bandas IR (clic para ver la vibración)', m.ir, 'ir'); mk('Señales de RMN ¹H (clic para ver los H)', m.nmr, 'nmr'); };
-      ui.refresh = function () { ui.draw(); }; ui.draw();
+      var lk = ''; ui.refresh = function () { var k = S.mol + S.kind + S.sel; if (k !== lk) { lk = k; ui.mol.set(S.mol); ui.draw(); } }; ui.draw();
       c.appendChild(ctx.btnRow([{ t: 'Volver a la lección', primary: true, fn: function () { ctx.toLesson(); } }]));
       var q = kit.ui.card('Desafío: espectro misterioso'); el.appendChild(q); var qb = document.createElement('div'); q.appendChild(qb); var cur = null, score = [0, 0];
       function nextQ() { cur = M[Math.floor(Math.random() * M.length)]; draw(''); }
