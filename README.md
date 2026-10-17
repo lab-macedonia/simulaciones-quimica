@@ -9,6 +9,12 @@ Colección de simulaciones interactivas para la enseñanza de la química, la bi
 |---|---|
 | [Mecanismos SN1 · SN2 · E1 · E2](simulaciones/quimica-organica/mecanismos-sn-e/) | Geometrías 3D, flechas de electrones, orbitales, perfiles de energía y predictor de mecanismo. |
 | [Carbohidratos: Fischer → Haworth → silla](simulaciones/quimica-organica/carbohidratos-fischer-haworth/) | Fischer, giro de 90°, ciclación a piranosas y furanosas (aldosas y cetosas), carbono anomérico α/β, conformación silla o sobre y repulsión 1,3-diaxial. |
+| [Estereoquímica R/S (CIP) 3D](simulaciones/quimica-organica/estereoquimica-rs/) | Prioridades Cahn–Ingold–Prelog, asignación R/S mirando desde el lado opuesto al grupo de menor prioridad, enantiómeros en espejo y desafío de configuración. |
+| [Conformaciones: etano, butano y ciclohexano 3D](simulaciones/quimica-organica/conformaciones/) | Proyecciones de Newman con energía torsional, conformaciones anti/gauche/eclipsada, silla del ciclohexano con inversión, valores A y repulsión 1,3-diaxial. |
+| [Grupos funcionales 3D](simulaciones/quimica-organica/grupos-funcionales/) | Veinte moléculas con quince grupos funcionales resaltados, bandas IR características, prioridad de nomenclatura y desafío de identificación. |
+| [Adición electrofílica y SEAr 3D](simulaciones/quimica-organica/adicion-electrofila-sear/) | Adición de HBr, HCl, H₂O y Br₂ a alquenos (Markovnikov, carbocatión, ion bromonio) y sustitución electrofílica aromática con complejo σ y efecto de sustituyentes (o/m/p). |
+| [Adición nucleófila al carbonilo 3D](simulaciones/quimica-organica/carbonilo/) | Aldehídos y cetonas frente a distintos nucleófilos: ángulo de Bürgi–Dunitz, intermediario tetraédrico, hemiacetal/acetal y sustitución nucleofílica acílica. |
+| [Espectroscopía IR y RMN ¹H 3D](simulaciones/quimica-organica/espectroscopia/) | Vibraciones animadas de enlaces y bandas IR, desplazamiento químico, integración y multiplicidad (regla n+1) con espectros asignados a átomos de la molécula. |
 
 ### Química general
 Cada simulación es independiente; no hay portada de colección ni seguimiento de progreso.
@@ -60,7 +66,13 @@ simulaciones/
 ├── kit/                       Kit común: lección guiada, captura, ayuda, tema
 ├── quimica-organica/
 │   ├── mecanismos-sn-e/
-│   └── carbohidratos-fischer-haworth/
+│   ├── carbohidratos-fischer-haworth/
+│   ├── estereoquimica-rs/
+│   ├── conformaciones/
+│   ├── grupos-funcionales/
+│   ├── adicion-electrofila-sear/
+│   ├── carbonilo/
+│   └── espectroscopia/
 ├── quimica-general/
 │   ├── atomlab/ configuracion-electronica/ propiedades-periodicas/
 │   ├── lewislab/ geomol/ sigma-pi/
