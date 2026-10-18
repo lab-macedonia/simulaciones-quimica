@@ -121,7 +121,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 (function () {
   var R = 8.314, fmt = SimKit.fmt, ATM = 101325;
   var SUB = {
-    H2O: { name: 'Agua', f: 'H₂O', Tt: 273.16, Pt: 611.657, Tc: 647.1, Pc: 22.064e6, p3: [373.15, ATM], sub: [200, 0.162], dmelt: -13.7e6, Tlo: 230, Thi: 700, lp0: 1, lp1: 8.3, cs: 38, cl: 75.3, cg: 33.6, Hf: 6010, Hv: 40700, nb: 'p. eb. normal 373,15 K (100 °C)' },
+    H2O: { name: 'Agua', f: 'H₂O', Tt: 273.16, Pt: 611.657, Tc: 647.1, Pc: 22.064e6, p3: [373.15, ATM], sub: [200, 0.162], dmelt: -13.7e6, Tlo: 200, Thi: 700, lp0: -1, lp1: 8.3, cs: 38, cl: 75.3, cg: 33.6, Hf: 6010, Hv: 40700, nb: 'p. eb. normal 373,15 K (100 °C)' },
     CO2: { name: 'Dióxido de carbono', f: 'CO₂', Tt: 216.55, Pt: 517000, Tc: 304.13, Pc: 7.377e6, p3: [250, 1.785e6], sub: [194.7, ATM], dmelt: 4.6e6, Tlo: 150, Thi: 400, lp0: 2, lp1: 8.3, cs: 50, cl: 85, cg: 37, Hf: 9000, Hv: 15300, nb: 'sublima a 194,7 K (−78,5 °C) a 1 atm' }
   };
   var S = { id: 'H2O', T: 298, lp: 5.0057 }; // lp = log10 P (Pa)
@@ -255,7 +255,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         c.insertAdjacentHTML('beforeend', '<p class="muted small">Las curvas son ajustes a datos experimentales (Antoine ampliado y Clapeyron); los valores son aproximados. Usa la escala logarítmica de P para cubrir muchos órdenes de magnitud.</p>');
       },
       graphs: [
-        { title: 'Diagrama de fases P–T', h: 290, note: 'Escala logarítmica en P. Punto naranja: estado actual. ● punto triple · ◆ punto crítico.', draw: function (cx, w, h, c) {
+        { title: 'Diagrama de fases P–T', h: 290, note: 'Escala logarítmica en P. Las tres curvas de equilibrio: fusión (S–L), vaporización (L–G) y sublimación (S–G). Punto naranja: estado actual. ● punto triple · ◆ punto crítico.', draw: function (cx, w, h, c) {
           var d = D(), L = 46, Rr = 10, Tp = 12, B = 30, pw = w - L - Rr, ph = h - Tp - B;
           var sx = function (T) { return L + pw * (T - d.Tlo) / (d.Thi - d.Tlo); }, sy = function (lp) { return Tp + ph - ph * (lp - d.lp0) / (d.lp1 - d.lp0); };
           var img = cx.createImageData ? null : null, step = 4, i, j;
@@ -266,7 +266,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
             cx.fillStyle = colr[rr]; cx.fillRect(L + i, Tp + j, step, step);
           }
           cx.font = '10.5px system-ui'; cx.strokeStyle = c.line; cx.fillStyle = c.muted; cx.textAlign = 'right';
-          for (i = Math.ceil(d.lp0); i <= d.lp1; i++) { var y = sy(i); cx.beginPath(); cx.moveTo(L, y); cx.lineTo(L + pw, y); cx.stroke(); cx.fillText('10' + (function (n) { return String(n).split('').map(function (ch) { return '⁰¹²³⁴⁵⁶⁷⁸⁹'[+ch]; }).join(''); })(i), L - 5, y + 3); }
+          for (i = Math.ceil(d.lp0); i <= d.lp1; i++) { var y = sy(i); cx.beginPath(); cx.moveTo(L, y); cx.lineTo(L + pw, y); cx.stroke(); cx.fillText('10' + (function (n) { return String(n).split('').map(function (ch) { return ch === '-' ? '⁻' : '⁰¹²³⁴⁵⁶⁷⁸⁹'[+ch]; }).join(''); })(i), L - 5, y + 3); }
           cx.textAlign = 'center'; var dT = d.Thi - d.Tlo > 300 ? 100 : 50; for (var t = Math.ceil(d.Tlo / dT) * dT; t <= d.Thi; t += dT) cx.fillText(t, sx(t), h - B + 12);
           cx.fillText('T (K)  ·  eje vertical: P (Pa)', L + pw / 2, h - 3);
           cx.strokeStyle = c.ink; cx.lineWidth = 2; cx.beginPath(); var first = true; for (T = d.Tt; T <= d.Tc; T += (d.Tc - d.Tt) / 80) { var lv = Math.log10(Pvap(T, d)); if (first) { cx.moveTo(sx(T), sy(lv)); first = false; } else cx.lineTo(sx(T), sy(lv)); } cx.lineTo(sx(d.Tc), sy(Math.log10(d.Pc))); cx.stroke();
@@ -274,6 +274,9 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
           cx.beginPath(); var Pm0 = d.Pt, Pm1 = Math.pow(10, d.lp1); cx.moveTo(sx(d.Tt), sy(Math.log10(Pm0))); var Te = Tm(Pm1, d); cx.lineTo(sx(Math.max(d.Tlo, Math.min(d.Thi, Te))), sy(d.lp1)); cx.stroke(); cx.lineWidth = 1;
           cx.fillStyle = c.ink; cx.beginPath(); cx.arc(sx(d.Tt), sy(Math.log10(d.Pt)), 4.5, 0, 7); cx.fill(); cx.save(); cx.translate(sx(d.Tc), sy(Math.log10(d.Pc))); cx.rotate(Math.PI / 4); cx.fillRect(-4, -4, 8, 8); cx.restore();
           cx.font = '600 11px system-ui'; cx.fillStyle = c.ink; cx.textAlign = 'center'; cx.fillText('SÓLIDO', sx(d.Tlo + (d.Tt - d.Tlo) * .45), sy(d.lp0 + (d.lp1 - d.lp0) * .75)); cx.fillText('LÍQUIDO', sx(d.Tt + (d.Tc - d.Tt) * .6), sy(d.lp0 + (d.lp1 - d.lp0) * .7)); cx.fillText('GAS', sx(d.Tt + (d.Thi - d.Tt) * .6), sy(d.lp0 + (d.lp1 - d.lp0) * .12)); cx.fillText('SUPERCRÍTICO', sx(Math.min(d.Thi - 62, d.Tc + (d.Thi - d.Tc) * .5)), sy(Math.log10(d.Pc) + (d.lp1 - Math.log10(d.Pc)) * .55));
+          cx.font = 'italic 10px system-ui'; cx.fillStyle = c.muted; cx.textAlign = 'left';
+          var Tsb_ = d.Tlo + (d.Tt - d.Tlo) * .3, Tv_ = d.Tt + (d.Tc - d.Tt) * .3, lpf_ = d.lp0 + (d.lp1 - d.lp0) * .55, Pmv_ = Math.pow(10, lpf_);
+          cx.fillText('sublimación', sx(Tsb_) + 6, sy(Math.log10(Psub(Tsb_, d))) + 12); cx.fillText('vaporización', sx(Tv_) + 6, sy(Math.log10(Pvap(Tv_, d))) + 14); cx.textAlign = d.dmelt < 0 ? 'right' : 'left'; cx.fillText('fusión', sx(Tm(Pmv_, d)) + (d.dmelt < 0 ? -5 : 5), sy(lpf_));
           var px = sx(Math.max(d.Tlo, Math.min(d.Thi, S.T))), py = sy(Math.max(d.lp0, Math.min(d.lp1, S.lp)));
           cx.fillStyle = '#fff'; cx.strokeStyle = '#ff6b3d'; cx.lineWidth = 2.6; cx.beginPath(); cx.arc(px, py, 6, 0, 7); cx.fill(); cx.stroke(); cx.lineWidth = 1; } },
         { title: 'Curva de calentamiento a la presión actual', h: 210, note: 'Plateaus donde ocurre un cambio de fase (T constante mientras se absorbe calor). El punto marca la T actual.', draw: function (cx, w, h, c) {
