@@ -129,7 +129,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     CH4: { f: 'CH₄', M: 16.04, a: 2.303, b: 0.0431, geo: { a: [['C', 0, 0, 0], ['H', 0.63, 0.63, 0.63], ['H', -0.63, -0.63, 0.63], ['H', -0.63, 0.63, -0.63], ['H', 0.63, -0.63, -0.63]], b: [[0, 1], [0, 2], [0, 3], [0, 4]] } },
     CO2: { f: 'CO₂', M: 44.01, a: 3.658, b: 0.0429, geo: { a: [['O', -1.16, 0, 0], ['C', 0, 0, 0], ['O', 1.16, 0, 0]], b: [[0, 1, 2], [1, 2, 2]] } }
   };
-  var S = { gas: 'N2', n: 1, T: 300, V: 10, isoP: 0 };       // isoP>0: presión fija (atm), V se calcula
+  var S = { gas: 'N2', n: 1, T: 300, V: 10, isoP: 0, sp: 1 };       // isoP>0: presión fija (atm), V se calcula
   var W = 3.5, hA = 5, pools = [], box, tint, piston, rod, lab = {}, SC = 20;
   function g() { return G[S.gas]; }
   function Pid(n, T, V) { return n * R * T / V; }
@@ -198,7 +198,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       var h0 = hOf(S.V); hA += (h0 - hA) * Math.min(1, dt * 5); var h = hA;
       box.scale.y = h; box.position.y = h / 2; piston.position.y = h + 0.15; rod.position.y = h + 4;
       tint.material.opacity = clamp((S.T - 100) / 600, 0, 1) * 0.9; tint.material.color.setHSL(0.04 + 0.03 * (1 - (S.T - 100) / 600), 1, 0.5);
-      var sp = Math.min(2.2, 0.22 * Math.sqrt(S.T / g().M) * (S.gas === 'He' || S.gas === 'H2' ? 0.6 : 1.0)), Rr = W - 0.3, top = h - 0.3;
+      var sp = S.sp * Math.min(1.6, 0.14 * Math.sqrt(S.T / g().M) * (S.gas === 'He' || S.gas === 'H2' ? 0.6 : 1.0)), Rr = W - 0.3, top = h - 0.3;
       pools.forEach(function (m) {
         var p = m.g.position, v = m.v; p.x += v.x * sp * dt; p.y += v.y * sp * dt; p.z += v.z * sp * dt;
         if (p.x < -Rr) { p.x = -Rr; v.x = Math.abs(v.x); } if (p.x > Rr) { p.x = Rr; v.x = -Math.abs(v.x); }
@@ -231,6 +231,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       ui.sT = kit.ui.slider({ label: 'T', min: 100, max: 700, step: 5, value: S.T, format: function (v) { return fmt(v, 0) + ' K'; }, onInput: function (v) { ctx.goManual(); S.T = v; } });
       ui.sV = kit.ui.slider({ label: 'V', min: 1.5, max: 13, step: 0.1, value: S.V, format: function (v) { return fmt(v, 1) + ' L'; }, onInput: function (v) { ctx.goManual(); S.isoP = 0; S.V = v; } });
       c.appendChild(kit.ui.sliders([ui.sN, ui.sT, ui.sV]));
+      ui.sSp = kit.ui.slider({ label: 'Rapidez de la animación', min: 0.1, max: 2, step: 0.05, value: S.sp, format: function (v) { return fmt(v, 2) + '×'; }, onInput: function (v) { S.sp = v; } }); c.appendChild(ui.sSp);
       c.appendChild(ctx.btnRow([{ t: 'P constante (1 atm)', fn: function () { ctx.goManual(); S.isoP = S.isoP ? 0 : 1; kit.toast(S.isoP ? 'Émbolo libre a 1 atm: V = nRT/P' : 'Volumen fijado por el control'); } }, { t: 'Reiniciar', fn: function () { ctx.goManual(); S.n = 1; S.T = 300; S.V = 10; S.isoP = 0; S.gas = 'N2'; rebuildGas(ctx); ui.gasOpts.set('N2'); ui.sN.set(1); ui.sT.set(300); ui.sV.set(10); } }, { t: 'Volver a la lección', fn: function () { ctx.toLesson(); } }]));
       c.insertAdjacentHTML('beforeend', '<p class="muted small">Activa la capa «Mostrar gas real» para comparar con van der Waals. Con P constante el volumen se calcula (máx. 13 L).</p>');
     },
