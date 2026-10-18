@@ -1,6 +1,6 @@
 # Simulaciones interactivas de ciencias · Laboratorio MACEDONIA
 
-Colección de simulaciones interactivas para la enseñanza de la química, la biología celular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
+Colección de 41 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología celular y molecular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
 
 ## Simulaciones por área
 
