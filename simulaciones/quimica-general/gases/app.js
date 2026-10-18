@@ -193,12 +193,12 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         ctx.layerReal = i === 5;
       }
       if (S.isoP > 0) S.V = clamp(S.n * R * S.T / S.isoP, 1.5, 13);
-      if (pools.length === 0 || pools[0].gas !== S.gas) { rebuildGas(ctx); pools.gas = S.gas; }
+      if (pools.gas !== S.gas) { rebuildGas(ctx); pools.gas = S.gas; }
       syncCounts(ctx);
       var h0 = hOf(S.V); hA += (h0 - hA) * Math.min(1, dt * 5); var h = hA;
       box.scale.y = h; box.position.y = h / 2; piston.position.y = h + 0.15; rod.position.y = h + 4;
       tint.material.opacity = clamp((S.T - 100) / 600, 0, 1) * 0.9; tint.material.color.setHSL(0.04 + 0.03 * (1 - (S.T - 100) / 600), 1, 0.5);
-      var sp = S.sp * Math.min(1.6, 0.14 * Math.sqrt(S.T / g().M) * (S.gas === 'He' || S.gas === 'H2' ? 0.6 : 1.0)), Rr = W - 0.3, top = h - 0.3;
+      var sp = S.sp * Math.min(2.4, 0.3 * Math.sqrt(S.T / g().M) * (S.gas === 'He' || S.gas === 'H2' ? 0.6 : 1.0)), Rr = W - 0.3, top = h - 0.3;
       pools.forEach(function (m) {
         var p = m.g.position, v = m.v; p.x += v.x * sp * dt; p.y += v.y * sp * dt; p.z += v.z * sp * dt;
         if (p.x < -Rr) { p.x = -Rr; v.x = Math.abs(v.x); } if (p.x > Rr) { p.x = Rr; v.x = -Math.abs(v.x); }
