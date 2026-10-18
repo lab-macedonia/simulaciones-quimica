@@ -1,6 +1,6 @@
 # Simulaciones interactivas de ciencias · Laboratorio MACEDONIA
 
-Colección de 41 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología celular y molecular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
+Colección de 61 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología celular y molecular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
 
 ## Simulaciones por área
 
@@ -15,6 +15,17 @@ Colección de 41 simulaciones interactivas para la enseñanza de la química (ge
 | [Adición electrofílica y SEAr 3D](simulaciones/quimica-organica/adicion-electrofila-sear/) | Adición de HBr, HCl, H₂O y Br₂ a alquenos (Markovnikov, carbocatión, ion bromonio) y sustitución electrofílica aromática con complejo σ y efecto de sustituyentes (o/m/p). |
 | [Adición nucleófila al carbonilo 3D](simulaciones/quimica-organica/carbonilo/) | Aldehídos y cetonas frente a distintos nucleófilos: ángulo de Bürgi–Dunitz, intermediario tetraédrico, hemiacetal/acetal y sustitución nucleofílica acílica. |
 | [Espectroscopía IR y RMN ¹H 3D](simulaciones/quimica-organica/espectroscopia/) | Vibraciones animadas de enlaces y bandas IR, desplazamiento químico, integración y multiplicidad (regla n+1) con espectros asignados a átomos de la molécula. |
+| [Acidez orgánica y pKa](simulaciones/quimica-organica/acidez-pka/) | Simulador 3D de acidez orgánica: pKa, estabilidad de la base conjugada, hibridación, electronegatividad, resonancia y efecto inductivo, con equilibrio ácido–base y ionización según el pH. |
+| [Alcoholes, éteres y aminas](simulaciones/quimica-organica/alcoholes-eteres-aminas/) | Simulador 3D de alcoholes, éteres y aminas: polaridad, puentes de hidrógeno (dímeros), puntos de ebullición, solubilidad en agua según la cadena, basicidad de las aminas (pKaH) y reactividad comparada. |
+| [Aromaticidad y regla de Hückel](simulaciones/quimica-organica/aromaticidad-huckel/) | Simulador 3D de aromaticidad: regla 4n + 2 de Hückel, orbitales moleculares π y círculo de Frost, antiaromaticidad, iones aromáticos y heterociclos (pirrol, piridina, furano). |
+| [Ácidos carboxílicos y derivados](simulaciones/quimica-organica/derivados-acido/) | Simulador 3D de derivados de ácidos carboxílicos: reactividad (cloruro, anhídrido, éster, amida), resonancia, sustitución nucleófila acílica por adición–eliminación, hidrólisis e interconversión. |
+| [Reacción de Diels–Alder](simulaciones/quimica-organica/diels-alder/) | Simulador 3D de la reacción de Diels–Alder [4+2]: conformación s-cis del dieno, mecanismo concertado, orbitales frontera, efecto de sustituyentes, regla endo y termodinámica (ΔG frente a T). |
+| [Enolatos y condensación aldólica](simulaciones/quimica-organica/enolatos-aldolica/) | Simulador 3D de enolatos y reacción aldólica: acidez del hidrógeno α, resonancia del enolato, adición aldólica, deshidratación E1cB y condensación cruzada de Claisen–Schmidt, con flechas de electrones. |
+| [Espectrometría de masas y RMN de 13C](simulaciones/quimica-organica/espectrometria-ms-rmn13c/) | Simulador 3D de espectrometría de masas (ion molecular, patrón isotópico del Cl y Br, rotura α, McLafferty) y de RMN de 13C (carbonos no equivalentes, desplazamiento químico) para resolver estructuras orgánicas. |
+| [Nomenclatura IUPAC orgánica](simulaciones/quimica-organica/nomenclatura-iupac/) | Simulador 3D para aprender y practicar la nomenclatura IUPAC orgánica: cadena principal, numeración y localizadores, sustituyentes en orden alfabético y prioridad de grupos funcionales, con moléculas en 3D y modo de práctica. |
+| [Oxidación y reducción en química orgánica](simulaciones/quimica-organica/oxidacion-reduccion/) | Simulador 3D de oxidación y reducción orgánica: estados de oxidación del carbono, oxidación de alcoholes primarios, secundarios y terciarios con PCC y Jones, reducción de carbonilos con NaBH₄ y LiAlH₄, mecanismo del hidruro y selectividad de los reactivos. |
+| [Radicales y halogenación en cadena](simulaciones/quimica-organica/radicales-halogenacion/) | Simulador 3D de la halogenación radicalaria de alcanos: estabilidad de radicales, iniciación, propagación y terminación, selectividad cloración frente a bromación (postulado de Hammond) y reparto de productos del propano. |
+
 
 ### Química general
 Cada simulación es independiente; no hay portada de colección ni seguimiento de progreso.
@@ -43,6 +54,12 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Radiación electromagnética 3D](simulaciones/quimica-general/radiacion-em/) | Onda E–B en 3D, polarización lineal y circular, vector de Poynting, fotón como paquete de ondas y espectro completo de radio a rayos γ con E = hf y efectos sobre la materia. |
 | [Transiciones electrónicas y átomo de Bohr 3D](simulaciones/quimica-general/transiciones-electronicas/) | Niveles de H, He⁺ y Li²⁺, absorción y emisión de fotones, series de Lyman, Balmer y Paschen, ondas de de Broglie, ionización y espectro de líneas. |
 | [Interacciones intermoleculares 3D](simulaciones/quimica-general/interacciones-intermoleculares/) | 38 pares de especies: London, ion–ion, ion–dipolo, dipolo–dipolo, cuadrupolo, puente de H y enlace de halógeno, con curva U(r), promedio térmico y comparador de energías. |
+| [Entropía y energía libre de Gibbs](simulaciones/quimica-general/entropia-gibbs/) | Simulador 3D de entropía y energía libre de Gibbs: microestados y S = k·ln W, expansión espontánea, entropía de los estados de agregación, ΔG = ΔH − TΔS, temperatura de equilibrio y relación con K. |
+| [Orbitales moleculares en diatómicas](simulaciones/quimica-general/orbitales-moleculares/) | Simulador 3D de la teoría de orbitales moleculares (LCAO) en moléculas diatómicas homonucleares del periodo 1 y 2: diagramas de energía, orden de enlace, paramagnetismo y forma de los orbitales σ, σ*, π y π*. |
+| [Radiactividad y química nuclear](simulaciones/quimica-general/radiactividad/) | Simulador 3D de radiactividad: núcleo y notación, banda de estabilidad N/Z, desintegración alfa, beta y captura electrónica, vida media, actividad y datación con carbono-14. |
+| [Sólidos cristalinos y celdas unitarias](simulaciones/quimica-general/solidos-cristalinos/) | Simulador 3D de sólidos cristalinos: celdas cúbicas simple, centrada en el cuerpo y centrada en las caras, empaquetamiento compacto hcp y ccp, estructuras iónicas (NaCl, CsCl, ZnS, CaF₂), átomos por celda, número de coordinación, fracción de empaquetamiento y densidad. |
+| [Solubilidad y producto de solubilidad (Kps)](simulaciones/quimica-general/solubilidad-kps/) | Simulador 3D de solubilidad de sales poco solubles: Kps, solubilidad molar, efecto del ion común, efecto del pH, cociente Q frente a Kps y precipitación selectiva (AgI/AgCl). |
+
 
 ### Biología
 | Simulación | Descripción |
@@ -54,6 +71,9 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Lípidos y membrana celular 3D](simulaciones/biologia/lipidos-membrana/) | Fosfolípidos, bicapa fluida, efecto de temperatura y colesterol, transporte pasivo y activo con canales, GLUT y bomba Na⁺/K⁺. |
 | [Enzimas y cinética enzimática 3D](simulaciones/biologia/enzimas-cinetica/) | Llave–cerradura y ajuste inducido, ciclo catalítico, Michaelis–Menten con población de enzimas, inhibición competitiva y no competitiva, Lineweaver–Burk, pH y temperatura. |
 | [Metabolismo energético 3D](simulaciones/biologia/metabolismo/) | Glucólisis, ciclo de Krebs, cadena respiratoria y ATP sintasa, balance aerobio frente a fermentación e inhibidores (rotenona, cianuro, oligomicina, DNP). |
+| [Fotosíntesis: reacciones luminosas y ciclo de Calvin](simulaciones/biologia/fotosintesis/) | Simulador 3D de la fotosíntesis: estructura del cloroplasto, absorción de luz, fotólisis del agua, cadena de transporte de electrones, gradiente de H⁺ y ATP sintasa, producción de NADPH y ciclo de Calvin con fijación de CO₂, reducción y regeneración. |
+| [Mitosis y meiosis](simulaciones/biologia/mitosis-meiosis/) | Simulador 3D de la división celular: ciclo celular e interfase, fases de la mitosis, meiosis I y II, sinapsis y entrecruzamiento, segregación independiente de cromosomas homólogos, contenido de ADN por célula y comparación de ambos procesos. |
+
 
 ### Física
 | Simulación | Descripción |
@@ -65,6 +85,10 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 |---|---|
 | [Isomería · Laboratorio 3D](simulaciones/quimica-inorganica/isomeria-complejos/) | Isomería cis/trans y fac/mer en complejos; argumento de Werner. |
 | [Quiralidad Δ / Λ en complejos](simulaciones/quimica-inorganica/quiralidad-delta-lambda/) | Quiralidad Δ/Λ en complejos de coordinación. |
+| [Teoría del campo cristalino 3D](simulaciones/quimica-inorganica/campo-cristalino/) | Desdoblamiento d en campos octaédrico, tetraédrico y plano-cuadrado, serie espectroquímica, alto/bajo espín, EECC y color del complejo a partir de Δ. |
+| [Nomenclatura y fórmulas de complejos](simulaciones/quimica-inorganica/nomenclatura-complejos/) | Simulador 3D para nombrar y formular compuestos de coordinación: átomo central, ligandos monodentados y quelatos, índice de coordinación, geometría, carga y número de oxidación, orden alfabético, prefijos, complejos aniónicos (-ato) y sales. |
+| [Orbitales moleculares en complejos octaédricos](simulaciones/quimica-inorganica/om-complejos/) | Simulador 3D de la teoría de orbitales moleculares en complejos octaédricos ML6: enlace σ, orbitales a1g, t1u, eg y t2g, desdoblamiento Δo, efecto π (donor y aceptor), serie espectroquímica, alto y bajo espín, magnetismo y color. |
+| [Organometálica: regla de 18 electrones](simulaciones/quimica-inorganica/organometalica-18e/) | Simulador 3D de química organometálica: regla de los 18 electrones, conteo de electrones por el método neutro, carbonilos metálicos, ferroceno, complejos planos de 16 electrones y ciclo catalítico de Wilkinson (adición oxidante, coordinación, inserción migratoria y eliminación reductora). |
 
 ## Estructura del repositorio
 
@@ -159,4 +183,3 @@ Distribuido bajo licencia **MIT**. Consulta el archivo [LICENSE](LICENSE). Las l
 ## Créditos
 
 Laboratorio MACEDONIA · Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile.
-| [Teoría del campo cristalino 3D](simulaciones/quimica-inorganica/campo-cristalino/) | Desdoblamiento d en campos octaédrico, tetraédrico y plano-cuadrado, serie espectroquímica, alto/bajo espín, EECC y color del complejo a partir de Δ. |
