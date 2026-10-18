@@ -106,6 +106,10 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Organometálica: regla de 18 electrones](simulaciones/quimica-inorganica/organometalica-18e/) | Simulador 3D de química organometálica: regla de los 18 electrones, conteo de electrones por el método neutro, carbonilos metálicos, ferroceno, complejos planos de 16 electrones y ciclo catalítico de Wilkinson (adición oxidante, coordinación, inserción migratoria y eliminación reductora). |
 | [Química descriptiva de los grupos](simulaciones/quimica-inorganica/quimica-descriptiva-grupos/) | Tendencias y reactividad de alcalinos, alcalinotérreos, halógenos y gases nobles, y carácter ácido–base de los óxidos del periodo 3 en 3D: radio, energía de ionización, reacción con agua y estados de la materia. |
 
+## Guías docentes y bancos de preguntas
+
+La carpeta [`simulaciones/guias/`](simulaciones/guias/index.html) contiene una guía por simulación (80 en total): objetivos de aprendizaje, conocimientos previos, recorrido, actividad de aula, errores frecuentes, banco de preguntas (alternativas y desarrollo) y solucionario. Cada guía se puede imprimir desde el navegador.
+
 ## Estructura del repositorio
 
 ```
