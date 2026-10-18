@@ -198,13 +198,13 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       var h0 = hOf(S.V); hA += (h0 - hA) * Math.min(1, dt * 5); var h = hA;
       box.scale.y = h; box.position.y = h / 2; piston.position.y = h + 0.15; rod.position.y = h + 4;
       tint.material.opacity = clamp((S.T - 100) / 600, 0, 1) * 0.9; tint.material.color.setHSL(0.04 + 0.03 * (1 - (S.T - 100) / 600), 1, 0.5);
-      var sp = Math.min(4.5, 0.5 * Math.sqrt(S.T / g().M) * (S.gas === 'He' || S.gas === 'H2' ? 0.6 : 1.0)), Rr = W - 0.3, top = h - 0.3;
+      var sp = Math.min(2.2, 0.22 * Math.sqrt(S.T / g().M) * (S.gas === 'He' || S.gas === 'H2' ? 0.6 : 1.0)), Rr = W - 0.3, top = h - 0.3;
       pools.forEach(function (m) {
         var p = m.g.position, v = m.v; p.x += v.x * sp * dt; p.y += v.y * sp * dt; p.z += v.z * sp * dt;
         if (p.x < -Rr) { p.x = -Rr; v.x = Math.abs(v.x); } if (p.x > Rr) { p.x = Rr; v.x = -Math.abs(v.x); }
         if (p.z < -Rr) { p.z = -Rr; v.z = Math.abs(v.z); } if (p.z > Rr) { p.z = Rr; v.z = -Math.abs(v.z); }
         if (p.y < 0.35) { p.y = 0.35; v.y = Math.abs(v.y); } if (p.y > top) { p.y = top; v.y = -Math.abs(v.y); }
-        m.g.rotation.x += dt * 2; m.g.rotation.y += dt * 1.6;
+        m.g.rotation.x += dt * 0.6; m.g.rotation.y += dt * 0.5;
       });
       var pi = Pid(S.n, S.T, S.V), pr = Pre(S.n, S.T, S.V), showR = ctx.layer('real') || ctx.layerReal;
       lab.P.pos(0, h + 1.9, 0).set(showR ? 'P ideal = ' + fp(pi) + ' atm' : 'P = ' + fp(pi) + ' atm').vis(true);
