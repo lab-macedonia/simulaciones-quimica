@@ -261,8 +261,8 @@ if (typeof module !== 'undefined') module.exports = AAM;
     { k: 'Ile', c: 'I', n: 'isoleucina', cls: 'apolar', pk: [2.36, 9.68], kd: 4.5, sm: 'N{n}C(C(C)CC)C(=O)O{h}' },
     { k: 'Met', c: 'M', n: 'metionina', cls: 'apolar', pk: [2.28, 9.21], kd: 1.9, sm: 'N{n}C(CCSC)C(=O)O{h}' },
     { k: 'Phe', c: 'F', n: 'fenilalanina', cls: 'apolar', pk: [1.83, 9.13], kd: 2.8, sm: 'N{n}C(CPh)C(=O)O{h}' },
-    { k: 'Pro', c: 'P', n: 'prolina', cls: 'apolar', pk: [1.99, 10.96], kd: -1.6, no3d: true },
-    { k: 'Trp', c: 'W', n: 'triptófano', cls: 'apolar', pk: [2.38, 9.39], kd: -0.9, no3d: true },
+    { k: 'Pro', c: 'P', n: 'prolina', cls: 'apolar', pk: [1.99, 10.96], kd: -1.6, sm: 'N{n}C(C)C(=O)O{h}', ring: 'pro' },
+    { k: 'Trp', c: 'W', n: 'triptófano', cls: 'apolar', pk: [2.38, 9.39], kd: -0.9, sm: 'N{n}C(C)C(=O)O{h}', ring: 'trp' },
     { k: 'Ser', c: 'S', n: 'serina', cls: 'polar', pk: [2.21, 9.15], kd: -0.8, sm: 'N{n}C(CO)C(=O)O{h}' },
     { k: 'Thr', c: 'T', n: 'treonina', cls: 'polar', pk: [2.09, 9.10], kd: -0.7, sm: 'N{n}C(C(C)O)C(=O)O{h}' },
     { k: 'Cys', c: 'C', n: 'cisteína', cls: 'polar', pk: [1.96, 10.28], R: { t: 'acid', pk: 8.18, lbl: 'tiol –SH' }, kd: 2.5, sm: 'N{n}C(CS{r})C(=O)O{h}' },
@@ -273,7 +273,7 @@ if (typeof module !== 'undefined') module.exports = AAM;
     { k: 'Glu', c: 'E', n: 'glutamato (ác. glutámico)', cls: 'acido', pk: [2.19, 9.67], R: { t: 'acid', pk: 4.25, lbl: 'COOH lateral' }, kd: -3.5, sm: 'N{n}C(CCC(=O)O{r})C(=O)O{h}' },
     { k: 'Lys', c: 'K', n: 'lisina', cls: 'basico', pk: [2.18, 8.95], R: { t: 'base', pk: 10.53, lbl: '–NH₃⁺ lateral' }, kd: -3.9, sm: 'N{n}C(CCCCN{r})C(=O)O{h}' },
     { k: 'Arg', c: 'R', n: 'arginina', cls: 'basico', pk: [2.17, 9.04], R: { t: 'base', pk: 12.48, lbl: 'guanidinio' }, kd: -4.5, sm: 'N{n}C(CCCN{r}C(=N{r})N{r})C(=O)O{h}' },
-    { k: 'His', c: 'H', n: 'histidina', cls: 'basico', pk: [1.82, 9.17], R: { t: 'base', pk: 6.00, lbl: 'imidazol' }, kd: -3.2, no3d: true }
+    { k: 'His', c: 'H', n: 'histidina', cls: 'basico', pk: [1.82, 9.17], R: { t: 'base', pk: 6.00, lbl: 'imidazol' }, kd: -3.2, sm: 'N{n}C(C)C(=O)O{h}', ring: 'his' }
   ];
   var AAI = {}; AA.forEach(function (a) { AAI[a.k] = a; });
   function groups(a) { var g = [{ t: 'acid', pk: a.pk[0], id: 'cooh', lbl: 'α-COOH' }, { t: 'base', pk: a.pk[1], id: 'amino', lbl: 'α-NH₃⁺' }]; if (a.R) g.push({ t: a.R.t, pk: a.R.pk, id: 'R', lbl: a.R.lbl }); return g; }
@@ -300,18 +300,65 @@ if (typeof module !== 'undefined') module.exports = AAM;
     var iN = 0, iCA = nb[0].filter(function (j) { return at[j].el === 'C'; })[0], iC = nb[iCA].filter(function (j) { return at[j].el === 'C' && nb[j].some(function (k) { return at[k].el === 'O' && at[k].tag === 'h'; }); })[0];
     var iR = nb[iCA].filter(function (j) { return j !== iN && j !== iC && at[j].el === 'C'; })[0], iHA = nb[iCA].filter(function (j) { return at[j].el === 'H'; })[0];
     if (iR !== undefined) { var P = function (i) { return at[i].p; }, t = A.dot(A.cross(A.sub(P(iC), P(iCA)), A.sub(P(iR), P(iCA))), A.sub(P(iN), P(iCA))); if (t < 0) at.forEach(function (x) { x.p = [-x.p[0], x.p[1], x.p[2]]; }); }
+
+    // anillos construidos a mano (Pro, His, Trp): el generador SMILES solo cubre el fenilo
+    var preExtra = [];
+    if (a.ring) {
+      var Pp = function (i) { return at[i].p; }, DG = Math.PI / 180;
+      var addAt = function (el, p) { at.push({ el: el, p: p, tag: 'r' }); nb.push([]); return at.length - 1; };
+      var bondAt = function (i, j, o) { bd.push([i, j, o || 1]); nb[i].push(j); nb[j].push(i); };
+      var hsOf = function (i) { return nb[i].filter(function (j) { return at[j].el === 'H'; }); };
+      var toC = function (h, p) { at[h].el = 'C'; at[h].p = p; at[h].tag = 'r'; };
+      var tetH = function (x, u, v, hs, len) { var xu = A.nrm(A.sub(Pp(u), Pp(x))), xv = A.nrm(A.sub(Pp(v), Pp(x))), b = A.nrm(A.mul(A.add(xu, xv), -1)), n = A.nrm(A.cross(xu, xv)), c = Math.cos(54.75 * DG), sn = Math.sin(54.75 * DG); [1, -1].forEach(function (sg, k) { if (hs[k] !== undefined) at[hs[k]].p = A.add(Pp(x), A.mul(A.add(A.mul(b, c), A.mul(n, sn * sg)), len)); }); };
+      if (a.ring === 'pro') {
+        var hCB = hsOf(iR), hN = hsOf(iN), iG = hCB[0], iD = hN[0], hKeep = hN[1];
+        var N0 = Pp(iN), CA0 = Pp(iCA), CB0 = Pp(iR), mid = A.mul(A.add(N0, CB0), 0.5), out = A.nrm(A.sub(mid, CA0)), al = A.nrm(A.sub(CB0, N0)), nrmP = A.nrm(A.cross(al, out));
+        var g = A.add(A.add(CA0, A.mul(out, 2.2)), A.add(A.mul(al, 0.75), A.mul(nrmP, 0.35))), d = A.add(A.add(CA0, A.mul(out, 2.2)), A.add(A.mul(al, -0.75), A.mul(nrmP, -0.15)));
+        var cons = [['d', 'n', 1.47], ['d', 'g', 1.52], ['g', 'b', 1.53], ['d', 'c', 2.40], ['g', 'c', 2.39], ['g', 'n', 2.40], ['d', 'b', 2.40]], fx = { n: N0, c: CA0, b: CB0 };
+        for (var it = 0; it < 800; it++) { var gg = [0, 0, 0], gd = [0, 0, 0]; cons.forEach(function (cn) { var P1 = cn[0] === 'd' ? d : g, P2 = cn[1] === 'd' ? d : cn[1] === 'g' ? g : fx[cn[1]], v = A.sub(P1, P2), L = Math.sqrt(A.dot(v, v)) || 1e-6, f = A.mul(v, 2 * (L - cn[2]) / L); if (cn[0] === 'd') gd = A.add(gd, f); else gg = A.add(gg, f); if (cn[1] === 'd') gd = A.sub(gd, f); else if (cn[1] === 'g') gg = A.sub(gg, f); }); g = A.sub(g, A.mul(gg, 0.05)); d = A.sub(d, A.mul(gd, 0.05)); }
+        toC(iG, g); toC(iD, d); bondAt(iG, iD, 1);
+        var gH = [addAt('H', [0, 0, 0]), addAt('H', [0, 0, 0])], dH = [addAt('H', [0, 0, 0]), addAt('H', [0, 0, 0])];
+        gH.forEach(function (h) { bondAt(iG, h, 1); }); dH.forEach(function (h) { bondAt(iD, h, 1); });
+        tetH(iG, iR, iD, gH, 1.09); tetH(iD, iG, iN, dH, 1.09); tetH(iR, iCA, iG, hCB.slice(1), 1.09); tetH(iN, iCA, iD, [hKeep], 1.01);
+      } else {
+        var hs = hsOf(iR), hx = hs[0], ex = A.nrm(A.sub(Pp(hx), Pp(iR))); toC(hx, A.add(Pp(iR), A.mul(ex, 1.51)));
+        var v0 = A.sub(Pp(iCA), Pp(iR)), vv = A.nrm(A.sub(v0, A.mul(ex, A.dot(v0, ex)))), ww = A.cross(ex, vv), org = Pp(hx);
+        var q2 = function (x, y) { return A.add(A.add(org, A.mul(ex, x)), A.mul(ww, y)); };
+        var s5 = a.ring === 'his' ? 1.37 : 1.39, R5 = s5 / (2 * Math.sin(36 * DG)), pv = [], ids = [hx];
+        for (var k = 0; k < 5; k++) { var ph = Math.PI + k * 72 * DG; pv.push([R5 + R5 * Math.cos(ph), R5 * Math.sin(ph)]); }
+        var C5 = [R5, 0], names = a.ring === 'his' ? ['N', 'C', 'N', 'C'] : ['C', 'N', 'C', 'C'];
+        for (k = 1; k < 5; k++) ids.push(addAt(names[k - 1], q2(pv[k][0], pv[k][1])));
+        var orders = a.ring === 'his' ? [1, 1, 2, 1, 2] : [2, 1, 1, 2, 1];
+        for (k = 0; k < 5; k++) bondAt(ids[k], ids[(k + 1) % 5], orders[k]);
+        var radH = function (idx, c2, len, el) { var pos = Pp(idx), cc = q2(c2[0], c2[1]), dd = A.nrm(A.sub(pos, cc)); return A.add(pos, A.mul(dd, len)); };
+        var hOn = function (idx, c2) { var len = at[idx].el === 'N' ? 1.01 : 1.08, h = addAt('H', radH(idx, c2, len)); bondAt(idx, h, 1); return h; };
+        if (a.ring === 'his') { // CG(0) ND1(1) CE1(2) NE2(3) CD2(4)
+          hOn(ids[1], C5); hOn(ids[2], C5); hOn(ids[4], C5);
+          preExtra.push({ n: ids[3], p: radH(ids[3], C5, 1.01), grp: 'R' });
+        } else { // CG(0) CD1(1) NE1(2) CE2(3) CD2(4) + benceno
+          hOn(ids[1], C5); hOn(ids[2], C5);
+          var mp = [(pv[3][0] + pv[4][0]) / 2, (pv[3][1] + pv[4][1]) / 2], od = [mp[0] - C5[0], mp[1] - C5[1]], ol = Math.hypot(od[0], od[1]), C6 = [mp[0] + od[0] / ol * s5 * 0.8660254, mp[1] + od[1] / ol * s5 * 0.8660254];
+          var a4 = Math.atan2(pv[4][1] - C6[1], pv[4][0] - C6[0]), a3 = Math.atan2(pv[3][1] - C6[1], pv[3][0] - C6[0]), dstep = 60 * DG, wr = function (x) { return Math.abs(Math.atan2(Math.sin(x), Math.cos(x))); };
+          if (wr(a4 + 5 * dstep - a3) > 0.01) dstep = -dstep;
+          var hex = [ids[4]]; for (k = 1; k <= 4; k++) hex.push(addAt('C', q2(C6[0] + s5 * Math.cos(a4 + k * dstep), C6[1] + s5 * Math.sin(a4 + k * dstep))));
+          hex.push(ids[3]);
+          var hord = [1, 2, 1, 2, 1, 2]; for (k = 0; k < 5; k++) bondAt(hex[k], hex[k + 1], hord[k]);
+          for (k = 1; k <= 4; k++) hOn(hex[k], C6);
+        }
+      }
+    }
     // tirosina: sustituye el H para del anillo por OH
     if (a.tyr) { var ring = []; var gb = at.map(function (_, i) { return i; }), Cs = gb.filter(function (i) { return at[i].el === 'C'; }); var best = -1, bd2 = -1; Cs.forEach(function (i) { var hN = nb[i].filter(function (j) { return at[j].el === 'H'; }); if (hN.length === 1 && nb[i].length === 3) { var d = Math.hypot(at[i].p[0] - at[iR].p[0], at[i].p[1] - at[iR].p[1], at[i].p[2] - at[iR].p[2]); if (d > bd2) { bd2 = d; best = i; } } });
       var h = nb[best].filter(function (j) { return at[j].el === 'H'; })[0], dir = A.nrm(A.sub(at[h].p, at[best].p)), pO = A.add(at[best].p, A.mul(dir, 1.36)); at[h].el = 'O'; at[h].p = pO; at[h].tag = 'r'; var perp = A.nrm(A.cross(dir, [0, 0, 1])); if (Math.abs(A.dot(perp, perp)) < 0.1) perp = [1, 0, 0]; var pH = A.add(pO, A.add(A.mul(dir, 0.35), A.mul(perp, 0.89))); at.push({ el: 'H', p: pH, tag: 'r' }); bd.push([at.length - 1, h, 1]); nb[h].push(at.length - 1); nb.push([h]); }
     // centrar
     var c = [0, 0, 0]; at.forEach(function (x) { c = A.add(c, x.p); }); c = A.mul(c, 1 / at.length); at.forEach(function (x) { x.p = A.sub(x.p, c); });
     // grupos: carboxilo, cadena lateral
-    var side = {}; if (iR !== undefined) { var q = [iR]; side[iR] = 1; while (q.length) { var u = q.shift(); nb[u].forEach(function (v) { if (v !== iCA && !side[v]) { side[v] = 1; q.push(v); } }); } }
+    var side = {}; if (iR !== undefined) { var q = [iR]; side[iR] = 1; while (q.length) { var u = q.shift(); nb[u].forEach(function (v) { if (v !== iCA && v !== iN && !side[v]) { side[v] = 1; q.push(v); } }); } }
     var carb = {}; carb[iC] = 1; nb[iC].forEach(function (j) { if (j !== iCA) { carb[j] = 1; nb[j].forEach(function (k) { if (at[k].el === 'H') carb[k] = 1; }); } });
     var amino = {}; amino[iN] = 1; nb[iN].forEach(function (j) { if (at[j].el === 'H') amino[j] = 1; });
     // H de aminos: extra H (NH3+) en N alfa y en N de Lys
     var extra = []; function extraH(iNn, grp) { var sum = [0, 0, 0]; nb[iNn].forEach(function (j) { sum = A.add(sum, A.nrm(A.sub(at[j].p, at[iNn].p))); }); var dir = A.nrm(A.mul(sum, -1)); extra.push({ n: iNn, p: A.add(at[iNn].p, A.mul(dir, 1.01)), grp: grp }); }
-    extraH(iN, 'amino'); if (a.k === 'Lys') { var kN = at.map(function (_, i) { return i; }).filter(function (i) { return at[i].el === 'N' && at[i].tag === 'r'; })[0]; extraH(kN, 'R'); }
+    extraH(iN, 'amino'); preExtra.forEach(function (e) { extra.push(e); }); if (a.k === 'Lys') { var kN = at.map(function (_, i) { return i; }).filter(function (i) { return at[i].el === 'N' && at[i].tag === 'r'; })[0]; extraH(kN, 'R'); }
     extra.forEach(function (e) { at.push({ el: 'H', p: e.p, tag: e.grp === 'amino' ? 'n' : 'r' }); bd.push([at.length - 1, e.n, 1]); e.i = at.length - 1; });
     var m = mkMol(ctx, at, bd); m.iN = iN; m.iCA = iCA; m.iC = iC; m.iR = iR; m.side = side; m.carb = carb; m.amino = amino; m.extra = extra; m.nb = nb; m.at = at; cache[a.k] = m; return m;
   }
@@ -319,7 +366,7 @@ if (typeof module !== 'undefined') module.exports = AAM;
     var gr = groups(a), st = {}; gr.forEach(function (g) { st[g.id] = fp(g, pH) > 0.5; });
     m.at.forEach(function (x, i) { var v = true; if (x.el === 'H') { if (x.tag === 'h') v = st.cooh; else if (x.tag === 'r' && a.R && a.R.t === 'acid' && !(a.k === 'Tyr' && false)) v = st.R; } m.am[i].visible = v; });
     // H extra de amino/Lys: visibles si protonados; H de amino neutro (2): siempre visibles salvo
-    m.extra.forEach(function (e) { m.am[e.i].visible = e.grp === 'amino' ? st.amino : (a.k === 'Lys' ? st.R : true); });
+    m.extra.forEach(function (e) { m.am[e.i].visible = e.grp === 'amino' ? st.amino : (a.k === 'Lys' || a.k === 'His' ? st.R : true); });
     refreshBonds(m);
     var colr = CLS[a.cls][1];
     m.halo.forEach(function (h, i) { var on = false, c = 0xffffff; if (hl === 'all' || hl === 'amino') { if (m.amino[i] || (m.at[i].tag === 'n')) { on = hl !== 'all' || true; c = 0x4c6ef5; } } if (hl === 'all' || hl === 'carb') { if (m.carb[i] || m.at[i].tag === 'h') { on = true; c = 0xfa5252; } } if (hl === 'all' || hl === 'R') { if (m.side[i]) { on = true; c = colr; } } if (i === m.iCA && (hl === 'all' || hl === 'ca')) { on = true; c = 0xced4da; } h.visible = on && m.am[i].visible && hl !== 'none'; if (h.visible) { h.material.color.setHex(c); var base = (ctx.EL[m.at[i].el] || [0, 1])[1] * 0.42; h.scale.setScalar(base * 1.5 * (1 + 0.06 * Math.sin(G.now * 5))); } });
