@@ -5,8 +5,8 @@
   <meta name="description" content="Interactive 3D simulator of nucleophilic substitution and elimination mechanisms: geometries, electron-pushing arrows, orbitals, energy profiles and a mechanism predictor.">
   <meta name="color-scheme" content="dark light">
   <link rel="stylesheet" href="style.css">
-<link rel="alternate" hreflang="es" href="index.html"><script defer src="../../kit/langswitch.js?v=20261018a"></script>
-</head>
+<script defer="" src="../../kit/langswitch.en.js?v=20261018a"></script>
+<link rel="alternate" hreflang="es" href="index.html"></head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -95,7 +95,7 @@
         <button role="tab" class="ptab" data-tab="pre" aria-selected="false">Which one predominates?</button>
       </div>
 
-      <div class="panel-body">
+      <div class="panel-body" tabindex="0">
         <!-- ===== Mecanismo ===== -->
         <div class="tabpane is-on" id="tab-mec" role="tabpanel">
           <div class="card phase-card">
@@ -142,9 +142,9 @@
           </div>
           <div class="card">
             <div class="card-kicker">Quick comparison</div>
-            <div class="table-wrap">
+            <div class="table-wrap" tabindex="0">
               <table class="cmp">
-                <thead><tr><th></th><th>SN2</th><th>SN1</th><th>E2</th><th>E1</th></tr></thead>
+                <thead><tr><th><span class="sr-only">Property</span></th><th>SN2</th><th>SN1</th><th>E2</th><th>E1</th></tr></thead>
                 <tbody>
                   <tr><th>Steps</th><td>1</td><td>2 (+ deprot.)</td><td>1</td><td>2</td></tr>
                   <tr><th>Rate</th><td>k[RX][Nu]</td><td>k[RX]</td><td>k[RX][B]</td><td>k[RX]</td></tr>

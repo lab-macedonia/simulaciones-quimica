@@ -14,7 +14,8 @@
     a.title = a.getAttribute('aria-label');
     var s = a.style;
     s.cssText = 'position:fixed;top:8px;right:8px;z-index:60;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font:600 13px/1 system-ui,sans-serif;letter-spacing:.04em;text-decoration:none;color:#fff;background:#1f6f6f;border:2px solid #fff;border-radius:22px;padding:0 12px;box-shadow:0 1px 6px rgba(0,0,0,.4)';
-    document.body.appendChild(a);
+    var nav = document.createElement('nav'); nav.setAttribute('aria-label', en ? 'Idioma' : 'Language');
+    nav.appendChild(a); document.body.appendChild(nav);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
 })();

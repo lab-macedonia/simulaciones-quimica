@@ -93,7 +93,7 @@ sub, sup { line-height: 0; }
   border-color: color-mix(in srgb, var(--mc) 70%, transparent);
   box-shadow: 0 0 22px color-mix(in srgb, var(--mc) 28%, transparent);
 }
-.mode-tab[aria-selected="true"] b { color: var(--mc); }
+.mode-tab[aria-selected="true"] b { color: color-mix(in srgb, var(--mc) 35%, var(--ink)); }
 .mode-tab:focus-visible, .icon-btn:focus-visible, .btn:focus-visible, .chip-btn:focus-visible, .play-btn:focus-visible,
 .ptab:focus-visible, .seg button:focus-visible, .step:focus-visible, .opt:focus-visible, .layer:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 2px;
@@ -369,7 +369,7 @@ kbd { font-family: inherit; font-size: 0.78rem; padding: 1px 6px; border-radius:
 /* ---------- Extensiones del kit ---------- */
 .brand-mark { background: linear-gradient(135deg, var(--k-a), var(--k-b) 55%, var(--k-c)); }
 .hud-eq[hidden], .hud-legend[hidden] { display: none; }
-.hud-eq .eq-chip { background: var(--eqc, var(--accent)); }
+.hud-eq .eq-chip { background: color-mix(in srgb, var(--eqc, var(--accent)) 82%, #fff); color: #0a0e18; }
 .fld { display: grid; gap: 6px; margin-bottom: 12px; }
 .fld > .lbl { font-size: 0.8rem; font-weight: 650; }
 .kv { display: flex; justify-content: space-between; gap: 8px; font-size: 0.86rem; padding: 4px 0; border-bottom: 1px dashed var(--line); }

@@ -97,7 +97,7 @@
         <button role="tab" class="ptab" data-tab="pre" aria-selected="false">¿Cuál predomina?</button>
       </div>
 
-      <div class="panel-body">
+      <div class="panel-body" tabindex="0">
         <!-- ===== Mecanismo ===== -->
         <div class="tabpane is-on" id="tab-mec" role="tabpanel">
           <div class="card phase-card">
@@ -144,9 +144,9 @@
           </div>
           <div class="card">
             <div class="card-kicker">Comparación rápida</div>
-            <div class="table-wrap">
+            <div class="table-wrap" tabindex="0">
               <table class="cmp">
-                <thead><tr><th></th><th>SN2</th><th>SN1</th><th>E2</th><th>E1</th></tr></thead>
+                <thead><tr><th><span class="sr-only">Propiedad</span></th><th>SN2</th><th>SN1</th><th>E2</th><th>E1</th></tr></thead>
                 <tbody>
                   <tr><th>Pasos</th><td>1</td><td>2 (+ desprot.)</td><td>1</td><td>2</td></tr>
                   <tr><th>Velocidad</th><td>k[RX][Nu]</td><td>k[RX]</td><td>k[RX][B]</td><td>k[RX]</td></tr>

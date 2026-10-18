@@ -250,7 +250,7 @@
         };
       },
       table: function (head, rows, cls) {
-        return '<div class="table-wrap"><table class="' + (cls || 'cmp') + '">' + (head ? '<thead><tr>' + head.map(function (x) { return '<th>' + x + '</th>'; }).join('') + '</tr></thead>' : '') +
+        return '<div class="table-wrap" tabindex="0"><table class="' + (cls || 'cmp') + '">' + (head ? '<thead><tr>' + head.map(function (x) { return '<th>' + (x === '' ? '&mdash;' : x) + '</th>'; }).join('') + '</tr></thead>' : '') +
           '<tbody>' + rows.map(function (r) { return '<tr>' + r.map(function (x, i) { return i === 0 ? '<th>' + x + '</th>' : '<td>' + x + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
       },
       canvas: function (host, o) {

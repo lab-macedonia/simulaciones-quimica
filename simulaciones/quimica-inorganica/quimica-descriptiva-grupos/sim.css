@@ -9,6 +9,6 @@
 .calc-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
 .calc-table th, .calc-table td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .calc-table th { font-weight: 650; color: var(--muted); width: 38%; }
-.calc-step { margin: 10px 0 4px; font-weight: 700; font-size: 0.82rem; color: var(--accent); }
+.calc-step { margin: 10px 0 4px; font-weight: 700; font-size: 0.82rem; color: color-mix(in srgb, var(--accent) 70%, var(--ink)); }
 .calc-hi { color: #ff6b5e; font-weight: 700; }
 .calc-ok { color: var(--ok); font-weight: 700; }

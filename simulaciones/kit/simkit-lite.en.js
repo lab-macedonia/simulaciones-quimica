@@ -27,7 +27,7 @@
     if (document.getElementById('sk-lite-css')) return;
     var cur = document.currentScript || (function () { var s = document.querySelectorAll('script[src*="simkit-lite"]'); return s[s.length - 1]; })();
     if (cur && cur.src) {
-      var l = document.createElement('link'); l.id = 'sk-lite-css'; l.rel = 'stylesheet'; l.href = cur.src.replace(/simkit-lite\.js.*$/, 'simkit-lite.css'); document.head.appendChild(l);
+      var l = document.createElement('link'); l.id = 'sk-lite-css'; l.rel = 'stylesheet'; l.href = cur.src.replace(/simkit-lite(?:\.en)?\.js.*$/, 'simkit-lite.css'); document.head.appendChild(l);
     }
   }
   loadCss();
