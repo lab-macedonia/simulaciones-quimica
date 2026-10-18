@@ -165,7 +165,7 @@ All the simulations share an interface kit (`simulaciones/kit/`) that provides, 
 
 ## Automated checks
 
-`npm install && npm run check` verifies syntax, links, metadata and that every simulation has an English version and teacher guides; `npm run smoke` loads every page (ES and EN) in jsdom. Both run on GitHub Actions (`.github/workflows/check.yml`).
+`npm install && npm run check` verifies syntax, links, metadata and that every simulation has an English version and teacher guides; `npm run smoke` loads every page (ES and EN) in jsdom, with the hand-written simulations tested in real Chromium (Playwright). Both run on GitHub Actions (`.github/workflows/check.yml`).
 
 ## Running locally
 

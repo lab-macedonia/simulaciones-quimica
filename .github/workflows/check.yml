@@ -11,7 +11,9 @@ jobs:
         with: { node-version: 22 }
       - name: Comprobaciones estáticas (enlaces, sintaxis, ES/EN, guías)
         run: node tools/check.js
-      - name: Instalar jsdom
-        run: npm install --no-audit --no-fund
+      - name: Instalar dependencias (jsdom y Chromium)
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
       - name: Prueba de humo de todas las simulaciones (ES y EN)
         run: node tools/run-smoke.js

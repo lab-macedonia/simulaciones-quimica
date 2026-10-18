@@ -29,6 +29,13 @@ section>p{margin:0 0 14px;color:var(--muted)}
 .card p{margin:0 0 12px;color:var(--muted);font-size:.92rem;flex:1}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tags span{background:var(--chip);color:var(--accent);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:600}
+.sub{margin:22px 0 10px;font-size:1.02rem;color:var(--accent);font-weight:700}
+.finder{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0 0}
+.finder label{font-weight:600;font-size:.9rem}
+.finder input{flex:1 1 240px;max-width:420px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+.finder input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#qn{color:var(--muted);font-size:.86rem}
+[hidden]{display:none!important}
 footer{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:.86rem}
 footer a{color:var(--accent)}
 @media (prefers-reduced-motion:reduce){.card{transition:none}}
@@ -49,26 +56,19 @@ footer a{color:var(--accent)}
     <a href="#general">General chemistry</a>
     <a href="#inorganica">Inorganic chemistry</a>
     <a href="#biologia">Biology</a>
+    <a href="#laboratorio">Laboratory techniques</a>
     <a href="#fisica">Physics</a>
     <a href="guias/en/index.html">Teacher guides</a>
   </nav>
+  <div class="finder"><label for="q">Search simulations</label><input id="q" type="search" placeholder="E.g., titration, Grignard, PCR…" autocomplete="off"><span id="qn" role="status" aria-live="polite"></span></div>
 </header>
 
 <main>
 <section id="organica">
   <h2>Organic chemistry</h2>
-  <p>Reaction mechanisms and organic stereochemistry.</p>
+  <p>Structure, reaction mechanisms, compound families, synthesis and organic spectroscopy.</p>
+  <h3 class="sub">Structure and stereochemistry</h3>
   <div class="grid">
-    <a class="card" href="quimica-organica/mecanismos-sn-e/index.en.html">
-      <h3>SN1 · SN2 · E1 · E2 mechanisms</h3>
-      <p>3D geometries, electron-pushing arrows, orbitals, energy profiles and a mechanism predictor by substrate, nucleophile/base and solvent.</p>
-      <div class="tags"><span>3D</span><span>Mechanisms</span><span>Substitution and elimination</span></div>
-    </a>
-    <a class="card" href="quimica-organica/carbohidratos-fischer-haworth/index.en.html">
-      <h3>Carbohydrates: Fischer → Haworth → chair</h3>
-      <p>From the Fischer projection to the Haworth projection: pyranoses and furanoses of aldoses and ketoses, anomeric carbon (α/β), chair or envelope conformation and 1,3-diaxial repulsions, with a guided lesson and challenge.</p>
-      <div class="tags"><span>3D</span><span>Stereochemistry</span><span>Carbohydrates</span></div>
-    </a>
     <a class="card" href="quimica-organica/estereoquimica-rs/index.en.html">
       <h3>R/S stereochemistry (CIP) 3D</h3>
       <p>Cahn–Ingold–Prelog priorities, R/S assignment viewing from the side opposite the lowest-priority group, mirror-image enantiomers and a configuration challenge.</p>
@@ -79,10 +79,33 @@ footer a{color:var(--accent)}
       <p>Newman projections with torsional energy, anti/gauche/eclipsed conformations, cyclohexane chair with ring flip, A values and 1,3-diaxial repulsion.</p>
       <div class="tags"><span>3D</span><span>Newman</span><span>Cyclohexane</span></div>
     </a>
+    <a class="card" href="quimica-organica/carbohidratos-fischer-haworth/index.en.html">
+      <h3>Carbohydrates: Fischer → Haworth → chair</h3>
+      <p>From the Fischer projection to the Haworth projection: pyranoses and furanoses of aldoses and ketoses, anomeric carbon (α/β), chair or envelope conformation and 1,3-diaxial repulsions, with a guided lesson and challenge.</p>
+      <div class="tags"><span>3D</span><span>Stereochemistry</span><span>Carbohydrates</span></div>
+    </a>
     <a class="card" href="quimica-organica/grupos-funcionales/index.en.html">
       <h3>Functional groups 3D</h3>
       <p>Twenty molecules with fifteen highlighted functional groups, characteristic IR bands, nomenclature priority and an identification challenge.</p>
       <div class="tags"><span>3D</span><span>Functional groups</span><span>IR</span></div>
+    </a>
+    <a class="card" href="quimica-organica/nomenclatura-iupac/index.en.html">
+      <h3>IUPAC Organic Nomenclature</h3>
+      <p>3D simulator for learning and practicing IUPAC organic nomenclature: main chain, numbering and locants, substituents in alphabetical order and functional-group priority, with 3D molecules and a practice mode.</p>
+      <div class="tags"><span>3D</span><span>New</span></div>
+    </a>
+    <a class="card" href="quimica-organica/aromaticidad-huckel/index.en.html">
+      <h3>Aromaticity and Hückel's rule</h3>
+      <p>3D aromaticity simulator: Hückel's 4n + 2 rule, π molecular orbitals and the Frost circle, antiaromaticity, aromatic ions and heterocycles (pyrrole, pyridine, furan).</p>
+      <div class="tags"><span>3D</span><span>New</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Mechanisms and reactivity</h3>
+  <div class="grid">
+    <a class="card" href="quimica-organica/mecanismos-sn-e/index.en.html">
+      <h3>SN1 · SN2 · E1 · E2 mechanisms</h3>
+      <p>3D geometries, electron-pushing arrows, orbitals, energy profiles and a mechanism predictor by substrate, nucleophile/base and solvent.</p>
+      <div class="tags"><span>3D</span><span>Mechanisms</span><span>Substitution and elimination</span></div>
     </a>
     <a class="card" href="quimica-organica/adicion-electrofila-sear/index.en.html">
       <h3>Electrophilic addition and SEAr 3D</h3>
@@ -94,24 +117,19 @@ footer a{color:var(--accent)}
       <p>Aldehydes and ketones with different nucleophiles: Bürgi–Dunitz angle, tetrahedral intermediate, hemiacetal/acetal and nucleophilic acyl substitution.</p>
       <div class="tags"><span>3D</span><span>Carbonyl</span><span>Mechanisms</span></div>
     </a>
-    <a class="card" href="quimica-organica/espectroscopia/index.en.html">
-      <h3>IR and ¹H NMR spectroscopy 3D</h3>
-      <p>Animated bond vibrations and IR bands, chemical shift, integration and multiplicity (n+1 rule) with spectra assigned to atoms of the molecule.</p>
-      <div class="tags"><span>3D</span><span>IR</span><span>NMR</span></div>
-    </a>
     <a class="card" href="quimica-organica/acidez-pka/index.en.html">
       <h3>Organic Acidity and pKa</h3>
       <p>3D simulator of organic acidity: pKa, conjugate base stability, hybridization, electronegativity, resonance and inductive effect, with acid–base equilibrium and ionization as a function of pH.</p>
       <div class="tags"><span>3D</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-organica/alcoholes-eteres-aminas/index.en.html">
-      <h3>Alcohols, Ethers and Amines</h3>
-      <p>3D simulator of alcohols, ethers and amines: polarity, hydrogen bonds (dimers), boiling points, water solubility as a function of chain length, amine basicity (pKaH) and comparative reactivity.</p>
+    <a class="card" href="quimica-organica/radicales-halogenacion/index.en.html">
+      <h3>Radicals and chain halogenation</h3>
+      <p>3D simulator of radical halogenation of alkanes: radical stability, initiation, propagation and termination, chlorination versus bromination selectivity (Hammond postulate) and product distribution for propane.</p>
       <div class="tags"><span>3D</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-organica/aromaticidad-huckel/index.en.html">
-      <h3>Aromaticity and Hückel's rule</h3>
-      <p>3D aromaticity simulator: Hückel's 4n + 2 rule, π molecular orbitals and the Frost circle, antiaromaticity, aromatic ions and heterocycles (pyrrole, pyridine, furan).</p>
+    <a class="card" href="quimica-organica/enolatos-aldolica/index.en.html">
+      <h3>Enolates and Aldol Condensation</h3>
+      <p>3D simulator of enolates and the aldol reaction: α-hydrogen acidity, enolate resonance, aldol addition, E1cB dehydration and Claisen–Schmidt crossed condensation, with electron arrows.</p>
       <div class="tags"><span>3D</span><span>New</span></div>
     </a>
     <a class="card" href="quimica-organica/derivados-acido/index.en.html">
@@ -124,56 +142,52 @@ footer a{color:var(--accent)}
       <p>3D simulator of the Diels–Alder [4+2] reaction: s-cis conformation of the diene, concerted mechanism, frontier orbitals, substituent effect, endo rule and thermodynamics (ΔG versus T).</p>
       <div class="tags"><span>3D</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-organica/enolatos-aldolica/index.en.html">
-      <h3>Enolates and Aldol Condensation</h3>
-      <p>3D simulator of enolates and the aldol reaction: α-hydrogen acidity, enolate resonance, aldol addition, E1cB dehydration and Claisen–Schmidt crossed condensation, with electron arrows.</p>
-      <div class="tags"><span>3D</span><span>New</span></div>
-    </a>
-    <a class="card" href="quimica-organica/espectrometria-ms-rmn13c/index.en.html">
-      <h3>Mass spectrometry and ¹³C NMR</h3>
-      <p>3D simulator of mass spectrometry (molecular ion, Cl and Br isotope pattern, α-cleavage, McLafferty) and ¹³C NMR (non-equivalent carbons, chemical shift) to solve organic structures.</p>
-      <div class="tags"><span>3D</span><span>New</span></div>
-    </a>
-    <a class="card" href="quimica-organica/nomenclatura-iupac/index.en.html">
-      <h3>IUPAC Organic Nomenclature</h3>
-      <p>3D simulator for learning and practicing IUPAC organic nomenclature: main chain, numbering and locants, substituents in alphabetical order and functional-group priority, with 3D molecules and a practice mode.</p>
-      <div class="tags"><span>3D</span><span>New</span></div>
+    <a class="card" href="quimica-organica/pericliclicas/index.en.html">
+      <h3>Electrocyclic and Sigmatropic Reactions</h3>
+      <p>Pericyclic reactions beyond Diels–Alder: 4-, 6- and 8-electron electrocyclizations (conrotatory and disrotatory), frontier orbitals, thermal and photochemical control, [1,5] H shifts and the [3,3] Cope rearrangement with Woodward–Hoffmann rules.</p>
+      <div class="tags"><span>3D</span><span>Woodward–Hoffmann</span><span>Orbitals</span></div>
     </a>
     <a class="card" href="quimica-organica/oxidacion-reduccion/index.en.html">
       <h3>Oxidation and reduction in organic chemistry</h3>
       <p>3D simulator of organic oxidation and reduction: carbon oxidation states, oxidation of primary, secondary and tertiary alcohols with PCC and Jones, reduction of carbonyls with NaBH₄ and LiAlH₄, hydride mechanism and reagent selectivity.</p>
       <div class="tags"><span>3D</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-organica/radicales-halogenacion/index.en.html">
-      <h3>Radicals and chain halogenation</h3>
-      <p>3D simulator of radical halogenation of alkanes: radical stability, initiation, propagation and termination, chlorination versus bromination selectivity (Hammond postulate) and product distribution for propane.</p>
+  </div>
+  <h3 class="sub">Compound families</h3>
+  <div class="grid">
+    <a class="card" href="quimica-organica/alcoholes-eteres-aminas/index.en.html">
+      <h3>Alcohols, Ethers and Amines</h3>
+      <p>3D simulator of alcohols, ethers and amines: polarity, hydrogen bonds (dimers), boiling points, water solubility as a function of chain length, amine basicity (pKaH) and comparative reactivity.</p>
       <div class="tags"><span>3D</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-organica/destilacion/index.en.html">
-      <h3>Simple and Fractional Distillation</h3>
-      <p>3D setup for simple and fractional distillation of ideal binary mixtures (Raoult's law): temperature–composition diagram, theoretical plates, distillate composition and distillation curve.</p>
-      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    <a class="card" href="quimica-organica/alquinos/index.en.html">
+      <h3>Alkynes: structure and reactions</h3>
+      <p>Linear sp geometry, acidity of the terminal alkyne and acetylides, selective hydrogenation (Lindlar cis, Na/NH₃ trans, H₂/Pd alkane), hydration to ketones or aldehydes and HBr addition with regiochemistry, with substrate and product in 3D.</p>
+      <div class="tags"><span>3D</span><span>Alkynes</span><span>Reactions</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-organica/punto-fusion/index.en.html">
-      <h3>Melting Point and Purity</h3>
-      <p>Capillary and melting-point apparatus in 3D: melting range, depression by impurities (eutectic), heating rate and mixed melting point to identify compounds.</p>
-      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    <a class="card" href="quimica-organica/heterociclos/index.en.html">
+      <h3>Aromatic Heterocycles</h3>
+      <p>Pyrrole, furan, thiophene, pyridine, imidazole and pyrimidine in 3D: lone pair in the π system or in the plane, basicity (pKa of the conjugate acid), reactivity and regioselectivity toward electrophiles and presence in biomolecules.</p>
+      <div class="tags"><span>3D</span><span>Heterocycles</span><span>Aromaticity</span></div>
     </a>
-    <a class="card" href="quimica-organica/recristalizacion/index.en.html">
-      <h3>Recrystallization</h3>
-      <p>Purification of solids by recrystallization: solubility versus temperature curves, minimum volume of hot solvent, cooling rate, crystal formation and yield.</p>
-      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    <a class="card" href="quimica-organica/lipidos-jabon/index.en.html">
+      <h3>Lipids, saponification and soaps</h3>
+      <p>Triglycerides with saturated and unsaturated fatty acids (melting point), saponification with NaOH and calculation of the saponification value, micelles that emulsify grease and the effect of hard water on soap.</p>
+      <div class="tags"><span>3D</span><span>Lipids</span><span>Saponification</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-organica/extraccion-liquido-liquido/index.en.html">
-      <h3>Liquid–liquid extraction</h3>
-      <p>3D separatory funnel: partition coefficient, phases by density, multiple extractions with small portions and acid–base extraction according to pH and pKa.</p>
-      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    <a class="card" href="quimica-organica/polimeros/index.en.html">
+      <h3>Polymers: addition and condensation</h3>
+      <p>Chains of polyethylene, polypropylene, polystyrene, PVC, nylon 6,6 and PET in 3D: addition polymerization (initiation, propagation, termination) and condensation polymerization, degree of polymerization, Carothers equation, average molar mass and dispersity.</p>
+      <div class="tags"><span>3D</span><span>Polymers</span><span>Materials</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-organica/cromatografia/index.en.html">
-      <h3>Thin-layer and column chromatography</h3>
-      <p>TLC plate and silica column in 3D: polarity of compounds and eluent, retention factor Rf, resolution between spots and column elution chromatogram.</p>
-      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    <a class="card" href="quimica-organica/terpenos-esteroides/index.en.html">
+      <h3>Terpenes and Steroids</h3>
+      <p>The isoprene rule in 3D: linear monoterpenes, sesquiterpenes and diterpenes with their C₅ units, squalene cyclization and the steroid skeleton (rings A–D, numbering) with cholesterol, testosterone, estradiol and progesterone.</p>
+      <div class="tags"><span>3D</span><span>Biosynthesis</span><span>Steroids</span></div>
     </a>
+  </div>
+  <h3 class="sub">Synthesis</h3>
+  <div class="grid">
     <a class="card" href="quimica-organica/grignard-organometalicos/index.en.html">
       <h3>Grignard and organometallic reagents</h3>
       <p>3D simulator of Grignard reagents: RMgX formation, polarity inversion of carbon, addition to aldehydes, ketones, CO₂ and esters, incompatibility with acidic protons and comparison with organolithiums and cuprates.</p>
@@ -184,40 +198,18 @@ footer a{color:var(--accent)}
       <p>Retrosynthetic analysis in 3D: disconnection of C–C bonds, synthons and synthetic equivalents (Grignard), functional group interconversion and overall yield in linear and convergent syntheses.</p>
       <div class="tags"><span>3D</span><span>Synthesis</span><span>Retrosynthesis</span></div>
     </a>
-    <a class="card" href="quimica-organica/pericliclicas/index.en.html">
-      <h3>Electrocyclic and Sigmatropic Reactions</h3>
-      <p>Pericyclic reactions beyond Diels–Alder: 4-, 6- and 8-electron electrocyclizations (conrotatory and disrotatory), frontier orbitals, thermal and photochemical control, [1,5] H shifts and the [3,3] Cope rearrangement with Woodward–Hoffmann rules.</p>
-      <div class="tags"><span>3D</span><span>Woodward–Hoffmann</span><span>Orbitals</span></div>
+  </div>
+  <h3 class="sub">Spectroscopy</h3>
+  <div class="grid">
+    <a class="card" href="quimica-organica/espectroscopia/index.en.html">
+      <h3>IR and ¹H NMR spectroscopy 3D</h3>
+      <p>Animated bond vibrations and IR bands, chemical shift, integration and multiplicity (n+1 rule) with spectra assigned to atoms of the molecule.</p>
+      <div class="tags"><span>3D</span><span>IR</span><span>NMR</span></div>
     </a>
-    <a class="card" href="quimica-organica/heterociclos/index.en.html">
-      <h3>Aromatic Heterocycles</h3>
-      <p>Pyrrole, furan, thiophene, pyridine, imidazole and pyrimidine in 3D: lone pair in the π system or in the plane, basicity (pKa of the conjugate acid), reactivity and regioselectivity toward electrophiles and presence in biomolecules.</p>
-      <div class="tags"><span>3D</span><span>Heterocycles</span><span>Aromaticity</span></div>
-    </a>
-    <a class="card" href="quimica-organica/terpenos-esteroides/index.en.html">
-      <h3>Terpenes and Steroids</h3>
-      <p>The isoprene rule in 3D: linear monoterpenes, sesquiterpenes and diterpenes with their C₅ units, squalene cyclization and the steroid skeleton (rings A–D, numbering) with cholesterol, testosterone, estradiol and progesterone.</p>
-      <div class="tags"><span>3D</span><span>Biosynthesis</span><span>Steroids</span></div>
-    </a>
-    <a class="card" href="quimica-organica/polimeros/index.en.html">
-      <h3>Polymers: addition and condensation</h3>
-      <p>Chains of polyethylene, polypropylene, polystyrene, PVC, nylon 6,6 and PET in 3D: addition polymerization (initiation, propagation, termination) and condensation polymerization, degree of polymerization, Carothers equation, average molar mass and dispersity.</p>
-      <div class="tags"><span>3D</span><span>Polymers</span><span>Materials</span><span>New</span></div>
-    </a>
-    <a class="card" href="quimica-organica/alquinos/index.en.html">
-      <h3>Alkynes: structure and reactions</h3>
-      <p>Linear sp geometry, acidity of the terminal alkyne and acetylides, selective hydrogenation (Lindlar cis, Na/NH₃ trans, H₂/Pd alkane), hydration to ketones or aldehydes and HBr addition with regiochemistry, with substrate and product in 3D.</p>
-      <div class="tags"><span>3D</span><span>Alkynes</span><span>Reactions</span><span>New</span></div>
-    </a>
-    <a class="card" href="quimica-organica/lipidos-jabon/index.en.html">
-      <h3>Lipids, saponification and soaps</h3>
-      <p>Triglycerides with saturated and unsaturated fatty acids (melting point), saponification with NaOH and calculation of the saponification value, micelles that emulsify grease and the effect of hard water on soap.</p>
-      <div class="tags"><span>3D</span><span>Lipids</span><span>Saponification</span><span>New</span></div>
-    </a>
-    <a class="card" href="quimica-organica/sintesis-aspirina/index.en.html">
-      <h3>Synthesis of aspirin</h3>
-      <p>Acetylation of salicylic acid with acetic anhydride: step-by-step mechanism, limiting and excess reagent, theoretical and percent yield, effect of temperature, time and catalyst, and a purity test with FeCl₃.</p>
-      <div class="tags"><span>3D</span><span>Laboratory</span><span>Synthesis</span><span>New</span></div>
+    <a class="card" href="quimica-organica/espectrometria-ms-rmn13c/index.en.html">
+      <h3>Mass spectrometry and ¹³C NMR</h3>
+      <p>3D simulator of mass spectrometry (molecular ion, Cl and Br isotope pattern, α-cleavage, McLafferty) and ¹³C NMR (non-equivalent carbons, chemical shift) to solve organic structures.</p>
+      <div class="tags"><span>3D</span><span>New</span></div>
     </a>
     <a class="card" href="quimica-organica/uv-vis-conjugacion/index.en.html">
       <h3>UV-Vis spectroscopy and conjugation</h3>
@@ -229,7 +221,8 @@ footer a{color:var(--accent)}
 
 <section id="general">
   <h2>General chemistry</h2>
-  <p>Atomic structure, bonding, periodicity and electrochemistry. Each simulation is independent.</p>
+  <p>Atomic structure, bonding, states of matter, reactions, equilibrium, thermodynamics and electrochemistry. Each simulation is independent.</p>
+  <h3 class="sub">Atomic structure and bonding</h3>
   <div class="grid">
     <a class="card" href="quimica-general/atomlab/index.en.html">
       <h3>AtomLab: atomic models</h3>
@@ -261,70 +254,15 @@ footer a{color:var(--accent)}
       <p>Hybridization and single, double and triple bonds in 3D; benzene with delocalized π.</p>
       <div class="tags"><span>3D</span><span>Hybridization</span></div>
     </a>
-    <a class="card" href="quimica-general/ensayo-a-la-llama/index.en.html">
-      <h3>Flame test and quantum transitions</h3>
-      <p>Relates the flame color of each element to the electronic transitions between energy levels.</p>
-      <div class="tags"><span>3D</span><span>Spectra</span><span>Atomic structure</span></div>
-    </a>
-    <a class="card" href="quimica-general/electrolisis-agua/index.en.html">
-      <h3>Water electrolysis 3D</h3>
-      <p>Electrolytic cell with voltage and electrolyte control, half-reactions at cathode and anode, and a molecular view of the process.</p>
-      <div class="tags"><span>3D</span><span>Electrochemistry</span><span>Redox</span></div>
-    </a>
     <a class="card" href="quimica-general/enlace-quimico/index.en.html">
       <h3>Chemical bonding 3D</h3>
       <p>Ionic (NaCl, LiF, KBr, MgO), covalent (nonpolar and polar) and metallic (electron sea) bonding: transfer, overlap, crystal lattice, energy curves and a ΔEN predictor.</p>
       <div class="tags"><span>3D</span><span>Bond</span><span>Electronegativity</span></div>
     </a>
-    <a class="card" href="quimica-general/colisiones-estado-transicion/index.en.html">
-      <h3>Collisions and transition state 3D</h3>
-      <p>Collision theory (energy, orientation, temperature, catalyst) and transition state with reaction coordinate diagram, Hammond postulate and Arrhenius plot.</p>
-      <div class="tags"><span>3D</span><span>Kinetics</span><span>Arrhenius</span></div>
-    </a>
-    <a class="card" href="quimica-general/estequiometria/index.en.html">
-      <h3>Stoichiometry and limiting reactant 3D</h3>
-      <p>Balanced reactions in batches of molecules: limiting and excess reactant, theoretical product, leftover, conservation of mass, a gram calculator with % yield and a challenge.</p>
-      <div class="tags"><span>3D</span><span>Stoichiometry</span><span>Yield</span></div>
-    </a>
-    <a class="card" href="quimica-general/acido-base-titulacion/index.en.html">
-      <h3>Acid–base, pH and titration 3D</h3>
-      <p>Burette and beaker with indicator: strong, weak and polyprotic (H₃PO₄) acids and bases, titration curve, buffer region (Henderson–Hasselbalch), species distribution, equivalence point and indicator choice.</p>
-      <div class="tags"><span>3D</span><span>pH</span><span>Titration</span><span>Buffers</span></div>
-    </a>
-    <a class="card" href="quimica-general/equilibrio-quimico/index.en.html">
-      <h3>Chemical equilibrium and Le Châtelier 3D</h3>
-      <p>Container with piston and molecules: quotient Q versus K, disturbances by concentration, volume, temperature (van 't Hoff), catalyst and inert gas, with ICE table, graphs and a challenge.</p>
-      <div class="tags"><span>3D</span><span>Equilibrium</span><span>Le Châtelier</span></div>
-    </a>
-    <a class="card" href="quimica-general/gases/index.en.html">
-      <h3>Ideal and real gases 3D</h3>
-      <p>Container with particles: laws of Boyle, Charles, Gay-Lussac and Avogadro, gas mixtures (Dalton), Maxwell–Boltzmann distribution and van der Waals deviations.</p>
-      <div class="tags"><span>3D</span><span>Gases</span><span>Maxwell–Boltzmann</span></div>
-    </a>
-    <a class="card" href="quimica-general/coligativas/index.en.html">
-      <h3>Solutions and colligative properties 3D</h3>
-      <p>Raoult's law, vapor-pressure lowering, boiling-point elevation, freezing-point depression and osmotic pressure with van 't Hoff factor, in beakers and a semipermeable membrane.</p>
-      <div class="tags"><span>3D</span><span>Solutions</span><span>Colligative</span></div>
-    </a>
-    <a class="card" href="quimica-general/termoquimica/index.en.html">
-      <h3>Thermochemistry and calorimetry 3D</h3>
-      <p>Calorimeter, specific heat, enthalpy of reaction, Hess's law and enthalpies of formation with energy-level diagrams.</p>
-      <div class="tags"><span>3D</span><span>Thermochemistry</span><span>Hess</span></div>
-    </a>
-    <a class="card" href="quimica-general/cinetica-ordenes/index.en.html">
-      <h3>Kinetics: reaction orders 3D</h3>
-      <p>Integrated rate laws of order 0, 1 and 2, half-life, linearization ([A], ln[A], 1/[A]) and a mystery experiment to determine the order from initial rates.</p>
-      <div class="tags"><span>3D</span><span>Kinetics</span><span>Orders</span></div>
-    </a>
-    <a class="card" href="quimica-general/pilas-galvanicas/index.en.html">
-      <h3>Galvanic cells and the Nernst equation 3D</h3>
-      <p>Cells with salt bridge and voltmeter: standard potentials, E°cell, Nernst equation, Q versus K, ΔG° = −nFE° and mass transferred as the cell discharges.</p>
-      <div class="tags"><span>3D</span><span>Electrochemistry</span><span>Nernst</span></div>
-    </a>
-    <a class="card" href="quimica-general/diagramas-de-fase/index.en.html">
-      <h3>Phase diagrams 3D</h3>
-      <p>P–T diagrams of water and CO₂: phases, equilibrium curves, triple and critical points, supercritical fluid, heating curve and Clausius–Clapeyron.</p>
-      <div class="tags"><span>3D</span><span>Phases</span><span>Triple</span><span>Critical</span></div>
+    <a class="card" href="quimica-general/orbitales-moleculares/index.en.html">
+      <h3>Molecular Orbitals in Diatomics</h3>
+      <p>3D simulator of molecular orbital theory (LCAO) in homonuclear diatomic molecules of period 1 and 2: energy diagrams, bond order, paramagnetism and shape of the σ, σ*, π and π* orbitals.</p>
+      <div class="tags"><span>3D</span><span>New</span></div>
     </a>
     <a class="card" href="quimica-general/radiacion-em/index.en.html">
       <h3>Electromagnetic radiation 3D</h3>
@@ -336,50 +274,56 @@ footer a{color:var(--accent)}
       <p>Levels of H, He⁺ and Li²⁺, photon absorption and emission, Lyman, Balmer and Paschen series, de Broglie waves, ionization and line spectrum.</p>
       <div class="tags"><span>3D</span><span>Bohr</span><span>Spectra</span></div>
     </a>
-    <a class="card" href="quimica-general/interacciones-intermoleculares/index.en.html">
-      <h3>Intermolecular interactions 3D</h3>
-      <p>38 pairs of species: London, ion–ion, ion–dipole, dipole–dipole, quadrupole, H bond and halogen bond, with U(r) curve, thermal average and energy comparator.</p>
-      <div class="tags"><span>3D</span><span>Forces</span><span>Energy</span></div>
-    </a>
-    <a class="card" href="quimica-general/entropia-gibbs/index.en.html">
-      <h3>Entropy and Gibbs Free Energy</h3>
-      <p>3D simulator of entropy and Gibbs free energy: microstates and S = k·ln W, spontaneous expansion, entropy of the states of matter, ΔG = ΔH − TΔS, equilibrium temperature and relation to K.</p>
-      <div class="tags"><span>3D</span><span>New</span></div>
-    </a>
-    <a class="card" href="quimica-general/orbitales-moleculares/index.en.html">
-      <h3>Molecular Orbitals in Diatomics</h3>
-      <p>3D simulator of molecular orbital theory (LCAO) in homonuclear diatomic molecules of period 1 and 2: energy diagrams, bond order, paramagnetism and shape of the σ, σ*, π and π* orbitals.</p>
-      <div class="tags"><span>3D</span><span>New</span></div>
-    </a>
     <a class="card" href="quimica-general/radiactividad/index.en.html">
       <h3>Radioactivity and Nuclear Chemistry</h3>
       <p>3D simulator of radioactivity: nucleus and notation, N/Z stability band, alpha, beta and electron-capture decay, half-life, activity and carbon-14 dating.</p>
       <div class="tags"><span>3D</span><span>New</span></div>
+    </a>
+  </div>
+  <h3 class="sub">States of matter and forces</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/gases/index.en.html">
+      <h3>Ideal and real gases 3D</h3>
+      <p>Container with particles: laws of Boyle, Charles, Gay-Lussac and Avogadro, gas mixtures (Dalton), Maxwell–Boltzmann distribution and van der Waals deviations.</p>
+      <div class="tags"><span>3D</span><span>Gases</span><span>Maxwell–Boltzmann</span></div>
+    </a>
+    <a class="card" href="quimica-general/diagramas-de-fase/index.en.html">
+      <h3>Phase diagrams 3D</h3>
+      <p>P–T diagrams of water and CO₂: phases, equilibrium curves, triple and critical points, supercritical fluid, heating curve and Clausius–Clapeyron.</p>
+      <div class="tags"><span>3D</span><span>Phases</span><span>Triple</span><span>Critical</span></div>
+    </a>
+    <a class="card" href="quimica-general/interacciones-intermoleculares/index.en.html">
+      <h3>Intermolecular interactions 3D</h3>
+      <p>38 pairs of species: London, ion–ion, ion–dipole, dipole–dipole, quadrupole, H bond and halogen bond, with U(r) curve, thermal average and energy comparator.</p>
+      <div class="tags"><span>3D</span><span>Forces</span><span>Energy</span></div>
     </a>
     <a class="card" href="quimica-general/solidos-cristalinos/index.en.html">
       <h3>Crystalline solids and unit cells</h3>
       <p>3D simulator of crystalline solids: simple, body-centered and face-centered cubic cells, close packing hcp and ccp, ionic structures (NaCl, CsCl, ZnS, CaF₂), atoms per cell, coordination number, packing fraction and density.</p>
       <div class="tags"><span>3D</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-general/solubilidad-kps/index.en.html">
-      <h3>Solubility and solubility product (Ksp)</h3>
-      <p>3D simulator of the solubility of sparingly soluble salts: Ksp, molar solubility, common-ion effect, pH effect, quotient Q versus Ksp and selective precipitation (AgI/AgCl).</p>
-      <div class="tags"><span>3D</span><span>New</span></div>
-    </a>
-    <a class="card" href="quimica-general/cifras-incertidumbre/index.en.html">
-      <h3>Significant Figures and Uncertainty</h3>
-      <p>Precision versus accuracy with a 3D target, random and systematic error, laboratory instruments with their uncertainty, significant figures in sums and products and propagation of uncertainties.</p>
-      <div class="tags"><span>3D</span><span>Laboratory</span></div>
-    </a>
-    <a class="card" href="quimica-general/espectrofotometria/index.en.html">
-      <h3>Spectrophotometry and the Beer–Lambert law</h3>
-      <p>3D UV-Vis spectrophotometer: transmittance and absorbance, Beer–Lambert law, spectrum and λmax, calibration curve with linear regression and determination of an unknown sample.</p>
-      <div class="tags"><span>3D</span><span>Laboratory</span></div>
-    </a>
     <a class="card" href="quimica-general/semiconductores-bandas/index.en.html">
       <h3>Semiconductors and Band Theory</h3>
       <p>Band theory in 3D: metals, insulators and semiconductors according to the width of the band gap, thermal population of electrons, n- and p-type doping, p–n junction and LED color from the gap energy.</p>
       <div class="tags"><span>3D</span><span>Bands</span><span>Semiconductors</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Reactions and stoichiometry</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/mol-masa-molar/index.en.html">
+      <h3>The mole and molar mass</h3>
+      <p>Molar mass from the periodic table, Avogadro's number, conversions among grams, moles and particles, molar volume of gases at STP and percent composition, with molecules and piles of particles in 3D.</p>
+      <div class="tags"><span>3D</span><span>Mole</span><span>Stoichiometry</span><span>New</span></div>
+    </a>
+    <a class="card" href="quimica-general/estequiometria/index.en.html">
+      <h3>Stoichiometry and limiting reactant 3D</h3>
+      <p>Balanced reactions in batches of molecules: limiting and excess reactant, theoretical product, leftover, conservation of mass, a gram calculator with % yield and a challenge.</p>
+      <div class="tags"><span>3D</span><span>Stoichiometry</span><span>Yield</span></div>
+    </a>
+    <a class="card" href="quimica-general/balanceo-redox/index.en.html">
+      <h3>Redox balancing: the ion-electron method</h3>
+      <p>Balance redox reactions in acidic and basic media step by step: oxidation numbers, half-reactions, balancing of O, H and charge with electrons, and the final sum, with the electron flow in 3D.</p>
+      <div class="tags"><span>3D</span><span>Redox</span><span>Electrochemistry</span><span>New</span></div>
     </a>
     <a class="card" href="quimica-general/nomenclatura-inorganica/index.en.html">
       <h3>Inorganic Nomenclature</h3>
@@ -391,37 +335,95 @@ footer a{color:var(--accent)}
       <p>Ozone layer and CFCs, greenhouse effect (radiative forcing of CO₂), acid rain and green chemistry in 3D: atom economy, E-factor and twelve principles with comparison of synthetic routes.</p>
       <div class="tags"><span>3D</span><span>Environment</span><span>Green chemistry</span></div>
     </a>
-    <a class="card" href="quimica-general/balanceo-redox/index.en.html">
-      <h3>Redox balancing: the ion-electron method</h3>
-      <p>Balance redox reactions in acidic and basic media step by step: oxidation numbers, half-reactions, balancing of O, H and charge with electrons, and the final sum, with the electron flow in 3D.</p>
-      <div class="tags"><span>3D</span><span>Redox</span><span>Electrochemistry</span><span>New</span></div>
+  </div>
+  <h3 class="sub">Solutions and equilibrium</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/coligativas/index.en.html">
+      <h3>Solutions and colligative properties 3D</h3>
+      <p>Raoult's law, vapor-pressure lowering, boiling-point elevation, freezing-point depression and osmotic pressure with van 't Hoff factor, in beakers and a semipermeable membrane.</p>
+      <div class="tags"><span>3D</span><span>Solutions</span><span>Colligative</span></div>
     </a>
-    <a class="card" href="quimica-general/disoluciones-diluciones/index.en.html">
-      <h3>Solutions and dilutions</h3>
-      <p>Molar, percent and molal concentration with a 3D volumetric flask, preparing solutions from a solid, dilution with C₁V₁ = C₂V₂ and mixing of solutions, with visible solute particles.</p>
-      <div class="tags"><span>3D</span><span>Solutions</span><span>Laboratory</span><span>New</span></div>
+    <a class="card" href="quimica-general/equilibrio-quimico/index.en.html">
+      <h3>Chemical equilibrium and Le Châtelier 3D</h3>
+      <p>Container with piston and molecules: quotient Q versus K, disturbances by concentration, volume, temperature (van 't Hoff), catalyst and inert gas, with ICE table, graphs and a challenge.</p>
+      <div class="tags"><span>3D</span><span>Equilibrium</span><span>Le Châtelier</span></div>
     </a>
-    <a class="card" href="quimica-general/mol-masa-molar/index.en.html">
-      <h3>The mole and molar mass</h3>
-      <p>Molar mass from the periodic table, Avogadro's number, conversions among grams, moles and particles, molar volume of gases at STP and percent composition, with molecules and piles of particles in 3D.</p>
-      <div class="tags"><span>3D</span><span>Mole</span><span>Stoichiometry</span><span>New</span></div>
+    <a class="card" href="quimica-general/acido-base-titulacion/index.en.html">
+      <h3>Acid–base, pH and titration 3D</h3>
+      <p>Burette and beaker with indicator: strong, weak and polyprotic (H₃PO₄) acids and bases, titration curve, buffer region (Henderson–Hasselbalch), species distribution, equivalence point and indicator choice.</p>
+      <div class="tags"><span>3D</span><span>pH</span><span>Titration</span><span>Buffers</span></div>
+    </a>
+    <a class="card" href="quimica-general/solubilidad-kps/index.en.html">
+      <h3>Solubility and solubility product (Ksp)</h3>
+      <p>3D simulator of the solubility of sparingly soluble salts: Ksp, molar solubility, common-ion effect, pH effect, quotient Q versus Ksp and selective precipitation (AgI/AgCl).</p>
+      <div class="tags"><span>3D</span><span>New</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Thermodynamics and kinetics</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/termoquimica/index.en.html">
+      <h3>Thermochemistry and calorimetry 3D</h3>
+      <p>Calorimeter, specific heat, enthalpy of reaction, Hess's law and enthalpies of formation with energy-level diagrams.</p>
+      <div class="tags"><span>3D</span><span>Thermochemistry</span><span>Hess</span></div>
+    </a>
+    <a class="card" href="quimica-general/entropia-gibbs/index.en.html">
+      <h3>Entropy and Gibbs Free Energy</h3>
+      <p>3D simulator of entropy and Gibbs free energy: microstates and S = k·ln W, spontaneous expansion, entropy of the states of matter, ΔG = ΔH − TΔS, equilibrium temperature and relation to K.</p>
+      <div class="tags"><span>3D</span><span>New</span></div>
+    </a>
+    <a class="card" href="quimica-general/colisiones-estado-transicion/index.en.html">
+      <h3>Collisions and transition state 3D</h3>
+      <p>Collision theory (energy, orientation, temperature, catalyst) and transition state with reaction coordinate diagram, Hammond postulate and Arrhenius plot.</p>
+      <div class="tags"><span>3D</span><span>Kinetics</span><span>Arrhenius</span></div>
+    </a>
+    <a class="card" href="quimica-general/cinetica-ordenes/index.en.html">
+      <h3>Kinetics: reaction orders 3D</h3>
+      <p>Integrated rate laws of order 0, 1 and 2, half-life, linearization ([A], ln[A], 1/[A]) and a mystery experiment to determine the order from initial rates.</p>
+      <div class="tags"><span>3D</span><span>Kinetics</span><span>Orders</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Electrochemistry</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/electrolisis-agua/index.en.html">
+      <h3>Water electrolysis 3D</h3>
+      <p>Electrolytic cell with voltage and electrolyte control, half-reactions at cathode and anode, and a molecular view of the process.</p>
+      <div class="tags"><span>3D</span><span>Electrochemistry</span><span>Redox</span></div>
+    </a>
+    <a class="card" href="quimica-general/pilas-galvanicas/index.en.html">
+      <h3>Galvanic cells and the Nernst equation 3D</h3>
+      <p>Cells with salt bridge and voltmeter: standard potentials, E°cell, Nernst equation, Q versus K, ΔG° = −nFE° and mass transferred as the cell discharges.</p>
+      <div class="tags"><span>3D</span><span>Electrochemistry</span><span>Nernst</span></div>
     </a>
     <a class="card" href="quimica-general/corrosion-pilas/index.en.html">
       <h3>Corrosion and protection of iron</h3>
       <p>Corrosion of iron as a galvanic cell in a water drop: anodic and cathodic zones, effect of salt, oxygen and pH, Zn, Sn and Cu coatings, Mg sacrificial anode and a comparison of commercial cells.</p>
       <div class="tags"><span>3D</span><span>Electrochemistry</span><span>Corrosion</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-general/gravimetria/index.en.html">
-      <h3>Gravimetric analysis</h3>
-      <p>Gravimetric determination of chloride, sulfate, iron and nickel: precipitation with excess reagent, digestion, filtration and ignition to constant mass, gravimetric factor and the effect of coprecipitation and residual moisture.</p>
-      <div class="tags"><span>3D</span><span>Analysis</span><span>Laboratory</span><span>New</span></div>
-    </a>
   </div>
 </section>
 
 <section id="inorganica">
   <h2>Inorganic chemistry</h2>
-  <p>Coordination chemistry: isomerism and chirality in complexes.</p>
+  <p>Coordination compounds, organometallic and bioinorganic chemistry, symmetry and reactivity.</p>
+  <h3 class="sub">Fundamentals</h3>
+  <div class="grid">
+    <a class="card" href="quimica-inorganica/quimica-descriptiva-grupos/index.en.html">
+      <h3>Descriptive Chemistry of the Groups</h3>
+      <p>Trends and reactivity of alkali metals, alkaline earth metals, halogens and noble gases, and the acid–base character of period 3 oxides in 3D: radius, ionization energy, reaction with water and states of matter.</p>
+      <div class="tags"><span>3D</span><span>Groups</span><span>Trends</span></div>
+    </a>
+    <a class="card" href="quimica-inorganica/hsab-acidos-bases-duros-blandos/index.en.html">
+      <h3>Hard and soft acids and bases (HSAB)</h3>
+      <p>Classification of cations and bases as hard, borderline or soft according to charge, radius and polarizability; qualitative pair-stability score, prediction of the direction of exchange reactions and mineral examples (Al₂O₃, HgS, Cu₂S).</p>
+      <div class="tags"><span>3D</span><span>HSAB</span><span>Bond</span><span>New</span></div>
+    </a>
+    <a class="card" href="quimica-inorganica/simetria-grupos-puntuales/index.en.html">
+      <h3>Molecular symmetry and point groups</h3>
+      <p>Symmetry elements and operations (E, Cn, σ, i, Sn) applied in 3D to H₂O, NH₃, CH₄, BF₃, SF₆, CO₂, HCl, trans-dichloroethene, benzene and a chiral molecule; point-group assignment with a decision diagram and relation to polarity and chirality.</p>
+      <div class="tags"><span>3D</span><span>Symmetry</span><span>Point groups</span><span>New</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Coordination compounds</h3>
   <div class="grid">
     <a class="card" href="quimica-inorganica/isomeria-complejos/index.en.html">
       <h3>Isomerism · 3D Lab</h3>
@@ -448,47 +450,27 @@ footer a{color:var(--accent)}
       <p>3D simulator of molecular orbital theory in octahedral ML6 complexes: σ bonding, a1g, t1u, eg and t2g orbitals, Δo splitting, π effect (donor and acceptor), spectrochemical series, high and low spin, magnetism and color.</p>
       <div class="tags"><span>3D</span><span>New</span></div>
     </a>
+  </div>
+  <h3 class="sub">Organometallic and bioinorganic chemistry</h3>
+  <div class="grid">
     <a class="card" href="quimica-inorganica/organometalica-18e/index.en.html">
       <h3>Organometallics: the 18-electron rule</h3>
       <p>3D simulator of organometallic chemistry: the 18-electron rule, electron counting by the neutral method, metal carbonyls, ferrocene, 16-electron square planar complexes and the Wilkinson catalytic cycle (oxidative addition, coordination, migratory insertion and reductive elimination).</p>
       <div class="tags"><span>3D</span><span>New</span></div>
-    </a>
-    <a class="card" href="quimica-inorganica/quimica-descriptiva-grupos/index.en.html">
-      <h3>Descriptive Chemistry of the Groups</h3>
-      <p>Trends and reactivity of alkali metals, alkaline earth metals, halogens and noble gases, and the acid–base character of period 3 oxides in 3D: radius, ionization energy, reaction with water and states of matter.</p>
-      <div class="tags"><span>3D</span><span>Groups</span><span>Trends</span></div>
     </a>
     <a class="card" href="quimica-inorganica/bioinorganica/index.en.html">
       <h3>Bioinorganic chemistry: metals in life</h3>
       <p>Active site of the heme group with Fe²⁺, histidine, O₂ and CO; cooperativity (Hill), the Bohr effect and CO poisoning; Zn in carbonic anhydrase, Mg in chlorophyll, Cu in azurin and Fe in cytochrome c; toxicity of Pb²⁺, Hg and Cd and chelation.</p>
       <div class="tags"><span>3D</span><span>Bioinorganic</span><span>Hemoglobin</span><span>New</span></div>
     </a>
-    <a class="card" href="quimica-inorganica/hsab-acidos-bases-duros-blandos/index.en.html">
-      <h3>Hard and soft acids and bases (HSAB)</h3>
-      <p>Classification of cations and bases as hard, borderline or soft according to charge, radius and polarizability; qualitative pair-stability score, prediction of the direction of exchange reactions and mineral examples (Al₂O₃, HgS, Cu₂S).</p>
-      <div class="tags"><span>3D</span><span>HSAB</span><span>Bond</span><span>New</span></div>
-    </a>
-    <a class="card" href="quimica-inorganica/simetria-grupos-puntuales/index.en.html">
-      <h3>Molecular symmetry and point groups</h3>
-      <p>Symmetry elements and operations (E, Cn, σ, i, Sn) applied in 3D to H₂O, NH₃, CH₄, BF₃, SF₆, CO₂, HCl, trans-dichloroethene, benzene and a chiral molecule; point-group assignment with a decision diagram and relation to polarity and chirality.</p>
-      <div class="tags"><span>3D</span><span>Symmetry</span><span>Point groups</span><span>New</span></div>
-    </a>
   </div>
 </section>
+
 <section id="biologia">
   <h2>Biology</h2>
-  <p>Cell biology: 3D models with all their components labeled.</p>
+  <p>Cell and molecular biology: biomolecules, the cell, metabolism, genetics and signaling.</p>
+  <h3 class="sub">Biomolecules</h3>
   <div class="grid">
-    <a class="card" href="biologia/celula-animal/index.en.html">
-      <h3>Animal cell 3D</h3>
-      <p>Nucleus, reticula, Golgi, mitochondria, lysosomes, centrosome and cytoskeleton in a 3D model with cutaway, labels, functions by system and a challenge.</p>
-      <div class="tags"><span>3D</span><span>Organelles</span><span>Eukaryote</span></div>
-    </a>
-    <a class="card" href="biologia/celula-vegetal/index.en.html">
-      <h3>Plant cell 3D</h3>
-      <p>Cell wall, central vacuole, chloroplasts, plasmodesmata and the remaining organelles, with animated photosynthesis and comparison with the animal cell.</p>
-      <div class="tags"><span>3D</span><span>Chloroplasts</span><span>Cell wall</span></div>
-    </a>
     <a class="card" href="biologia/aminoacidos-proteinas/index.en.html">
       <h3>Amino acids and protein structure 3D</h3>
       <p>Amino acids with charge by pH and pI, peptide bond, Ramachandran map by steric hindrance, α-helix and β-sheet with hydrogen bonds.</p>
@@ -504,6 +486,32 @@ footer a{color:var(--accent)}
       <p>Phospholipids, fluid bilayer, effect of temperature and cholesterol, passive and active transport with channels, GLUT and the Na⁺/K⁺ pump.</p>
       <div class="tags"><span>3D</span><span>Membrane</span><span>Transport</span></div>
     </a>
+    <a class="card" href="biologia/nucleotidos-coenzimas/index.en.html">
+      <h3>Nucleotides and Coenzymes</h3>
+      <p>ATP, NAD⁺/NADH, FAD/FADH₂ and coenzyme A in 3D: modular structure (base, ribose, phosphates), precursor vitamins, ATP hydrolysis, hydride transfer and coupled energy.</p>
+      <div class="tags"><span>3D</span><span>Coenzymes</span><span>Biochemistry</span></div>
+    </a>
+  </div>
+  <h3 class="sub">The cell</h3>
+  <div class="grid">
+    <a class="card" href="biologia/celula-animal/index.en.html">
+      <h3>Animal cell 3D</h3>
+      <p>Nucleus, reticula, Golgi, mitochondria, lysosomes, centrosome and cytoskeleton in a 3D model with cutaway, labels, functions by system and a challenge.</p>
+      <div class="tags"><span>3D</span><span>Organelles</span><span>Eukaryote</span></div>
+    </a>
+    <a class="card" href="biologia/celula-vegetal/index.en.html">
+      <h3>Plant cell 3D</h3>
+      <p>Cell wall, central vacuole, chloroplasts, plasmodesmata and the remaining organelles, with animated photosynthesis and comparison with the animal cell.</p>
+      <div class="tags"><span>3D</span><span>Chloroplasts</span><span>Cell wall</span></div>
+    </a>
+    <a class="card" href="biologia/mitosis-meiosis/index.en.html">
+      <h3>Mitosis and Meiosis</h3>
+      <p>3D simulator of cell division: cell cycle and interphase, phases of mitosis, meiosis I and II, synapsis and crossing over, independent assortment of homologous chromosomes, DNA content per cell and comparison of both processes.</p>
+      <div class="tags"><span>3D</span><span>New</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Enzymes and metabolism</h3>
+  <div class="grid">
     <a class="card" href="biologia/enzimas-cinetica/index.en.html">
       <h3>Enzymes and enzyme kinetics 3D</h3>
       <p>Lock-and-key and induced fit, catalytic cycle, Michaelis–Menten with an enzyme population, competitive and noncompetitive inhibition, Lineweaver–Burk, pH and temperature.</p>
@@ -519,31 +527,14 @@ footer a{color:var(--accent)}
       <p>3D simulator of photosynthesis: chloroplast structure, light absorption, water photolysis, electron transport chain, H⁺ gradient and ATP synthase, NADPH production and the Calvin cycle with CO₂ fixation, reduction and regeneration.</p>
       <div class="tags"><span>3D</span><span>New</span></div>
     </a>
-    <a class="card" href="biologia/mitosis-meiosis/index.en.html">
-      <h3>Mitosis and Meiosis</h3>
-      <p>3D simulator of cell division: cell cycle and interphase, phases of mitosis, meiosis I and II, synapsis and crossing over, independent assortment of homologous chromosomes, DNA content per cell and comparison of both processes.</p>
-      <div class="tags"><span>3D</span><span>New</span></div>
-    </a>
-    <a class="card" href="biologia/nucleotidos-coenzimas/index.en.html">
-      <h3>Nucleotides and Coenzymes</h3>
-      <p>ATP, NAD⁺/NADH, FAD/FADH₂ and coenzyme A in 3D: modular structure (base, ribose, phosphates), precursor vitamins, ATP hydrolysis, hydride transfer and coupled energy.</p>
-      <div class="tags"><span>3D</span><span>Coenzymes</span><span>Biochemistry</span></div>
-    </a>
     <a class="card" href="biologia/metabolismo-lipidos-aminoacidos/index.en.html">
       <h3>Lipid and Amino Acid Metabolism</h3>
       <p>β-oxidation of fatty acids in 3D (four reactions per cycle, FADH₂, NADH and acetyl-CoA), ATP balance by chain length, carnitine transport, transamination with PLP, the urea cycle and the fate of the carbon skeleton.</p>
       <div class="tags"><span>3D</span><span>β-oxidation</span><span>Metabolism</span></div>
     </a>
-    <a class="card" href="biologia/farmacos-receptores/index.en.html">
-      <h3>Drugs and Receptors</h3>
-      <p>Drug–receptor interaction in 3D: occupancy according to Kd, agonists, partial agonists and antagonists, dose–response curves (EC₅₀), competitive antagonism with curve shift and Lipinski's rules for oral absorption.</p>
-      <div class="tags"><span>3D</span><span>Drugs</span><span>Lipinski</span></div>
-    </a>
-    <a class="card" href="biologia/pcr-electroforesis/index.en.html">
-      <h3>PCR and gel electrophoresis</h3>
-      <p>Thermocycler with denaturation, primer annealing and extension, 2ⁿ exponential amplification, effect of annealing temperature (Tm) and reading of bands on an agarose gel with a molecular-weight ladder.</p>
-      <div class="tags"><span>3D</span><span>PCR</span><span>Molecular biology</span><span>New</span></div>
-    </a>
+  </div>
+  <h3 class="sub">Genetics and gene expression</h3>
+  <div class="grid">
     <a class="card" href="biologia/genetica-mendel/index.en.html">
       <h3>Mendelian genetics and Hardy–Weinberg</h3>
       <p>Monohybrid and dihybrid Punnett squares with phenotypic ratios, χ² test against a simulated sample of offspring, and Hardy–Weinberg equilibrium with selection against the recessive and genetic drift.</p>
@@ -554,6 +545,9 @@ footer a{color:var(--accent)}
       <p>Regulation of the E. coli lac operon: LacI repressor, operator, promoter and lacZYA genes, effect of lactose (allolactose) and glucose (cAMP–CAP), β-galactosidase expression level and lacI⁻ and lacOᶜ mutants in 3D.</p>
       <div class="tags"><span>3D</span><span>Genetics</span><span>Gene regulation</span><span>New</span></div>
     </a>
+  </div>
+  <h3 class="sub">Physiology and signaling</h3>
+  <div class="grid">
     <a class="card" href="biologia/potencial-accion/index.en.html">
       <h3>Membrane potential and action potential</h3>
       <p>Nernst and Goldman equations for K⁺ and Na⁺, resting potential, Hodgkin–Huxley-type model with adjustable stimulus, threshold, refractory period and blockers (TTX, TEA), with a 3D axon where channels open and the impulse propagates.</p>
@@ -564,8 +558,96 @@ footer a{color:var(--accent)}
       <p>Cascade of a G protein-coupled receptor: ligand, receptor occupancy, G protein, adenylyl cyclase, cAMP, PKA and phosphodiesterase, with amplification, dose–response curves (Hill, EC50), partial agonists, antagonists, cholera toxin and comparison with a receptor tyrosine kinase.</p>
       <div class="tags"><span>3D</span><span>Signaling</span><span>Cell biology</span><span>New</span></div>
     </a>
+    <a class="card" href="biologia/farmacos-receptores/index.en.html">
+      <h3>Drugs and Receptors</h3>
+      <p>Drug–receptor interaction in 3D: occupancy according to Kd, agonists, partial agonists and antagonists, dose–response curves (EC₅₀), competitive antagonism with curve shift and Lipinski's rules for oral absorption.</p>
+      <div class="tags"><span>3D</span><span>Drugs</span><span>Lipinski</span></div>
+    </a>
   </div>
 </section>
+
+<section id="laboratorio">
+  <h2>Laboratory techniques</h2>
+  <p>Experimental techniques for separation, preparation, analysis and molecular biology, with the setup, theory and calculations involved.</p>
+  <h3 class="sub">Separation and purification</h3>
+  <div class="grid">
+    <a class="card" href="quimica-organica/destilacion/index.en.html">
+      <h3>Simple and Fractional Distillation</h3>
+      <p>3D setup for simple and fractional distillation of ideal binary mixtures (Raoult's law): temperature–composition diagram, theoretical plates, distillate composition and distillation curve.</p>
+      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    </a>
+    <a class="card" href="quimica-organica/extraccion-liquido-liquido/index.en.html">
+      <h3>Liquid–liquid extraction</h3>
+      <p>3D separatory funnel: partition coefficient, phases by density, multiple extractions with small portions and acid–base extraction according to pH and pKa.</p>
+      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    </a>
+    <a class="card" href="quimica-organica/recristalizacion/index.en.html">
+      <h3>Recrystallization</h3>
+      <p>Purification of solids by recrystallization: solubility versus temperature curves, minimum volume of hot solvent, cooling rate, crystal formation and yield.</p>
+      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    </a>
+    <a class="card" href="quimica-organica/cromatografia/index.en.html">
+      <h3>Thin-layer and column chromatography</h3>
+      <p>TLC plate and silica column in 3D: polarity of compounds and eluent, retention factor Rf, resolution between spots and column elution chromatogram.</p>
+      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    </a>
+    <a class="card" href="quimica-organica/punto-fusion/index.en.html">
+      <h3>Melting Point and Purity</h3>
+      <p>Capillary and melting-point apparatus in 3D: melting range, depression by impurities (eutectic), heating rate and mixed melting point to identify compounds.</p>
+      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Preparation and synthesis</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/disoluciones-diluciones/index.en.html">
+      <h3>Solutions and dilutions</h3>
+      <p>Molar, percent and molal concentration with a 3D volumetric flask, preparing solutions from a solid, dilution with C₁V₁ = C₂V₂ and mixing of solutions, with visible solute particles.</p>
+      <div class="tags"><span>3D</span><span>Solutions</span><span>Laboratory</span><span>New</span></div>
+    </a>
+    <a class="card" href="quimica-organica/sintesis-aspirina/index.en.html">
+      <h3>Synthesis of aspirin</h3>
+      <p>Acetylation of salicylic acid with acetic anhydride: step-by-step mechanism, limiting and excess reagent, theoretical and percent yield, effect of temperature, time and catalyst, and a purity test with FeCl₃.</p>
+      <div class="tags"><span>3D</span><span>Laboratory</span><span>Synthesis</span><span>New</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Quantitative analysis</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/acido-base-titulacion/index.en.html">
+      <h3>Acid–base, pH and titration 3D</h3>
+      <p>Burette and beaker with indicator: strong, weak and polyprotic (H₃PO₄) acids and bases, titration curve, buffer region (Henderson–Hasselbalch), species distribution, equivalence point and indicator choice.</p>
+      <div class="tags"><span>3D</span><span>pH</span><span>Titration</span><span>Buffers</span></div>
+    </a>
+    <a class="card" href="quimica-general/gravimetria/index.en.html">
+      <h3>Gravimetric analysis</h3>
+      <p>Gravimetric determination of chloride, sulfate, iron and nickel: precipitation with excess reagent, digestion, filtration and ignition to constant mass, gravimetric factor and the effect of coprecipitation and residual moisture.</p>
+      <div class="tags"><span>3D</span><span>Analysis</span><span>Laboratory</span><span>New</span></div>
+    </a>
+    <a class="card" href="quimica-general/espectrofotometria/index.en.html">
+      <h3>Spectrophotometry and the Beer–Lambert law</h3>
+      <p>3D UV-Vis spectrophotometer: transmittance and absorbance, Beer–Lambert law, spectrum and λmax, calibration curve with linear regression and determination of an unknown sample.</p>
+      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    </a>
+    <a class="card" href="quimica-general/cifras-incertidumbre/index.en.html">
+      <h3>Significant Figures and Uncertainty</h3>
+      <p>Precision versus accuracy with a 3D target, random and systematic error, laboratory instruments with their uncertainty, significant figures in sums and products and propagation of uncertainties.</p>
+      <div class="tags"><span>3D</span><span>Laboratory</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Qualitative analysis and molecular biology</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/ensayo-a-la-llama/index.en.html">
+      <h3>Flame test and quantum transitions</h3>
+      <p>Relates the flame color of each element to the electronic transitions between energy levels.</p>
+      <div class="tags"><span>3D</span><span>Spectra</span><span>Atomic structure</span></div>
+    </a>
+    <a class="card" href="biologia/pcr-electroforesis/index.en.html">
+      <h3>PCR and gel electrophoresis</h3>
+      <p>Thermocycler with denaturation, primer annealing and extension, 2ⁿ exponential amplification, effect of annealing temperature (Tm) and reading of bands on an agarose gel with a molecular-weight ladder.</p>
+      <div class="tags"><span>3D</span><span>PCR</span><span>Molecular biology</span><span>New</span></div>
+    </a>
+  </div>
+</section>
+
 <section id="fisica">
   <h2>Physics</h2>
   <p>Astronomy and celestial mechanics.</p>
@@ -584,6 +666,15 @@ footer a{color:var(--accent)}
   <a href="https://github.com/lab-macedonia/lab-macedonia.github.io">Code on GitHub</a>.
 </footer>
 </div>
+<script>
+(function(){var q=document.getElementById('q'),n=document.getElementById('qn');if(!q)return;
+var norm=function(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')};
+var cards=[].slice.call(document.querySelectorAll('.card'));var idx=cards.map(function(c){return norm(c.textContent)});
+q.addEventListener('input',function(){var t=norm(q.value.trim()),k=0;
+cards.forEach(function(c,i){var ok=!t||t.split(/\s+/).every(function(w){return idx[i].indexOf(w)>-1});c.hidden=!ok;if(ok)k++});
+[].forEach.call(document.querySelectorAll('section'),function(s){var g=[].slice.call(s.querySelectorAll('.grid'));g.forEach(function(x){var v=x.querySelector('.card:not([hidden])');x.hidden=!v;var p=x.previousElementSibling;if(p&&p.classList.contains('sub'))p.hidden=!v});s.hidden=!s.querySelector('.card:not([hidden])')});
+var en=document.documentElement.lang==='en';n.textContent=t?(k+(en?' result':' resultado')+(k===1?'':'s')):''})})();
+</script>
 
 
 </body></html>

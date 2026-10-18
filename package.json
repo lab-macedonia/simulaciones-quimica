@@ -1,1 +1,13 @@
-{ "name": "simulaciones-quimica", "private": true, "description": "Herramientas de verificación (no se necesitan para usar las simulaciones)", "scripts": { "check": "node tools/check.js", "smoke": "node tools/run-smoke.js" }, "devDependencies": { "jsdom": "^29.1.1" } }
+{
+  "name": "simulaciones-quimica",
+  "private": true,
+  "description": "Herramientas de verificación (no se necesitan para usar las simulaciones)",
+  "scripts": {
+    "check": "node tools/check.js",
+    "smoke": "node tools/run-smoke.js"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "playwright": "^1.49.0"
+  }
+}

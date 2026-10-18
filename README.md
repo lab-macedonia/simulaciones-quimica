@@ -222,7 +222,7 @@ El **Simulador SN1 · SN2 · E1 · E2** es la referencia de nivel de detalle; la
 
 ## Verificación automática
 
-`npm install && npm run check` revisa sintaxis, enlaces, metadatos y que cada simulación tenga versión en inglés y guías; `npm run smoke` carga todas las páginas (ES y EN) en jsdom. Ambos corren en GitHub Actions (`.github/workflows/check.yml`).
+`npm install && npm run check` revisa sintaxis, enlaces, metadatos y que cada simulación tenga versión en inglés y guías; `npm run smoke` carga todas las páginas (ES y EN) en jsdom, y las simulaciones escritas a mano en Chromium real (Playwright). Ambos corren en GitHub Actions (`.github/workflows/check.yml`).
 
 ## Uso local
 
