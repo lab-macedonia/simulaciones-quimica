@@ -791,12 +791,12 @@ function drawChi(){
 // ============================================================
 function updateProof(){
   const sc=SCORES[S.target], e=sc[S.rotIndex], R=rots[S.rotIndex], same=S.target==='same';
-  $('result').textContent="Orientation "+(S.rotIndex+1)+' / 24 · '+rotLabel(R)+' · '+e.count+' / 3 parejas de N coinciden';
+  $('result').textContent="Orientation "+(S.rotIndex+1)+' / 24 · '+rotLabel(R)+' · '+e.count+' / 3 N pairs match';
   const v=$('verdict'); v.textContent=e.count===3?"✓ complete superposition":"✗ different connectivity"; v.className='pill '+(e.count===3?'ok':'bad');
   const full=sc.filter(x=>x.count===3).length, mx=Math.max(...sc.map(x=>x.count));
   $('prooftext').textContent=same
     ?"Positive control Δ versus Δ: "+full+" of the 24 orientations superimpose the three connections (they are the symmetry operations of Δ). Use “Try another orientation” or click on a bar."
-    :"Δ versus Λ: none of the 24 orientations superimposes the three connections. Maximum observed: "+mx+' / 3 parejas. Los colores de los ligandos no se usan en esta comparación.';
+    :"Δ versus Λ: none of the 24 orientations superimposes the three connections. Maximum observed: "+mx+' / 3 pairs. Ligand colors are not used in this comparison.';
   S.histDirty=true;
 }
 function chooseRot(k){S.rotIndex=((k%24)+24)%24;S.ovT=0;updateProof();}
