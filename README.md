@@ -42,7 +42,7 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Diagramas de fase 3D](simulaciones/quimica-general/diagramas-de-fase/) | Diagramas P–T de agua y CO₂: fases, curvas de equilibrio, punto triple y crítico, fluido supercrítico, curva de calentamiento y Clausius–Clapeyron. |
 | [Radiación electromagnética 3D](simulaciones/quimica-general/radiacion-em/) | Onda E–B en 3D, polarización lineal y circular, vector de Poynting, fotón como paquete de ondas y espectro completo de radio a rayos γ con E = hf y efectos sobre la materia. |
 | [Transiciones electrónicas y átomo de Bohr 3D](simulaciones/quimica-general/transiciones-electronicas/) | Niveles de H, He⁺ y Li²⁺, absorción y emisión de fotones, series de Lyman, Balmer y Paschen, ondas de de Broglie, ionización y espectro de líneas. |
-| [Interacciones intermoleculares 3D](simulaciones/quimica-general/interacciones-intermoleculares/) | 39 pares de especies: London, ion–ion, ion–dipolo, dipolo–dipolo, cuadrupolo, puente de H y enlace de halógeno, con curva U(r), promedio térmico y comparador de energías. |
+| [Interacciones intermoleculares 3D](simulaciones/quimica-general/interacciones-intermoleculares/) | 38 pares de especies: London, ion–ion, ion–dipolo, dipolo–dipolo, cuadrupolo, puente de H y enlace de halógeno, con curva U(r), promedio térmico y comparador de energías. |
 
 ### Biología
 | Simulación | Descripción |
