@@ -1,7 +1,7 @@
 /* Equilibrio químico y principio de Le Châtelier — simulador 3D · Laboratorio MACEDONIA (UMCE)
    Usa el kit común ../../kit/simkit.js. Kc(T) por van 't Hoff; constantes de referencia aproximadas (didácticas). */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, kit;
   var fmt = SimKit.fmt, clamp = SimKit.clamp;
   function log10(x) { return Math.log(x) / Math.LN10; }
@@ -347,7 +347,7 @@
       accent: { dark: '#5ad1a6', light: '#0f766e' }, viewLabel: "3D viewer: container with piston, molecules and temperature",
       stages: STAGES, mainTabLabel: "Guide",
       tabs: [
-        { id: 'lab', label: 'Lab', build: function (el, k) { kit = k; buildLab(el); } },
+        { id: 'lab', label: "Lab", build: function (el, k) { kit = k; buildLab(el); } },
         { id: 'graf', label: "Graphs", build: function (el, k) { kit = k; buildGraphs(el); } },
         { id: 'calc', label: "Calculation", build: function (el, k) { kit = k; buildCalc(el); } },
         { id: 'quiz', label: "Challenge", build: function (el, k) { kit = k; buildQuiz(el); } }

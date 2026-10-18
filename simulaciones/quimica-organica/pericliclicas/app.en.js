@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -146,7 +146,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         "<p>If the two end substituents point <b>outward</b> (<i>E,E</i>), <b>conrotatory</b> rotation takes them to opposite sides of the ring (<b>trans</b>) and <b>disrotatory</b> to the same side (<b>cis</b>). If one points inward (<i>E,Z</i>), the opposite occurs. The simulation computes the final position of the substituents and deduces cis or trans.</p>"],
       ["[1,5] sigmatropic H shift", '[1,5]-H', "An H migrates along a pentadienyl system on the same face (suprafacial)",
         "<p>In a <b>sigmatropic rearrangement</b> a σ bond shifts to the other end of a π system. In <b>cyclopentadiene</b> the H of the CH₂ migrates to a neighboring carbon: [1,5] with <b>6 electrons</b> (2 π + 2 π + 2 σ). It is <b>thermally allowed</b> and <b>suprafacial</b> (the H travels along the same face of the π system). It occurs at room temperature, exchanging the positions of the diene system.</p>"],
-      ["[3,3] Cope rearrangement", 'Cope', "1,5-Hexadiene ⇌ another 1,5-hexadiene through a chair transition state",
+      ["[3,3] Cope rearrangement", "Cope", "1,5-Hexadiene ⇌ another 1,5-hexadiene through a chair transition state",
         "<p><b>1,5-Hexadiene</b> undergoes a [3,3] rearrangement: the C3–C4 σ bond breaks and a new C1–C6 bond forms, with migration of both π bonds. The transition state is a <b>6-center chair</b> (6 e⁻: thermally allowed, suprafacial–suprafacial). The variant with an O (<b>Claisen rearrangement</b>) forms a carbonyl and is irreversible.</p>"]
     ];
   }
@@ -207,7 +207,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     sync: function (ctx) { var u = ctx.ui; if (u.rx) u.rx.set(S.rx); if (u.p && !ctx.P.manual) u.p.set(S.p); },
     hud: function () { if (!isEC()) return { eq: { chip: S.rx === 'h15' ? '[1,5]' : '[3,3]', name: S.rx === 'h15' ? "H shift" : "Cope rearrangement", body: "<div class=\"eqline\"><small>Electrons</small>6</div><div class=\"eqline\"><small>Condition</small>thermal (Δ)</div><div class=\"eqline\"><small>Mode</small>suprafacial</div>" }, legend: [{ label: "Red/blue lobes", color: '#ff6b6b', text: "phases of the p orbital" }] }; var n = ne(); return { eq: { chip: n + ' e⁻', name: "Electrocyclization of " + n + ' e⁻', body: "<div class=\"eqline\"><small>Condition</small>" + (S.hv ? "photochemical (hν)" : "thermal (Δ)") + "</div><div class=\"eqline\"><small>Rotation</small>" + (con() ? "conrotatory" : "disrotatory") + "</div><div class=\"eqline\"><small>Phase of the ends</small>" + (sameP() ? "equal" : "opposite") + '</div>' }, legend: [{ label: "Red lobe", color: '#ff6b6b', text: "+ phase" }, { label: "Blue lobe", color: '#4dabf7', text: "− phase" }, { label: "Orange sphere", color: '#ffa94d', text: "methyl group" }] }; },
     measures: function () { if (!isEC()) return [["Reaction", S.rx === 'h15' ? '[1,5]-H' : 'Cope [3,3]'], ["Electrons", '6 (4n + 2)'], ["Condition", "thermal"]]; var n = ne(); return [["π electrons", String(n) + ' (' + (n % 4 === 0 ? '4n' : '4n + 2') + ')'], ["Condition", S.hv ? 'hν' : 'Δ'], ["Rotate", con() ? "conrotatory" : "disrotatory"], ["HOMO used", 'ψ' + homoK()], ["Starting isomer", S.ee ? 'E,E' : 'E,Z']]; },
-    ideas: ["4n thermal → conrotatory.", "4n + 2 thermal → disrotatory.", "Light reverses the selection.", 'E,E + con → trans; E,E + dis → cis.'],
+    ideas: ["4n thermal → conrotatory.", "4n + 2 thermal → disrotatory.", "Light reverses the selection.", "E,E + con → trans; E,E + dis → cis."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Reaction"); el.appendChild(c);
       ui.rx = kit.ui.options({ label: "Reaction", cols: 1, value: S.rx, options: [{ v: 'ec4', label: "4 e⁻ electrocyclization (butadiene)" }, { v: 'ec6', label: "6 e⁻ electrocyclization (hexatriene)" }, { v: 'ec8', label: "8 e⁻ electrocyclization (octatetraene)" }, { v: 'h15', label: "[1,5]-H sigmatropic" }, { v: 'cope', label: 'Cope [3,3]' }], onChange: function (v) { ctx.goManual(); S.rx = v; S.p = 0; } }); c.appendChild(ui.rx);

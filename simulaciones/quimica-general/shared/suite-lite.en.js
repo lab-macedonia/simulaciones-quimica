@@ -1,7 +1,7 @@
 /* Lección guiada, captura, pantalla completa y ayuda para los módulos de la suite.
    Se carga al final de cada módulo y elige su guion según <body data-module>. Requiere ../../kit/simkit-lite.js */
 (function () {
-  'use strict';
+  "use strict";
   var $ = function (id) { return document.getElementById(id); };
   function tab(id) { var t = document.querySelector('[data-tab="' + id + '"]'); if (t) t.click(); }
   function sel(id, v) { var e = $(id); if (!e) return; e.value = String(v); e.dispatchEvent(new Event('change', { bubbles: true })); }
@@ -181,7 +181,7 @@
   CFG['sigma-pi'] = {
     title: "σ and π Bonds", theme: 'themeToggle', before: function () { tab("simulator"); },
     stages: [
-      { name: 'Simple', title: "C–C: one sigma bond", focus: '#simulador',
+      { name: "Simple", title: "C–C: one sigma bond", focus: '#simulador',
         text: "<p>The single bond is a single <b>σ</b> bond (sp³): it allows free rotation about the axis.</p>",
         apply: function () { tab("simulator"); sel('bondSelect', 'single'); } },
       { name: "Double", title: 'C=C: σ + π', focus: '#simulador',

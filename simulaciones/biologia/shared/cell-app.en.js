@@ -1,6 +1,6 @@
 /* CellApp — armado común de los simuladores de célula 3D sobre SimKit (Laboratorio MACEDONIA · UMCE) */
 (function (g) {
-  'use strict';
+  "use strict";
   var T = g.THREE, K = g.CellKit, clamp = K.clamp;
   g.CellApp = {
     run: function (def) {

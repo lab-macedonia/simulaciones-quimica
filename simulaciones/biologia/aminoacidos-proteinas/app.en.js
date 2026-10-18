@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -462,7 +462,7 @@ if (typeof module !== 'undefined') module.exports = AAM;
       ["Peptide bond", "Peptide", "Condensation: carboxyl + amino → amide + H₂O", "<p>The α-COOH group of one amino acid reacts with the α-NH₂ of another and releases <b>water</b>. The <b>C–N</b> bond (1.33 Å) has partial double-bond character by resonance: the six atoms (Cα, C, O, N, H, Cα) lie in a <b>rigid plane</b> with <b>ω ≈ 180° (trans)</b>.</p>"],
       ["α-helix", "α-helix", "H bonds between C=O(i) and N–H(i+4)", "<p>With φ ≈ −57° and ψ ≈ −47° the backbone coils into a <b>right-handed helix</b> of 3.6 residues per turn and a 5.4 Å pitch. Each C=O forms a <b>hydrogen bond</b> (≈ 2 Å) with the N–H of residue i+4 (yellow lines). The side chains point outward.</p>"],
       ["β-sheet", "β-sheet", "Extended strands joined laterally by H bonds", "<p>With φ ≈ −120° and ψ ≈ +130° the backbone extends in a zigzag (≈ 3.3 Å per residue). Two <b>antiparallel</b> strands are joined by H bonds between the C=O and N–H groups of neighboring strands; the side chains alternate above and below the pleated plane.</p>"],
-      ["Ramachandran map", 'Ramachandran', "Only some (φ, ψ) combinations are possible", "<p>The angles <b>φ</b> (N–Cα) and <b>ψ</b> (Cα–C) are the only degrees of freedom of the backbone. Many combinations produce <b>steric clashes</b> (red): the allowed regions correspond to α-helix, β-sheet/PPII and, less frequently, left-handed helix. It is calculated here with a simple hard-sphere model.</p>"]
+      ["Ramachandran map", "Ramachandran", "Only some (φ, ψ) combinations are possible", "<p>The angles <b>φ</b> (N–Cα) and <b>ψ</b> (Cα–C) are the only degrees of freedom of the backbone. Many combinations produce <b>steric clashes</b> (red): the allowed regions correspond to α-helix, β-sheet/PPII and, less frequently, left-handed helix. It is calculated here with a simple hard-sphere model.</p>"]
     ];
   }
   var def = {
@@ -506,13 +506,13 @@ if (typeof module !== 'undefined') module.exports = AAM;
       if (S.mode === 'aa') { var z = charge(a, S.pH), d = dist(a, S.pH), best = Object.keys(d).reduce(function (b, k) { return d[k] > d[b] ? k : b; }, Object.keys(d)[0]); return { eq: { chip: 'pH ' + fmt(S.pH, 1), name: a.k + ' · ' + a.n.split(' (')[0], body: row("Class", CLS[a.cls][2]) + row("Predominant form", "net charge " + (best > 0 ? '+' + best : best)) + row('pI', fmt(pI(a), 2)) }, legend: [{ label: 'Amino', color: '#4c6ef5', text: '–NH₂ / –NH₃⁺' }, { label: "Carboxyl", color: '#fa5252', text: '–COOH / –COO⁻' }, { label: 'R', color: CLS[a.cls][0], text: "side chain (" + a.cls + ')' }] }; }
       if (S.mode === 'pep') return { eq: { chip: "Peptide", name: 'Ala–Gly', body: row("Progress", Math.round(S.prog * 100) + ' %') + row("C–N bond", "1.33 Å (partially double)") + row('ω', "≈ 180° (trans), rigid plane") }, legend: [{ label: 'Halo', color: '#ffa94d', text: "atoms of the peptide plane" }] };
       if (S.mode === 'ss') { var hi = G.hbinfo || {}; return { eq: { chip: S.ss === 'helix' ? 'α' : 'β', name: S.ss === 'helix' ? "α-helix" : "β-sheet", body: row("H bonds", String(hi.n || 0)) + row('d(O···H)', (hi.n ? fmt(hi.dmin, 2) + '–' + fmt(hi.dmax, 2) : '—') + ' Å') + row("Geometry", S.ss === 'helix' ? "3.6 res/turn · 1.5 Å/res" : "3.3 Å/residue · antiparallel") }, legend: [{ label: '┅', color: '#ffd43b', text: "hydrogen bond" }, { label: "Ribbon", color: '#748ffc', text: "Cα trajectory" }] }; }
-      var cl = G.cl || {}; return { eq: { chip: 'φ/ψ', name: 'Ramachandran', body: row('φ · ψ', Math.round(S.phi) + '° · ' + Math.round(S.psi) + '°') + row("Region", regionOf(S.phi, S.psi)) + row("Steric", cl.bad ? "clash (forbidden)" : "allowed") }, legend: [{ label: 'φ', color: '#4dabf7', text: "N–Cα bond" }, { label: 'ψ', color: '#ff922b', text: "Cα–C bond" }, { label: "Clash", color: '#ff3b30', text: "atom overlap" }] };
+      var cl = G.cl || {}; return { eq: { chip: 'φ/ψ', name: "Ramachandran", body: row('φ · ψ', Math.round(S.phi) + '° · ' + Math.round(S.psi) + '°') + row("Region", regionOf(S.phi, S.psi)) + row("Steric", cl.bad ? "clash (forbidden)" : "allowed") }, legend: [{ label: 'φ', color: '#4dabf7', text: "N–Cα bond" }, { label: 'ψ', color: '#ff922b', text: "Cα–C bond" }, { label: "Clash", color: '#ff3b30', text: "atom overlap" }] };
     },
     measures: function () { var a = AAI[S.aa], gr = groups(a); return [["Amino acid", a.k + ' (' + a.c + ')'], ["Class", CLS[a.cls][2]], ['pK(α-COOH)', fmt(a.pk[0], 2)], ['pK(α-NH₃⁺)', fmt(a.pk[1], 2)], ['pK(R)', a.R ? fmt(a.R.pk, 2) : '—'], ['pI', fmt(pI(a), 2)], ["Hydropathy index", fmt(a.kd, 1)], ["Charge at pH " + fmt(S.pH, 1), fmt(charge(a, S.pH), 2)]]; },
     ideas: ["All proteinogenic amino acids are <b>L</b>; Gly is achiral.", "<b>pI</b>: pH of net charge 0; below it the molecule is a cation, above it an anion.", "The <b>peptide bond</b> is planar and trans: only φ and ψ are free.", "<b>α-helix</b>: C=O(i)···H–N(i+4); <b>β-sheet</b>: bonds between neighboring strands.", "Ramachandran: steric clashes limit the possible (φ, ψ)."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Mode"); el.appendChild(c);
-      var modes = [['aa', "Amino acid"], ['pep', "Peptide"], ['ss', "α-helix"], ['ss2', "β-sheet"], ['rama', 'Ramachandran']];
+      var modes = [['aa', "Amino acid"], ['pep', "Peptide"], ['ss', "α-helix"], ['ss2', "β-sheet"], ['rama', "Ramachandran"]];
       ui.mode = kit.ui.options({ label: "What to show", cols: 5, value: 'aa', options: modes.map(function (m) { return { v: m[0], label: m[1] }; }), onChange: function (v) { ctx.goManual(); if (v === 'ss') { S.mode = 'ss'; S.ss = 'helix'; } else if (v === 'ss2') { S.mode = 'ss'; S.ss = 'sheet'; } else S.mode = v === 'rama' ? 'rama' : v; } }); c.appendChild(ui.mode);
       var ca = kit.ui.card("Amino acid and pH"); el.appendChild(ca);
       ui.aa = kit.ui.options({ label: "Amino acid", cols: 5, value: S.aa, options: AA.map(function (a) { return { v: a.k, label: a.k, sub: a.c }; }), onChange: function (v) { ctx.goManual(); S.aa = v; S.mode = 'aa'; } }); ca.appendChild(ui.aa);
@@ -560,7 +560,7 @@ if (typeof module !== 'undefined') module.exports = AAM;
     calc: function () {
       var a = AAI[S.aa], gr = groups(a), row = function (x, y) { return '<tr><th>' + x + '</th><td>' + y + '</td></tr>'; }, d = dist(a, S.pH);
       var ks = Object.keys(d).map(Number).sort(function (p, q) { return q - p; });
-      return '<div class="card-kicker">' + a.k + ' · ' + a.n + ' · pH ' + fmt(S.pH, 1) + "</div><div class=\"calc-step\">1 · Ionizable groups</div><table class=\"calc-table\">" + gr.map(function (g) { var f = fp(g, S.pH); return row(g.lbl + ' (pKa ' + fmt(g.pk, 2) + ')', fmt(f * 100, 0) + " % protonated · " + (f > 0.5 ? (g.t === 'base' ? "–NH₃⁺ / cationic" : "neutral") : (g.t === 'base' ? "neutral" : "anionic"))); }).join('') + "</table><div class=\"calc-step\">2 · Net charge</div><table class=\"calc-table\">" + row("Mean charge", fmt(charge(a, S.pH), 2)) + ks.filter(function (k) { return d[k] > 0.005; }).map(function (k) { return row("Species " + (k > 0 ? '+' + k : k), fmt(d[k] * 100, 1) + ' %'); }).join('') + "</table><div class=\"calc-step\">3 · Isoelectric point</div><table class=\"calc-table\">" + row("pI (charge = 0)", fmt(pI(a), 2)) + row("Hydropathy index", fmt(a.kd, 1)) + '</table>';
+      return '<div class="card-kicker">' + a.k + ' · ' + a.n + " · pH " + fmt(S.pH, 1) + "</div><div class=\"calc-step\">1 · Ionizable groups</div><table class=\"calc-table\">" + gr.map(function (g) { var f = fp(g, S.pH); return row(g.lbl + ' (pKa ' + fmt(g.pk, 2) + ')', fmt(f * 100, 0) + " % protonated · " + (f > 0.5 ? (g.t === 'base' ? "–NH₃⁺ / cationic" : "neutral") : (g.t === 'base' ? "neutral" : "anionic"))); }).join('') + "</table><div class=\"calc-step\">2 · Net charge</div><table class=\"calc-table\">" + row("Mean charge", fmt(charge(a, S.pH), 2)) + ks.filter(function (k) { return d[k] > 0.005; }).map(function (k) { return row("Species " + (k > 0 ? '+' + k : k), fmt(d[k] * 100, 1) + ' %'); }).join('') + "</table><div class=\"calc-step\">3 · Isoelectric point</div><table class=\"calc-table\">" + row("pI (charge = 0)", fmt(pI(a), 2)) + row("Hydropathy index", fmt(a.kd, 1)) + '</table>';
     },
     calcLabel: "Ionization",
     quiz: [

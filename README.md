@@ -2,7 +2,7 @@
 
 *[English version](README.en.md)*
 
-Colección de 80 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología celular y molecular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
+Colección de 98 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología celular y molecular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
 
 ## Simulaciones por área
 
@@ -37,6 +37,11 @@ Colección de 80 simulaciones interactivas para la enseñanza de la química (ge
 | [Reacciones electrocíclicas y sigmatrópicas](simulaciones/quimica-organica/pericliclicas/) | Reacciones pericíclicas más allá de Diels–Alder: electrociclaciones de 4, 6 y 8 electrones (conrotatoria y disrotatoria), orbitales frontera, control térmico y fotoquímico, desplazamientos [1,5] de H y transposición de Cope [3,3] con reglas de Woodward–Hoffmann. |
 | [Heterociclos aromáticos](simulaciones/quimica-organica/heterociclos/) | Pirrol, furano, tiofeno, piridina, imidazol y pirimidina en 3D: par libre en el sistema π o en el plano, basicidad (pKa del ácido conjugado), reactividad y regioselectividad frente a electrófilos y presencia en biomoléculas. |
 | [Terpenos y esteroides](simulaciones/quimica-organica/terpenos-esteroides/) | Regla del isopreno en 3D: monoterpenos, sesquiterpenos y diterpenos lineales con sus unidades C₅, ciclación del escualeno y esqueleto esteroidal (anillos A–D, numeración) con colesterol, testosterona, estradiol y progesterona. |
+| [Alquinos: estructura y reacciones](simulaciones/quimica-organica/alquinos/) | Geometría lineal sp, acidez del alquino terminal y acetiluros, hidrogenación selectiva (Lindlar cis, Na/NH₃ trans, H₂/Pd alcano), hidratación a cetonas o aldehídos y adición de HBr con regioquímica, con sustrato y producto en 3D. |
+| [Lípidos, saponificación y jabones](simulaciones/quimica-organica/lipidos-jabon/) | Triglicéridos con ácidos grasos saturados e insaturados (punto de fusión), saponificación con NaOH y cálculo del índice de saponificación, micelas que emulsionan la grasa y efecto del agua dura sobre el jabón. |
+| [Polímeros: adición y condensación](simulaciones/quimica-organica/polimeros/) | Cadenas de polietileno, polipropileno, poliestireno, PVC, nailon 6,6 y PET en 3D: polimerización por adición (inicio, propagación, terminación) y por condensación, grado de polimerización, ecuación de Carothers, masa molar promedio y dispersidad. |
+| [Síntesis de la aspirina](simulaciones/quimica-organica/sintesis-aspirina/) | Acetilación del ácido salicílico con anhídrido acético: mecanismo paso a paso, reactivo limitante y exceso, rendimiento teórico y porcentual, efecto de la temperatura, el tiempo y el catalizador, y prueba de pureza con FeCl₃. |
+| [Espectroscopía UV-Vis y conjugación](simulaciones/quimica-organica/uv-vis-conjugacion/) | Transición π → π* en polienos: efecto de la conjugación sobre el gap HOMO–LUMO y la longitud de onda máxima, sustituyentes alquilo, color complementario de la disolución, espectro de absorción y ley de Beer–Lambert, desde el eteno hasta el β-caroteno. |
 
 ### Química general
 Cada simulación es independiente; no hay portada de colección ni seguimiento de progreso.
@@ -75,6 +80,11 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Semiconductores y teoría de bandas](simulaciones/quimica-general/semiconductores-bandas/) | Teoría de bandas en 3D: metales, aislantes y semiconductores según el ancho de la banda prohibida, población térmica de electrones, dopaje tipo n y p, unión p–n y color de un LED a partir de la energía de gap. |
 | [Nomenclatura inorgánica](simulaciones/quimica-general/nomenclatura-inorganica/) | Fórmulas y nombres de compuestos iónicos en 3D: balance de cargas, nomenclatura Stock, sistemática y tradicional, oxoaniones de los halógenos, ácidos y oxoácidos, con ensamblado de iones. |
 | [Química ambiental y química verde](simulaciones/quimica-general/quimica-ambiental-verde/) | Capa de ozono y CFC, efecto invernadero (forzamiento radiativo del CO₂), lluvia ácida y química verde en 3D: economía atómica, factor E y doce principios con comparación de rutas sintéticas. |
+| [Balanceo redox: método ion-electrón](simulaciones/quimica-general/balanceo-redox/) | Balancea reacciones redox en medio ácido y básico paso a paso: números de oxidación, semirreacciones, balance de O, H y carga con electrones, y suma final, con el flujo de electrones en 3D. |
+| [Corrosión y protección del hierro](simulaciones/quimica-general/corrosion-pilas/) | Corrosión del hierro como pila galvánica en una gota de agua: zona anódica y catódica, efecto de la sal, el oxígeno y el pH, recubrimientos de Zn, Sn y Cu, ánodo de sacrificio de Mg y comparación de pilas comerciales. |
+| [Disoluciones y diluciones](simulaciones/quimica-general/disoluciones-diluciones/) | Concentración molar, porcentual y molal con un matraz aforado 3D, preparación de disoluciones a partir de un sólido, dilución con C₁V₁ = C₂V₂ y mezcla de disoluciones, con partículas de soluto visibles. |
+| [Análisis gravimétrico](simulaciones/quimica-general/gravimetria/) | Determinación gravimétrica de cloruro, sulfato, hierro y níquel: precipitación con reactivo en exceso, digestión, filtración y calcinación a masa constante, factor gravimétrico y efecto de la coprecipitación y la humedad residual. |
+| [El mol y la masa molar](simulaciones/quimica-general/mol-masa-molar/) | Masa molar a partir de la tabla periódica, número de Avogadro, conversiones entre gramos, moles y partículas, volumen molar de gases en CNTP y composición porcentual, con moléculas y montones de partículas en 3D. |
 
 ### Biología
 | Simulación | Descripción |
@@ -91,6 +101,11 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Nucleótidos y coenzimas](simulaciones/biologia/nucleotidos-coenzimas/) | ATP, NAD⁺/NADH, FAD/FADH₂ y coenzima A en 3D: estructura modular (base, ribosa, fosfatos), vitaminas precursoras, hidrólisis del ATP, transferencia de hidruro y energía acoplada. |
 | [Metabolismo de lípidos y aminoácidos](simulaciones/biologia/metabolismo-lipidos-aminoacidos/) | β-oxidación de ácidos grasos en 3D (cuatro reacciones por ciclo, FADH₂, NADH y acetil-CoA), balance de ATP según la longitud de la cadena, transporte por carnitina, transaminación con PLP, ciclo de la urea y destino del esqueleto carbonado. |
 | [Fármacos y receptores](simulaciones/biologia/farmacos-receptores/) | Interacción fármaco–receptor en 3D: ocupación según Kd, agonistas, agonistas parciales y antagonistas, curvas dosis–respuesta (EC₅₀), antagonismo competitivo con desplazamiento de la curva y reglas de Lipinski para la absorción oral. |
+| [Genética mendeliana y Hardy–Weinberg](simulaciones/biologia/genetica-mendel/) | Cuadros de Punnett monohíbrido y dihíbrido con proporciones fenotípicas, prueba de χ² frente a una muestra simulada de descendientes, y equilibrio de Hardy–Weinberg con selección contra el recesivo y deriva genética. |
+| [Operón lac y regulación génica](simulaciones/biologia/operon-lac/) | Regulación del operón lac de E. coli: represor LacI, operador, promotor y genes lacZYA, efecto de la lactosa (alolactosa) y de la glucosa (AMPc–CAP), nivel de expresión de β-galactosidasa y mutantes lacI⁻ y lacOᶜ en 3D. |
+| [PCR y electroforesis en gel](simulaciones/biologia/pcr-electroforesis/) | Termociclador con desnaturalización, hibridación de cebadores y extensión, amplificación exponencial 2ⁿ, efecto de la temperatura de hibridación (Tm) y lectura de bandas en un gel de agarosa con escalera de peso molecular. |
+| [Potencial de membrana y potencial de acción](simulaciones/biologia/potencial-accion/) | Ecuación de Nernst y de Goldman para K⁺ y Na⁺, potencial de reposo, modelo tipo Hodgkin–Huxley con estímulo ajustable, umbral, periodo refractario y bloqueadores (TTX, TEA), con un axón 3D donde los canales se abren y el impulso se propaga. |
+| [Señalización celular: receptor → segundo mensajero](simulaciones/biologia/senalizacion-celular/) | Cascada de un receptor acoplado a proteína G: ligando, ocupación del receptor, proteína G, adenilil ciclasa, AMPc, PKA y fosfodiesterasa, con amplificación, curvas dosis–respuesta (Hill, EC50), agonistas parciales, antagonistas, toxina colérica y comparación con un receptor tirosina quinasa. |
 
 ### Física
 | Simulación | Descripción |
@@ -107,6 +122,9 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Orbitales moleculares en complejos octaédricos](simulaciones/quimica-inorganica/om-complejos/) | Simulador 3D de la teoría de orbitales moleculares en complejos octaédricos ML6: enlace σ, orbitales a1g, t1u, eg y t2g, desdoblamiento Δo, efecto π (donor y aceptor), serie espectroquímica, alto y bajo espín, magnetismo y color. |
 | [Organometálica: regla de 18 electrones](simulaciones/quimica-inorganica/organometalica-18e/) | Simulador 3D de química organometálica: regla de los 18 electrones, conteo de electrones por el método neutro, carbonilos metálicos, ferroceno, complejos planos de 16 electrones y ciclo catalítico de Wilkinson (adición oxidante, coordinación, inserción migratoria y eliminación reductora). |
 | [Química descriptiva de los grupos](simulaciones/quimica-inorganica/quimica-descriptiva-grupos/) | Tendencias y reactividad de alcalinos, alcalinotérreos, halógenos y gases nobles, y carácter ácido–base de los óxidos del periodo 3 en 3D: radio, energía de ionización, reacción con agua y estados de la materia. |
+| [Química bioinorgánica: metales en la vida](simulaciones/quimica-inorganica/bioinorganica/) | Sitio activo del grupo hemo con Fe²⁺, histidina, O₂ y CO; cooperatividad (Hill), efecto Bohr y envenenamiento por CO; Zn en la anhidrasa carbónica, Mg en la clorofila, Cu en la azurina y Fe en el citocromo c; toxicidad de Pb²⁺, Hg y Cd y quelación. |
+| [Ácidos y bases duros y blandos (HSAB)](simulaciones/quimica-inorganica/hsab-acidos-bases-duros-blandos/) | Clasificación de cationes y bases como duros, frontera o blandos según carga, radio y polarizabilidad; puntaje cualitativo de estabilidad de pares, predicción del sentido de reacciones de intercambio y ejemplos de minerales (Al₂O₃, HgS, Cu₂S). |
+| [Simetría molecular y grupos puntuales](simulaciones/quimica-inorganica/simetria-grupos-puntuales/) | Elementos y operaciones de simetría (E, Cn, σ, i, Sn) aplicados en 3D a H₂O, NH₃, CH₄, BF₃, SF₆, CO₂, HCl, trans-dicloroeteno, benceno y una molécula quiral; asignación del grupo puntual con diagrama de decisión y relación con polaridad y quiralidad. |
 
 ## Idiomas
 
@@ -190,6 +208,8 @@ Todas las simulaciones comparten un kit de interfaz (`simulaciones/kit/`) que of
 
 - **Lección guiada por etapas** (botón del libro o tecla `L`): cada etapa mueve la propia simulación (pestaña, molécula, experimento) y resalta la zona relevante; con pausa, avance, retroceso y velocidad.
 - **Captura PNG** de la vista actual, **pantalla completa**, **tema claro/oscuro** y **ayuda con atajos** (`?`).
+- **Modo evaluación** en los cuestionarios: sin retroalimentación hasta el final, revisión de respuestas y nota 1,0–7,0 (60 % de exigencia), con botón para copiar el resultado.
+- **Uso sin conexión (PWA)**: el portal se puede instalar y las simulaciones visitadas quedan disponibles offline (`simulaciones/sw.js`).
 - Predictores y desafíos: mecanismo (SN/E), muestra problema (ensayo a la llama), contador de isómeros de Werner (isomería) y reto Δ/Λ (quiralidad).
 
 El **Simulador SN1 · SN2 · E1 · E2** es la referencia de nivel de detalle; la **Electrólisis del agua** se reconstruyó completa sobre el kit y las demás incorporan estas funciones sobre su interfaz existente.
@@ -199,6 +219,10 @@ El **Simulador SN1 · SN2 · E1 · E2** es la referencia de nivel de detalle; la
 - Navegador moderno con WebGL (Chrome, Edge, Firefox, Safari), en computador, tablet o celular.
 - **Motor 3D con Three.js**: *GeoMol*, *Enlaces σ y π*, *Isomería de complejos*, *Quiralidad Δ/Λ*, *AtomLab* (modelos y orbitales), *Mecanismos SN/E*, *Enlace químico*, *Colisiones y estado de transición*, *Célula animal*, *Célula vegetal* y *Sistema Solar* renderizan con Three.js (iluminación real y z-buffer). Los experimentos de AtomLab y los módulos que son diagramas o gráficos 2D (LewisLab, Configuración electrónica, Propiedades periódicas) se mantienen en Canvas 2D, donde Three.js no aporta. La capa compartida está en `simulaciones/kit/mol3d.js`.
 - **Ninguna simulación depende de CDN ni de internet**: Three.js, Tailwind (compilado), Lucide y las fuentes (Inter, JetBrains Mono) están incluidos en cada carpeta `vendor/`.
+
+## Verificación automática
+
+`npm install && npm run check` revisa sintaxis, enlaces, metadatos y que cada simulación tenga versión en inglés y guías; `npm run smoke` carga todas las páginas (ES y EN) en jsdom. Ambos corren en GitHub Actions (`.github/workflows/check.yml`).
 
 ## Uso local
 

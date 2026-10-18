@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -124,16 +124,16 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   var f1 = function (x) { return fmt(x, 1); }, f2 = function (x) { return fmt(x, 2); }, T = THREE, sci = function (x) { return MSim.sci(x, 2); };
   // a: cationes, b: aniones por fórmula; ka: Ka del ácido conjugado del anión (0 = anión no básico); oh: hidróxido
   var SALTS = [
-    { id: 'AgCl', n: 'AgCl', ksp: 1.8e-10, a: 1, b: 1, ion: ['Ag⁺', 'Cl⁻'], col: 0xe9ecef, ka: 0 },
-    { id: 'BaSO4', n: 'BaSO₄', ksp: 1.1e-10, a: 1, b: 1, ion: ['Ba²⁺', 'SO₄²⁻'], col: 0xdee2e6, ka: 0 },
+    { id: "AgCl", n: "AgCl", ksp: 1.8e-10, a: 1, b: 1, ion: ['Ag⁺', 'Cl⁻'], col: 0xe9ecef, ka: 0 },
+    { id: 'BaSO4', n: "BaSO₄", ksp: 1.1e-10, a: 1, b: 1, ion: ['Ba²⁺', 'SO₄²⁻'], col: 0xdee2e6, ka: 0 },
     { id: 'PbI2', n: 'PbI₂', ksp: 9.8e-9, a: 1, b: 2, ion: ['Pb²⁺', 'I⁻'], col: 0xffd43b, ka: 0 },
-    { id: 'CaF2', n: 'CaF₂', ksp: 3.5e-11, a: 1, b: 2, ion: ['Ca²⁺', 'F⁻'], col: 0xf1f3f5, ka: 6.8e-4, pKa: 3.17 },
+    { id: 'CaF2', n: "CaF₂", ksp: 3.5e-11, a: 1, b: 2, ion: ['Ca²⁺', 'F⁻'], col: 0xf1f3f5, ka: 6.8e-4, pKa: 3.17 },
     { id: 'CaCO3', n: 'CaCO₃', ksp: 3.4e-9, a: 1, b: 1, ion: ['Ca²⁺', 'CO₃²⁻'], col: 0xe9ecef, ka: 4.7e-11, pKa: 10.33 },
     { id: 'MgOH2', n: 'Mg(OH)₂', ksp: 5.6e-12, a: 1, b: 2, ion: ['Mg²⁺', 'OH⁻'], col: 0xf8f9fa, oh: true }
   ], SID = {};
   SALTS.forEach(function (s) { SID[s.id] = s; });
   var KI = 8.5e-17, KC = 1.8e-10;
-  var S = { salt: 'AgCl', lc: -6, pH: 7, rat: 0, T: 0, mode: 'norm', _st: -1 }, NI = 70, NS = 70, lab = {};
+  var S = { salt: "AgCl", lc: -6, pH: 7, rat: 0, T: 0, mode: 'norm', _st: -1 }, NI = 70, NS = 70, lab = {};
   var cat, an, ex, sol, solB, dm, seeds = [];
   function alpha(s, pH) { return s.ka ? s.ka / (s.ka + Math.pow(10, -pH)) : 1; }
   // solubilidad molar (mol/L) con ion común c (M) y pH
@@ -184,11 +184,11 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       var P = ctx.P;
       if (!P.manual) {
         var i = f.i, l = f.local; S.mode = i === 5 ? 'sel' : 'norm';
-        if (i === 0) { S.salt = 'AgCl'; S.lc = -6; S.pH = 7; S.rat = 0; }
+        if (i === 0) { S.salt = "AgCl"; S.lc = -6; S.pH = 7; S.rat = 0; }
         else if (i === 1) { S.salt = SALTS[Math.min(2, Math.floor(l * 3))].id; S.lc = -6; S.pH = 7; S.rat = 0; }
-        else if (i === 2) { S.salt = 'AgCl'; S.lc = -5 + 5 * sm(l); S.pH = 7; S.rat = 0; }
+        else if (i === 2) { S.salt = "AgCl"; S.lc = -5 + 5 * sm(l); S.pH = 7; S.rat = 0; }
         else if (i === 3) { S.salt = ['CaF2', 'CaCO3', 'MgOH2'][Math.min(2, Math.floor(l * 3))]; S.lc = -6; S.pH = 1 + 12 * ((l * 3) % 1); S.rat = 0; }
-        else if (i === 4) { S.salt = 'AgCl'; S.lc = -6; S.pH = 7; S.rat = -3 + 6 * l; }
+        else if (i === 4) { S.salt = "AgCl"; S.lc = -6; S.pH = 7; S.rat = -3 + 6 * l; }
         else { S.T = 0.2 * sm(l); }
       }
       var s = SID[S.salt], now = ctx.now, nc, na, ne, fs, fsB = 0, sg = 0, ionOn = ctx.layer('ions'), sOn = ctx.layer('solid');
@@ -221,7 +221,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         lab.t.pos(0, 7.6, 0).set(s.n + " · Ksp = " + sci(s.ksp), 'bl-lead').vis(true);
         lab.a.pos(0, 6.8, 0).set('s = ' + sci(sv2) + ' mol/L', 'bl-pos').vis(true);
         lab.b.pos(-5.4, 3.5, 0).set(s.ion[0], 'bl-d').vis(true); lab.c.pos(5.4, 3.5, 0).set(s.ion[1] + (cc() > 0 ? " (+ common ion)" : ''), 'bl-d').vis(true);
-        lab.d.pos(0, -1.1, 0).set(S.rat ? 'Q/Kps = ' + sci(Math.pow(10, S.rat)) + (S.rat > 0 ? " → precipitates" : (S.rat < 0 ? " → unsaturated" : " → saturated")) : (cc() > 0 ? "[common ion] = " + sci(cc()) + ' M' : "pure water") + (s.ka || s.oh ? ' · pH ' + f1(S.pH) : ''), 'bl-d').vis(true);
+        lab.d.pos(0, -1.1, 0).set(S.rat ? 'Q/Kps = ' + sci(Math.pow(10, S.rat)) + (S.rat > 0 ? " → precipitates" : (S.rat < 0 ? " → unsaturated" : " → saturated")) : (cc() > 0 ? "[common ion] = " + sci(cc()) + ' M' : "pure water") + (s.ka || s.oh ? " · pH " + f1(S.pH) : ''), 'bl-d').vis(true);
       }
     },
     sync: function (ctx) { var u = ctx.ui; if (u.salt) u.salt.set(S.salt); if (!ctx.P.manual) { u.lc && u.lc.set(S.lc); u.pH && u.pH.set(S.pH); u.rat && u.rat.set(S.rat); u.T && u.T.set(S.T); } },
@@ -230,7 +230,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       var s = SID[S.salt], sv = solub(s, cc(), S.pH);
       return { eq: { chip: "Ksp", name: s.n + '(s) ⇌ ' + s.a + s.ion[0] + ' + ' + s.b + s.ion[1], body: "<div class=\"eqline\"><small>Ksp</small>" + sci(s.ksp) + '</div><div class="eqline"><small>s</small>' + sci(sv) + ' mol/L</div><div class="eqline"><small>g/L</small>' + sci(sv * (s.mm || 1)) + '</div>' }, legend: [{ label: s.ion[0], color: '#4f8bff', text: "cation" }, { label: s.ion[1], color: '#37b24d', text: "anion" }, { label: "Solid", color: '#e9ecef', text: "precipitate" }] };
     },
-    measures: function () { if (S.mode === 'sel') { var r = sel(S.T); return [["Ag⁺ added", fmt(S.T, 3) + ' M'], ['[Ag⁺]', sci(r.Ag) + ' M'], ['[I⁻]', sci(r.I) + ' M'], ['[Cl⁻]', sci(r.Cl) + ' M'], ["AgI precipitated", fmt(r.pI * 100 / 0.1, 0) + ' %'], ["AgCl precipitated", fmt(r.pC * 100 / 0.1, 0) + ' %']]; } var s = SID[S.salt], sv = solub(s, cc(), S.pH); return [["Salt", s.n], ["Ksp", sci(s.ksp)], ['s (mol/L)', sci(sv)], ['pKps', f2(-Math.log10(s.ksp))], ["[common ion]", cc() ? sci(cc()) + ' M' : '—'], ['pH', f1(S.pH)], ['Q/Kps', sci(Math.pow(10, S.rat))]]; },
+    measures: function () { if (S.mode === 'sel') { var r = sel(S.T); return [["Ag⁺ added", fmt(S.T, 3) + ' M'], ['[Ag⁺]', sci(r.Ag) + ' M'], ['[I⁻]', sci(r.I) + ' M'], ['[Cl⁻]', sci(r.Cl) + ' M'], ["AgI precipitated", fmt(r.pI * 100 / 0.1, 0) + ' %'], ["AgCl precipitated", fmt(r.pC * 100 / 0.1, 0) + ' %']]; } var s = SID[S.salt], sv = solub(s, cc(), S.pH); return [["Salt", s.n], ["Ksp", sci(s.ksp)], ['s (mol/L)', sci(sv)], ['pKps', f2(-Math.log10(s.ksp))], ["[common ion]", cc() ? sci(cc()) + ' M' : '—'], ['pH', f1(S.pH)], ["Q/Ksp", sci(Math.pow(10, S.rat))]]; },
     ideas: ["<b>Ksp = [M]ᵃ[X]ᵇ</b>; it is compared with Q to predict precipitation.", "<b>s</b> depends on the stoichiometry: aᵃbᵇ·s^(a+b) = Ksp.", "<b>Common ion</b>: lowers the solubility (s ≈ Ksp/c).", "<b>pH</b>: increases the solubility of salts with basic anions in acidic medium.", "<b>Selective precipitation</b> separates ions with very different Ksp."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Salt and solution"); el.appendChild(c);
@@ -254,7 +254,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       } },
       { title: "Solubility versus pH", h: 220, note: "The curve rises at low pH for F⁻ and CO₃²⁻ (conjugate bases) and falls at high pH for Mg(OH)₂.", draw: function (cx, w, h, col) {
         var L = 44, R = 10, Tp = 10, B = 30, pw = w - L - R, ph = h - Tp - B, xs = function (v) { return L + pw * v / 14; }, i, j, all = [];
-        var data = ['CaF2', 'CaCO3', 'MgOH2', 'AgCl'].map(function (id) { var s = SID[id], arr = []; for (i = 0; i <= 28; i++) arr.push(Math.log10(solub(s, 0, i / 2))); all = all.concat(arr); return [s, arr]; });
+        var data = ['CaF2', 'CaCO3', 'MgOH2', "AgCl"].map(function (id) { var s = SID[id], arr = []; for (i = 0; i <= 28; i++) arr.push(Math.log10(solub(s, 0, i / 2))); all = all.concat(arr); return [s, arr]; });
         var lo = Math.floor(Math.min.apply(null, all)) - 0.5, hi = Math.min(0, Math.ceil(Math.max.apply(null, all)) + 0.5), ys = function (v) { return Tp + ph - ph * (v - lo) / (hi - lo); }, cl = ['#ff6b6b', '#fcc419', '#4dabf7', '#adb5bd'];
         cx.font = '10.5px system-ui'; cx.strokeStyle = col.line; cx.fillStyle = col.muted; cx.textAlign = 'right'; for (i = Math.ceil(lo); i <= hi; i += Math.max(1, Math.round((hi - lo) / 5))) { cx.beginPath(); cx.moveTo(L, ys(i)); cx.lineTo(L + pw, ys(i)); cx.stroke(); cx.fillText(i, L - 5, ys(i) + 3); }
         cx.textAlign = 'center'; for (i = 0; i <= 14; i += 2) cx.fillText(i, xs(i), h - B + 13); cx.fillText('pH   ·   log s', L + pw / 2, h - 4);
@@ -263,7 +263,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ],
     calc: function () {
       var row = function (a, x) { return '<tr><th>' + a + '</th><td>' + x + '</td></tr>'; };
-      if (S.mode === 'sel') { var r = sel(S.T); return "<div class=\"card-kicker\">AgI and AgCl with increasing Ag⁺</div><div class=\"calc-step\">1 · [Ag⁺] at the start of each precipitation</div><table class=\"calc-table\">" + row('AgI', KI + ' / 0,1 = <b>' + sci(KI / 0.1) + ' M</b>') + row('AgCl', KC + ' / 0,1 = <b>' + sci(KC / 0.1) + ' M</b>') + "</table><div class=\"calc-step\">2 · [I⁻] when AgCl starts</div><table class=\"calc-table\">" + row('[I⁻]', "Ksp(AgI)/[Ag⁺] = <b>" + sci(KI / (KC / 0.1)) + ' M</b>') + row("Fraction remaining", sci(KI / (KC / 0.1) / 0.1)) + "</table><p class=\"muted small\">Now: [Ag⁺] = " + sci(r.Ag) + ' M · [I⁻] = ' + sci(r.I) + ' M.</p>'; }
+      if (S.mode === 'sel') { var r = sel(S.T); return "<div class=\"card-kicker\">AgI and AgCl with increasing Ag⁺</div><div class=\"calc-step\">1 · [Ag⁺] at the start of each precipitation</div><table class=\"calc-table\">" + row("AgI", KI + ' / 0,1 = <b>' + sci(KI / 0.1) + ' M</b>') + row("AgCl", KC + ' / 0,1 = <b>' + sci(KC / 0.1) + ' M</b>') + "</table><div class=\"calc-step\">2 · [I⁻] when AgCl starts</div><table class=\"calc-table\">" + row('[I⁻]', "Ksp(AgI)/[Ag⁺] = <b>" + sci(KI / (KC / 0.1)) + ' M</b>') + row("Fraction remaining", sci(KI / (KC / 0.1) / 0.1)) + "</table><p class=\"muted small\">Now: [Ag⁺] = " + sci(r.Ag) + ' M · [I⁻] = ' + sci(r.I) + ' M.</p>'; }
       var s = SID[S.salt], c = cc(), sv = solub(s, c, S.pH), pf = Math.pow(s.a, s.a) * Math.pow(s.b, s.b), s0 = Math.pow(s.ksp / pf, 1 / (s.a + s.b));
       return '<div class="card-kicker">' + s.n + '(s) ⇌ ' + s.a + ' ' + s.ion[0] + ' + ' + s.b + ' ' + s.ion[1] + "</div><div class=\"calc-step\">1 · Solubility in pure water</div><table class=\"calc-table\">" + row("Ksp", sci(s.ksp) + ' = ' + pf + ' s^' + (s.a + s.b)) + row('s', "(Ksp / " + pf + ')^(1/' + (s.a + s.b) + ') = <b>' + sci(s0) + ' mol/L</b>') + '</table>' +
         "<div class=\"calc-step\">2 · Current conditions</div><table class=\"calc-table\">" + row("Common ion", c ? sci(c) + ' M' : '—') + row('pH', f1(S.pH) + (s.ka ? " (pKa of conjugate acid " + s.pKa + " → free fraction α = " + sci(alpha(s, S.pH)) + ')' : '')) + row('s', '<b>' + sci(sv) + ' mol/L</b> (' + fmt(sv / s0, 2) + " × that of pure water)") + '</table>';
@@ -272,13 +272,13 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       { q: "What is the Ksp expression for Ca₃(PO₄)₂?", options: ['[Ca²⁺]³[PO₄³⁻]²', '[Ca²⁺][PO₄³⁻]', '[Ca²⁺]²[PO₄³⁻]³', '[Ca₃(PO₄)₂]'], answer: 0, why: "Each concentration is raised to its coefficient; the solid does not appear." },
       { q: "The molar solubility of AgCl (Ksp = 1.8×10⁻¹⁰) is…", options: ['1,3×10⁻⁵ M', '1,8×10⁻¹⁰ M', '9,0×10⁻¹¹ M', '3,6×10⁻¹⁰ M'], answer: 0, why: "s = √Ksp = 1.3×10⁻⁵ M." },
       { q: "When NaCl is added to a saturated solution of AgCl, the solubility…", options: ["decreases (common ion)", "increases", "does not change", "doubles"], answer: 0, why: "Common-ion effect: the equilibrium shifts toward the solid." },
-      { q: "Which salt dissolves more as the pH drops?", options: ['CaF₂', 'AgCl', 'BaSO₄', 'AgI'], answer: 0, why: "F⁻ is the conjugate base of a weak acid (HF); Cl⁻, SO₄²⁻ (almost) and I⁻ do not react significantly." },
+      { q: "Which salt dissolves more as the pH drops?", options: ["CaF₂", "AgCl", "BaSO₄", "AgI"], answer: 0, why: "F⁻ is the conjugate base of a weak acid (HF); Cl⁻, SO₄²⁻ (almost) and I⁻ do not react significantly." },
       { q: "If Q > Ksp…", options: ["solid precipitates", "more solid dissolves", "the solution is unsaturated", "Ksp increases"], answer: 0, why: "The solution is supersaturated and the excess precipitates until Q = Ksp." },
       { q: "For Mg(OH)₂, when the pH rises the solubility…", options: ["decreases", "increases", "does not change", "always drops to zero"], answer: 0, why: "More OH⁻ in solution: common-ion effect." },
-      { q: "With [I⁻] = [Cl⁻] = 0.1 M and increasing Ag⁺, the first to precipitate is…", options: ["AgI (lower Ksp)", 'AgCl', "both at the same time", "none"], answer: 0, why: "With the same anion concentration and 1:1 stoichiometry, the one with the lower Ksp precipitates first." },
+      { q: "With [I⁻] = [Cl⁻] = 0.1 M and increasing Ag⁺, the first to precipitate is…", options: ["AgI (lower Ksp)", "AgCl", "both at the same time", "none"], answer: 0, why: "With the same anion concentration and 1:1 stoichiometry, the one with the lower Ksp precipitates first." },
       { q: "Two salts with different stoichiometries are compared…", options: ["by their molar solubility s, not by Ksp", "always by Ksp", "by their molar mass", "by color"], answer: 0, why: "Ksp = aᵃbᵇ·s^(a+b) depends on the stoichiometry." }
     ],
-    help: { intro: "Choose the salt and move common ion, pH and Q/Ksp in “Lab”. Blue dots are cations, green ones anions and purple ones the extra ion or iodide; the small cubes at the bottom are the solid.", items: [["Common ion", "adds an ion of the salt."], ['pH', "affects basic anions."], ['Q/Kps', "above 1 it precipitates."], ["Ag⁺ added", "selective precipitation of AgI/AgCl."]] }
+    help: { intro: "Choose the salt and move common ion, pH and Q/Ksp in “Lab”. Blue dots are cations, green ones anions and purple ones the extra ion or iodide; the small cubes at the bottom are the solid.", items: [["Common ion", "adds an ion of the salt."], ['pH', "affects basic anions."], ["Q/Ksp", "above 1 it precipitates."], ["Ag⁺ added", "selective precipitation of AgI/AgCl."]] }
   };
   MSim.create(def);
 })();

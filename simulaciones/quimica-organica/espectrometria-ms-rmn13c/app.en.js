@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -272,7 +272,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         "<p>M⁺• fragments. In ketones, amines and alcohols <b>α-cleavage</b> dominates (the C–C bond next to the heteroatom): propanone → <b>CH₃C≡O⁺ (m/z 43)</b>; diethylamine → <b>m/z 58</b>; ethanol → <b>CH₂=OH⁺ (m/z 31)</b>. If there is an H at γ to the C=O, the <b>McLafferty rearrangement</b> occurs (pentan-2-one → <b>m/z 58</b>, with loss of ethene). The highlighted fragments are shown on the molecule.</p>"],
       ["¹³C NMR: signals", "Signals", "One signal for each chemically distinct carbon",
         "<p>In <b>¹³C NMR</b> (proton-decoupled) each <b>non-equivalent</b> carbon gives one signal. <b>Symmetry</b> reduces the number: <b>propanone</b> (two equivalent CH₃) gives 2 signals; <b>pentan-3-one</b>, 3; <b>butanone</b>, 4 and <b>pentan-2-one</b>, 5. The colors on the molecule show equivalent carbons (same color). Intensity is not proportional to the number of C.</p>"],
-      ["Chemical shift", 'δ (ppm)', "The most deshielded carbons (C=O, C–O) appear at higher δ",
+      ["Chemical shift", "δ (ppm)", "The most deshielded carbons (C=O, C–O) appear at higher δ",
         "<p>The <b>chemical shift δ</b> (ppm, relative to TMS) depends on the electronic environment: electronegative atoms and carbonyls <b>deshield</b> the carbon. Approximately: <b>alkyl 5–45 · C–N 30–60 · C–O 50–90 · C=C/aromatic 100–150 · acid/ester C=O 160–185 · aldehyde/ketone C=O 190–220</b> ppm. The signal at ≈ 209 ppm in butanone identifies a ketone carbonyl.</p>"],
       ["Solving a structure", "Solve", "Combine M⁺•, fragments and the no. of ¹³C signals",
         "<p>Strategy: 1) <b>M</b> and the N rule → formula; 2) isotopes (Cl/Br); 3) characteristic <b>fragments</b> (43 = CH₃CO, 57 = C₂H₅CO, 58 = McLafferty/amine α); 4) <b>no. of ¹³C signals</b> and their δ → functional groups and symmetry. In “Lab” turn on “Problem mode” to hide the name and deduce the structure from the spectra alone.</p>"]
@@ -333,7 +333,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       } },
       { title: "¹³C spectrum (decoupled)", h: 210, note: "One line per type of carbon; δ in ppm decreases to the right.", draw: function (cx, w, h, col) {
         var m = M[S.m], ks = envs(S.m), L = 14, Rr = 14, Tp = 14, B = 30, pw = w - L - Rr, ph = h - Tp - B, sx = function (d) { return L + pw * (1 - d / 220); }, i;
-        cx.font = '10px system-ui'; cx.textAlign = 'center'; cx.fillStyle = col.muted; cx.strokeStyle = col.line; for (i = 0; i <= 200; i += 50) { cx.beginPath(); cx.moveTo(sx(i), Tp + ph); cx.lineTo(sx(i), Tp + ph + 4); cx.stroke(); cx.fillText(i, sx(i), h - B + 14); } cx.beginPath(); cx.moveTo(L, Tp + ph); cx.lineTo(L + pw, Tp + ph); cx.stroke(); cx.fillText('δ (ppm)', L + pw / 2, h - 4);
+        cx.font = '10px system-ui'; cx.textAlign = 'center'; cx.fillStyle = col.muted; cx.strokeStyle = col.line; for (i = 0; i <= 200; i += 50) { cx.beginPath(); cx.moveTo(sx(i), Tp + ph); cx.lineTo(sx(i), Tp + ph + 4); cx.stroke(); cx.fillText(i, sx(i), h - B + 14); } cx.beginPath(); cx.moveTo(L, Tp + ph); cx.lineTo(L + pw, Tp + ph); cx.stroke(); cx.fillText("δ (ppm)", L + pw / 2, h - 4);
         ks.forEach(function (k, j) { var d = m.cn[k][0], cur = S.env === j, c = '#' + ('000000' + ENVC[k].toString(16)).slice(-6), hh = ph * (0.55 + 0.1 * Math.min(2, nC(S.m, k))); cx.strokeStyle = c; cx.lineWidth = cur ? 5 : 3; cx.beginPath(); cx.moveTo(sx(d), Tp + ph); cx.lineTo(sx(d), Tp + ph - hh); cx.stroke(); cx.fillStyle = col.ink; cx.fillText(d, sx(d), Tp + ph - hh - 5); }); cx.lineWidth = 1;
       } },
       { title: "Chemical shift scale", h: 210, note: "Typical ¹³C δ ranges; the dots are the signals of the current compound.", draw: function (cx, w, h, col) {

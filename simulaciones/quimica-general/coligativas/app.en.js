@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -125,7 +125,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   var SOL = {
     glu: { sv: 'agua', f: 'C₆H₁₂O₆', name: 'glucosa', M: 180.16, i: 1, maxm: 3, parts: [['glucosa', 0xffa94d, 0.26]], per: 1 },
     nacl: { sv: 'agua', f: 'NaCl', name: 'NaCl', M: 58.44, i: 2, maxm: 3, parts: [['Na⁺', 0xab5cf2, 0.19], ['Cl⁻', 0x3ddc5a, 0.24]], per: 1 },
-    cacl2: { sv: 'agua', f: 'CaCl₂', name: 'CaCl₂', M: 110.98, i: 3, maxm: 2, parts: [['Ca²⁺', 0x80d8ff, 0.2], ['Cl⁻', 0x3ddc5a, 0.24]], per: 1, mult: [1, 2] },
+    cacl2: { sv: 'agua', f: "CaCl₂", name: "CaCl₂", M: 110.98, i: 3, maxm: 2, parts: [['Ca²⁺', 0x80d8ff, 0.2], ['Cl⁻', 0x3ddc5a, 0.24]], per: 1, mult: [1, 2] },
     naf: { sv: 'benceno', f: 'C₁₀H₈', name: "naphthalene", M: 128.17, i: 1, maxm: 3, parts: [['C₁₀H₈', 0xb084ff, 0.3]], per: 1 }
   };
   var S = { sol: 'nacl', m: 1, T: 25, mode: 'vasos', fz: false };
@@ -156,7 +156,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     return [
       ["Concentration", "Concentration", "Molality, mole fraction and % m/m describe the solution",
         "<p>A solute dissolved in 1 kg of solvent: the <b>molality</b> m = mol of solute / kg of solvent (it does not depend on temperature). With <b>" + f2(S.m) + " mol/kg of " + o.f + '</b>: <b>% m/m = ' + f2(pctMass()) + " %</b>, mole fraction of solute <b>x = " + fmt(1 - xSolv(), 4) + "</b> (if it dissociates, i·m particles).</p><p><b>Colligative properties</b> depend on the <b>number of particles</b> of solute, not on its nature.</p>"],
-      ["Vapor pressure", 'Raoult', "Raoult's law: P = x<sub>solvent</sub> · P°",
+      ["Vapor pressure", "Raoult", "Raoult's law: P = x<sub>solvent</sub> · P°",
         "<p>The solute particles occupy part of the surface and make it harder for the solvent to escape: the vapor pressure <b>drops</b>. For " + o.f + ' ' + f2(S.m) + " m in " + v.name + ": x<sub>solvent</sub> = <b>" + fmt(xSolv(), 4) + "</b>, P = x·P° (bars next to the flasks).</p>"],
       ["Boiling", "Boiling", "Boiling-point elevation: ΔT<sub>b</sub> = i · K<sub>b</sub> · m",
         "<p>The solution needs a higher temperature to match the external pressure: <b>ΔT<sub>b</sub> = " + i + ' × ' + v.Kb + ' × ' + f2(S.m) + ' = ' + f2(dTb()) + " °C</b>. Pure solvent boils at " + fmt(v.Tb, 1) + " °C; the solution at <b>" + fmt(Tb(true), 2) + " °C</b>. Watch at what T bubbles appear in each flask.</p>"],
@@ -334,7 +334,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     quiz: [
       { q: "0.50 mol of glucose is dissolved in 250 g of water. What is the molality?", options: ["2.0 mol/kg", "0.50 mol/kg", "0.125 mol/kg", "1.0 mol/kg"], answer: 0, why: "m = mol of solute / kg of solvent = 0.50 / 0.250 = 2.0 mol/kg." },
       { q: "58.4 g of NaCl is dissolved in 1.00 kg of water. Assuming complete dissociation, what is ΔT<sub>f</sub>? (K<sub>f</sub> = 1.86 °C·kg/mol; M = 58.44 g/mol)", options: ['3,72 °C', '1,86 °C', '0,93 °C', '7,44 °C'], answer: 0, why: "m = 1.00 mol/kg, i = 2: ΔT_f = i·K_f·m = 2 × 1.86 × 1.00 = 3.72 °C; it freezes at −3.72 °C." },
-      { q: "For the same molality, which aqueous solution has the greater freezing-point depression?", options: ['CaCl₂', 'NaCl', "Glucose", "All equal"], answer: 0, why: "It depends on i·m: CaCl₂ (i = 3) > NaCl (i = 2) > glucose (i = 1)." },
+      { q: "For the same molality, which aqueous solution has the greater freezing-point depression?", options: ["CaCl₂", 'NaCl', "Glucose", "All equal"], answer: 0, why: "It depends on i·m: CaCl₂ (i = 3) > NaCl (i = 2) > glucose (i = 1)." },
       { q: "The vapor pressure of a solution with a nonvolatile solute is…", options: ["Lower than that of the pure solvent", "Higher than that of the pure solvent", "Equal to that of the pure solvent", "Zero"], answer: 0, why: "Raoult's law: P = x_solvent·P° and x < 1, hence P < P°." },
       { q: "At what temperature does a 1.00 m solution of glucose in water boil at 1 atm? (K<sub>b</sub> = 0.512 °C·kg/mol)", options: ['100,51 °C', '99,49 °C', '101,02 °C', '100,00 °C'], answer: 0, why: 'ΔT_b = 1 × 0,512 × 1,00 = 0,512 °C → 100,51 °C.' },
       { q: "What is the osmotic pressure of 0.100 M glucose at 25 °C (R = 0.08206 atm·L/mol·K)?", options: ["2.45 atm", "24.5 atm", "0.245 atm", "1.00 atm"], answer: 0, why: "π = M·R·T = 0.100 × 0.08206 × 298.15 = 2.45 atm (i = 1)." },

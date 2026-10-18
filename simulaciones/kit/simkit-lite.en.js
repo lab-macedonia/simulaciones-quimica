@@ -4,7 +4,7 @@
    · Barra de herramientas: volver, captura PNG, pantalla completa, tema (opcional) y ayuda con atajos.
    Sin dependencias. Licencia MIT. */
 (function (global) {
-  'use strict';
+  "use strict";
   var IC = {
     play: '<path d="M7 4.5v15l12.5-7.5z" fill="currentColor" stroke="none"/>',
     pause: '<path d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z" fill="currentColor" stroke="none"/>',

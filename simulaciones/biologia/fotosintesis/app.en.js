@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -138,9 +138,9 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         "<p>The electrons pass through the <b>transport chain</b>: <b>PSII → plastoquinone (PQ) → cytochrome b₆f complex → plastocyanin (PC) → PSI</b>. At b₆f the energy released <b>pumps H⁺ from the stroma into the lumen</b>. Together with photolysis, this creates a <b>proton gradient</b> (the lumen reaches pH ≈ 4–5; the stroma ≈ 8): a <b>proton-motive force</b>. A second photon excites <b>PSI (P700)</b> and sends the electron to an even higher energy level (Z scheme).</p>"],
       ["ATP synthase and NADPH", "ATP and NADPH", "H⁺ return to the stroma through ATP synthase (ADP + Pᵢ → ATP); PSI reduces NADP⁺ to NADPH",
         "<p>The H⁺ return to the stroma through <b>ATP synthase</b>: the flow turns its rotor and catalyzes <b>ADP + Pᵢ → ATP</b> (<b>photophosphorylation</b>, about 4 H⁺ per ATP). In PSI, the electrons, through <b>ferredoxin</b> and <b>FNR</b>, reduce <b>NADP⁺ + H⁺ + 2 e⁻ → NADPH</b>. The product of the light phase is <b>ATP + NADPH + O₂</b>; with intense light the carriers saturate.</p>"],
-      ["Calvin cycle: fixation and reduction", 'Calvin I', "RuBisCO fixes CO₂ onto RuBP (5C) → 2 × 3-PGA; then ATP and NADPH reduce it to G3P",
+      ["Calvin cycle: fixation and reduction", "Calvin I", "RuBisCO fixes CO₂ onto RuBP (5C) → 2 × 3-PGA; then ATP and NADPH reduce it to G3P",
         "<p>In the stroma, <b>RuBisCO</b> joins <b>CO₂</b> to <b>ribulose-1,5-bisphosphate (RuBP, 5 C)</b> and the 6 C intermediate splits into <b>2 × 3-phosphoglycerate (3-PGA, 3 C)</b>. Then, 3-PGA is <b>phosphorylated with ATP</b> and <b>reduced with NADPH</b> to <b>glyceraldehyde-3-phosphate (G3P)</b>. For <b>3 CO₂</b> fixed: 3 RuBP + 3 CO₂ → 6 PGA → 6 G3P (6 ATP + 6 NADPH).</p>"],
-      ["Regeneration and balance", 'Calvin II', "Of 6 G3P: 1 leaves as product and 5 regenerate 3 RuBP (3 ATP)",
+      ["Regeneration and balance", "Calvin II", "Of 6 G3P: 1 leaves as product and 5 regenerate 3 RuBP (3 ATP)",
         "<p>Of the 6 G3P, <b>only 1 leaves the cycle</b> (used to synthesize glucose, sucrose or starch); the other <b>5 G3P</b> (15 C) are rearranged to regenerate <b>3 RuBP</b> (15 C) with 3 ATP. Balance per <b>CO₂ fixed: 3 ATP + 2 NADPH</b>. For one glucose (6 CO₂): <b>18 ATP + 12 NADPH</b>. In this way the energy of light is stored in C–H and C–C bonds.</p>"]
     ];
   }
@@ -242,7 +242,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     lab: function (el2, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Scene"); el2.appendChild(c);
       ui.mode = kit.ui.options({ label: "Show", cols: 3, value: S.mode, options: [{ v: 'chloro', label: "Chloroplast" }, { v: 'memb', label: "Light phase" }, { v: 'calvin', label: 'Calvin' }], onChange: function (v) { ctx.goManual(); S.mode = v; S.stage = v === 'memb' ? 3 : (v === 'calvin' ? 4 : 0); S.q = v === 'calvin' ? 0 : 1; } }); c.appendChild(ui.mode);
-      ui.inh = kit.ui.options({ label: "Treatment", cols: 3, value: S.inh, options: [{ v: 'n', label: 'Normal' }, { v: 'dcmu', label: 'DCMU', sub: "blocks PSII" }, { v: 'dnp', label: 'DNP', sub: "uncoupler" }], onChange: function (v) { ctx.goManual(); S.inh = v; if (S.mode !== 'memb') { S.mode = 'memb'; S.stage = 3; } S.q = 1; } }); c.appendChild(ui.inh);
+      ui.inh = kit.ui.options({ label: "Treatment", cols: 3, value: S.inh, options: [{ v: 'n', label: 'Normal' }, { v: 'dcmu', label: "DCMU", sub: "blocks PSII" }, { v: 'dnp', label: "DNP", sub: "uncoupler" }], onChange: function (v) { ctx.goManual(); S.inh = v; if (S.mode !== 'memb') { S.mode = 'memb'; S.stage = 3; } S.q = 1; } }); c.appendChild(ui.inh);
       ui.I = kit.ui.slider({ label: "Light intensity", min: 0, max: 1, step: 0.01, value: S.I, format: function (v) { return fmt(v * 100, 0) + ' %'; }, onInput: function (v) { ctx.goManual(); S.I = v; } });
       ui.co2 = kit.ui.slider({ label: "CO₂ concentration", min: 0, max: 1, step: 0.01, value: S.co2, format: function (v) { return fmt(v * 100, 0) + ' %'; }, onInput: function (v) { ctx.goManual(); S.co2 = v; } });
       ui.q = kit.ui.slider({ label: "Process progress", min: 0, max: 1, step: 0.01, value: S.q, format: function (v) { return fmt(v * 100, 0) + ' %'; }, onInput: function (v) { ctx.goManual(); S.run = false; S.q = v; } }); c.appendChild(kit.ui.sliders([ui.I, ui.co2, ui.q]));
@@ -272,19 +272,19 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ],
     calc: function () {
       var row = function (a, x) { return '<tr><th>' + a + '</th><td>' + x + '</td></tr>'; }, rr = Math.min(1, rate(S.I, S.co2));
-      return "<div class=\"card-kicker\">Photosynthesis: balance</div><div class=\"calc-step\">1 · Per CO₂ fixed</div><table class=\"calc-table\">" + row('ATP', "3 (2 in reduction + 1 in regeneration)") + row('NADPH', "2 (in the reduction of 3-PGA to G3P)") + "</table><div class=\"calc-step\">2 · Per glucose (6 CO₂)</div><table class=\"calc-table\">" + row('ATP', '6 × 3 = <b>18</b>') + row('NADPH', '6 × 2 = <b>12</b>') + row("Electrons", "12 NADPH × 2 e⁻ = 24 e⁻ → 24 × (1 photon by PSII + 1 by PSI)/2 = <b>48 photons</b> (theoretical minimum)") + row("Energy of glucose", "≈ 2,870 kJ/mol") + row("Energy of 48 photons (680 nm)", "48 × 176 kJ/mol = 8,450 kJ") + row("Theoretical max. efficiency", '≈ 34 %') + "</table><p class=\"muted small\">Current relative rate: " + fmt(rr * (S.inh === 'dcmu' ? 0 : 1) * 100, 0) + " % (light " + fmt(S.I * 100, 0) + ' %, CO₂ ' + fmt(S.co2 * 100, 0) + ' %).</p>';
+      return "<div class=\"card-kicker\">Photosynthesis: balance</div><div class=\"calc-step\">1 · Per CO₂ fixed</div><table class=\"calc-table\">" + row('ATP', "3 (2 in reduction + 1 in regeneration)") + row("NADPH", "2 (in the reduction of 3-PGA to G3P)") + "</table><div class=\"calc-step\">2 · Per glucose (6 CO₂)</div><table class=\"calc-table\">" + row('ATP', '6 × 3 = <b>18</b>') + row("NADPH", '6 × 2 = <b>12</b>') + row("Electrons", "12 NADPH × 2 e⁻ = 24 e⁻ → 24 × (1 photon by PSII + 1 by PSI)/2 = <b>48 photons</b> (theoretical minimum)") + row("Energy of glucose", "≈ 2,870 kJ/mol") + row("Energy of 48 photons (680 nm)", "48 × 176 kJ/mol = 8,450 kJ") + row("Theoretical max. efficiency", '≈ 34 %') + "</table><p class=\"muted small\">Current relative rate: " + fmt(rr * (S.inh === 'dcmu' ? 0 : 1) * 100, 0) + " % (light " + fmt(S.I * 100, 0) + ' %, CO₂ ' + fmt(S.co2 * 100, 0) + ' %).</p>';
     },
     quiz: [
       { q: "Where does the O₂ released in photosynthesis come from?", options: ["From water", "From CO₂", "From glucose", "From the air of the stroma"], answer: 0, why: "Water photolysis in PSII releases O₂." },
       { q: "The light reactions occur in…", options: ["the thylakoid membrane", "the stroma", "the outer membrane", "the cytosol"], answer: 0, why: "The Calvin cycle occurs in the stroma." },
-      { q: "ATP synthase uses…", options: ["the H⁺ gradient between lumen and stroma", "light directly", 'NADPH', 'CO₂'], answer: 0, why: "Proton-motive force: the H⁺ leave the lumen into the stroma." },
-      { q: "Which enzyme fixes CO₂ in the Calvin cycle?", options: ['RuBisCO', "ATP synthase", 'Catalasa', 'FNR'], answer: 0, why: "Ribulose-1,5-bisphosphate carboxylase/oxygenase." },
+      { q: "ATP synthase uses…", options: ["the H⁺ gradient between lumen and stroma", "light directly", "NADPH", 'CO₂'], answer: 0, why: "Proton-motive force: the H⁺ leave the lumen into the stroma." },
+      { q: "Which enzyme fixes CO₂ in the Calvin cycle?", options: ["RuBisCO", "ATP synthase", "Catalase", "FNR"], answer: 0, why: "Ribulose-1,5-bisphosphate carboxylase/oxygenase." },
       { q: "For each CO₂ fixed, the following are consumed…", options: ["3 ATP and 2 NADPH", "2 ATP and 3 NADPH", "1 ATP and 1 NADPH", "6 ATP and 6 NADPH"], answer: 0, why: "2 ATP + 2 NADPH in the reduction and 1 ATP in the regeneration." },
       { q: "DCMU inhibits…", options: ["the flow from PSII", "RuBisCO", "ATP synthase", "water photolysis only"], answer: 0, why: "It blocks the plastoquinone site in PSII." },
       { q: "Of 6 G3P produced by 3 turns of the cycle…", options: ["1 is net product and 5 regenerate RuBP", "6 leave", "3 leave", "none leaves"], answer: 0, why: "Carbon balance: 5 × 3 C = 15 C = 3 RuBP." },
       { q: "Chlorophylls mainly reflect…", options: ["green", "red", "blue", "ultraviolet"], answer: 0, why: "They absorb blue and red." }
     ],
-    help: { intro: "Choose the scene (chloroplast, light phase or Calvin), adjust light and CO₂ and try the DCMU and DNP inhibitors to see their effects.", items: [["Layers", "photons, electrons, protons and ATP/NADPH."], ['DCMU', "blocks PSII: no e⁻, no gradient."], ['DNP', "dissipates the gradient: no ATP."]] }
+    help: { intro: "Choose the scene (chloroplast, light phase or Calvin), adjust light and CO₂ and try the DCMU and DNP inhibitors to see their effects.", items: [["Layers", "photons, electrons, protons and ATP/NADPH."], ["DCMU", "blocks PSII: no e⁻, no gradient."], ["DNP", "dissipates the gradient: no ATP."]] }
   };
   MSim.create(def);
 })();

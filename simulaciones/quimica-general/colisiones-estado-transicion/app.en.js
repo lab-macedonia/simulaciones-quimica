@@ -1,7 +1,7 @@
 /* Teoría de las colisiones y estado de transición — simulador 3D · Laboratorio MACEDONIA (UMCE)
    Usa el kit común ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, kit;
   var fmt = SimKit.fmt, clamp = SimKit.clamp;
   var R = 0.008314;               // kJ/(mol·K)
@@ -614,7 +614,7 @@
       stages: STAGES,
       mainTabLabel: "Guide",
       tabs: [
-        { id: 'lab', label: 'Lab', build: function (el, k) { kit = k; buildLab(el); } },
+        { id: 'lab', label: "Lab", build: function (el, k) { kit = k; buildLab(el); } },
         { id: 'graf', label: "Graphs", build: function (el, k) { kit = k; buildGraphs(el); } },
         { id: 'pred', label: 'Predictor', build: function (el, k) { kit = k; buildPredictor(el); } }
       ],

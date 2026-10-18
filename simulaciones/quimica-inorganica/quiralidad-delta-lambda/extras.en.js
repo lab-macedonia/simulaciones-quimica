@@ -1,6 +1,6 @@
 /* Extras de Quiralidad: tema, lección guiada, captura y ayuda (kit común). */
 (function () {
-  'use strict';
+  "use strict";
   var KEY = 'simkit:quiralidad:theme';
   function setTheme(t) { document.documentElement.setAttribute('data-theme', t); try { localStorage.setItem(KEY, t); } catch (e) { /* nada */ } }
   var saved = null; try { saved = localStorage.getItem(KEY); } catch (e) { /* nada */ }

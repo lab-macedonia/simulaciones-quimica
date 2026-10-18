@@ -1,7 +1,7 @@
 /* CarboLab · De Fischer a Haworth y silla — simulador 3D · Laboratorio MACEDONIA (UMCE)
    Usa el kit común ../../kit/simkit.js y el núcleo geométrico core.js (CarboCore, sin DOM). */
 (function () {
-  'use strict';
+  "use strict";
   var C = CarboCore, T3 = THREE, kit;
   var clamp = SimKit.clamp, fmt = SimKit.fmt;
   var smooth = function (t) { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
@@ -560,7 +560,7 @@
       stages: STAGES,
       mainTabLabel: "Guide",
       tabs: [
-        { id: 'lab', label: 'Lab', build: function (el, k) { kit = k; buildLab(el); } },
+        { id: 'lab', label: "Lab", build: function (el, k) { kit = k; buildLab(el); } },
         { id: 'desafio', label: "Challenge", build: function (el, k) { kit = k; buildQuiz(el); } }
       ],
       measuresTitle: "Live measurements",
@@ -601,7 +601,7 @@
           ["Stages", "Fischer → 90° turn → cyclization to Haworth → chair (pyranoses) or envelope (furanoses)."],
           ["Layers", "hydrogens, numbering, highlighting of the anomeric C and the reference C, and 1,3-diaxial repulsions (keys 1–4)."],
           ["Views", "the suggested view goes with each stage; there are also front, side and top views (key V)."],
-          ['Lab', "six D-series sugars (D-ribose, D-glucose, D-mannose, D-galactose, D-fructose, D-ribulose), α/β and a button to flip the chair or change the envelope pucker."],
+          ["Lab", "six D-series sugars (D-ribose, D-glucose, D-mannose, D-galactose, D-fructose, D-ribulose), α/β and a button to flip the chair or change the envelope pucker."],
           ["Direct link", "the address saves your choice: …/#glucosa/piranosa/beta"]
         ]
       }

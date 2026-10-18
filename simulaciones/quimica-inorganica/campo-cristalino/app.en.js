@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -253,8 +253,8 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       ["Octahedral splitting", "Octahedron", "The ligands repel more the orbitals that point toward them", "<p>With six ligands on the axes, the <b>e_g</b> orbitals (d_z², d_x²−y²) point toward the ligands and rise in energy; the <b>t₂g</b> (d_xy, d_xz, d_yz) point between them and drop. The difference is <b>Δo</b>. By the barycenter: t₂g at −0.4 Δo and e_g at +0.6 Δo.</p>"],
       ["Spectrochemical series", "Series", "Each ligand produces a different Δo", "<p>I⁻ &lt; Br⁻ &lt; Cl⁻ &lt; F⁻ &lt; OH⁻ &lt; H₂O &lt; NH₃ &lt; en &lt; CN⁻ &lt; CO: from <b>weak-field</b> to <b>strong-field</b> ligands. Here Cr³⁺ with different ligands: Δo grows and the absorbed wavelength decreases. (Approximate values, with the Jørgensen model Δo = f·g.)</p>"],
       ["High and low spin", "Spin", "Δo and the pairing energy P compete", "<p>For d⁴–d⁷ in an octahedron: if <b>Δo &lt; P</b> the electrons spread over all the orbitals (<b>high spin</b>); if <b>Δo &gt; P</b> they fill the t₂g first (<b>low spin</b>). Fe²⁺ (d⁶): with H₂O high spin (4 unpaired electrons); with CN⁻ low spin (diamagnetic).</p>"],
-      ["Stabilization (CFSE)", 'CFSE', "The occupation of the levels stabilizes the complex", "<p><b>CFSE = −0.4·n(t₂g) + 0.6·n(e_g)</b> (in Δo). Go through d¹ → d¹⁰ with H₂O: d³ (−1.2) and d⁸ (−1.2) are very stable; d⁰, d⁵ (high spin) and d¹⁰ have CFSE = 0. It explains trends in ionic radii and hydration enthalpies.</p>"],
-      ['Color', 'Color', "The observed color is the complement of the absorbed one", "<p>A d–d transition absorbs light of energy <b>Δ</b> (λ = 1/Δ). The complex looks the <b>complementary color</b>. Cr³⁺ with H₂O absorbs ≈ 575 nm (yellow-green) and looks violet; with NH₃ or en it absorbs at a shorter λ and the color changes. With d⁰ or d¹⁰ there are no d–d transitions: colorless (except for charge transfer).</p>"],
+      ["Stabilization (CFSE)", "CFSE", "The occupation of the levels stabilizes the complex", "<p><b>CFSE = −0.4·n(t₂g) + 0.6·n(e_g)</b> (in Δo). Go through d¹ → d¹⁰ with H₂O: d³ (−1.2) and d⁸ (−1.2) are very stable; d⁰, d⁵ (high spin) and d¹⁰ have CFSE = 0. It explains trends in ionic radii and hydration enthalpies.</p>"],
+      ["Color", "Color", "The observed color is the complement of the absorbed one", "<p>A d–d transition absorbs light of energy <b>Δ</b> (λ = 1/Δ). The complex looks the <b>complementary color</b>. Cr³⁺ with H₂O absorbs ≈ 575 nm (yellow-green) and looks violet; with NH₃ or en it absorbs at a shorter λ and the color changes. With d⁰ or d¹⁰ there are no d–d transitions: colorless (except for charge transfer).</p>"],
       ["Tetrahedral and square planar", "Geometries", "The geometry changes the splitting pattern", "<p>Tetrahedral: the pattern is inverted (e below, t₂ above) and <b>Δt = 4/9 Δo</b>, always high spin. Square planar: d_x²−y² very high; with d⁸ and strong ligands (Ni²⁺ + CN⁻) the 8 electrons fill the four lower levels → <b>diamagnetic</b>.</p>"]
     ];
   }
@@ -291,7 +291,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     },
     sync: function (ctx) { var u = ctx.ui; if (u.refresh) u.refresh(); },
     hud: function () { var c = compute(); return { eq: { chip: c.geo === 'oct' ? 'Δo' : (c.geo === 'tet' ? 'Δt' : 'Δo ref.'), name: c.form, body: "<div class=\"eqline\"><small>Configuration</small>d" + c.m.d + (c.spin ? ' · ' + c.spin : '') + "</div><div class=\"eqline\"><small>Splitting</small>" + fmt(c.Dg, 0) + ' cm⁻¹ (' + fmt(c.kJ, 0) + " kJ/mol)</div><div class=\"eqline\"><small>Unpaired electrons</small>" + c.un + ' (μ ≈ ' + fmt(c.mu, 2) + ' MB)</div>' }, legend: [{ label: '+', color: '#4d8dff', text: "positive lobe" }, { label: '−', color: '#ff5959', text: "negative lobe" }, { label: '↑↓', color: '#ffe066', text: "electrons (spin)" }] }; },
-    measures: function () { var c = compute(); return [["Complex", c.form], ["Geometry", GEO[c.geo]], ["Configuration", 'd' + c.m.d + (c.spin ? ' (' + c.spin + ')' : '')], ['Δ (cm⁻¹)', fmt(c.Dg, 0)], ['P (cm⁻¹)', fmt(c.m.P, 0)], ["Absorption λ", fmt(c.lam, 0) + ' nm'], ['CFSE', fmt(c.cf, 2) + ' Δo'], ["Unpaired", String(c.un)]]; },
+    measures: function () { var c = compute(); return [["Complex", c.form], ["Geometry", GEO[c.geo]], ["Configuration", 'd' + c.m.d + (c.spin ? ' (' + c.spin + ')' : '')], ['Δ (cm⁻¹)', fmt(c.Dg, 0)], ['P (cm⁻¹)', fmt(c.m.P, 0)], ["Absorption λ", fmt(c.lam, 0) + ' nm'], ["CFSE", fmt(c.cf, 2) + ' Δo'], ["Unpaired", String(c.un)]]; },
     ideas: ["The orbitals that <b>point toward the ligands</b> rise in energy.", "Δo depends on the <b>ligand</b> (spectrochemical series), the <b>metal</b> and its oxidation state.", "<b>Δo &lt; P</b> → high spin; <b>Δo &gt; P</b> → low spin (d⁴–d⁷).", "Δt = 4/9 Δo: tetrahedral complexes are always high spin.", "The observed color is the complement of the absorbed one (λ = 10⁷/Δ nm with Δ in cm⁻¹)."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Complex"); el.appendChild(c);
@@ -330,7 +330,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       var c = compute(), row = function (a, b) { return '<tr><th>' + a + '</th><td>' + b + '</td></tr>'; }, nt = c.occ.reduce(function (a, o, i) { return a + (c.lv[i][1] < (c.geo === 'sq' ? 0 : (c.geo === 'oct' ? 0 : 0)) ? o[0] + o[1] : 0); }, 0);
       var lo = 0, hi = 0; c.occ.forEach(function (o, i) { var cnt = o[0] + o[1]; if (c.geo === 'oct') { if (c.lv[i][1] < 0) lo += cnt; else hi += cnt; } else if (c.geo === 'tet') { if (c.lv[i][1] < 0) lo += cnt; else hi += cnt; } });
       var conf = c.geo === 'oct' ? 't₂g' + (lo ? '<sup>' + lo + '</sup>' : '⁰') + ' e_g<sup>' + hi + '</sup>' : (c.geo === 'tet' ? 'e<sup>' + lo + '</sup> t₂<sup>' + hi + '</sup>' : 'd<sup>' + c.m.d + '</sup>');
-      return '<div class="card-kicker">' + c.form + ' · ' + GEO[c.geo] + "</div><div class=\"calc-step\">1 · Splitting</div><table class=\"calc-table\">" + row('Δo = f·g', fmt(c.L.f, 2) + ' × ' + fmt(c.m.g, 0) + ' = ' + fmt(c.Do, 0) + ' cm⁻¹') + (c.geo === 'tet' ? row('Δt = 4/9 Δo', fmt(c.Dg, 0) + ' cm⁻¹') : '') + row("In kJ/mol", fmt(c.kJ, 1)) + row("Wavelength", fmt(c.lam, 0) + ' nm') + "</table><div class=\"calc-step\">2 · Occupation</div><table class=\"calc-table\">" + row("Configuration", 'd<sup>' + c.m.d + '</sup> → ' + conf) + row("P (pairing)", fmt(c.m.P, 0) + ' cm⁻¹ (' + (c.Do < c.m.P ? 'Δo < P' : 'Δo > P') + ')') + row("Spin", c.spin || '—') + row("Unpaired", c.un + ' · μ_s = √(n(n+2)) = ' + fmt(c.mu, 2) + ' MB') + "</table><div class=\"calc-step\">3 · Stabilization</div><table class=\"calc-table\">" + row('CFSE', fmt(c.cf, 2) + ' Δo = ' + fmt(c.cf * c.Do, 0) + ' cm⁻¹') + row("Pairs", String(c.pr)) + '</table>';
+      return '<div class="card-kicker">' + c.form + ' · ' + GEO[c.geo] + "</div><div class=\"calc-step\">1 · Splitting</div><table class=\"calc-table\">" + row('Δo = f·g', fmt(c.L.f, 2) + ' × ' + fmt(c.m.g, 0) + ' = ' + fmt(c.Do, 0) + ' cm⁻¹') + (c.geo === 'tet' ? row('Δt = 4/9 Δo', fmt(c.Dg, 0) + ' cm⁻¹') : '') + row("In kJ/mol", fmt(c.kJ, 1)) + row("Wavelength", fmt(c.lam, 0) + ' nm') + "</table><div class=\"calc-step\">2 · Occupation</div><table class=\"calc-table\">" + row("Configuration", 'd<sup>' + c.m.d + '</sup> → ' + conf) + row("P (pairing)", fmt(c.m.P, 0) + ' cm⁻¹ (' + (c.Do < c.m.P ? 'Δo < P' : 'Δo > P') + ')') + row("Spin", c.spin || '—') + row("Unpaired", c.un + ' · μ_s = √(n(n+2)) = ' + fmt(c.mu, 2) + ' MB') + "</table><div class=\"calc-step\">3 · Stabilization</div><table class=\"calc-table\">" + row("CFSE", fmt(c.cf, 2) + ' Δo = ' + fmt(c.cf * c.Do, 0) + ' cm⁻¹') + row("Pairs", String(c.pr)) + '</table>';
     },
     calcLabel: "Calculation",
     quiz: [

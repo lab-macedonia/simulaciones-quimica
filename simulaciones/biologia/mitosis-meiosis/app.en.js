@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -136,9 +136,9 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         "<p>In <b>prophase</b> the chromosomes <b>condense</b>, the nuclear envelope breaks down and the <b>centrosomes</b> migrate to opposite poles forming the <b>mitotic spindle</b>. In <b>metaphase</b> the chromosomes line up on the <b>equatorial plate</b>, each chromatid attached by its <b>kinetochore</b> to microtubules from opposite poles. This is the spindle checkpoint: the cell does not proceed until all are properly attached.</p>"],
       ["Mitosis: anaphase and cytokinesis", "Anaphase–Cytokinesis", "The sister chromatids separate and two identical cells (2n) form",
         "<p>In <b>anaphase</b> the centromeres separate and the microtubules pull <b>each sister chromatid</b> to a pole; from then on each is a complete chromosome. In <b>telophase</b> the nuclear envelopes are rebuilt and the chromosomes decondense; <b>cytokinesis</b> divides the cytoplasm (in animals, by a contractile ring). Result: <b>two 2n daughter cells, genetically identical</b>, each with 2C of DNA.</p>"],
-      ['Meiosis I', 'Meiosis I', "Synapsis, crossing over and separation of homologous chromosomes (2n → n)",
+      ["Meiosis I", "Meiosis I", "Synapsis, crossing over and separation of homologous chromosomes (2n → n)",
         "<p>In <b>prophase I</b> the homologs pair up (<b>synapsis</b>) forming <b>bivalents</b>, and non-sister chromatids exchange segments at the <b>chiasmata</b> (<b>crossing over</b>: variability). In <b>metaphase I</b> the bivalents line up and the orientation of each pair toward a pole is <b>random</b> (independent assortment). In <b>anaphase I</b> the <b>homologs</b> separate (not the chromatids). The result is <b>2 haploid cells (n)</b>, with chromosomes still duplicated (2C).</p>"],
-      ['Meiosis II', 'Meiosis II', "The sister chromatids separate: 4 haploid cells (n, 1C)",
+      ["Meiosis II", "Meiosis II", "The sister chromatids separate: 4 haploid cells (n, 1C)",
         "<p><b>Meiosis II</b> resembles a mitosis, <b>without prior DNA replication</b>. In <b>metaphase II</b> the chromosomes (still with two chromatids, some recombinant) line up in each cell; in <b>anaphase II</b> the <b>sister chromatids</b> separate. <b>Four haploid cells (n = 2), genetically different</b>, are obtained, each with 1C of DNA: the future gametes (egg, sperm) or spores.</p>"],
       ["Genetic variability", "Variability", "Independent assortment (2ⁿ) + crossing over = enormous diversity",
         "<p>Two sources of variability: (1) <b>independent assortment</b> of homologous chromosomes: with n pairs there are <b>2ⁿ</b> possible combinations (here 2² = 4; in humans <b>2²³ ≈ 8.4 million</b>); (2) <b>crossing over</b>, which creates recombinant chromatids. Watch how the chromatid colors change and which combination (red/blue) each gamete receives. Mitosis: clone; meiosis: diversity.</p>"]

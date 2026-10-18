@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -136,7 +136,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     { id: 'nacl', n: "Sodium chloride (NaCl)", ex: "table salt", at: mk(C.concat(FC), 0).concat(mk(ED, 1), [{ p: [.5, .5, .5], k: 1 }]), rr: [181, 102], a: 564, M: 58.44, Z: 4, cn: '6 : 6', ion: true, form: 'NaCl', io: ['Cl⁻', 'Na⁺'] },
     { id: 'cscl', n: "Cesium chloride (CsCl)", ex: 'CsCl', at: mk(C, 0).concat([{ p: [.5, .5, .5], k: 1 }]), rr: [181, 174], a: 412, M: 168.36, Z: 1, cn: '8 : 8', ion: true, form: 'CsCl', io: ['Cl⁻', 'Cs⁺'] },
     { id: 'zns', n: "Zinc blende (ZnS)", ex: 'ZnS', at: mk(C.concat(FC), 0).concat(mk(TD, 1)), rr: [184, 74], a: 541, M: 97.45, Z: 4, cn: '4 : 4', ion: true, form: 'ZnS', io: ['S²⁻', 'Zn²⁺'] },
-    { id: 'caf2', n: "Fluorite (CaF₂)", ex: 'CaF₂', at: mk(C.concat(FC), 1).concat(mk(TD, 0), mk(TD2, 0)), rr: [133, 100], a: 546, M: 78.08, Z: 4, cn: '8 : 4', ion: true, form: 'CaF₂', io: ['F⁻', 'Ca²⁺'] }
+    { id: 'caf2', n: "Fluorite (CaF₂)", ex: "CaF₂", at: mk(C.concat(FC), 1).concat(mk(TD, 0), mk(TD2, 0)), rr: [133, 100], a: 546, M: 78.08, Z: 4, cn: '8 : 4', ion: true, form: "CaF₂", io: ['F⁻', 'Ca²⁺'] }
   ], ID = {}; ST.forEach(function (s) { ID[s.id] = s; });
   var S = { st: 'sc', sz: 0.4, share: false, lay: 3, _k: '', _st: -1 }, grp = null, lab = {}, ats = [];
   function sm(x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
@@ -154,7 +154,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         "<p>The spheres stack in hexagonal close-packed layers. The second layer (<b>B</b>) occupies half of the holes of the first; the third can repeat <b>A</b> (<b>hcp</b>, ABAB…) or occupy the free holes (<b>C</b>, <b>ccp</b>, ABCABC…, which equals the <b>fcc</b> seen along the cube diagonal). Both have <b>CN = 12</b> and <b>74 %</b> occupancy; they differ in symmetry and properties (e.g. ductility).</p>"],
       ["Ionic crystals", "Ionic", "The anions form the lattice and the cations occupy the holes",
         "<p>In ionic solids the <b>larger ion</b> (almost always the anion) forms the packing and the smaller one occupies <b>octahedral or tetrahedral holes</b>. The structure depends on the <b>radius ratio r⁺/r⁻</b>: <b>NaCl</b> (0.56; 6:6, Cl⁻ fcc with Na⁺ in octahedral holes), <b>CsCl</b> (0.96; 8:8), <b>zinc blende ZnS</b> (0.40; 4:4, Zn²⁺ in tetrahedral holes) and <b>CaF₂</b> (0.75; Ca²⁺ fcc with F⁻ in all the tetrahedral holes; 8:4).</p>"],
-      ["Density from the cell", "Density", 'ρ = Z·M / (N_A·V_celda)',
+      ["Density from the cell", "Density", "ρ = Z·M / (N_A·V_cell)",
         "<p>Knowing the cell, the density is calculated: <b>ρ = Z·M/(N<sub>A</sub>·a³)</b>. For copper (fcc, a = 361.5 pm, M = 63.55 g/mol): <b>ρ = 4 × 63.55 / (6.022×10²³ × (3.615×10⁻⁸ cm)³) = 8.93 g/cm³</b>, equal to the experimental value. Inverting the formula, X-ray diffraction (which gives a) makes it possible to obtain Avogadro's number or the molar mass.</p>"]
     ];
   }
@@ -207,10 +207,10 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     sync: function (ctx) { var u = ctx.ui; if (u.st) u.st.set(S.st); if (!ctx.P.manual) { u.sz && u.sz.set(S.sz); u.lay && u.lay.set(S.lay); } },
     hud: function () { var st = ID[S.st]; return { eq: { chip: 'Z', name: st.n, body: "<div class=\"eqline\"><small>Z per cell</small>" + st.Z + "</div><div class=\"eqline\"><small>Coordination</small>" + st.cn + "</div><div class=\"eqline\"><small>Occupancy</small>" + (st.pk ? fmt(st.pk * 100, 1) + ' %' : '—') + '</div><div class="eqline"><small>ρ</small>' + f2(dens(st)) + ' g/cm³</div>' }, legend: S.share || false ? [{ label: '1/8', color: '#4dabf7', text: "corner" }, { label: '1/4', color: '#ffd43b', text: "edge" }, { label: '1/2', color: '#51cf66', text: 'cara' }, { label: '1', color: '#ff922b', text: 'interior' }] : [{ label: "Sphere", color: '#4dabf7', text: "atom or ion" }] }; },
     measures: function () { var st = ID[S.st], rpm = st.stack || st.ion ? null : st.r * st.a; return [["Structure", st.n], ["Atoms per cell", String(st.Z)], ["Coordination number", st.cn], ["Edge a", st.a + ' pm'], ["Radius (contact)", rpm ? f1(rpm) + ' pm' : '—'], ["Fraction occupied", st.pk ? f1(st.pk * 100) + ' %' : '—'], ["Density", f2(dens(st)) + ' g/cm³']]; },
-    ideas: ['<b>Z</b>: sc 1 · bcc 2 · fcc 4.', "Packing: sc 52.4 % · bcc 68 % · fcc/hcp 74 %.", "CN: 6 · 8 · 12.", '<b>ρ = Z·M / (N_A·a³)</b>.', "In an ionic crystal the larger ion forms the lattice and the smaller one occupies holes."],
+    ideas: ["<b>Z</b>: sc 1 · bcc 2 · fcc 4.", "Packing: sc 52.4 % · bcc 68 % · fcc/hcp 74 %.", "CN: 6 · 8 · 12.", '<b>ρ = Z·M / (N_A·a³)</b>.', "In an ionic crystal the larger ion forms the lattice and the smaller one occupies holes."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Structure"); el.appendChild(c);
-      ui.st = kit.ui.options({ label: "Lattice", cols: 3, value: S.st, options: ST.map(function (x) { return { v: x.id, label: x.id.toUpperCase().replace('NACL', 'NaCl').replace('CSCL', 'CsCl').replace('ZNS', 'ZnS').replace('CAF2', 'CaF₂'), sub: x.ex }; }), onChange: function (v) { ctx.goManual(); S.st = v; } }); c.appendChild(ui.st);
+      ui.st = kit.ui.options({ label: "Lattice", cols: 3, value: S.st, options: ST.map(function (x) { return { v: x.id, label: x.id.toUpperCase().replace('NACL', 'NaCl').replace('CSCL', 'CsCl').replace('ZNS', 'ZnS').replace('CAF2', "CaF₂"), sub: x.ex }; }), onChange: function (v) { ctx.goManual(); S.st = v; } }); c.appendChild(ui.st);
       ui.sz = kit.ui.slider({ label: "Size of the spheres", min: 0.2, max: 1, step: 0.02, value: S.sz, format: function (v) { return fmt(v * 100, 0) + ' %'; }, onInput: function (v) { ctx.goManual(); S.sz = v; } });
       ui.lay = kit.ui.slider({ label: "Layers (hcp/ccp)", min: 1, max: 4, step: 1, value: S.lay, format: function (v) { return String(v); }, onInput: function (v) { ctx.goManual(); S.lay = v; } }); c.appendChild(kit.ui.sliders([ui.sz, ui.lay]));
       c.appendChild(ctx.btnRow([{ t: "Spheres in contact", primary: true, fn: function () { ctx.goManual(); S.sz = 1; } }, { t: "Back to the lesson", fn: function () { ctx.toLesson(); } }]));
@@ -231,14 +231,14 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       var row = function (a, x) { return '<tr><th>' + a + '</th><td>' + x + '</td></tr>'; }, st = ID[S.st], d = dens(st), a = st.a;
       var geo = st.stack ? row("Hexagonal cell", 'V = (3√3/2)·a²·c = ' + (st.id === 'hcp' ? f2(1.5 * S3 * st.a * st.a * st.c * 1e-6) + '×10⁶ pm³' : "a³ (equivalent to fcc)")) : row("a–r relation", st.ion ? "cation–anion contact" : st.rel + ' → r = ' + f1(st.r * st.a) + ' pm');
       return '<div class="card-kicker">' + st.n + "</div><div class=\"calc-step\">1 · Cell content</div><table class=\"calc-table\">" + row('Z', st.Z + (st.ion ? " units of " + st.form : " atoms")) + row("Coordination", st.cn) + (st.pk ? row("Packing", f1(st.pk * 100) + ' %') : '') + geo + '</table>' +
-        "<div class=\"calc-step\">2 · Density</div><table class=\"calc-table\">" + row('M', st.M + ' g/mol') + row('a', st.a + ' pm = ' + st.a + '×10⁻¹⁰ cm') + row('ρ', 'Z·M/(N<sub>A</sub>·V) = ' + st.Z + ' × ' + st.M + ' / (6,022×10²³ × V) = <b>' + f2(d) + ' g/cm³</b>') + '</table>';
+        "<div class=\"calc-step\">2 · Density</div><table class=\"calc-table\">" + row('M', st.M + " g/mol") + row('a', st.a + ' pm = ' + st.a + '×10⁻¹⁰ cm') + row('ρ', 'Z·M/(N<sub>A</sub>·V) = ' + st.Z + ' × ' + st.M + ' / (6,022×10²³ × V) = <b>' + f2(d) + ' g/cm³</b>') + '</table>';
     },
     quiz: [
       { q: "How many atoms are there in an fcc cell?", options: ['4', '2', '1', '14'], answer: 0, why: '8·⅛ + 6·½ = 4.' },
       { q: "What is the coordination number of bcc?", options: ['8', '6', '12', '4'], answer: 0, why: "Each atom touches 8 neighbors, those at the corners of the cube." },
       { q: "The relation between edge and radius in fcc is…", options: ['a = 2√2·r', 'a = 2r', 'a = 4r/√3', 'a = r√2'], answer: 0, why: "The contact is along the face diagonal: 4r = a√2." },
       { q: "The maximum packing with equal spheres is…", options: ['74 %', '52 %', '68 %', '100 %'], answer: 0, why: "fcc and hcp: π/(3√2) ≈ 0.740." },
-      { q: "The ABCABC… sequence corresponds to…", options: ['ccp (fcc)', 'hcp', 'bcc', 'sc'], answer: 0, why: "The third layer occupies the holes that the first does not cover." },
+      { q: "The ABCABC… sequence corresponds to…", options: ["ccp (fcc)", 'hcp', 'bcc', 'sc'], answer: 0, why: "The third layer occupies the holes that the first does not cover." },
       { q: "In NaCl the coordination is…", options: ['6 : 6', '8 : 8', '4 : 4', '12 : 6'], answer: 0, why: "Each ion is surrounded by 6 counterions in octahedral holes." },
       { q: "The formula for the density of a crystal is…", options: ['Z·M / (N_A·V)', 'M·V / (Z·N_A)', 'N_A·V / (Z·M)', 'Z·V / M'], answer: 0, why: "Mass of the cell / volume of the cell." },
       { q: "In the CsCl cell there are…", options: ["1 CsCl unit", "2 units", "4 units", "8 units"], answer: 0, why: "8·⅛ Cl⁻ + 1 Cs⁺ at the center." }

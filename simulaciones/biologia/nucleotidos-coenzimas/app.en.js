@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -128,7 +128,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     fad: { n: 'FAD / FADH₂', vit: "Riboflavin (vitamin B2)", mod: [['A', "Adenine", 0x4dabf7, 'base'], ['R', "Ribose", 0xffd43b, 'sugar'], ['P', "Pyrophosphate", 0xff922b, 'p'], ['R', 'Ribitol', 0xffd43b, 'sugar'], ['F', "Isoalloxazine", 0xfab005, 'ring']], fn: "accepts 2 e⁻ and 2 H⁺; E°′ ≈ −0.22 V (varies when bound to the enzyme)", e: -0.22 },
     coa: { n: "Coenzyme A", vit: "Pantothenic acid (vitamin B5)", mod: [['A', "Adenine 3′-phosphate-ribose", 0x4dabf7, 'base'], ['P', "Pyrophosphate", 0xff922b, 'p'], ['B', "Pantothenate", 0xb197fc, 'sugar'], ['C', "β-mercaptoethylamine", 0xf06595, 'sugar'], ['S', "SH (thiol)", 0xe6c229, 'ring']], fn: "carries acyl groups through a high-energy thioester (acetyl-CoA: ΔG°′ ≈ −31.4 kJ/mol)", e: -31.4 }
   };
-  var VIT = [['B1', "Thiamine", 'TPP', "decarboxylations"], ['B2', "Riboflavin", 'FAD, FMN', 'redox (2 e⁻)'], ['B3', "Niacin", 'NAD⁺, NADP⁺', "hydrides"], ['B5', "Pantothenic acid", 'CoA', "acyl groups"], ['B6', "Pyridoxine", 'PLP', "amino acids"], ['B7', "Biotin", "biocytin", "carboxylations"], ['B9', "Folic acid", 'THF', "C₁ units"], ['B12', "Cobalamin", "methyl/adenosylcobalamin", "isomerizations"]];
+  var VIT = [['B1', "Thiamine", "TPP", "decarboxylations"], ['B2', "Riboflavin", 'FAD, FMN', 'redox (2 e⁻)'], ['B3', "Niacin", 'NAD⁺, NADP⁺', "hydrides"], ['B5', "Pantothenic acid", 'CoA', "acyl groups"], ['B6', "Pyridoxine", 'PLP', "amino acids"], ['B7', "Biotin", "biocytin", "carboxylations"], ['B9', "Folic acid", 'THF', "C₁ units"], ['B12', "Cobalamin", "methyl/adenosylcobalamin", "isomerizations"]];
   var S = { co: 'atp', p: 0, red: false }, g = null, lab = [], blocks = [], ez = null, hyd = null, wat = null;
   function sm(x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
   function V(x, y, z) { return new T.Vector3(x, y, z); }
@@ -208,7 +208,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       { q: "The precursor vitamin of NAD⁺ is…", options: ["niacin (B3)", "riboflavin (B2)", "thiamine (B1)", "biotin"], answer: 0, why: "Pellagra by deficiency." },
       { q: "NAD⁺ receives…", options: ["a hydride ion at C4", "a proton on N", "an O atom", "a phosphate"], answer: 0, why: "Reduction to 1,4-dihydropyridine." },
       { q: "Coenzyme A forms…", options: ["thioesters", "phosphate esters", "amides", "ethers"], answer: 0, why: "With its –SH group." },
-      { q: "The hydrolysis of ATP to ADP + Pᵢ has ΔG°′ ≈…", options: ["−30.5 kJ/mol", "+30.5 kJ/mol", '0', '−300 kJ/mol'], answer: 0, why: "Exergonic reaction." }
+      { q: "The hydrolysis of ATP to ADP + Pᵢ has ΔG°′ ≈…", options: ["−30.5 kJ/mol", "+30.5 kJ/mol", '0', "−300 kJ/mol"], answer: 0, why: "Exergonic reaction." }
     ],
     help: { intro: "Choose a coenzyme: its modular structure is shown. Move “Progress” to see ATP hydrolysis, hydride transfer to NAD⁺, FAD reduction or thioester formation.", items: [["Modules", "base, sugar, phosphate, ring."], ["White sphere", "H⁻ or acyl group transferred."]] }
   };

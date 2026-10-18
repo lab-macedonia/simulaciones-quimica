@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -209,7 +209,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     { id: "ethanol", n: "ethanol", s: 'CCO{ol}' }, { id: 'eter', n: "methoxymethane (dimethyl ether)", s: 'CO{eter}C' },
     { id: "ethanal", n: "ethanal", s: 'CC{ald+}=O{ald}' }, { id: "propanone", n: "propanone", s: 'CC{cet}(=O{cet})C' },
     { id: 'acetico', n: "ethanoic acid", s: 'CC{ac}(=O{ac})O{ac}' }, { id: 'acetato', n: "ethyl ethanoate", s: 'CC{es}(=O{es})O{es}CC' }, { id: 'amida', n: "ethanamide", s: 'CC{am}(=O{am})N{am}' },
-    { id: 'amina', n: "ethanamine", s: 'CCN{amin}' }, { id: 'nitrilo', n: "ethanenitrile", s: 'CC{nit}#N{nit}' }, { id: 'nitro', n: "nitromethane", s: 'CN{nitro}(=O{nitro})=O{nitro}' },
+    { id: 'amina', n: "ethanamine", s: 'CCN{amin}' }, { id: "nitrile", n: "ethanenitrile", s: 'CC{nit}#N{nit}' }, { id: 'nitro', n: "nitromethane", s: 'CN{nitro}(=O{nitro})=O{nitro}' },
     { id: 'tiol', n: "ethanethiol", s: 'CCS{tiol}' }, { id: "propene", n: "propene", s: 'CC{alq}=C{alq}' }, { id: "propyne", n: "propyne", s: 'CC{alqi}#C{alqi}' },
     { id: "toluene", n: "methylbenzene (toluene)", s: 'CPh{ar+}' }, { id: "phenol", n: "phenol", s: 'O{ol}Ph{ar+}' }, { id: "chloroethane", n: "chloroethane", s: 'CCCl{hal}' },
     { id: "glycine", n: "glycine (2-aminoethanoic acid)", s: 'N{amin}CC{ac}(=O{ac})O{ac}' }, { id: 'lactico', n: "2-hydroxypropanoic acid (lactic)", s: 'CC(O{ol})C{ac}(=O{ac})O{ac}' }, { id: 'acrilato', n: "methyl propenoate", s: 'C{alq}=C{alq}C{es}(=O{es})O{es}C' }
@@ -230,7 +230,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       ["Priority when naming", "Priority", "In polyfunctional molecules the highest-priority group rules", "<p>Priority order (suffix): <b>acid &gt; ester &gt; amide &gt; nitrile &gt; aldehyde &gt; ketone &gt; alcohol &gt; amine &gt; alkene &gt; alkyne</b>. The others are named as prefixes. Glycine: acid (principal) + amine → “2-aminoethanoic acid”. Lactic: acid + alcohol → “2-hydroxypropanoic acid”.</p>"]
     ];
   }
-  var LESSON = [["propane", "ethanol", "ethanal", 'acetico'], ["ethanol", 'eter', "ethanal", "propanone"], ['acetico', 'acetato', 'amida'], ['amina', 'nitrilo', 'nitro', 'tiol'], ["propene", "propyne", "toluene", "phenol"], ["glycine", 'lactico', 'acrilato']];
+  var LESSON = [["propane", "ethanol", "ethanal", 'acetico'], ["ethanol", 'eter', "ethanal", "propanone"], ['acetico', 'acetato', 'amida'], ['amina', "nitrile", 'nitro', 'tiol'], ["propene", "propyne", "toluene", "phenol"], ["glycine", 'lactico', 'acrilato']];
   function rebuild(ctx) {
     var T = ctx.T, sc = ctx.scene; grps.forEach(function (g) { sc.remove(g); }); grps = []; var n = S.set.length, sp = n === 1 ? 0 : 6.2;
     S.set.forEach(function (id, k) {
@@ -262,12 +262,12 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     hud: function () { var m = MID[S.set[0]], fo = formula(m), fl = S.set.reduce(function (a, id) { MID[id].fgs.forEach(function (t) { if (a.indexOf(t) < 0) a.push(t); }); return a; }, []);
       return { eq: { chip: S.set.length > 1 ? S.set.length + ' mol.' : formula(m).f, name: S.set.length > 1 ? "Comparison" : m.n, body: S.set.length === 1 ? "<div class=\"eqline\"><small>Molar mass</small>" + fmt(fo.M, 2) + " g/mol</div><div class=\"eqline\"><small>Unsaturations</small>" + fo.dbe + "</div><div class=\"eqline\"><small>Groups</small>" + (m.fgs.length ? m.fgs.map(function (t) { return FG[t].n; }).join(', ') : "none (alkane)") + '</div>' : "<div class=\"eqline\"><small>Groups present</small>" + (fl.length ? fl.map(function (t) { return FG[t].n; }).join(', ') : '—') + '</div>' },
         legend: fl.map(function (t) { return { label: FG[t].n, color: FG[t].c, text: FG[t].g }; }) }; },
-    measures: function () { var m = MID[S.set[0]], fo = formula(m); return [["Molecule", m.n], ["Formula", fo.f], ["Molar mass", fmt(fo.M, 2) + ' g/mol'], ["Unsaturations (DBE)", String(fo.dbe)], ["Groups", m.fgs.length ? m.fgs.map(function (t) { return FG[t].n; }).join(', ') : "none"], ["Molecules in the scene", String(S.set.length)]]; },
+    measures: function () { var m = MID[S.set[0]], fo = formula(m); return [["Molecule", m.n], ["Formula", fo.f], ["Molar mass", fmt(fo.M, 2) + " g/mol"], ["Unsaturations (DBE)", String(fo.dbe)], ["Groups", m.fgs.length ? m.fgs.map(function (t) { return FG[t].n; }).join(', ') : "none"], ["Molecules in the scene", String(S.set.length)]]; },
     ideas: ["The <b>functional group</b> determines reactivity and properties.", "<b>Carbonyl C=O</b>: aldehyde, ketone, acid, ester, amide.", "Priority: <b>acid &gt; ester &gt; amide &gt; nitrile &gt; aldehyde &gt; ketone &gt; alcohol &gt; amine</b>.", "Each group has a characteristic IR band (see graphs).", "Lower-priority groups are named as <b>prefixes</b>."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Molecules (up to 4)"); el.appendChild(c); var wrap = document.createElement('div'); wrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin:6px 0'; c.appendChild(wrap); var btns = {};
       M.forEach(function (m) { var b = document.createElement('button'); b.className = 'btn'; b.textContent = m.n.split(' (')[0]; b.title = m.n; b.onclick = function () { ctx.goManual(); var i = S.set.indexOf(m.id); if (i >= 0) { if (S.set.length > 1) S.set.splice(i, 1); } else { if (S.set.length >= 4) S.set.shift(); S.set.push(m.id); } S.hide = false; ui.refresh(); }; wrap.appendChild(b); btns[m.id] = b; });
-      ui.refresh = function () { M.forEach(function (m) { btns[m.id].className = 'btn' + (S.set.indexOf(m.id) >= 0 ? ' primary' : ''); }); };
+      ui.refresh = function () { M.forEach(function (m) { btns[m.id].className = 'btn' + (S.set.indexOf(m.id) >= 0 ? " primary" : ''); }); };
       ui.refresh();
       c.appendChild(ctx.btnRow([{ t: "Oxygenated", fn: function () { ctx.goManual(); S.set = LESSON[1].slice(); S.hide = false; ui.refresh(); } }, { t: "Carboxylic", fn: function () { ctx.goManual(); S.set = LESSON[2].slice(); S.hide = false; ui.refresh(); } }, { t: 'N y S', fn: function () { ctx.goManual(); S.set = LESSON[3].slice(); S.hide = false; ui.refresh(); } }, { t: "Unsaturated", fn: function () { ctx.goManual(); S.set = LESSON[4].slice(); S.hide = false; ui.refresh(); } }, { t: "Back to the lesson", primary: true, fn: function () { ctx.toLesson(); } }]));
       var ch = kit.ui.card("Challenge: which group is it?"); el.appendChild(ch); var box = document.createElement('div'); ch.appendChild(box);
@@ -288,7 +288,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     calc: function () {
       var row = function (a, b) { return '<tr><th>' + a + '</th><td>' + b + '</td></tr>'; };
       return S.set.map(function (id) { var m = MID[id], fo = formula(m), main = m.fgs.slice().sort(function (a, b) { return FG[a].pr - FG[b].pr; })[0];
-        return '<div class="card-kicker">' + m.n + '</div><table class="calc-table">' + row("Molecular formula", '<b>' + fo.f + '</b>') + row("Molar mass", fmt(fo.M, 2) + ' g/mol') + row("Unsaturations (2C+2+N−H−X)/2", '<b>' + fo.dbe + '</b>') + row("Groups", m.fgs.length ? m.fgs.map(function (t) { return FG[t].n + ' (' + FG[t].g + ')'; }).join('; ') : "none") + row("Principal group", main ? FG[main].n + ' → ' + FG[main].suf : "— (alkane: -ane)") + '</table>'; }).join('');
+        return '<div class="card-kicker">' + m.n + '</div><table class="calc-table">' + row("Molecular formula", '<b>' + fo.f + '</b>') + row("Molar mass", fmt(fo.M, 2) + " g/mol") + row("Unsaturations (2C+2+N−H−X)/2", '<b>' + fo.dbe + '</b>') + row("Groups", m.fgs.length ? m.fgs.map(function (t) { return FG[t].n + ' (' + FG[t].g + ')'; }).join('; ') : "none") + row("Principal group", main ? FG[main].n + ' → ' + FG[main].suf : "— (alkane: -ane)") + '</table>'; }).join('');
     },
     calcLabel: "Formula",
     quiz: [
@@ -301,7 +301,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       { q: "How many unsaturations (DBE) does ethyl ethanoate, C₄H₈O₂, have?", options: ['1', '0', '2', '4'], answer: 0, why: "DBE = (2·4 + 2 − 8)/2 = 1 (the C=O)." },
       { q: "An OH bonded directly to an aromatic ring corresponds to…", options: ["a phenol", "an aliphatic alcohol", "an ether", "a carboxylic acid"], answer: 0, why: "Ar–OH is a phenol: more acidic than an alcohol because of phenoxide stabilization." }
     ],
-    help: { intro: "The colored halos mark each functional group. In “Lab” build the scene with up to four molecules.", items: [['Halos', "a layer lets you hide them to test identification."], ["Challenge", "identify the group of a molecule with hidden halos."], ["Formula", "molar mass and unsaturations of each molecule."], ["Graphs", "nomenclature priority and IR bands."]] }
+    help: { intro: "The colored halos mark each functional group. In “Lab” build the scene with up to four molecules.", items: [["Halos", "a layer lets you hide them to test identification."], ["Challenge", "identify the group of a molecule with hidden halos."], ["Formula", "molar mass and unsaturations of each molecule."], ["Graphs", "nomenclature priority and IR bands."]] }
   };
   MSim.create(def);
 })();

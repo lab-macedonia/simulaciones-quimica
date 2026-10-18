@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -132,7 +132,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     return [
       ["Stationary phase and mobile phase", "Fundamentals", "Silica (polar) retains polar compounds more; the eluent carries them along",
         "<p>In <b>adsorption chromatography</b> the <b>stationary phase</b> (silica, polar) retains compounds in proportion to their <b>polarity</b>; the <b>mobile phase</b> (eluent) carries them along. A nonpolar compound travels farther; a polar one stays near the origin. A more polar eluent “competes” with the silica and moves everything faster.</p>"],
-      ["Thin-layer plate (TLC)", 'TLC', "Rf = distance of the compound / distance of the solvent front",
+      ["Thin-layer plate (TLC)", "TLC", "Rf = distance of the compound / distance of the solvent front",
         "<p>On the <b>TLC plate</b> the sample is spotted on the <b>baseline</b> and placed in a chamber with eluent. The solvent rises by capillary action. When the plate is removed the <b>front</b> is marked. The <b>retention factor</b> is <b>R<sub>f</sub> = d<sub>compound</sub>/d<sub>front</sub></b>, always between 0 and 1. An R<sub>f</sub> of 0.3–0.5 is usually ideal for separating.</p>"],
       ["Choosing the eluent", "Eluent", "More polar → higher Rf. Adjust until the spots separate",
         "<p>With <b>hexane</b> (nonpolar) almost nothing moves; with <b>methanol</b> everything rises with the front. Mixtures are tried until the spots lie between R<sub>f</sub> 0.2 and 0.8 and are <b>well separated</b> (ΔR<sub>f</sub> ≥ 0.1–0.15). Change the eluent and watch the elution order: <b>nonpolar first</b>.</p>"],
@@ -203,7 +203,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     quiz: [
       { q: "On silica, the compound that comes out first is the most…", options: ["nonpolar", 'polar', "ionic", "dense"], answer: 0, why: "It interacts least with the silica." },
       { q: "Rf is defined as…", options: ["d compound / d front", "d front / d compound", "d compound − d front", "time / mass"], answer: 0, why: "Always between 0 and 1." },
-      { q: "If all the spots stay on the baseline, the eluent is…", options: ["not polar enough; increase it", "too polar", "perfect", 'insoluble'], answer: 0, why: "It cannot displace the compounds from the silica." },
+      { q: "If all the spots stay on the baseline, the eluent is…", options: ["not polar enough; increase it", "too polar", "perfect", "insoluble"], answer: 0, why: "It cannot displace the compounds from the silica." },
       { q: "A good Rf for separating lies between…", options: ['0,3 y 0,5', '0,9 y 1,0', '0,0 y 0,05', '1,2 y 1,5'], answer: 0, why: "There is room on both sides." },
       { q: "On a column, the most polar compound…", options: ["elutes last", "elutes first", "does not elute", "evaporates"], answer: 0, why: "It is retained the most." }
     ],

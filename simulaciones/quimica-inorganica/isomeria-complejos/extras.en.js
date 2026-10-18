@@ -1,7 +1,7 @@
 /* Extras de Isomería · Laboratorio 3D
    1) Tema claro/oscuro  2) Lección guiada por etapas (kit común)  3) Contador de isómeros de Werner. */
 (function () {
-  'use strict';
+  "use strict";
   var KEY = 'simkit:isomeria:theme';
   function setTheme(t) { document.documentElement.setAttribute('data-theme', t); try { localStorage.setItem(KEY, t); } catch (e) { /* sin almacenamiento */ } }
   var saved = null; try { saved = localStorage.getItem(KEY); } catch (e) { /* nada */ }

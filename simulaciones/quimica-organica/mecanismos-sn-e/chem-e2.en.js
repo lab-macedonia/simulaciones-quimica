@@ -1,7 +1,7 @@
 /* chem-e2.js — E2: eliminación bimolecular concertada con geometría anti-periplanar.
  * Bromoetano + HO⁻ → eteno + H₂O + Br⁻ (modelo mínimo para ver el diedro H–C–C–Br = 180°). */
 (function (root) {
-  'use strict';
+  "use strict";
   const Chem = root.Chem;
   const { V, K, S, lerp, fmt, DEG } = Chem;
 

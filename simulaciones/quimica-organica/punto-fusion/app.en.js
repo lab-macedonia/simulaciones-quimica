@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -122,7 +122,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 (function () {
   var T = THREE, R = 8.314;
-  var CM = { ba: { n: "Benzoic acid", Tm: 122.4, H: 18000, c: 0xf8f9fa }, ur: { n: 'Urea', Tm: 133, H: 14000, c: 0xe9ecef }, na: { n: "Naphthalene", Tm: 80.3, H: 19100, c: 0xdee2e6 }, ac: { n: "Acetanilide", Tm: 114.3, H: 21600, c: 0xf1f3f5 }, sa: { n: "Salicylic acid", Tm: 159, H: 25000, c: 0xe9ecef } };
+  var CM = { ba: { n: "Benzoic acid", Tm: 122.4, H: 18000, c: 0xf8f9fa }, ur: { n: "Urea", Tm: 133, H: 14000, c: 0xe9ecef }, na: { n: "Naphthalene", Tm: 80.3, H: 19100, c: 0xdee2e6 }, ac: { n: "Acetanilide", Tm: 114.3, H: 21600, c: 0xf1f3f5 }, sa: { n: "Salicylic acid", Tm: 159, H: 25000, c: 0xe9ecef } };
   var S = { cm: 'ba', xi: 0, rate: 2, T: 25, run: false, mix: 'none', obs: null }, lab = [], g = null, cap = null, sol = null, liqm = null, tube = null;
   function ints(k, xi) { var c = CM[k], Tm = c.Tm + 273.15, dT = R * Tm * Tm / c.H * xi, Te = c.Tm - 35, liq = Math.max(Te + 1, c.Tm - dT); return { onset: xi > 0.001 ? Math.max(Te, c.Tm - Math.min(35, 4 + 90 * xi)) : c.Tm - 0.3, clear: xi > 0.001 ? liq : c.Tm + 0.3 }; }
   function range() { var i = ints(S.cm, S.xi), lag = 0.9 * S.rate; return { on: i.onset, cl: i.clear, onM: i.onset + lag * 0.5, clM: i.clear + lag }; }
@@ -198,7 +198,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     quiz: [
       { q: "A pure sample melts…", options: ["over a narrow range", "over a wide range", "at any T", "without change"], answer: 0, why: "Typical range 0.5–1 °C." },
       { q: "An impurity causes…", options: ["it lowers and broadens the range", "it raises the melting point", "nothing changes", "it only darkens"], answer: 0, why: "Melting point depression." },
-      { q: "Recommended rate near the melting point:", options: ['1–2 °C/min', '20 °C/min', '10 °C/s', "no heating"], answer: 0, why: "To maintain thermal equilibrium." },
+      { q: "Recommended rate near the melting point:", options: ["1–2 °C/min", "20 °C/min", '10 °C/s', "no heating"], answer: 0, why: "To maintain thermal equilibrium." },
       { q: "In a mixed melting point, if the value does not change, then…", options: ["they are the same compound", "they are different", "it is impure", "there is an error"], answer: 0, why: "A mixture of different compounds melts lower." },
       { q: "The eutectic temperature is…", options: ["the minimum melting temperature of the mixture", "the maximum", "the boiling point", "room T"], answer: 0, why: "The solidus line." }
     ],

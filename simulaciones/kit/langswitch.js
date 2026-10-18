@@ -18,4 +18,11 @@
     nav.appendChild(a); document.body.appendChild(nav);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
+  /* PWA: registra el service worker (funciona sin conexión tras la primera visita) */
+  try {
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      var me = document.currentScript || document.querySelector('script[src*="langswitch"]');
+      if (me && me.src) window.addEventListener('load', function () { navigator.serviceWorker.register(new URL('../sw.js', me.src).href).catch(function () {}); });
+    }
+  } catch (e) {}
 })();

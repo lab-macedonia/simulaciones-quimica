@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -319,7 +319,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         var g = SG.put(S.a, G[S.a], 0, 0, 0, { gs: gs * 1.15 }); g.children.forEach(function (c) { if (c.userData.halo) c.visible = halo; }); g.scale.setScalar(1);
         if (f && f.i === 4 || (P.manual && S.hp)) { var nI = MSim.idx(G[S.a], 'o', 0), pn = MSim.wp(g, G[S.a], nI, gs * 1.15); var far = pn.clone().add(new T.Vector3(0, 4.2, 0)); prot.position.lerpVectors(far, pn.clone().add(new T.Vector3(0, 0.95, 0)), S.q); prot.visible = true; }
         lab.t.pos(0, 5.4, 0).set(m.n + ' · ' + m.f, 'bl-lead').vis(true);
-        lab.a.pos(0, -4.0, 0).set(m.cl + ' · μ = ' + f2(m.mu) + ' D · M = ' + f1(m.M) + ' g/mol', 'bl-d').vis(true);
+        lab.a.pos(0, -4.0, 0).set(m.cl + ' · μ = ' + f2(m.mu) + ' D · M = ' + f1(m.M) + " g/mol", 'bl-d').vis(true);
         var extra = (f && f.i === 4) || S.hp ? 'pKaH = ' + (PK[S.a] != null ? PK[S.a] : '—') : (f && f.i === 3) || AL.indexOf(S.a) >= 0 && f && f.i === 3 ? 'solubilidad: ' + (SOL[S.a] >= 100 ? 'miscible' : SOL[S.a] + ' g/100 mL') : "b.p. " + m.bp + " °C · donors " + m.don + " · acceptors " + m.acc;
         lab.b.pos(0, -5.0, 0).set(extra, 'bl-pos').vis(true);
       }
@@ -327,7 +327,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     },
     sync: function (ctx) { var u = ctx.ui; if (u.a) u.a.set(S.a); if (u.b) u.b.set(S.b); },
     hud: function () { var m = M[S.a]; return { eq: { chip: 'R–X', name: m.n, body: "<div class=\"eqline\"><small>Class</small>" + m.cl + '</div><div class="eqline"><small>μ</small>' + f2(m.mu) + " D</div><div class=\"eqline\"><small>b.p.</small>" + m.bp + " °C</div><div class=\"eqline\"><small>Donors / acceptors</small>" + m.don + ' / ' + m.acc + '</div>' }, legend: [{ label: 'Halo', color: '#ffd43b', text: "polar zone (O or N)" }, { label: '···', color: '#ffd43b', text: "hydrogen bond" }] }; },
-    measures: function () { var m = M[S.a]; return [["Compound", m.n], ["Class", m.cl], ["Molar mass", f1(m.M) + ' g/mol'], ["Dipole moment", f2(m.mu) + ' D'], ["Boiling point", m.bp + ' °C'], ["H donors / acceptors", m.don + ' / ' + m.acc], ['pKaH', PK[S.a] != null ? String(PK[S.a]) : '—']]; },
+    measures: function () { var m = M[S.a]; return [["Compound", m.n], ["Class", m.cl], ["Molar mass", f1(m.M) + " g/mol"], ["Dipole moment", f2(m.mu) + ' D'], ["Boiling point", m.bp + ' °C'], ["H donors / acceptors", m.don + ' / ' + m.acc], ['pKaH', PK[S.a] != null ? String(PK[S.a]) : '—']]; },
     ideas: ["<b>H bond</b>: H–O/N···:O/N. Alcohol and 1°/2° amine: donor and acceptor.", "Ether and 3° amine: acceptors only.", "b.p.: alcohol ≫ amine ≫ ether ≈ alkane.", "The alkyl chain reduces water solubility.", "Amine: base and nucleophile (N lone pair)."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Compound"); el.appendChild(c);
@@ -361,7 +361,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     calc: function () {
       var row = function (a, x) { return '<tr><th>' + a + '</th><td>' + x + '</td></tr>'; }, m = M[S.a], extra = '';
       if (PK[S.a] != null) { var pk = PK[S.a], Kb = Math.pow(10, -(14 - pk)); extra = "<div class=\"calc-step\">Basicity</div><table class=\"calc-table\">" + row('pKaH', pk) + row('Ka (R₃NH⁺)', MSim.sci(Math.pow(10, -pk), 2)) + row('pKb', f2(14 - pk)) + row('Kb', MSim.sci(Kb, 2)) + '</table>'; }
-      return '<div class="card-kicker">' + m.n + ' · ' + m.cl + '</div><table class="calc-table">' + row("Molar mass", f1(m.M) + ' g/mol') + row('μ', f2(m.mu) + ' D') + row("b.p.", m.bp + ' °C') + row("H bonds", "donors " + m.don + " · acceptors " + m.acc + (m.don ? '' : " → does not self-associate")) + row("Max. bonds per molecule", m.don + m.acc * 2 + " (with water)") + '</table>' + extra;
+      return '<div class="card-kicker">' + m.n + ' · ' + m.cl + '</div><table class="calc-table">' + row("Molar mass", f1(m.M) + " g/mol") + row('μ', f2(m.mu) + ' D') + row("b.p.", m.bp + ' °C') + row("H bonds", "donors " + m.don + " · acceptors " + m.acc + (m.don ? '' : " → does not self-associate")) + row("Max. bonds per molecule", m.don + m.acc * 2 + " (with water)") + '</table>' + extra;
     },
     quiz: [
       { q: "Which boils at the higher temperature?", options: ["Ethanol", "Dimethyl ether", "Propane", "Trimethylamine"], answer: 0, why: "Ethanol: intermolecular H bonds." },

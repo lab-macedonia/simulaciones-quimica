@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -282,7 +282,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       tg.forEach(function (t) { var b = document.createElement('button'); b.className = 'btn'; b.textContent = t[1]; b.onclick = function () { ctx.goManual(); S[t[0]] = !S[t[0]]; }; ui.tg[t[0]] = b; row.appendChild(b); }); c2.appendChild(row);
       c2.appendChild(ctx.btnRow([{ t: "Back to the lesson", primary: true, fn: function () { ctx.toLesson(); } }]));
       var mc = kit.ui.card("Matter"); el.appendChild(mc); var mb = document.createElement('div'); mc.appendChild(mb);
-      var lk = ''; ui.refresh = function () { var k = [S.lg.toFixed(2), S.amp, S.spd, S.pol, S.ang, S.showE, S.showB, S.showS, S.showQ, S.meas, S.packet].join('|'); if (k === lk) return; lk = k; var r = regionOf(S.lg); ui.reg.set(r.id); ui.lg.set(S.lg); ui.amp.set(S.amp); ui.spd.set(S.spd); ui.pol.set(S.pol); ui.ang.set(S.ang); Object.keys(ui.tg).forEach(function (n) { ui.tg[n].className = 'btn' + (S[n] ? ' primary' : ''); }); mb.innerHTML = '<p class="small"><b>' + r.full + '</b> · ' + r.rng + " · comparable to " + r.scale + '.</p><p class="small">' + r.mat + "</p><p class=\"small\"><b>Uses:</b> " + r.use + '</p>'; };
+      var lk = ''; ui.refresh = function () { var k = [S.lg.toFixed(2), S.amp, S.spd, S.pol, S.ang, S.showE, S.showB, S.showS, S.showQ, S.meas, S.packet].join('|'); if (k === lk) return; lk = k; var r = regionOf(S.lg); ui.reg.set(r.id); ui.lg.set(S.lg); ui.amp.set(S.amp); ui.spd.set(S.spd); ui.pol.set(S.pol); ui.ang.set(S.ang); Object.keys(ui.tg).forEach(function (n) { ui.tg[n].className = 'btn' + (S[n] ? " primary" : ''); }); mb.innerHTML = '<p class="small"><b>' + r.full + '</b> · ' + r.rng + " · comparable to " + r.scale + '.</p><p class="small">' + r.mat + "</p><p class=\"small\"><b>Uses:</b> " + r.use + '</p>'; };
     },
     graphs: [
       { title: "Photon energy versus λ", h: 250, note: "E = 1239.84/λ(nm) (log–log). Red line: ionization threshold ≈ 10 eV; dotted: k_BT at 298 K.", draw: function (cx, w, h, c) {
@@ -316,10 +316,10 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       { q: "Infrared radiation mainly excites…", options: ["bond vibrations", "rotations", "inner electrons", "nuclei"], answer: 0, why: "IR spectroscopy detects vibrations (≈ 4000–400 cm⁻¹)." },
       { q: "In an electromagnetic wave in a vacuum, E and B…", options: ["are in phase and perpendicular to each other and to the propagation", "are 90° out of phase and parallel", "are longitudinal", "only E exists"], answer: 0, why: "They are transverse, in phase, and |E| = c·|B|." },
       { q: "Circularly polarized light is characterized by…", options: ["the tip of E describing a helix", "E oscillating in a single plane", "has no magnetic field", "its frequency is double"], answer: 0, why: "Two orthogonal components with a 90° phase shift and the same amplitude." },
-      { q: "A photon is ionizing when its energy is of the order of…", options: ['≳ 10 eV', '≈ 1 meV', '≈ k_BT', "≈ 0.1 eV"], answer: 0, why: "It must exceed the ionization energy (H: 13.6 eV)." },
+      { q: "A photon is ionizing when its energy is of the order of…", options: ['≳ 10 eV', "≈ 1 meV", '≈ k_BT', "≈ 0.1 eV"], answer: 0, why: "It must exceed the ionization energy (H: 13.6 eV)." },
       { q: "The wavenumber ν̃ is expressed as…", options: ['1/λ (cm⁻¹)', 'λ·f', 'h·f', 'c/f'], answer: 0, why: "It is the inverse of the wavelength, usual in IR." }
     ],
-    help: { intro: "Choose a region or drag log₁₀ λ in “Lab”. Rotate the scene with the mouse.", items: [["Views", "Perspective, E plane, B plane and front."], ["Photon", "turn on “Photon (packet)” to see a wave train."], ["Test charge", "shows that E accelerates a charge."], ['Poynting', "yellow arrows of energy flow."]] }
+    help: { intro: "Choose a region or drag log₁₀ λ in “Lab”. Rotate the scene with the mouse.", items: [["Views", "Perspective, E plane, B plane and front."], ["Photon", "turn on “Photon (packet)” to see a wave train."], ["Test charge", "shows that E accelerates a charge."], ["Poynting", "yellow arrows of energy flow."]] }
   };
   function fmtn(v, d) { return SimKit.fmt(v, d); }
   MSim.create(def);

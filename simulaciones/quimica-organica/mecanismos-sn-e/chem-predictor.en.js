@@ -2,7 +2,7 @@
  * Reglas heurísticas de libro de texto (sustrato × reactivo, ajustadas por disolvente y temperatura).
  * Los porcentajes son TENDENCIAS RELATIVAS orientativas, no resultados experimentales. */
 (function (root) {
-  'use strict';
+  "use strict";
   const Chem = root.Chem;
 
   const sustratos = [

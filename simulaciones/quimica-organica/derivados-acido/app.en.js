@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -290,7 +290,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     } else if (si === 1) {
       var n = 4, ix = Math.min(n - 1, Math.floor(p * n)); var k = S.cyc != null && ctx.P.manual ? KEY.indexOf(S.d) : ix, kk = KEY[k], d = D[kk];
       var g = show(kk, G[kk], 0, 0, 0, [{ tag: 'l', nth: 0, color: blue, r: 0.5 + 0.16 * (4 - d.rank) * 0 + 0.5 * (d.rank === 1 ? 1 : d.rank === 2 ? 0.7 : d.rank === 3 ? 0.45 : 0.25), op: 0.4 }, { tag: 'c', nth: 0, color: ora, r: 0.35 + 0.2 * d.rank, op: 0.4 }]); g.rotation.y = now * 0.2;
-      nm(t.a, 0, 3.7, d.n + " · reactivity " + ['', "minimum", 'baja', "medium", "maximum"][d.rank], 'bl-lead'); nm(t.b, 0, -3.4, d.don, 'bl-d'); nm(t.c, 3.8, 1.5, 'ν(C=O) ' + d.ir + ' cm⁻¹', 'bl-warn');
+      nm(t.a, 0, 3.7, d.n + " · reactivity " + ['', "minimum", "low", "medium", "maximum"][d.rank], 'bl-lead'); nm(t.b, 0, -3.4, d.don, 'bl-d'); nm(t.c, 3.8, 1.5, 'ν(C=O) ' + d.ir + ' cm⁻¹', 'bl-warn');
     } else if (si === 2) {
       var dd = D[S.d], kk2 = S.d, base = show(kk2, G[kk2], 0, 0, 0), a = attack(0, G[kk2], base);
       if (p < 0.35) {
@@ -320,7 +320,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     key: 'derivados-acido-carboxilico', title: "Carboxylic Acids and Derivatives", subtitle: "3D simulator · organic chemistry", accent: { dark: '#34d399', light: '#047857' },
     stages: stages, nStages: 6, dur: 12, offset: 0.12,
     views: [{ id: 'libre', label: "Free", pos: [2, 3, 15], target: [0, 0, 0] }, { id: 'frontal', label: "Front", pos: [0, 0.5, 16], target: [0, 0, 0] }, { id: 'sup', label: "Top", pos: [0, 17, 3], target: [0, 0, 0] }],
-    layers: [{ id: 'arrows', label: "Electron arrows", icon: '↷' }, { id: 'halo', label: 'Halos', icon: '◉' }],
+    layers: [{ id: 'arrows', label: "Electron arrows", icon: '↷' }, { id: 'halo', label: "Halos", icon: '◉' }],
     build: function (ctx) {
       SG = MSim.stage(ctx); for (var i = 0; i < 3; i++) arr.push(MSim.arrow(ctx, 0xff7a3d));
       nuS = new T.Mesh(new T.SphereGeometry(1, 18, 14), new T.MeshStandardMaterial({ color: 0xff4d4d })); nuS.visible = false; ctx.scene.add(nuS);
@@ -333,7 +333,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     },
     sync: function (ctx) { var u = ctx.ui; if (!ctx.P.manual && u.st) u.st.set(String(S.cur)); },
     hud: function () { var d = D[S.d], nu = NUC[S.nu]; return { eq: { chip: "Acyl", name: d.fam + ' + ' + nu.n, body: "<div class=\"eqline\"><small>Derivative</small>" + d.n + "</div><div class=\"eqline\"><small>Leaving group</small>" + d.lg + ' (pKa HL ' + d.pka + ")</div><div class=\"eqline\"><small>Product</small>" + nu.outs[S.d] + '</div>' }, legend: [{ label: "Arrow", color: '#ff7a3d', arrow: true, text: "e⁻ pair" }, { label: "Blue", color: '#4dabf7', text: "donor pair of L" }, { label: "Orange", color: '#ffa94d', text: "δ+ of the C=O" }] }; },
-    measures: function () { var d = D[S.d], nu = NUC[S.nu]; return [["Derivative", d.n], ["Leaving group", d.lg], ["pKa of HL", String(d.pka)], ['ν(C=O)', d.ir + ' cm⁻¹'], ["Reactivity", ['', "minimum", 'baja', "medium", "maximum"][d.rank]], ["Nucleophile", nu.t], ["Product", nu.outs[S.d]]]; },
+    measures: function () { var d = D[S.d], nu = NUC[S.nu]; return [["Derivative", d.n], ["Leaving group", d.lg], ["pKa of HL", String(d.pka)], ['ν(C=O)', d.ir + ' cm⁻¹'], ["Reactivity", ['', "minimum", "low", "medium", "maximum"][d.rank]], ["Nucleophile", nu.t], ["Product", nu.outs[S.d]]]; },
     ideas: ["Reactivity: <b>chloride &gt; anhydride &gt; ester ≳ acid &gt; amide</b> (in order of leaving group and L donation).", "<b>Addition–elimination</b>: tetrahedral intermediate and expulsion of L⁻.", "A reactive derivative gives a less reactive one; the reverse direction needs activation (e.g. SOCl₂).", "<b>Saponification</b> is irreversible because of carboxylate formation; acid hydrolysis is an equilibrium.", "The amide is planar by resonance: basis of the peptide bond."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Mechanism"); el.appendChild(c);
@@ -367,7 +367,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       { q: "The mechanism of nucleophilic acyl substitution is…", options: ["Addition–elimination with a tetrahedral intermediate", "Concerted SN2", "SN1 with a carbocation", 'E2'], answer: 0, why: "The nucleophile adds to the C=O and then L⁻ leaves from the tetrahedral intermediate." },
       { q: "Why is the saponification of an ester irreversible?", options: ["The acid formed is deprotonated to the carboxylate (pKa 4.76 versus 15.9 for the alcohol)", "The alcohol evaporates", "The ester is more stable than the acid", "There is no water"], answer: 0, why: "The final acid–base step drives the equilibrium completely toward the carboxylate." },
       { q: "Which of the following conversions is possible under mild conditions?", options: ["Acyl chloride + amine → amide", "Amide + alcohol → acyl chloride", "Ester + water → acyl chloride", "Amide + water → anhydride"], answer: 0, why: "One can only go from a more reactive derivative to a less reactive one." },
-      { q: "Which leaving group is the best?", options: ["Cl⁻ (pKa of HCl = −7)", 'CH₃COO⁻ (pKa 4,76)', 'EtO⁻ (pKa 15,9)', 'NH₂⁻ (pKa 38)'], answer: 0, why: "The best leaving group is the weakest base, that is, the one with the strongest conjugate acid." },
+      { q: "Which leaving group is the best?", options: ["Cl⁻ (pKa of HCl = −7)", "CH₃COO⁻ (pKa 4.76)", "EtO⁻ (pKa 15.9)", "NH₂⁻ (pKa 38)"], answer: 0, why: "The best leaving group is the weakest base, that is, the one with the strongest conjugate acid." },
       { q: "The rotation barrier of the C–N bond of an amide (≈ 70–90 kJ/mol) is due to…", options: ["its partial double-bond character", "the size of the nitrogen atom", "hydrogen bonds with the solvent", "the sp³ hybridization of N"], answer: 0, why: "Resonance makes the O=C–N group planar and restricts rotation." },
       { q: "In the tetrahedral intermediate of the hydrolysis of an acyl chloride, what happens next?", options: ["The O⁻ regenerates the C=O and expels Cl⁻", "Cl⁻ attacks the oxygen", "The C–C bond breaks", "The chlorine is protonated"], answer: 0, why: "The O⁻ pair rebuilds the double bond and expels the best leaving group." }
     ],

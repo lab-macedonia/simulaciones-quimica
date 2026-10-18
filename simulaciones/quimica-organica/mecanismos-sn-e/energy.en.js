@@ -1,6 +1,6 @@
 /* energy.js — Diagrama de energía de reacción (canvas 2D), interactivo. */
 (function (root) {
-  'use strict';
+  "use strict";
 
   class EnergyDiagram {
     constructor(canvas, onSeek) {

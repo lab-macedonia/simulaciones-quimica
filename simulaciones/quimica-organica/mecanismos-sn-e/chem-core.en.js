@@ -2,7 +2,7 @@
  * Vectores = arreglos [x, y, z]. Unidades: ångström (Å) y grados.
  * Se carga en el navegador (window.Chem) y en Node (globalThis.Chem) para pruebas. */
 (function (root) {
-  'use strict';
+  "use strict";
   const Chem = (root.Chem = root.Chem || {});
   const DEG = Math.PI / 180;
 

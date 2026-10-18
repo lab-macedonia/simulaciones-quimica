@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -279,7 +279,7 @@ var BP = (function () {
     ["Active site", "Active site", "The enzyme recognizes its substrate by shape and chemistry", "<p>An enzyme binds the <b>substrate</b> at its <b>active site</b>. <b>Lock-and-key</b> model: the active site is already complementary; <b>induced fit</b> model: the enzyme <b>reshapes</b> itself on binding the substrate. A wrongly shaped substrate <b>does not fit</b>: that is enzyme <b>specificity</b>.</p>"],
     ["Catalytic cycle", "Cycle", 'E + S ⇌ ES → ES‡ → EP → E + P', "<p>The <b>enzyme–substrate complex (ES)</b> forms; the catalytic residues <b>strain</b> the bond up to the <b>transition state ES‡</b>; the bond breaks and the <b>products</b> leave. The enzyme remains <b>intact</b> and ready for another cycle.</p>"],
     ["Activation energy", "Energy", "The enzyme lowers the barrier, it does not change ΔG", "<p>Catalysis <b>lowers the activation energy</b> (from ≈ 75 to ≈ 45 kJ/mol) by stabilizing the transition state; the <b>rate increases ≈ 10⁵-fold</b> (e^{ΔΔG‡/RT}). The enzyme <b>does not change</b> the ΔG of the reaction or the equilibrium.</p>"],
-    ['Michaelis–Menten', 'Michaelis', 'v = Vmax·[S]/(Km + [S])', "<p>With a fixed enzyme concentration, the <b>rate</b> rises with [S] and <b>saturates</b> when all enzymes are occupied (<b>Vmax = kcat·[E]ₜ</b>). <b>Km</b> is the [S] at which v = Vmax/2. Here each enzyme binds, converts and releases substrates at random; the actual rate is measured.</p>"],
+    ["Michaelis–Menten", "Michaelis", "v = Vmax·[S]/(Km + [S])", "<p>With a fixed enzyme concentration, the <b>rate</b> rises with [S] and <b>saturates</b> when all enzymes are occupied (<b>Vmax = kcat·[E]ₜ</b>). <b>Km</b> is the [S] at which v = Vmax/2. Here each enzyme binds, converts and releases substrates at random; the actual rate is measured.</p>"],
     ["Inhibition", "Inhibition", "Competitive: raises Km; noncompetitive: lowers Vmax", "<p>A <b>competitive</b> inhibitor occupies the active site (<b>apparent Km ↑, Vmax unchanged</b>; overcome with more substrate). A <b>noncompetitive</b> inhibitor binds to another site (<b>allosteric</b>) and deforms the enzyme (<b>Vmax ↓, Km unchanged</b>). In Lineweaver–Burk: the lines intersect on the y axis (competitive) or on the x axis (noncompetitive).</p>"],
     ["pH and temperature", "pH and T", "Each enzyme has an optimum; outside it, it denatures", "<p>Activity depends on the <b>pH</b> (ionization state of the residues) and on the <b>temperature</b> (it increases ≈ ×2 for every 10 °C until the protein <b>denatures</b>). On unfolding the active site is lost: the loss is largely <b>irreversible</b>.</p>"]
   ]; }
@@ -328,7 +328,7 @@ var BP = (function () {
     },
     sync: function (ctx) { var u = ctx.ui; if (u.refresh) u.refresh(); },
     hud: function () { var row = function (k, v) { return '<div class="eqline"><small>' + k + '</small>' + v + '</div>'; };
-      if (S.mode === 'mm') { var vt = vmm(S.S, S.I, S.inh); return { eq: { chip: 'v', name: 'Michaelis–Menten', body: row('[S]', Math.round(S.S) + ' mM') + row("measured v", fmt(G.rate || 0, 1)) + row("theoretical v", fmt(vt, 1)) }, legend: [{ label: 'E', color: '#7048e8', text: "free enzyme" }, { label: 'ES', color: '#ff922b', text: "complex" }, { label: 'S', color: '#4dabf7', text: 'sustrato' }, { label: 'P', color: '#51cf66', text: "product" }, { label: 'I', color: '#40c057', text: "inhibitor" }] }; }
+      if (S.mode === 'mm') { var vt = vmm(S.S, S.I, S.inh); return { eq: { chip: 'v', name: "Michaelis–Menten", body: row('[S]', Math.round(S.S) + ' mM') + row("measured v", fmt(G.rate || 0, 1)) + row("theoretical v", fmt(vt, 1)) }, legend: [{ label: 'E', color: '#7048e8', text: "free enzyme" }, { label: 'ES', color: '#ff922b', text: "complex" }, { label: 'S', color: '#4dabf7', text: 'sustrato' }, { label: 'P', color: '#51cf66', text: "product" }, { label: 'I', color: '#40c057', text: "inhibitor" }] }; }
       if (S.mode === 'den') { var D = denat(S.T, S.pH, S.enz); return { eq: { chip: "Activity", name: ENZ[S.enz].n, body: row("Denatured", fmt(D * 100, 0) + ' %') + row("pH factor", fmt(actPH(S.pH, S.enz) * 100, 0) + ' %') + row("T factor", fmt(actT(S.T, S.enz) * (1 - D) * 100 / 1.0, 0) + ' %') }, legend: [{ label: 'E', color: '#4c6ef5', text: "folded enzyme" }, { label: 'S', color: '#4dabf7', text: 'sustrato' }] }; }
       var st = G.st || { state: '' }; return { eq: { chip: 'ES', name: S.model === 'llave' ? "lock-and-key" : "induced fit", body: row("State", st.state) + row("Substrate", S.wrong ? "wrong" : "specific") + row("Inhibitor", { none: "none", comp: "competitive", nocomp: "noncompetitive" }[S.inh]) }, legend: [{ label: 'E', color: '#4c6ef5', text: "enzyme (2 lobes)" }, { label: 'S', color: '#4dabf7', text: "substrate A–B" }, { label: 'Cat', color: '#ffd43b', text: "catalytic residues" }, { label: 'I', color: '#40c057', text: "inhibitor" }] }; },
     measures: function () { var kp = vmm(S.S, S.I, S.inh); return [['Km', fmt(S.inh === 'comp' ? KM * (1 + S.I / KI) : KM, 1) + ' mM'], ['Vmax', fmt(S.inh === 'nocomp' ? VMAX / (1 + S.I / KI) : VMAX, 1) + ' mM/s'], ['kcat', fmt(KCAT, 1) + ' s⁻¹'], ['kcat/Km', fmt(KCAT / KM, 3) + ' mM⁻¹s⁻¹'], ['[S]', Math.round(S.S) + ' mM'], ["v (theoretical)", fmt(kp, 2) + ' mM/s'], ["Enzyme (pH, T)", ENZ[S.enz].n + ' (' + fmt(S.pH, 1) + ', ' + fmt(S.T, 0) + ' °C)']]; },

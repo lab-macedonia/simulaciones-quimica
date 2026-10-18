@@ -10,7 +10,7 @@
   if (typeof module === 'object' && module.exports) module.exports = factory();
   else root.CarboCore = factory();
 }(typeof self !== 'undefined' ? self : this, function () {
-  'use strict';
+  "use strict";
 
   /* ---------- álgebra vectorial mínima ---------- */
   const add = (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];

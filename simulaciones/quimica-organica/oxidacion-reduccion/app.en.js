@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -259,7 +259,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     pcc: { n: 'PCC', f: 'C₅H₅NH[CrO₃Cl]', k: 'ox', note: "Mild oxidant in anhydrous CH₂Cl₂; it stops at the aldehyde.", col: 0xf59f00 },
     jones: { n: 'Jones', f: 'CrO₃ / H₂SO₄ / H₂O', k: 'ox', note: "Strong oxidant in water: it takes the 1° alcohol all the way to the carboxylic acid.", col: 0xe8590c },
     nabh4: { n: 'NaBH₄', f: 'NaBH₄ / EtOH', k: 'red', note: "Mild hydride: reduces aldehydes and ketones; it does not reduce acids or esters.", col: 0x4dabf7 },
-    lialh4: { n: 'LiAlH₄', f: "LiAlH₄ / Et₂O; then H₃O⁺", k: 'red', note: "Strong hydride: reduces aldehydes, ketones, acids and esters to alcohols.", col: 0x7048e8 }
+    lialh4: { n: "LiAlH₄", f: "LiAlH₄ / Et₂O; then H₃O⁺", k: 'red', note: "Strong hydride: reduces aldehydes, ketones, acids and esters to alcohols.", col: 0x7048e8 }
   };
   var RX = { 'etoh|pcc': 'etanal', 'etoh|jones': 'acid', 'ipoh|pcc': 'acetona', 'ipoh|jones': 'acetona', 'etanal|jones': 'acid', 'etanal|pcc': 'acid', 'etanal|nabh4': 'etoh', 'etanal|lialh4': 'etoh', 'acetona|nabh4': 'ipoh', 'acetona|lialh4': 'ipoh', 'acid|lialh4': 'etoh', 'ester|lialh4': 'etoh' };
   var S = { sub: 'etoh', rg: 'pcc', q: 0, run: false, _st: -1 }, gr = {}, lab = {}, arr = [], rgM, SG;
@@ -358,8 +358,8 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     quiz: [
       { q: "PCC oxidizes a primary alcohol to…", options: ["aldehyde", "carboxylic acid", "ketone", "alkane"], answer: 0, why: "In an anhydrous medium the oxidation stops at the aldehyde." },
       { q: "The tertiary alcohol is not oxidized by Jones because…", options: ["it has no H on the carbinol carbon", "it is very bulky", "it is very acidic", "it forms an ether"], answer: 0, why: "Oxidation needs to remove an H from the carbon that bears the OH." },
-      { q: "What reduces a ketone but not an ester?", options: ['NaBH₄', 'LiAlH₄', "both", "none"], answer: 0, why: "NaBH₄ is a mild hydride." },
-      { q: "The reduction of an aldehyde with NaBH₄ produces…", options: ["primary alcohol", "secondary alcohol", "acid", "alkane"], answer: 0, why: 'R–CHO + H⁻ → R–CH₂–OH.' },
+      { q: "What reduces a ketone but not an ester?", options: ['NaBH₄', "LiAlH₄", "both", "none"], answer: 0, why: "NaBH₄ is a mild hydride." },
+      { q: "The reduction of an aldehyde with NaBH₄ produces…", options: ["primary alcohol", "secondary alcohol", "acid", "alkane"], answer: 0, why: "R–CHO + H⁻ → R–CH₂–OH." },
       { q: "Oxidation state of the carbon of the COOH group:", options: ['+3', '+1', '+2', '−1'], answer: 0, why: "Three bonds to O and one to C." },
       { q: "In the hydride mechanism, H⁻ attacks…", options: ["the carbon of the C=O", "the oxygen of the C=O", "the hydrogen of the OH", "the metal"], answer: 0, why: "The carbonyl carbon is electrophilic." },
       { q: "Jones (CrO₃/H₂SO₄) changes color because…", options: ["orange Cr(VI) is reduced to green Cr(III)", "H₂SO₄ is oxidized", "CO₂ forms", "the pH changes"], answer: 0, why: "Chromium is reduced while it oxidizes the alcohol." },

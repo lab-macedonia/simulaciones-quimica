@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -138,11 +138,11 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         "<p>In the cytosol <b>acyl-CoA synthetase</b> activates the fatty acid (RCOO⁻ + CoA + ATP → acyl-CoA + AMP + PPᵢ; <b>2 high-energy bonds</b> are spent). The inner mitochondrial membrane is impermeable to acyl-CoA: <b>CPT-I</b> converts it into <b>acyl-carnitine</b>, which enters through a translocase and <b>CPT-II</b> regenerates it in the matrix. CPT-I is the control point (inhibited by <b>malonyl-CoA</b>).</p>"],
       ["β-oxidation: four reactions per cycle", "β-oxidation", "Dehydrogenation, hydration, dehydrogenation and thiolysis",
         "<p>Each cycle repeats: <b>(1)</b> oxidation with <b>FAD</b> (FADH₂); <b>(2)</b> hydration; <b>(3)</b> oxidation with <b>NAD⁺</b> (NADH); <b>(4)</b> <b>thiolysis</b>, which releases a unit of <b>acetyl-CoA</b> (2 C) and leaves an acyl-CoA two carbons shorter. It repeats until only acetyl-CoA remains. Choose the chain length and advance.</p>"],
-      ["ATP balance", 'Balance', "A fatty acid of n carbons yields 7n − 6 ATP",
+      ["ATP balance", "Balance", "A fatty acid of n carbons yields 7n − 6 ATP",
         "<p>A saturated fatty acid of <b>n</b> carbons (n even) requires <b>n/2 − 1</b> cycles and produces <b>n/2 acetyl-CoA</b> (10 ATP each in the Krebs cycle), <b>n/2 − 1 FADH₂</b> (1.5 ATP) and <b>n/2 − 1 NADH</b> (2.5 ATP); 2 ATP are subtracted for activation: <b>ATP = 7n − 6</b>. For palmitate (C16): <b>106 ATP</b>. With excess acetyl-CoA the liver forms <b>ketone bodies</b>.</p>"],
       ["Transamination", "Transamination", "The amino group passes to α-ketoglutarate forming glutamate (coenzyme: PLP)",
         "<p>To degrade an amino acid the amino group is removed first: an <b>aminotransferase</b> with <b>pyridoxal phosphate (PLP, vitamin B₆)</b> transfers the –NH₂ group to <b>α-ketoglutarate</b>, which forms <b>glutamate</b>, and the amino acid becomes its <b>α-keto acid</b>. It is a reversible reaction. Amino acids end up collecting their amino group in glutamate.</p>"],
-      ["Urea cycle and carbon skeleton", 'Urea', "NH₄⁺ → urea (liver); the skeleton enters the Krebs cycle or ketone bodies",
+      ["Urea cycle and carbon skeleton", "Urea", "NH₄⁺ → urea (liver); the skeleton enters the Krebs cycle or ketone bodies",
         "<p>Glutamate releases <b>NH₄⁺</b> (glutamate dehydrogenase), which is toxic and which the liver converts into <b>urea</b> in the <b>urea cycle</b> (consumes 4 high-energy bonds) and is excreted in the urine. Carbon skeletons are classified as <b>glucogenic</b> (give pyruvate or other Krebs intermediates → glucose) and <b>ketogenic</b> (give acetyl-CoA or acetoacetate → ketone bodies). Select the amino acid to see its fate.</p>"]
     ];
   }
@@ -208,12 +208,12 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       cx.strokeStyle = '#69db7c'; cx.setLineDash([3, 3]); cx.beginPath(); cx.moveTo(L, Tp + ph * (1 - 31 / mx)); cx.lineTo(L + pw, Tp + ph * (1 - 31 / mx)); cx.stroke(); cx.setLineDash([]); cx.fillStyle = '#69db7c'; cx.textAlign = 'left'; cx.fillText('glucosa', L + 4, Tp + ph * (1 - 31 / mx) - 3);
       cx.fillStyle = col.ink; cx.beginPath(); cx.arc(L + pw * (S.n - 4) / 20, Tp + ph * (1 - atp() / mx), 5, 0, 6.28); cx.fill();
     } }],
-    calc: function () { var n = S.n, cy = cyc(), row = function (a, b) { return '<tr><th>' + a + '</th><td>' + b + '</td></tr>'; }; return "<div class=\"card-kicker\">C balance" + n + '</div><table class="calc-table">' + row("Cycles", 'n/2 − 1 = ' + cy) + row("Acetyl-CoA", n / 2 + ' × 10 = ' + 5 * n + ' ATP') + row('FADH₂', cy + ' × 1,5 = ' + fmt(1.5 * cy, 1) + ' ATP') + row('NADH', cy + ' × 2,5 = ' + fmt(2.5 * cy, 1) + ' ATP') + row("Activation", '−2 ATP') + row('Total', '<b>' + atp() + ' ATP</b> (7n − 6)') + '</table>'; },
+    calc: function () { var n = S.n, cy = cyc(), row = function (a, b) { return '<tr><th>' + a + '</th><td>' + b + '</td></tr>'; }; return "<div class=\"card-kicker\">C balance" + n + '</div><table class="calc-table">' + row("Cycles", 'n/2 − 1 = ' + cy) + row("Acetyl-CoA", n / 2 + ' × 10 = ' + 5 * n + ' ATP') + row('FADH₂', cy + ' × 1,5 = ' + fmt(1.5 * cy, 1) + ' ATP') + row("NADH", cy + ' × 2,5 = ' + fmt(2.5 * cy, 1) + ' ATP') + row("Activation", '−2 ATP') + row('Total', '<b>' + atp() + ' ATP</b> (7n − 6)') + '</table>'; },
     quiz: [
       { q: "Palmitate (C16) undergoes… cycles of β-oxidation.", options: ['7', '8', '16', '6'], answer: 0, why: 'n/2 − 1 = 7.' },
       { q: "The net ATP of palmitate is…", options: ['106', '129', '32', '12'], answer: 0, why: '7·16 − 6.' },
-      { q: "Carnitine transports…", options: ["acyl groups into the matrix", 'glucosa', 'O₂', 'NADH'], answer: 0, why: "Acyl-carnitine shuttle." },
-      { q: "Transamination requires as coenzyme…", options: ["PLP (vitamin B6)", 'FAD', "biotin", 'TPP'], answer: 0, why: "Pyridoxal phosphate." },
+      { q: "Carnitine transports…", options: ["acyl groups into the matrix", 'glucosa', 'O₂', "NADH"], answer: 0, why: "Acyl-carnitine shuttle." },
+      { q: "Transamination requires as coenzyme…", options: ["PLP (vitamin B6)", 'FAD', "biotin", "TPP"], answer: 0, why: "Pyridoxal phosphate." },
       { q: "NH₄⁺ is eliminated mainly as…", options: ['urea', "gaseous ammonia", 'glucosa', "uric acid"], answer: 0, why: "Urea cycle in the liver." },
       { q: "A ketogenic amino acid gives rise to…", options: ["acetyl-CoA", "oxaloacetate", "net glucose", 'urea'], answer: 0, why: "Leucine and lysine." }
     ],

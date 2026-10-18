@@ -1,6 +1,6 @@
 /* Célula animal — simulador 3D · Laboratorio MACEDONIA (UMCE). Usa ../shared/cell-core.js y cell-app.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, K = CellKit, V3 = K.V3;
 
   /* ---------- Fichas (comunes + propias de la célula animal) ---------- */

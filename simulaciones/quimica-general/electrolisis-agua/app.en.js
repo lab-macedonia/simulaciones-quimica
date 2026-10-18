@@ -1,7 +1,7 @@
 /* Electrólisis del agua — simulador 3D · Laboratorio MACEDONIA (UMCE)
    Usa el kit común ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE;
   var F = 96485;            // C/mol e⁻
   var VM = 24.465;          // L/mol de gas ideal a 25 °C y 1 atm
@@ -22,7 +22,7 @@
       cat: '4 H₂O(l) + 4 e⁻ → 2 H₂(g) + 4 OH⁻(aq)', an: '2 H₂O(l) → O₂(g) + 4 H⁺(aq) + 4 e⁻',
       Ec: -0.41, Ea: 0.82, cation: 'Na⁺', anion: 'SO₄²⁻', bulk: '#2fbf71', catHalo: '#5b4fd6', anHalo: '#e8553b',
       note: "Na⁺ and SO₄²⁻ do not react (they only conduct). Near the cathode the pH rises; near the anode it falls." },
-    base: { id: 'base', label: "Basic", sub: 'NaOH', color: '#7e9bff', f: 0.9, ph: 'pH ≈ 13',
+    base: { id: 'base', label: "Basic", sub: "NaOH", color: '#7e9bff', f: 0.9, ph: 'pH ≈ 13',
       name: "NaOH(aq) · inert electrodes",
       cat: '4 H₂O(l) + 4 e⁻ → 2 H₂(g) + 4 OH⁻(aq)', an: '4 OH⁻(aq) → O₂(g) + 2 H₂O(l) + 4 e⁻',
       Ec: -0.83, Ea: 0.40, cation: 'Na⁺', anion: 'OH⁻', bulk: '#5a45c9', catHalo: '#3a2a9a', anHalo: '#8ea3ee',
@@ -555,11 +555,11 @@
       cands: [{ r: 'Na⁺ + e⁻ → Na', E: -2.71, key: 'Na' }], crx: '2 H₂O + 2 e⁻ → H₂ + 2 OH⁻', cprod: 'H₂(g)', cE: -0.83,
       anodes: [], aOH: true,
       note: "Electrolysis of water in basic medium: OH⁻ is oxidized to O₂ at the anode." },
-    { id: 'cuso4', f: "CuSO₄(aq)", cation: 'Cu²⁺', anion: 'SO₄²⁻', ph: 'neutral', active: { metal: 'Cu', E: 0.34, rx: 'Cu → Cu²⁺ + 2 e⁻' },
+    { id: 'cuso4', f: "CuSO₄(aq)", cation: 'Cu²⁺', anion: 'SO₄²⁻', ph: 'neutral', active: { metal: 'Cu', E: 0.34, rx: "Cu → Cu²⁺ + 2 e⁻" },
       cands: [{ r: 'Cu²⁺ + 2 e⁻ → Cu', E: 0.34, key: 'Cu', prod: 'Cu(s)' }], crx: '2 H₂O + 2 e⁻ → H₂ + 2 OH⁻', cprod: 'H₂(g)',
       anodes: [{ r: 'SO₄²⁻ → S₂O₈²⁻ + 2 e⁻', E: 2.01, key: 'SO4', prod: 'S₂O₈²⁻' }],
       note: "Cu²⁺ is reduced more easily than water. With a copper anode (electrolytic refining) the anode dissolves and pure copper is deposited on the cathode." },
-    { id: 'cucl2', f: "CuCl₂(aq)", cation: 'Cu²⁺', anion: 'Cl⁻', ph: 'neutral', active: { metal: 'Cu', E: 0.34, rx: 'Cu → Cu²⁺ + 2 e⁻' },
+    { id: 'cucl2', f: "CuCl₂(aq)", cation: 'Cu²⁺', anion: 'Cl⁻', ph: 'neutral', active: { metal: 'Cu', E: 0.34, rx: "Cu → Cu²⁺ + 2 e⁻" },
       cands: [{ r: 'Cu²⁺ + 2 e⁻ → Cu', E: 0.34, key: 'Cu', prod: 'Cu(s)' }], crx: '2 H₂O + 2 e⁻ → H₂ + 2 OH⁻', cprod: 'H₂(g)',
       anodes: [{ r: '2 Cl⁻ → Cl₂ + 2 e⁻', E: 1.36, key: 'Cl2', prod: 'Cl₂(g)' }], kinetic: 'Cl₂',
       note: "Cathode: copper is deposited. Inert anode: Cl₂ is released (the overpotential of O₂ favors chlorine)." },
@@ -752,13 +752,13 @@
       modes: [
         { id: 'acid', label: "Acid", sub: 'H₂SO₄', color: '#ff7a6b' },
         { id: 'neutral', label: "Neutral", sub: 'Na₂SO₄', color: '#5ee3a2' },
-        { id: 'base', label: "Basic", sub: 'NaOH', color: '#7e9bff' }
+        { id: 'base', label: "Basic", sub: "NaOH", color: '#7e9bff' }
       ], modesLabel: "Electrolyte medium",
       onMode: function (id) { setMedium(id); },
       stages: STAGES,
       mainTabLabel: "Guide",
       tabs: [
-        { id: 'lab', label: 'Lab', build: function (el, k) { kit = k; buildLab(el); } },
+        { id: 'lab', label: "Lab", build: function (el, k) { kit = k; buildLab(el); } },
         { id: 'graf', label: "Graphs", build: function (el, k) { kit = k; buildGraphs(el); } },
         { id: 'mol', label: 'Molecular', build: function (el, k) { kit = k; buildMol(el); } },
         { id: 'pred', label: 'Predictor', build: function (el, k) { kit = k; buildPredictor(el); } }
@@ -782,7 +782,7 @@
           ["Current I", fmt(P.I, 2) + ' A'],
           ["Power V·I", fmt(P.V * P.I, 2) + ' W'],
           ["Charge Q = ∫I·dt", fmt(P.Q, 0) + ' C'],
-          ['n(H₂) · n(O₂)', fmt(P.nH2 * 1000, 2) + ' · ' + fmt(P.nO2 * 1000, 2) + ' mmol'],
+          ['n(H₂) · n(O₂)', fmt(P.nH2 * 1000, 2) + ' · ' + fmt(P.nO2 * 1000, 2) + " mmol"],
           ['V(H₂) · V(O₂)', fmt(vh, 1) + ' · ' + fmt(vo, 1) + ' mL'],
           ["Simulated time", fmtTime(P.tsim)],
           ["Energy per mole of H₂ (2·F·V)", P.V > 0 ? fmt(2 * F * P.V / 1000, 0) + ' kJ' : '–']

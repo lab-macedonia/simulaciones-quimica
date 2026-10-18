@@ -1,7 +1,7 @@
 /* chem-sn2.js — SN2: sustitución nucleofílica bimolecular (inversión de Walden).
  * Variantes: 'metilo' (bromometano + HO⁻) y 'butano' ((R)-2-bromobutano + HO⁻, estereogénico). */
 (function (root) {
-  'use strict';
+  "use strict";
   const Chem = root.Chem;
   const { V, K, S, step, lerp, basis, polar, methylHs, cip, fmt, DEG } = Chem;
 

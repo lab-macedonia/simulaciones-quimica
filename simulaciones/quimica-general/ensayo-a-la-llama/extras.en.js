@@ -1,6 +1,6 @@
 /* Extras de Ensayo a la llama: lección guiada, «Muestra problema» (predictor), captura y ayuda. */
 (function () {
-  'use strict';
+  "use strict";
   var $$ = function (id) { return document.getElementById(id); };
   var KEYS = Object.keys(ELEMENTS_DATA);
   function nm(k) { return ELEMENTS_DATA[k].name; }

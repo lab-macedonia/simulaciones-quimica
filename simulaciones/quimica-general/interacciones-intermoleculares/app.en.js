@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -751,7 +751,7 @@ const BEST={"ne":{"u":-0.296,"r":3.087,"pa":0,"ca":0,"pb":0,"cb":0,"tb":0,"dy":0
         ui.sel.value = pair.id; ui.info.innerHTML = '<p class="small"><b>' + pair.type + '</b> · ' + pair.dep + '</p><p class="small">' + pair.text + '</p>' + (pair.ref ? '<p class="small">' + pair.ref + '</p>' : '') + '<p class="small">' + [MA, MB].map(function (M) { return M.name + ': ' + (M.ion ? 'q = ' + (M.q > 0 ? '+' : '−') + Math.abs(Math.round(M.q)) : 'μ = ' + fix(M.mu, 2) + ' D') + ' · α′ = ' + fix(M.alpha, 2) + ' Å³'; }).join('<br>') + '</p>';
         if (newPair) { ui.r.el && 0; var rs = ui.r; if (rs.setRange) rs.setRange(pair.rng[0], pair.rng[1]); ui.pre.innerHTML = ''; (pair.pre || []).forEach(function (p, i) { var b = document.createElement('button'); b.className = 'btn'; b.textContent = p.l; b.onclick = function () { ctx.goManual(); applyPreset(p); }; ui.pre.appendChild(b); }); }
         ui.r.set(S.r); ui.pa.set(S.pa); ui.ca.set(S.ca); ui.pb.set(S.pb); ui.cb.set(S.cb); ui.tb.set(S.tb); ui.dy.set(S.dy); ui.T.set(Tk); ui.ind.set(S.ind ? '1' : '0'); ui.mode.set(mode);
-        Object.keys(ui.tg).forEach(function (n) { ui.tg[n].className = 'btn' + (show[n] ? ' primary' : ''); });
+        Object.keys(ui.tg).forEach(function (n) { ui.tg[n].className = 'btn' + (show[n] ? " primary" : ''); });
         [ui.pa, ui.ca, ui.pb, ui.cb, ui.tb].forEach(function (s) { var e = s.el || s.root || s; if (e && e.style) e.style.display = pair.orient ? '' : 'none'; }); var de = ui.dy.el || ui.dy.root || ui.dy; if (de && de.style) de.style.display = pair.offset ? '' : 'none';
       };
     },
@@ -797,8 +797,8 @@ const BEST={"ne":{"u":-0.296,"r":3.087,"pa":0,"ca":0,"pb":0,"cb":0,"tb":0,"dy":0
       { q: "A hydrogen bond is…", options: ["a directional X–H···A interaction", "a weak covalent bond", "a purely London force", "independent of orientation"], answer: 0, why: "Directional electrostatics (≈ 180° at X–H···A, H···A ≈ 1.8–2.0 Å)." },
       { q: "The “σ-hole” of I in CF₃I allows…", options: ["a halogen bond with a lone pair", "an H bond", "an ion–ion interaction", "zero dispersion"], answer: 0, why: "The positive zone opposite C–I attracts lone pairs in a very directional way." },
       { q: "If the energy well is much smaller than k_BT…", options: ["thermal agitation separates the pair", "the pair is very stable", "there is no attractive interaction", "there is only repulsion"], answer: 0, why: "k_BT ≈ 2.5 kJ/mol at 298 K: always compare the well with that energy." },
-      { q: "Freely rotating permanent dipoles interact according to…", options: ['Keesom: ∝ 1/(T·r⁶)', "fixed 1/r³", '1/r', "no dependence on T"], answer: 0, why: "The Boltzmann average over orientations gives an r⁻⁶ term that decreases with T." },
-      { q: "Order from highest to lowest typical energy:", options: ["ion–ion > H bond > dipole–dipole > London (small atoms)", "London > ion–ion > H bond", "dipole–dipole > ion–ion > H bond", "H bond > ion–ion > London"], answer: 0, why: 'Na⁺···Cl⁻ ≈ −500; H₂O···H₂O ≈ −27; HCl···HCl ≈ −4; Ar···Ar ≈ −1 kJ/mol.' }
+      { q: "Freely rotating permanent dipoles interact according to…", options: ["Keesom: ∝ 1/(T·r⁶)", "fixed 1/r³", '1/r', "no dependence on T"], answer: 0, why: "The Boltzmann average over orientations gives an r⁻⁶ term that decreases with T." },
+      { q: "Order from highest to lowest typical energy:", options: ["ion–ion > H bond > dipole–dipole > London (small atoms)", "London > ion–ion > H bond", "dipole–dipole > ion–ion > H bond", "H bond > ion–ion > London"], answer: 0, why: "Na⁺···Cl⁻ ≈ −500; H₂O···H₂O ≈ −27; HCl···HCl ≈ −4; Ar···Ar ≈ −1 kJ/mol." }
     ],
     help: { intro: "Choose a pair in “Lab”, adjust the distance and orientations, and compare U with k_BT.", items: [["Relax", "finds the local energy minimum."], ["Global minimum", "loads the best geometry of the model."], ["Thermal average", "potential of mean force for rotating dipoles."], ["Graphs", "U(r), slopes and well comparer."]] }
   };

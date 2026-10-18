@@ -1,7 +1,7 @@
 /* Sistema Solar 3D — datos de las fichas · Laboratorio MACEDONIA (UMCE)
    Elementos orbitales aproximados a la época J2000. Cifras redondeadas de NASA/JPL y UAI. */
 (function (g) {
-  'use strict';
+  "use strict";
   var D = g.SolarData = {};
   D.GROUPS = { est: "Star", roc: "Rocky planets", gas: "Gas giants", hel: "Ice giants", ena: "Dwarf planet", sat: "Moons", peq: "Belts of minor bodies" };
   D.ORDER = ['est', 'roc', 'gas', 'hel', 'ena', 'sat', 'peq'];

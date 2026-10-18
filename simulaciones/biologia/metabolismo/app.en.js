@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -224,11 +224,11 @@ var BP = (function () {
   function chain(r, c, n, col, sc, y) { var out = []; for (var i = 0; i < n; i++) { var p = [c[0] + (i - (n - 1) / 2) * 0.42 * sc, c[1] + (i % 2) * 0.12 * sc, c[2]]; out.push(p); r.sphere(p, 0.2 * sc, col); if (i) r.line(out[i - 1], p, 0.04 * sc, 0xced4da); } return out; }
   function initParts() { P = []; for (var i = 0; i < 46; i++) P.push({ x: -5 + Math.random() * 10, y: -2.2 + Math.random() * 1.9, z: (Math.random() - 0.5) * 3, u: 0, w: Math.random(), up: false, t: Math.random() }); G.H = P; }
   var STG = function () { return [
-    ["Overview", 'General', "Glucose → pyruvate → acetyl-CoA → CO₂ + H₂O", "<p><b>Glucose</b> is oxidized in three stages: <b>glycolysis</b> (cytosol), <b>pyruvate decarboxylation and the Krebs cycle</b> (mitochondrial matrix) and <b>oxidative phosphorylation</b> (inner membrane). The energy of the oxidations is stored in <b>NADH and FADH₂</b>, which feed the respiratory chain.</p>"],
+    ["Overview", "General", "Glucose → pyruvate → acetyl-CoA → CO₂ + H₂O", "<p><b>Glucose</b> is oxidized in three stages: <b>glycolysis</b> (cytosol), <b>pyruvate decarboxylation and the Krebs cycle</b> (mitochondrial matrix) and <b>oxidative phosphorylation</b> (inner membrane). The energy of the oxidations is stored in <b>NADH and FADH₂</b>, which feed the respiratory chain.</p>"],
     ["Glycolysis", "Glycolysis", "C₆H₁₂O₆ + 2 NAD⁺ + 2 ADP + 2 Pᵢ → 2 pyruvate + 2 NADH + 2 ATP", "<p>Ten reactions: the <b>investment</b> phase spends 2 ATP (hexokinase, PFK-1); the <b>payoff</b> phase produces 4 ATP and 2 NADH. <b>Net yield: 2 ATP + 2 NADH</b> per glucose. Without O₂, pyruvate is reduced to <b>lactate</b> to regenerate NAD⁺.</p>"],
-    ["Krebs cycle", 'Krebs', "Acetyl-CoA + 3 NAD⁺ + FAD + GDP → 2 CO₂ + 3 NADH + FADH₂ + GTP", "<p>Acetyl-CoA (2 C) joins <b>oxaloacetate</b> (4 C) and forms <b>citrate</b> (6 C). Two <b>decarboxylations</b> release 2 CO₂ and regenerate oxaloacetate. Per turn: <b>3 NADH, 1 FADH₂, 1 GTP</b>; per glucose, two turns.</p>"],
+    ["Krebs cycle", "Krebs", "Acetyl-CoA + 3 NAD⁺ + FAD + GDP → 2 CO₂ + 3 NADH + FADH₂ + GTP", "<p>Acetyl-CoA (2 C) joins <b>oxaloacetate</b> (4 C) and forms <b>citrate</b> (6 C). Two <b>decarboxylations</b> release 2 CO₂ and regenerate oxaloacetate. Per turn: <b>3 NADH, 1 FADH₂, 1 GTP</b>; per glucose, two turns.</p>"],
     ["Respiratory chain", "Chain", "NADH → CI → Q → CIII → cyt c → CIV → O₂", "<p>The electrons of NADH (−0.32 V) fall down to O₂ (+0.82 V). <b>CI, CIII and CIV pump H⁺</b> into the intermembrane space, creating the <b>proton gradient</b> (Δp). The H⁺ return through <b>ATP synthase</b>, whose rotor drives ATP synthesis (<b>chemiosmosis</b>, Mitchell).</p>"],
-    ["Balance and inhibitors", 'Balance', "Aerobic ≈ 32 ATP; fermentation = 2 ATP", "<p>Aerobic: <b>≈ 32 ATP per glucose</b> (2.5 ATP/NADH and 1.5 ATP/FADH₂). Anaerobic: only <b>2 ATP</b>. <b>Rotenone</b> blocks CI; <b>cyanide</b> blocks CIV; <b>oligomycin</b> blocks ATP synthase; <b>DNP</b> dissipates the gradient (<b>uncoupler</b>): it consumes O₂ and releases heat, without ATP.</p>"]
+    ["Balance and inhibitors", "Balance", "Aerobic ≈ 32 ATP; fermentation = 2 ATP", "<p>Aerobic: <b>≈ 32 ATP per glucose</b> (2.5 ATP/NADH and 1.5 ATP/FADH₂). Anaerobic: only <b>2 ATP</b>. <b>Rotenone</b> blocks CI; <b>cyanide</b> blocks CIV; <b>oligomycin</b> blocks ATP synthase; <b>DNP</b> dissipates the gradient (<b>uncoupler</b>): it consumes O₂ and releases heat, without ATP.</p>"]
   ]; };
   function lessonSet(i, loc) { S.v = i; if (i === 4) { var q = Math.floor(loc * 5); S.inh = ['none', 'rot', 'cn', 'oli', 'dnp'][Math.min(4, q)]; S.o2 = true; } else { S.inh = 'none'; S.o2 = true; } S.ph = loc; }
   var def = {
@@ -278,7 +278,7 @@ var BP = (function () {
         L[5].pos(-4.6, -2.7, 0).set('NADH → NAD⁺ + H⁺', 'bl-d').vis(true); L[6].pos(1.3, -2.2, 0).set('½O₂ + 2H⁺ → H₂O', 'bl-d').vis(true); L[7].pos(-3.2, 2.6, 0).set("intermembrane space (H⁺ ↑)", 'bl-d').vis(true); L[8].pos(-4.8, -2.0, 0).set('matriz', 'bl-d').vis(true);
         labs.t.pos(0, 3.4, 0).set("Relative Δp " + fmt(dp, 2) + " · O₂ consumption " + fmt(rate, 2) + ' · ATP ' + fmt(Y.tot, 0) + '/glucosa', 'bl-lead').vis(true);
       } else {
-        var cond = [['none', true], ['rot', true], ['cn', true], ['oli', true], ['dnp', true], ['none', false]], nm = ["Aerobic", "Rotenone", "Cyanide", "Oligomycin", 'DNP', "No O₂"];
+        var cond = [['none', true], ['rot', true], ['cn', true], ['oli', true], ['dnp', true], ['none', false]], nm = ["Aerobic", "Rotenone", "Cyanide", "Oligomycin", "DNP", "No O₂"];
         cond.forEach(function (c, i) { var y = yld(c[0], c[1]), x = -4.6 + i * 1.85, hh = y.tot * 0.07, sel = (c[0] === S.inh && c[1] === S.o2); [[y.g, 0x4dabf7], [y.k, 0xffd43b], [y.ox, 0xff922b]].reduce(function (b, s) { var h = s[0] * 0.07; if (h > 0) r.box([x, b + h / 2 - 1.9, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [0.95, h, 0.95], s[1], sel ? 1 : 0.55); return b + h; }, 0); L[i].pos(x, -2.5, 0).set(nm[i] + ' · ' + fmt(y.tot, 0), sel ? 'bl-lead' : 'bl-d').vis(true); });
         L[6].pos(0, 3.2, 0).set("blue: glycolysis · yellow: Krebs (GTP) · orange: oxidative phosphorylation", 'bl-d').vis(true);
         labs.t.pos(0, 3.9, 0).set(INH[S.inh].n + (S.o2 ? '' : " · no O₂") + ' → ' + fmt(Y.tot, 0) + " ATP per glucose" + (Y.lact ? " (lactic fermentation)" : ''), 'bl-lead').vis(true);
@@ -292,7 +292,7 @@ var BP = (function () {
     ideas: ["Each <b>NADH</b> yields ≈ 2.5 ATP and each <b>FADH₂</b> ≈ 1.5 ATP.", "Without O₂ the chain stops: glycolysis regenerates NAD⁺ with <b>lactate</b>.", "An <b>uncoupler</b> (DNP) dissipates Δp: O₂ consumption ↑, ATP ↓, heat ↑.", "Oligomycin <b>also stops the chain</b>: the high gradient brakes the pumps.", "ΔG = −nFΔE; from NADH to O₂ ≈ −220 kJ per pair of e⁻."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Scene and conditions"); el.appendChild(c);
-      ui.v = kit.ui.options({ label: "Stage", cols: 3, value: String(S.v), options: [['0', 'General'], ['1', "Glycolysis"], ['2', 'Krebs'], ['3', "Chain"], ['4', 'Balance']].map(function (o) { return { v: o[0], label: o[1] }; }), onChange: function (v) { ctx.goManual(); S.v = +v; S.ph = 0; } }); c.appendChild(ui.v);
+      ui.v = kit.ui.options({ label: "Stage", cols: 3, value: String(S.v), options: [['0', "General"], ['1', "Glycolysis"], ['2', "Krebs"], ['3', "Chain"], ['4', "Balance"]].map(function (o) { return { v: o[0], label: o[1] }; }), onChange: function (v) { ctx.goManual(); S.v = +v; S.ph = 0; } }); c.appendChild(ui.v);
       ui.inh = kit.ui.options({ label: "Inhibitor", cols: 2, value: S.inh, options: Object.keys(INH).map(function (k) { return { v: k, label: INH[k].n, sub: INH[k].tgt }; }), onChange: function (v) { ctx.goManual(); S.inh = v; } }); c.appendChild(ui.inh);
       ui.o2 = kit.ui.options({ label: "Oxygen", cols: 2, value: S.o2 ? '1' : '0', options: [{ v: '1', label: "With O₂" }, { v: '0', label: "No O₂" }], onChange: function (v) { ctx.goManual(); S.o2 = v === '1'; } }); c.appendChild(ui.o2);
       ui.ph = kit.ui.slider({ label: "Progress", min: 0, max: 100, step: 1, value: 0, format: function (v) { return v + ' %'; }, onInput: function (v) { ctx.goManual(); S.auto = false; S.ph = v / 100; } }); c.appendChild(kit.ui.sliders([ui.ph]));
@@ -301,7 +301,7 @@ var BP = (function () {
     },
     graphs: [
       { title: "ATP per glucose by condition", h: 240, note: "Glycolysis (blue), Krebs GTP (yellow) and oxidative phosphorylation (orange).", draw: function (cx, w, h, c) {
-        var L0 = 34, Tp = 10, B = 40, pw = w - L0 - 8, ph = h - Tp - B, cond = [['none', true, "Aerobic"], ['rot', true, "Rotenone"], ['cn', true, 'CN⁻'], ['oli', true, 'Oligom.'], ['dnp', true, 'DNP'], ['none', false, "No O₂"]], bw = pw / 6;
+        var L0 = 34, Tp = 10, B = 40, pw = w - L0 - 8, ph = h - Tp - B, cond = [['none', true, "Aerobic"], ['rot', true, "Rotenone"], ['cn', true, 'CN⁻'], ['oli', true, 'Oligom.'], ['dnp', true, "DNP"], ['none', false, "No O₂"]], bw = pw / 6;
         cx.font = '10px system-ui'; cx.strokeStyle = c.line; cx.fillStyle = c.muted; cx.textAlign = 'right'; for (var a = 0; a <= 32; a += 8) { var y = Tp + ph * (1 - a / 34); cx.beginPath(); cx.moveTo(L0, y); cx.lineTo(L0 + pw, y); cx.stroke(); cx.fillText(a, L0 - 4, y + 3); }
         cond.forEach(function (q, i) { var Y = yld(q[0], q[1]), x = L0 + i * bw + bw * 0.15, bb = 0, sel = q[0] === S.inh && q[1] === S.o2; [[Y.g, '#4dabf7'], [Y.k, '#fab005'], [Y.ox, '#ff922b']].forEach(function (s) { var hh = ph * s[0] / 34; cx.fillStyle = s[1]; cx.globalAlpha = sel ? 1 : 0.6; cx.fillRect(x, Tp + ph - bb - hh, bw * 0.7, hh); bb += hh; }); cx.globalAlpha = 1; cx.fillStyle = sel ? c.ink : c.muted; cx.textAlign = 'center'; cx.fillText(q[2], x + bw * 0.35, h - B + 14); cx.fillText(fmt(Y.tot, 0), x + bw * 0.35, Tp + ph - bb - 3); }); } },
       { title: "Redox tower of the respiratory chain", h: 250, note: "E°′ (V): NADH −0.32 → Q +0.04 → cyt c +0.25 → O₂ +0.82. CI, CIII and CIV pump H⁺.", draw: function (cx, w, h, c) {
@@ -320,7 +320,7 @@ var BP = (function () {
       return "<div class=\"card-kicker\">Balance per glucose molecule · " + INH[S.inh].n + (S.o2 ? '' : " · no O₂") + "</div><div class=\"calc-step\">1 · Reduced coenzymes (aerobic conditions)</div><table class=\"calc-table\">" + row("Glycolysis", '2 NADH') + row("Pyruvate → acetyl-CoA", '2 NADH') + row("Krebs (2 turns)", '6 NADH + 2 FADH₂ + 2 GTP') + row('Total', '10 NADH + 2 FADH₂') + '</table><div class="calc-step">2 · ATP</div><table class="calc-table">' + row("Substrate-level phosphorylation", '2 + 2 = 4') + row('10 × 2,5 + 2 × 1,5', '28') + row("Aerobic total", '32 ATP') + row("Chosen condition", fmt(Y.tot, 1) + ' ATP') + "</table><div class=\"calc-step\">3 · Thermodynamics</div><table class=\"calc-table\">" + row("ΔG°′ = −nFΔE (n = 2, ΔE = 1.14 V)", fmt(-2 * 96.485 * 1.14, 0) + ' kJ/mol') + row("Efficiency 32 × 50 / 2,870", fmt(32 * 50 / 2870 * 100, 0) + ' %') + '</table>'; },
     calcLabel: 'ATP',
     quiz: [
-      { q: "Net yield of glycolysis per glucose:", options: ['2 ATP + 2 NADH', '4 ATP + 4 NADH', '36 ATP', '2 ATP + 2 FADH₂'], answer: 0, why: "2 ATP are spent and 4 are produced; in addition 2 NADH (G3P-DH)." },
+      { q: "Net yield of glycolysis per glucose:", options: ["2 ATP + 2 NADH", "4 ATP + 4 NADH", "36 ATP", "2 ATP + 2 FADH₂"], answer: 0, why: "2 ATP are spent and 4 are produced; in addition 2 NADH (G3P-DH)." },
       { q: "The Krebs cycle takes place in…", options: ["the mitochondrial matrix", "the cytosol", "the intermembrane space", "the endoplasmic reticulum"], answer: 0, why: "The enzymes of the cycle are in the matrix (except succinate DH, in the inner membrane)." },
       { q: "The final electron acceptor of the respiratory chain is…", options: ['O₂', 'NAD⁺', 'CO₂', 'FAD'], answer: 0, why: "Complex IV reduces ½O₂ to H₂O with 2 H⁺." },
       { q: "Cyanide blocks…", options: ["complex IV", "complex I", "ATP synthase", "glycolysis"], answer: 0, why: "It binds to the Fe of cytochrome c oxidase: the chain stops." },
@@ -329,7 +329,7 @@ var BP = (function () {
       { q: "For each turn of the Krebs cycle, the following is released…", options: ['2 CO₂', '6 CO₂', '1 CO₂', '3 CO₂'], answer: 0, why: "Isocitrate DH and α-ketoglutarate DH decarboxylate; the 2 C of the acetyl leave (in the following turn)." },
       { q: "Without O₂, pyruvate is reduced to lactate in order to…", options: ["regenerate NAD⁺", "produce more ATP in the chain", "form acetyl-CoA", "obtain CO₂"], answer: 0, why: "Without NAD⁺ glycolysis would stop." }
     ],
-    help: { intro: "Use “Lab” to choose the stage, the inhibitor and the presence of O₂.", items: [["Glycolysis", "ten steps with net ATP and NADH."], ['Krebs', "ring with carbons and decarboxylations."], ["Chain", "H⁺ pump and ATP synthase; try inhibitors."], ['Balance', "compare the ATP of each condition."]] }
+    help: { intro: "Use “Lab” to choose the stage, the inhibitor and the presence of O₂.", items: [["Glycolysis", "ten steps with net ATP and NADH."], ["Krebs", "ring with carbons and decarboxylations."], ["Chain", "H⁺ pump and ATP synthase; try inhibitors."], ["Balance", "compare the ATP of each condition."]] }
   };
   MSim.create(def);
 })();

@@ -1,7 +1,7 @@
 /* app.js — Simulador multimecanismo 3D (SN2, SN1, E2, E1)
  * Orquesta: motor químico (Chem), visor 3D (Viewer), diagrama de energía, predictor y desafío. */
 (function () {
-  'use strict';
+  "use strict";
   const { V, fmt, predictor } = Chem;
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
@@ -474,7 +474,7 @@
     const r = predictor.evaluar(state.pred);
     $('#predBars').innerHTML = r.orden.map((k, i) => {
       const pc = Math.round(r.puntajes[k] * 100);
-      return '<div class="bar-row' + (i === 0 ? ' top' : '') + '" style="--mc:' + MEC_COLOR[k] + '"><b style="color:' + MEC_COLOR[k] + '">' + predictor.NOMBRES[k] + '</b><div class="bar-track"><i style="width:' + pc + '%"></i></div><span class="pc">' + pc + ' %</span></div>';
+      return '<div class="bar-row' + (i === 0 ? ' top' : '') + "\" style=\"--mc:" + MEC_COLOR[k] + '"><b style="color:' + MEC_COLOR[k] + '">' + predictor.NOMBRES[k] + '</b><div class="bar-track"><i style="width:' + pc + '%"></i></div><span class="pc">' + pc + ' %</span></div>';
     }).join('');
     $('#predReasons').innerHTML = r.razones.map(x => '<li>' + x + '</li>').join('');
     const note = $('#predNote');

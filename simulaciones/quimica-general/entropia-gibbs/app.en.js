@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -140,13 +140,13 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     return [
       ["Microstates and macrostates", "Microstates", "The same macroscopic distribution can be achieved in many ways",
         "<p>With <b>N particles</b> distributed between two halves, each specific assignment of every particle is a <b>microstate</b>; the <b>macrostate</b> only says how many are on the left (k). The number of microstates is <b>W = N!/(k!(N−k)!)</b>. With 20 particles there is a single microstate with all on the left, but <b>184,756</b> with 10 and 10.</p>"],
-      ['S = k·ln W', 'Boltzmann', "Entropy: a measure of the number of accessible microstates",
+      ['S = k·ln W', "Boltzmann", "Entropy: a measure of the number of accessible microstates",
         "<p>Boltzmann defined <b>S = k<sub>B</sub> ln W</b>, with k<sub>B</sub> = 1.38×10⁻²³ J/K. For one mole, <b>S = R ln(W)</b> per particle. More microstates means greater entropy. An isolated system evolves toward the macrostate with the greatest W, simply because it is <b>the most probable</b>: the 50/50 distribution.</p>"],
       ["Spontaneous expansion", "Expansion", "A gas fills all the available volume: ΔS = nR ln(V₂/V₁) > 0",
         "<p>When the partition is removed, the particles spread throughout the container. For the isothermal expansion of an ideal gas from V to 2V: <b>ΔS = nR ln 2 = +5.76 J/(mol·K)</b>. The process is spontaneous <b>with no change in energy</b>: it is driven by entropy alone. The second law: <b>ΔS<sub>universe</sub> &gt; 0</b> in every spontaneous process.</p>"],
       ["States of matter", "States", 'S(s) < S(l) ≪ S(g): más libertad de movimiento, más microestados',
         "<p>On melting and, above all, on vaporizing, the particles gain freedom: for water, <b>S° = 41 J/(mol·K)</b> (ice, approximate value) <b>→ 69.9 (liquid) → 188.8 (vapor)</b>. More atoms per molecule, greater mass and higher T also increase S. Reactions that <b>produce gas</b> or increase the number of moles have ΔS &gt; 0.</p>"],
-      ['ΔG = ΔH − TΔS', 'Gibbs', "Combines the effect of the system (ΔH) and the surroundings (ΔS_surr = −ΔH/T)",
+      ['ΔG = ΔH − TΔS', "Gibbs", "Combines the effect of the system (ΔH) and the surroundings (ΔS_surr = −ΔH/T)",
         "<p>Since ΔS<sub>surr</sub> = −ΔH/T, the criterion ΔS<sub>univ</sub> &gt; 0 is equivalent to <b>ΔG = ΔH − TΔS &lt; 0</b> (at constant P and T). There are <b>four cases</b> according to the signs: (−,+) always spontaneous; (+,−) never; (−,−) spontaneous at low T; (+,+) spontaneous at high T. The crossover temperature is <b>T = ΔH/ΔS</b>.</p>"],
       ["ΔG, K and equilibrium", 'ΔG° y K', "ΔG° = −RT ln K: a single number summarizes the equilibrium",
         "<p>At equilibrium ΔG = 0 and <b>ΔG° = −RT ln K</b>. If ΔG° &lt; 0, K &gt; 1 (favors products); if ΔG° &gt; 0, K &lt; 1. Every <b>5.7 kJ/mol</b> at 298 K changes K by a factor of 10. Change T and the reaction in “Lab” and watch how K moves with temperature.</p>"]

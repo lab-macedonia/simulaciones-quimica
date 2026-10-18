@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -186,7 +186,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 (function () {
   var fmt = SimKit.fmt, R = 8.314, SC = 2.1, PI = Math.PI;
-  var XS = { H: { t: 'H', A: 0, L: 1.09, c: 0xf2f2f2, r: 0.31, n: "hydrogen" }, F: { t: 'F', A: 0.15, L: 1.35, c: 0x7ee08a, r: 0.6, n: "fluorine" }, Cl: { t: 'Cl', A: 0.43, L: 1.77, c: 0x3ddc5a, r: 0.95, n: "chlorine" }, Br: { t: 'Br', A: 0.38, L: 1.94, c: 0xa0522d, r: 1.1, n: "bromine" }, OH: { t: 'OH', A: 0.87, L: 1.43, c: 0xff4d4d, r: 0.65, n: "hydroxyl" }, CH3: { t: 'CH₃', A: 1.74, L: 1.53, c: 0x56606b, r: 0.8, n: 'metilo' }, tBu: { t: 'C(CH₃)₃', A: 4.9, L: 1.55, c: 0x3b4450, r: 1.15, n: 'terc-butilo' } };
+  var XS = { H: { t: 'H', A: 0, L: 1.09, c: 0xf2f2f2, r: 0.31, n: "hydrogen" }, F: { t: 'F', A: 0.15, L: 1.35, c: 0x7ee08a, r: 0.6, n: "fluorine" }, Cl: { t: 'Cl', A: 0.43, L: 1.77, c: 0x3ddc5a, r: 0.95, n: "chlorine" }, Br: { t: 'Br', A: 0.38, L: 1.94, c: 0xa0522d, r: 1.1, n: "bromine" }, OH: { t: 'OH', A: 0.87, L: 1.43, c: 0xff4d4d, r: 0.65, n: "hydroxyl" }, CH3: { t: 'CH₃', A: 1.74, L: 1.53, c: 0x56606b, r: 0.8, n: "methyl" }, tBu: { t: 'C(CH₃)₃', A: 4.9, L: 1.55, c: 0x3b4450, r: 1.15, n: 'terc-butilo' } };
   var S = { mode: 'ring', phi: 60, T: 298, X: 'CH3', t: 0, tTarget: null, spin: false, but: false, axes: true };
   // ajuste cosenoidal del butano: puntos (φ, E kJ/mol)
   var BC = (function () { var pts = [[0, 19], [60, 3.8], [120, 16], [180, 0]], A = [], y = []; pts.forEach(function (p) { var f = p[0] * PI / 180; A.push([1, Math.cos(f), Math.cos(2 * f), Math.cos(3 * f)]); y.push(p[1]); });
@@ -263,7 +263,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       ["Butane", "Butane", "Anti, gauche and eclipsed: steric strain", "<p>In butane (rotation about the C2–C3 bond) more minima and maxima appear: <b>anti</b> (CH₃ at 180°, the most stable, 0), <b>gauche</b> (±60°, +3.8 kJ/mol due to <b>steric strain</b>), eclipsed CH₃/H (≈ +16 kJ/mol) and eclipsed CH₃/CH₃ (≈ +19 kJ/mol, maximum).</p>"],
       ["Cyclohexane: chair", "Chair", "The strain-free chair: axial and equatorial positions", "<p>Cyclohexane adopts the <b>chair conformation</b>: free of angle strain (≈ 111°) and torsional strain (everything staggered). Each carbon has one <b>axial</b> substituent (parallel to the axis, in orange) and one <b>equatorial</b> substituent (pointing out of the ring). Axial and equatorial positions alternate up/down.</p>"],
       ["Chair flip", "Flip", "When the chair flips, axial ↔ equatorial", "<p>The <b>chair flip</b> converts one chair into the other through the half-chair (≈ 45 kJ/mol), twist-boat and boat. All axial substituents become equatorial and vice versa. At 25 °C it happens ~10⁵ times per second; the barrier is ≈ 45 kJ/mol.</p>"],
-      ["Methylcyclohexane", 'A-value', "A bulky substituent prefers the equatorial position", "<p>When axial, the methyl clashes with the axial H atoms on C3 and C5 (<b>1,3-diaxial interactions</b>, orange lines), ≈ <b>7.3 kJ/mol</b> (A = 1.74 kcal/mol). Result: at equilibrium ≈ <b>95 %</b> of the molecules have the methyl equatorial (ΔG = −RT ln K).</p>"],
+      ["Methylcyclohexane", "A-value", "A bulky substituent prefers the equatorial position", "<p>When axial, the methyl clashes with the axial H atoms on C3 and C5 (<b>1,3-diaxial interactions</b>, orange lines), ≈ <b>7.3 kJ/mol</b> (A = 1.74 kcal/mol). Result: at equilibrium ≈ <b>95 %</b> of the molecules have the methyl equatorial (ΔG = −RT ln K).</p>"],
       ["tert-Butyl: locked", "Locking", "The tert-butyl group “locks” the conformation", "<p>The A-value of <b>tert-butyl</b> is ≈ 4.9 kcal/mol (≈ 20 kJ/mol): the conformation with axial t-Bu practically does not exist (&lt; 0.01 %). The ring is <b>locked</b> with equatorial t-Bu; it is used as a directing group in studies of stereoelectronic reactivity.</p>"]
     ];
   }
@@ -291,7 +291,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     hud: function () { var ring = S.mode === 'ring'; if (!ring) return { eq: { chip: S.but ? "Butane" : "Ethane", name: nameConf(S.phi), body: "<div class=\"eqline\"><small>Dihedral angle φ</small>" + fmt(S.phi, 0) + "°</div><div class=\"eqline\"><small>Relative energy</small>" + fmt(Ephi(S.phi), 1) + ' kJ/mol</div>' }, legend: [{ label: "Front", color: '#9aa5b1', text: "C1 (fixed)" }, { label: "Back", color: '#9aa5b1', text: "C2 (rotates φ)" }] };
       return { eq: { chip: "Chair", name: S.X === 'H' ? "Cyclohexane" : XS[S.X].n + "cyclohexane", body: "<div class=\"eqline\"><small>Energy (path)</small>" + fmt(ringEnergy(S.t), 1) + " kJ/mol</div><div class=\"eqline\"><small>ΔG axial−equat.</small>" + (S.X === 'H' ? '—' : fmt(dGring(), 1) + ' kJ/mol') + "</div><div class=\"eqline\"><small>% equatorial (" + S.T + ' K)</small>' + (S.X === 'H' ? '50' : fmt(pctEq(), 2)) + ' %</div>' }, legend: [{ label: "axial H", color: '#ffa94d', text: "parallel to the axis" }, { label: "equat. H", color: '#f2f2f2', text: "pointing outward" }, { label: '1,3-diaxial', color: '#ff6b3d', text: "X···H repulsion" }] }; },
     measures: function () { if (S.mode !== 'ring') return [["Molecule", S.but ? "butane (C2–C3)" : "ethane"], ['φ', fmt(S.phi, 0) + '°'], ["Conformation", nameConf(S.phi)], ["Relative E", fmt(Ephi(S.phi), 1) + ' kJ/mol'], ["Rotational barrier", S.but ? "≈ 19 kJ/mol (anti→eclipsed)" : '12 kJ/mol']];
-      return [["Substituent", XS[S.X].t], ['A-value', fmt(XS[S.X].A, 2) + ' kcal/mol'], ['ΔG° (ax−eq)', fmt(dGring(), 2) + ' kJ/mol'], ["% equatorial", S.X === 'H' ? '50 %' : fmt(pctEq(), 2) + ' %'], ["Current position", rg && rg.xAx ? 'axial' : "equatorial"], ["E path", fmt(ringEnergy(S.t), 1) + ' kJ/mol'], ["Inversion barrier", '≈ 45 kJ/mol']]; },
+      return [["Substituent", XS[S.X].t], ["A-value", fmt(XS[S.X].A, 2) + ' kcal/mol'], ['ΔG° (ax−eq)', fmt(dGring(), 2) + ' kJ/mol'], ["% equatorial", S.X === 'H' ? '50 %' : fmt(pctEq(), 2) + ' %'], ["Current position", rg && rg.xAx ? 'axial' : "equatorial"], ["E path", fmt(ringEnergy(S.t), 1) + ' kJ/mol'], ["Inversion barrier", '≈ 45 kJ/mol']]; },
     ideas: ["<b>Staggered</b> is more stable than <b>eclipsed</b> (ethane: 12 kJ/mol).", "Butane: <b>anti</b> &lt; <b>gauche</b> (+3.8) &lt; eclipsed (16 and 19 kJ/mol).", "<b>Chair</b>: strain-free; 6 axial and 6 equatorial H atoms.", "Flip: <b>axial ↔ equatorial</b>; barrier ≈ 45 kJ/mol.", "<b>A-value</b>: equatorial preference due to 1,3-diaxial interactions."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Control panel"); el.appendChild(c);
@@ -320,17 +320,17 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       var row = function (a, b) { return '<tr><th>' + a + '</th><td>' + b + '</td></tr>'; };
       if (S.mode !== 'ring') return "<div class=\"calc-step\">1 · Torsional energy (φ = " + fmt(S.phi, 0) + '°)</div><table class="calc-table">' + row(S.but ? "E(φ) butane" : 'E(φ) = 6(1 + cos 3φ)', '<b>' + fmt(Ephi(S.phi), 2) + ' kJ/mol</b>') + row("Conformation", nameConf(S.phi)) + row("Barrier", S.but ? "anti → eclipsed CH₃/CH₃: 19 kJ/mol" : "staggered → eclipsed: 12 kJ/mol") + row("Relative population (298 K)", 'e<sup>−E/RT</sup> = ' + MSim.sci(Math.exp(-Ephi(S.phi) * 1000 / (R * 298)), 3)) + '</table>';
       var dG = dGring(), K = Math.exp(dG * 1000 / (R * S.T));
-      return "<div class=\"calc-step\">1 · Substituent " + XS[S.X].t + '</div><table class="calc-table">' + row('A-value', fmt(XS[S.X].A, 2) + ' kcal/mol') + row('ΔG° = A × 4,184', '<b>' + fmt(dG, 2) + ' kJ/mol</b>') + "</table><div class=\"calc-step\">2 · Equilibrium at " + S.T + ' K</div><table class="calc-table">' + row('K = e<sup>ΔG°/RT</sup>', MSim.sci(K, 3) + ' ([ec]/[ax])') + row("% equatorial", '<b>' + fmt(100 * K / (1 + K), 3) + ' %</b>') + row('% axial', fmt(100 / (1 + K), 3) + ' %') + "</table><div class=\"calc-step\">3 · Inversion barrier</div><table class=\"calc-table\">" + row('ΔG‡ ≈ 45 kJ/mol', 'k = (k<sub>B</sub>T/h)·e<sup>−ΔG‡/RT</sup> ≈ ' + MSim.sci(1.38e-23 * S.T / 6.626e-34 * Math.exp(-45000 / (R * S.T)), 2) + ' s⁻¹') + '</table>';
+      return "<div class=\"calc-step\">1 · Substituent " + XS[S.X].t + '</div><table class="calc-table">' + row("A-value", fmt(XS[S.X].A, 2) + ' kcal/mol') + row('ΔG° = A × 4,184', '<b>' + fmt(dG, 2) + ' kJ/mol</b>') + "</table><div class=\"calc-step\">2 · Equilibrium at " + S.T + ' K</div><table class="calc-table">' + row('K = e<sup>ΔG°/RT</sup>', MSim.sci(K, 3) + ' ([ec]/[ax])') + row("% equatorial", '<b>' + fmt(100 * K / (1 + K), 3) + ' %</b>') + row('% axial', fmt(100 / (1 + K), 3) + ' %') + "</table><div class=\"calc-step\">3 · Inversion barrier</div><table class=\"calc-table\">" + row('ΔG‡ ≈ 45 kJ/mol', 'k = (k<sub>B</sub>T/h)·e<sup>−ΔG‡/RT</sup> ≈ ' + MSim.sci(1.38e-23 * S.T / 6.626e-34 * Math.exp(-45000 / (R * S.T)), 2) + ' s⁻¹') + '</table>';
     },
     quiz: [
       { q: "What is the most stable conformation of ethane?", options: ["Staggered", "Eclipsed", "Both equal", "Boat"], answer: 0, why: "In the staggered form the C–H bonds are at 60° (minimum torsional repulsion)." },
-      { q: "The rotational barrier of ethane is approximately…", options: ['12 kJ/mol', '120 kJ/mol', "1.2 kJ/mol", '45 kJ/mol'], answer: 0, why: "It is ≈ 12 kJ/mol (≈ 3 kcal/mol), easy to overcome at room temperature." },
-      { q: "In butane (C2–C3), the most stable conformer is…", options: ['Anti', 'Gauche', "Eclipsed CH₃/H", "Eclipsed CH₃/CH₃"], answer: 0, why: "In the anti form the methyl groups are at 180°, with no steric strain." },
-      { q: "The gauche conformer of butane lies about… above the anti.", options: ['3,8 kJ/mol', '19 kJ/mol', '0 kJ/mol', '45 kJ/mol'], answer: 0, why: "Steric strain between the CH₃ groups at 60°: ≈ 0.9 kcal/mol = 3.8 kJ/mol." },
+      { q: "The rotational barrier of ethane is approximately…", options: ['12 kJ/mol', "120 kJ/mol", "1.2 kJ/mol", "45 kJ/mol"], answer: 0, why: "It is ≈ 12 kJ/mol (≈ 3 kcal/mol), easy to overcome at room temperature." },
+      { q: "In butane (C2–C3), the most stable conformer is…", options: ["Anti", "Gauche", "Eclipsed CH₃/H", "Eclipsed CH₃/CH₃"], answer: 0, why: "In the anti form the methyl groups are at 180°, with no steric strain." },
+      { q: "The gauche conformer of butane lies about… above the anti.", options: ['3,8 kJ/mol', "19 kJ/mol", "0 kJ/mol", "45 kJ/mol"], answer: 0, why: "Steric strain between the CH₃ groups at 60°: ≈ 0.9 kcal/mol = 3.8 kJ/mol." },
       { q: "Which cyclohexane conformation lacks both angle and torsional strain?", options: ["Chair", "Boat", "Twist-boat", "Half-chair"], answer: 0, why: "The chair has angles ≈ 111° and all bonds staggered." },
       { q: "When the chair flips, an equatorial substituent becomes…", options: ['axial', "equatorial", "eclipsed", 'cis'], answer: 0, why: "The flip exchanges axial and equatorial at every carbon." },
       { q: "Methylcyclohexane prefers the equatorial methyl because…", options: ["it avoids 1,3-diaxial interactions with axial H atoms", "the methyl is polar", "the ring is planar", "it avoids hydrogen bonding"], answer: 0, why: "When axial, the CH₃ clashes with the axial H atoms on C3 and C5 (≈ 7.3 kJ/mol)." },
-      { q: "Which substituent has the highest A-value?", options: ['terc-butilo', 'metilo', 'OH', 'Cl'], answer: 0, why: "t-Bu (≈ 4.9 kcal/mol) is the bulkiest: it locks the conformation with itself equatorial." }
+      { q: "Which substituent has the highest A-value?", options: ['terc-butilo', "methyl", 'OH', 'Cl'], answer: 0, why: "t-Bu (≈ 4.9 kcal/mol) is the bulkiest: it locks the conformation with itself equatorial." }
     ],
     help: { intro: "Choose ethane, butane or cyclohexane in “Lab”. Use “Newman view” to look along the C–C bond.", items: [['φ', "dihedral angle between the groups of the front carbon and the back carbon."], ["Orange", "axial H atoms; the orange lines are the 1,3-diaxial interactions."], ["Flip", "moves the ring through the half-chair and twist-boat."], ["Graphs", "energy profile and A-values."]] }
   };

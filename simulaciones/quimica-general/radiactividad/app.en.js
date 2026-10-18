@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -147,7 +147,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         "<p>Stable nuclei form the <b>band of stability</b> in the N–Z plane: N ≈ Z up to Z ≈ 20 and then N/Z grows (≈ 1.5 in lead) because more neutrons are needed to offset the repulsion between protons. With <b>too many neutrons</b> the nucleus emits β⁻; with <b>too many protons</b>, β⁺ or electron capture; heavy nuclei (Z &gt; 83) emit <b>α</b>. All with Z &gt; 83 are radioactive.</p>"],
       ["Alpha decay", "Alpha", "Emits ⁴He²⁺: Z drops by 2 and A drops by 4",
         "<p>In <b>α emission</b> the nucleus expels a particle of <b>2 protons and 2 neutrons</b>: <b>ᴬ_Z X → ᴬ⁻⁴_(Z−2) Y + ⁴₂He</b>. Example: <b>²³⁸U → ²³⁴Th + α</b>. It is typical of heavy nuclei. The α particle is highly ionizing but barely penetrating: a sheet of paper stops it.</p>"],
-      ["Beta decay and capture", 'Beta', 'β⁻: n → p + e⁻ + ν̄ · β⁺: p → n + e⁺ + ν · captura: p + e⁻ → n + ν',
+      ["Beta decay and capture", "Beta", "β⁻: n → p + e⁻ + ν̄ · β⁺: p → n + e⁺ + ν · capture: p + e⁻ → n + ν",
         "<p>In <b>β⁻</b> a neutron becomes a proton: Z rises by 1 and A stays (<b>¹⁴C → ¹⁴N + e⁻ + ν̄</b>). In <b>β⁺</b> a proton becomes a neutron (<b>¹⁸F → ¹⁸O + e⁺ + ν</b>, used in PET scans). In <b>electron capture</b> the nucleus absorbs an electron from its shell (<b>⁴⁰K → ⁴⁰Ar</b>). A and the total charge are always conserved.</p>"],
       ["Half-life", "Half-life", 'N(t) = N₀·2^(−t/t½) · A = λN',
         "<p>Decay is a <b>random first-order process</b>: each nucleus has the same probability λ per unit time. After each <b>half-life (t½)</b> half remains: <b>N = N₀·(½)^(t/t½)</b>, with <b>λ = ln 2 / t½</b>. The <b>activity</b> A = λN is measured in becquerel (1 Bq = 1 decay/s). Each dot in the panel is an atom; the blue ones have already decayed.</p>"],

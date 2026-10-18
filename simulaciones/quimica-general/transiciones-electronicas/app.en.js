@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -250,8 +250,8 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   var STG = function () { return [
     ["Bohr model", 'Bohr', "Eₙ = −13.6 eV·Z²/n² · rₙ = 52.9 pm·n²/Z", "<p>The electron travels in <b>circular orbits</b> with angular momentum <b>L = n·ħ</b>. The energies are <b>quantized</b> and negative (bound electron). The radii grow as <b>n²</b> and the energy approaches 0 as n → ∞ (the levels converge). Here the radial scale is compressed.</p>"],
     ["Absorption and emission", "Absorption", '|ΔE| = h·f = h·c/λ', "<p>Moving up a level requires <b>absorbing</b> a photon of exact energy E<sub>n₂</sub> − E<sub>n₁</sub>; moving down releases an equal photon (<b>emission</b>). The photon color corresponds to its wavelength; in the UV and IR it is shown with reference colors.</p>"],
-    ["Spectral series", 'Series', '1/λ = R·Z²·(1/n₁² − 1/n₂²)', "<p>Transitions ending at n = 1 form the <b>Lyman</b> series (UV), at n = 2 the <b>Balmer</b> series (visible, Hα = 656.5 nm), at n = 3 the <b>Paschen</b> series (IR). The lines converge toward the <b>series limit</b> (n₂ → ∞).</p>"],
-    ["de Broglie wave", 'De Broglie', '2π·rₙ = n·λ', "<p>If the electron is a wave, the orbit is stable only if a <b>whole number</b> of wavelengths fits (<b>2πr = nλ</b>); otherwise the wave destroys itself by interference. This explains Bohr's <b>quantization</b>. The n standing waves of each orbit are shown.</p>"],
+    ["Spectral series", "Series", '1/λ = R·Z²·(1/n₁² − 1/n₂²)', "<p>Transitions ending at n = 1 form the <b>Lyman</b> series (UV), at n = 2 the <b>Balmer</b> series (visible, Hα = 656.5 nm), at n = 3 the <b>Paschen</b> series (IR). The lines converge toward the <b>series limit</b> (n₂ → ∞).</p>"],
+    ["de Broglie wave", "De Broglie", '2π·rₙ = n·λ', "<p>If the electron is a wave, the orbit is stable only if a <b>whole number</b> of wavelengths fits (<b>2πr = nλ</b>); otherwise the wave destroys itself by interference. This explains Bohr's <b>quantization</b>. The n standing waves of each orbit are shown.</p>"],
     ["Ionization and hydrogen-like ions", "Ionization", "E(n=1) = −13.6·Z² eV", "<p>To <b>ionize</b> (n → ∞) from n = 1, 13.6 eV is needed (λ ≤ 91.2 nm) in H, <b>54.4 eV</b> in He⁺ and <b>122.4 eV</b> in Li²⁺: the energy scales with <b>Z²</b> and the radii with 1/Z. The model only works for <b>one-electron</b> systems.</p>"]
   ]; };
   var def = {
@@ -337,14 +337,14 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     quiz: [
       { q: "The energy of the electron in level n of the H atom is…", options: ['−13,6 eV / n²', '−13,6 eV · n²', '+13,6 eV / n', '−13,6 eV / n'], answer: 0, why: "Eₙ = −13.6 eV·Z²/n²: negative and tending to 0 as n → ∞." },
       { q: "An electron goes from n = 3 to n = 2: it…", options: ["emits a red photon (Hα, 656 nm)", "absorbs a red photon", "emits a UV photon", "absorbs a UV photon"], answer: 0, why: "ΔE = 1.89 eV → λ = 656 nm; on dropping a level, a photon is emitted." },
-      { q: "The Lyman series corresponds to transitions ending at…", options: ["n = 1 (ultraviolet)", 'n = 2 (visible)', "n = 3 (infrared)", 'n = ∞'], answer: 0, why: "Lyman: n → 1, UV region." },
+      { q: "The Lyman series corresponds to transitions ending at…", options: ["n = 1 (ultraviolet)", "n = 2 (visible)", "n = 3 (infrared)", 'n = ∞'], answer: 0, why: "Lyman: n → 1, UV region." },
       { q: "The ionization energy of H from the ground state is…", options: ["13.6 eV", "3.4 eV", "1.51 eV", "54.4 eV"], answer: 0, why: "It is |E₁| = 13.6 eV, equivalent to λ ≤ 91.2 nm." },
       { q: "For He⁺ (Z = 2) the ground-state energy is…", options: ["−54.4 eV", "−27.2 eV", "−13.6 eV", "−6.8 eV"], answer: 0, why: "E₁ = −13.6·Z² = −54.4 eV." },
       { q: "The de Broglie condition for a stable orbit is…", options: ['2πr = nλ', 'r = nλ', 'πr = nλ', '2πr = λ/n'], answer: 0, why: "The circumference must contain a whole number of wavelengths." },
       { q: "The radii of the Bohr orbits grow in proportion to…", options: ['n²', 'n', '1/n²', 'n³'], answer: 0, why: 'rₙ = a₀n²/Z.' },
       { q: "The Bohr model correctly describes…", options: ["one-electron systems", "all neutral atoms", "diatomic molecules", "only the ground state"], answer: 0, why: "It works for H, He⁺, Li²⁺; it does not explain many-electron atoms." }
     ],
-    help: { intro: "Use “Lab” to move the electron to another level, launch series and cascades, or change species.", items: [["Absorption/emission", "going up a level absorbs a photon; going down emits it."], ['Series', "automatic Lyman, Balmer and Paschen."], ['De Broglie', "standing waves in each orbit."], ["Graphs", "level diagram and line spectrum."]] }
+    help: { intro: "Use “Lab” to move the electron to another level, launch series and cascades, or change species.", items: [["Absorption/emission", "going up a level absorbs a photon; going down emits it."], ["Series", "automatic Lyman, Balmer and Paschen."], ["De Broglie", "standing waves in each orbit."], ["Graphs", "level diagram and line spectrum."]] }
   };
   MSim.create(def);
 })();

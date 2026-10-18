@@ -4,7 +4,7 @@
    La cámara reproduce exactamente la proyección con perspectiva que usaban los módulos
    (distancia camd, distancia focal focpx en píxeles, escala 'world'), de modo que los rótulos 2D coinciden. */
 (function (g) {
-  'use strict';
+  "use strict";
   var T = g.THREE, R, scene, cam, grp, sph, cyl, cone, ready = false;
   var pools = { s: [], c: [], k: [] }, used = { s: 0, c: 0, k: 0 };
   var Y = null, V = null, Q = null, Q2 = null;

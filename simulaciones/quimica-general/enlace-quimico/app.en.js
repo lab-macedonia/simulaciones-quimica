@@ -1,7 +1,7 @@
 /* Enlace químico (iónico · covalente · metálico) — simulador 3D · Laboratorio MACEDONIA (UMCE)
    Usa el kit común ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, kit;
   var fmt = SimKit.fmt, clamp = SimKit.clamp;
   var K_COUL = 138935;            // kJ·pm/mol (e²/4πε₀ · N_A)
@@ -35,8 +35,8 @@
       U: -3791, mp: 2852, cyc: [148, 2189, 249, 603, -3791], hf: -602, nameC: "magnesium", nameA: "oxygen" }
   };
   var COV = {
-    h2: { id: 'h2', f: 'H₂', sub: 'simple', A: { s: 'H', en: 2.20, vdw: 120, col: 0xf2f2f2, lp: 0 }, B: { s: 'H', en: 2.20, vdw: 120, col: 0xf2f2f2, lp: 0 }, order: 1, re: 74, D: 436, mu: 0, name: "hydrogen" },
-    cl2: { id: 'cl2', f: 'Cl₂', sub: 'simple', A: { s: 'Cl', en: 3.16, vdw: 175, col: 0x3fd24a, lp: 3 }, B: { s: 'Cl', en: 3.16, vdw: 175, col: 0x3fd24a, lp: 3 }, order: 1, re: 199, D: 243, mu: 0, name: "chlorine" },
+    h2: { id: 'h2', f: 'H₂', sub: "simple", A: { s: 'H', en: 2.20, vdw: 120, col: 0xf2f2f2, lp: 0 }, B: { s: 'H', en: 2.20, vdw: 120, col: 0xf2f2f2, lp: 0 }, order: 1, re: 74, D: 436, mu: 0, name: "hydrogen" },
+    cl2: { id: 'cl2', f: 'Cl₂', sub: "simple", A: { s: 'Cl', en: 3.16, vdw: 175, col: 0x3fd24a, lp: 3 }, B: { s: 'Cl', en: 3.16, vdw: 175, col: 0x3fd24a, lp: 3 }, order: 1, re: 199, D: 243, mu: 0, name: "chlorine" },
     o2: { id: 'o2', f: 'O₂', sub: "double", A: { s: 'O', en: 3.44, vdw: 152, col: 0xf85149, lp: 2 }, B: { s: 'O', en: 3.44, vdw: 152, col: 0xf85149, lp: 2 }, order: 2, re: 121, D: 498, mu: 0, name: "oxygen" },
     n2: { id: 'n2', f: 'N₂', sub: 'triple', A: { s: 'N', en: 3.04, vdw: 155, col: 0x4c7bff, lp: 1 }, B: { s: 'N', en: 3.04, vdw: 155, col: 0x4c7bff, lp: 1 }, order: 3, re: 110, D: 945, mu: 0, name: "nitrogen" },
     hcl: { id: 'hcl', f: 'HCl', sub: 'polar', A: { s: 'H', en: 2.20, vdw: 120, col: 0xf2f2f2, lp: 0 }, B: { s: 'Cl', en: 3.16, vdw: 175, col: 0x3fd24a, lp: 3 }, order: 1, re: 127, D: 431, mu: 1.08, name: "hydrogen chloride" },
@@ -92,7 +92,7 @@
     ];
   }
   function stagesCov(p) {
-    var A = p.A, B = p.B, den = dEN(A.en, B.en), bn = ['', 'simple', "double", 'triple'][p.order], pares = ['', "One pair", "Two pairs", "Three pairs"][p.order];
+    var A = p.A, B = p.B, den = dEN(A.en, B.en), bn = ['', "simple", "double", 'triple'][p.order], pares = ['', "One pair", "Two pairs", "Three pairs"][p.order];
     var polar = den >= 0.4;
     return [
       ["Separate atoms", "Atoms", "Two nonmetal atoms",
@@ -366,7 +366,7 @@
     covLbA.set(A.s + (polar && S.pol > 0.35 ? (sgn > 0 ? ' δ+' : ' δ−') : ''), polar && S.pol > 0.35 ? (sgn > 0 ? 'bl-pos' : 'bl-neg') : 'bl-d');
     covLbB.set(B.s + (polar && S.pol > 0.35 ? (sgn > 0 ? ' δ−' : ' δ+') : ''), polar && S.pol > 0.35 ? (sgn > 0 ? 'bl-neg' : 'bl-pos') : 'bl-d');
     covLbA.o.position.set(xA, Math.max(rA, 0.3) + 0.35, 0); covLbB.o.position.set(xB, Math.max(rB, 0.3) + 0.35, 0);
-    var txt = w > 0.05 ? (polar ? "Polar covalent bond · " : "Nonpolar covalent bond · ") + ['', 'simple', "double", 'triple'][p.order] : '';
+    var txt = w > 0.05 ? (polar ? "Polar covalent bond · " : "Nonpolar covalent bond · ") + ['', "simple", "double", 'triple'][p.order] : '';
     covLbT.set(txt, 'bl-d'); covLbT.o.visible = !!txt;
     covLbT.o.position.set(0, Math.max(rA, rB) + 1.05, 0);
   }
@@ -833,7 +833,7 @@
       stages: STAGES,
       mainTabLabel: "Guide",
       tabs: [
-        { id: 'lab', label: 'Lab', build: function (el, k) { kit = k; buildLab(el); } },
+        { id: 'lab', label: "Lab", build: function (el, k) { kit = k; buildLab(el); } },
         { id: 'energia', label: "Energy", build: function (el, k) { kit = k; buildEnergy(el); } },
         { id: 'pred', label: 'Predictor', build: function (el, k) { kit = k; buildPredictor(el); } }
       ],
@@ -913,7 +913,7 @@
         items: [
           ["Bond type", "ionic (NaCl, LiF, KBr, MgO), covalent (H₂, Cl₂, O₂, N₂, HCl, HF) and metallic (Na, Mg, Al, Cu)."],
           ["Layers", "electrons, forces or dipole, labels and auto-rotation."],
-          ['Lab', "change the substance and move the distance, the lattice formation, the electric field or the sliding of a layer."],
+          ["Lab", "change the substance and move the distance, the lattice formation, the electric field or the sliding of a layer."],
           ["Energy", "Coulomb–Born curve and Born–Haber cycle (ionic), Morse curve and bond order (covalent), properties and conductivity (metallic). Click on the curve to move the distance."],
           ['Predictor', "choose two elements and discover which bond they form according to ΔEN; you can simulate the case in 3D."]
         ]

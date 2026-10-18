@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -249,7 +249,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     { id: 'ald', n: "Aldehyde (ethanal)", pka: 17, t: "aldehyde" }, { id: 'cet', n: "Ketone (propanone)", pka: 19.3, t: "ketone" }, { id: 'est', n: "Ester (ethyl ethanoate)", pka: 25, t: "ester" }, { id: 'ami', n: "Amide (N,N-dimethylacetamide)", pka: 30, t: 'amida' },
     { id: 'mal', n: "Diethyl malonate", pka: 13, t: "β-dicarbonyl ester" }, { id: 'aca', n: "Ethyl acetoacetate", pka: 10.7, t: "β-ketoester" }, { id: 'acac', n: "Pentane-2,4-dione", pka: 8.9, t: "β-diketone" }
   ];
-  var BA = [{ id: 'OH', n: 'NaOH', ph: 15.7 }, { id: 'EtO', n: 'EtONa', ph: 15.9 }, { id: 'NaH', n: 'NaH', ph: 35 }, { id: 'LDA', n: 'LDA', ph: 36 }];
+  var BA = [{ id: 'OH', n: "NaOH", ph: 15.7 }, { id: 'EtO', n: 'EtONa', ph: 15.9 }, { id: 'NaH', n: 'NaH', ph: 35 }, { id: 'LDA', n: 'LDA', ph: 36 }];
   var PID = {}; PR.forEach(function (p) { PID[p.id] = p; }); var BID = {}; BA.forEach(function (b) { BID[b.id] = b; });
   var G = {
     ald: MSim.build('C{al+}C{c}=O{o}'), eno: MSim.strip(MSim.build('C{al}=C{c}O{e}'), 'e'), elec: MSim.build('CC{c}=O{o}'), alk: MSim.strip(MSim.build('CC{c}(O{o})C{al}C{cc}=O'), 'o'), aldol: MSim.build('CC{c}(O{o})C{al}C{cc}=O'),
@@ -267,7 +267,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         "<p>The base takes the α H (arrow 1), the pair of the C–H bond forms the C=C double bond (arrow 2) and the π bond of the C=O moves onto the oxygen (arrow 3). The <b>enolate</b> is a hybrid of two resonance forms: <b>C⁻</b> (carbanion) and <b>O⁻</b> (vinyl alkoxide). It is a <b>nucleophile at C</b> and therefore forms C–C bonds. With NaOH only a small fraction of the ketone is converted to enolate; with <b>LDA</b> the conversion is complete.</p>"],
       ["Aldol addition", "Addition", "The enolate attacks the carbonyl of another molecule: new C–C bond",
         "<p>The nucleophilic carbon of the enolate (C=C π pair, arrow 1) attacks the electrophilic carbon of a second ethanal molecule; the π bond of the C=O moves onto the oxygen (arrow 2). An <b>alkoxide</b> with a new C–C bond forms: two 2-carbon molecules give one 4-carbon molecule. It is the same attack along the Bürgi–Dunitz trajectory as in addition to the carbonyl.</p>"],
-      ["Protonation: the aldol", 'Aldol', "The alkoxide is protonated and gives a β-hydroxyaldehyde",
+      ["Protonation: the aldol", "Aldol", "The alkoxide is protonated and gives a β-hydroxyaldehyde",
         "<p>The alkoxide picks up an H⁺ from the solvent (water or alcohol) and <b>3-hydroxybutanal</b> is obtained, an <b>aldol</b> (<b>ald</b>ehyde + alco<b>hol</b>): an OH group at the β position relative to the C=O. At low temperature and with dilute base the reaction stops here and is <b>reversible</b> (retro-aldol).</p>"],
       ["Dehydration (E1cB)", 'E1cB', "With heat, the aldol loses water and forms a conjugated enal",
         "<p>On heating, the base removes the α H of the aldol (enolate) and the pair expels the <b>OH⁻</b> from the β carbon (<b>E1cB</b> mechanism): <b>but-2-enal</b> (crotonaldehyde) forms, a conjugated <b>α,β-unsaturated</b> carbonyl compound. The C=C–C=O conjugation stabilizes it and the loss of water makes the process <b>irreversible</b>: this is the <b>aldol condensation</b>.</p>"],
@@ -338,7 +338,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     key: 'enolatos-aldolica', title: "Enolates and Aldol Condensation", subtitle: "3D simulator · organic chemistry", accent: { dark: '#a78bfa', light: '#6d28d9' },
     stages: stages, nStages: 7, dur: 11, offset: 0.12,
     views: [{ id: 'libre', label: "Free", pos: [2, 3, 14], target: [0, 0, 0] }, { id: 'frontal', label: "Front", pos: [0, 0.5, 15], target: [0, 0, 0] }, { id: 'sup', label: "Top", pos: [0, 16, 3], target: [0, 0, 0] }],
-    layers: [{ id: 'arrows', label: "Electron arrows", icon: '↷' }, { id: 'halo', label: 'Halos', icon: '◉' }],
+    layers: [{ id: 'arrows', label: "Electron arrows", icon: '↷' }, { id: 'halo', label: "Halos", icon: '◉' }],
     build: function (ctx) {
       SG = MSim.stage(ctx); for (var i = 0; i < 3; i++) arr.push(MSim.arrow(ctx, 0xff7a3d));
       base = new T.Mesh(new T.SphereGeometry(0.55, 18, 14), new T.MeshStandardMaterial({ color: 0x4f8bff })); base.visible = false; ctx.scene.add(base);
@@ -352,13 +352,13 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     sync: function (ctx) { var u = ctx.ui; if (!ctx.P.manual) { u.st && u.st.set(String(S.cur)); } },
     hud: function () {
       var pr = PID[S.pr], b = BID[S.b], k = K(pr, b);
-      return { eq: { chip: 'Aldol', name: "enolate + carbonyl → β-hydroxycarbonyl", body: '<div class="eqline"><small>Precursor</small>' + pr.n + ' (pKa ' + f1(pr.pka) + ')</div><div class="eqline"><small>Base</small>' + b.n + ' (pKa HB ' + f1(b.ph) + ")</div><div class=\"eqline\"><small>Enolization K</small>" + MSim.sci(k, 1) + '</div>' }, legend: [{ label: "Arrow", color: '#ff7a3d', arrow: true, text: "movement of the e⁻ pair" }, { label: "Red", color: '#ff5c5c', text: "negative charge" }, { label: "Blue", color: '#4dabf7', text: "conjugated system" }] };
+      return { eq: { chip: "Aldol", name: "enolate + carbonyl → β-hydroxycarbonyl", body: '<div class="eqline"><small>Precursor</small>' + pr.n + ' (pKa ' + f1(pr.pka) + ")</div><div class=\"eqline\"><small>Base</small>" + b.n + ' (pKa HB ' + f1(b.ph) + ")</div><div class=\"eqline\"><small>Enolization K</small>" + MSim.sci(k, 1) + '</div>' }, legend: [{ label: "Arrow", color: '#ff7a3d', arrow: true, text: "movement of the e⁻ pair" }, { label: "Red", color: '#ff5c5c', text: "negative charge" }, { label: "Blue", color: '#4dabf7', text: "conjugated system" }] };
     },
     measures: function () { var pr = PID[S.pr], b = BID[S.b], k = K(pr, b); return [['Precursor', pr.n], ["α H pKa", f1(pr.pka)], ['Base', b.n], ["pKa of HB", f1(b.ph)], ['K', MSim.sci(k, 1)], ["Enolate fraction", k > 1e3 ? '≈ 100 %' : (k < 1e-3 ? '< 0,1 %' : f1(k / (1 + k) * 100) + ' %')]]; },
     ideas: ["The <b>α H</b> is acidic because the enolate delocalizes the charge onto O (pKa 17–25 versus 50).", "Enolate = <b>nucleophile at C</b>: it attacks carbonyls and forms C–C bonds.", "<b>Aldol</b> (cold, reversible) → conjugated <b>enal</b> by E1cB (heat, irreversible).", "In a crossed aldol, an aldehyde <b>without α H</b> (benzaldehyde) avoids mixtures of products.", "Strong base (LDA) = complete enolization; NaOH/EtO⁻ = equilibrium."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Reaction"); el.appendChild(c);
-      ui.st = kit.ui.options({ label: "Mechanism stage", cols: 3, value: String(S.si), options: [["α H acidity", 0], ["Enolate", 1], ["Addition", 2], ['Aldol', 3], ['E1cB', 4], ["Crossed", 5], ["Conditions", 6]].map(function (x) { return { v: String(x[1]), label: x[0] }; }), onChange: function (v) { ctx.goManual(); S.si = +v; S.prog = 0; S.run = true; } }); c.appendChild(ui.st);
+      ui.st = kit.ui.options({ label: "Mechanism stage", cols: 3, value: String(S.si), options: [["α H acidity", 0], ["Enolate", 1], ["Addition", 2], ["Aldol", 3], ['E1cB', 4], ["Crossed", 5], ["Conditions", 6]].map(function (x) { return { v: String(x[1]), label: x[0] }; }), onChange: function (v) { ctx.goManual(); S.si = +v; S.prog = 0; S.run = true; } }); c.appendChild(ui.st);
       ui.pg = kit.ui.slider({ label: "Progress", min: 0, max: 1, step: 0.01, value: S.prog, format: function (v) { return fmt(v * 100, 0) + ' %'; }, onInput: function (v) { ctx.goManual(); S.run = false; S.prog = v; } }); c.appendChild(kit.ui.sliders([ui.pg]));
       c.appendChild(ctx.btnRow([{ t: "▶ Play stage", primary: true, fn: function () { ctx.goManual(); S.prog = 0; S.run = true; } }, { t: "Back to the lesson", fn: function () { ctx.toLesson(); } }]));
       var b = kit.ui.card("Precursor and base"); el.appendChild(b);
@@ -372,7 +372,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         var xb = L + pw * b.ph / mx; cx.strokeStyle = '#ff7a3d'; cx.setLineDash([4, 3]); cx.lineWidth = 1.6; cx.beginPath(); cx.moveTo(xb, T0); cx.lineTo(xb, h - 20); cx.stroke(); cx.setLineDash([]); cx.lineWidth = 1; cx.fillStyle = '#ff7a3d'; cx.textAlign = 'center'; cx.fillText(b.n + ' · pKa(HB) ' + f1(b.ph), Math.min(w - 70, Math.max(L + 50, xb)), h - 6);
       } },
       { title: "Energy profile of the aldol condensation (sketch)", h: 200, note: "Qualitative sketch: the slow step is usually enolate formation or the C–C attack; dehydration makes the process irreversible.", draw: function (cx, w, h, col) {
-        var pts = [[0, 0.45, "Ethanal ×2"], [0.17, 0.75, "Enolate"], [0.4, 0.95, 'C–C (TS)'], [0.55, 0.35, "Alkoxide"], [0.7, 0.25, 'Aldol'], [0.85, 0.6, 'E1cB (TS)'], [1, 0.1, 'Enal + H₂O']], L = 10, R = 10, Tp = 14, B = 26, pw = w - L - R, ph = h - Tp - B, sx = function (u) { return L + pw * u; }, sy = function (v) { return Tp + ph - ph * v; };
+        var pts = [[0, 0.45, "Ethanal ×2"], [0.17, 0.75, "Enolate"], [0.4, 0.95, 'C–C (TS)'], [0.55, 0.35, "Alkoxide"], [0.7, 0.25, "Aldol"], [0.85, 0.6, 'E1cB (TS)'], [1, 0.1, 'Enal + H₂O']], L = 10, R = 10, Tp = 14, B = 26, pw = w - L - R, ph = h - Tp - B, sx = function (u) { return L + pw * u; }, sy = function (v) { return Tp + ph - ph * v; };
         cx.strokeStyle = '#a78bfa'; cx.lineWidth = 2.6; cx.beginPath(); pts.forEach(function (q, i) { var x = sx(q[0]), y = sy(q[1]); if (i === 0) cx.moveTo(x, y); else { var p0 = pts[i - 1], xm = (sx(p0[0]) + x) / 2; cx.bezierCurveTo(xm, sy(p0[1]), xm, y, x, y); } }); cx.stroke(); cx.lineWidth = 1;
         cx.font = '10px system-ui'; cx.fillStyle = col.muted; cx.textAlign = 'center'; pts.forEach(function (q, i) { cx.fillText(q[2], Math.min(w - 32, Math.max(32, sx(q[0]))), i % 2 ? sy(q[1]) - 7 : sy(q[1]) + 14); }); cx.fillText("reaction coordinate →", w / 2, h - 4);
       } }
@@ -385,14 +385,14 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     quiz: [
       { q: "Why are the H atoms α to a carbonyl (pKa 17–25) much more acidic than those of an alkane (pKa 50)?", options: ["The enolate delocalizes the negative charge onto the oxygen", "The α carbon is more electronegative", "The C=O donates electrons to the C–H", "The α C–H bond is longer and weaker"], answer: 0, why: "The conjugate base (enolate) is a C⁻/O⁻ hybrid: the charge is shared with the electronegative O." },
       { q: "The enolate reacts as a nucleophile through…", options: ["the α carbon", "the carbonyl carbon", "the hydrogen", "no particular atom"], answer: 0, why: "Although the charge is shared between C and O, the reaction with carbonyls forms the C–C bond through the α carbon." },
-      { q: "What product is obtained from the aldol addition of two ethanal molecules (0–5 °C)?", options: ['3-hidroxibutanal', 'But-2-enal', "Ethanol", "Ethanoic acid"], answer: 0, why: "The addition product is the β-hydroxyaldehyde; dehydration to but-2-enal requires heat." },
+      { q: "What product is obtained from the aldol addition of two ethanal molecules (0–5 °C)?", options: ['3-hidroxibutanal', "But-2-enal", "Ethanol", "Ethanoic acid"], answer: 0, why: "The addition product is the β-hydroxyaldehyde; dehydration to but-2-enal requires heat." },
       { q: "Which mechanism explains the loss of water from the aldol with base and heat?", options: ["E1cB (via enolate)", 'SN2', "Concerted E2 without an intermediate", 'SN1'], answer: 0, why: "The α H is deprotonated first (carbanion/enolate) and then OH⁻ leaves from the β carbon." },
       { q: "Why is benzaldehyde useful in a crossed aldol with propanone?", options: ["It has no α H: it can only act as an electrophile", "It is more electrophilic than any ketone because of its ring", "It forms the enolate faster than propanone", "It does not react with bases"], answer: 0, why: "Since it cannot form an enolate, it does not compete as a nucleophile and the mixture of products is avoided." },
       { q: "To convert an ester (pKa ≈ 25) completely into its enolate it is advisable to use…", options: ["LDA (pKa of HB ≈ 36)", "NaOH (pKa of HB 15.7)", "NaHCO₃ (pKa of HB 6.35)", "Water"], answer: 0, why: "The base must have a conjugate acid much less acidic than the ester; only LDA or NaH qualify." },
       { q: "Which of these C–H bonds is the most acidic?", options: ["The CH₂ between two C=O groups (acetylacetone, pKa 8.9)", "The CH₃ of propanone (pKa 19.3)", "The CH₃ of an ester (pKa 25)", "The CH₃ of ethane (pKa 50)"], answer: 0, why: "The carbanion charge is delocalized over two carbonyls." },
       { q: "In 3-hydroxybutanal, at which position is the OH relative to the carbonyl?", options: ['β', 'α', 'γ', "On the same carbon"], answer: 0, why: "It is a β-hydroxyaldehyde: the OH is on the β carbon (C 3)." }
     ],
-    help: { intro: "Follow the lesson or choose the stage in “Lab”. The orange arrows show the movement of electron pairs; the yellow dot travels along the arrow.", items: [["Arrows", "each curved arrow is the movement of an e⁻ pair."], ['Halos', "red = negative charge, blue = conjugated system, yellow = α H."], ['Lab', "stage, progress, precursor and base (computes the enolization K)."], ["Graphs", "pKa of the α H and energy profile."]] }
+    help: { intro: "Follow the lesson or choose the stage in “Lab”. The orange arrows show the movement of electron pairs; the yellow dot travels along the arrow.", items: [["Arrows", "each curved arrow is the movement of an e⁻ pair."], ["Halos", "red = negative charge, blue = conjugated system, yellow = α H."], ["Lab", "stage, progress, precursor and base (computes the enolization K)."], ["Graphs", "pKa of the α H and energy profile."]] }
   };
   MSim.create(def);
 })();

@@ -1,7 +1,7 @@
 /* viewer.js — Visor 3D (Three.js r128): átomos, enlaces parciales, flechas de electrones,
  * orbitales, nubes de carga, medidas, trayectorias y cámara. Sin lógica química. */
 (function (root) {
-  'use strict';
+  "use strict";
   const Chem = root.Chem;
   const { V, ELEMENTOS, fmt } = Chem;
 

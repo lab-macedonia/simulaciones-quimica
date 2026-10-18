@@ -41,6 +41,11 @@ Every page exists in **Spanish** (`index.html`) and **English** (`index.en.html`
 | [Electrocyclic and Sigmatropic Reactions](simulaciones/quimica-organica/pericliclicas/index.en.html) | Pericyclic reactions beyond Diels–Alder: 4-, 6- and 8-electron electrocyclizations (conrotatory and disrotatory), frontier orbitals, thermal and photochemical control, [1,5] H shifts and the [3,3] Cope rearrangement with Woodward–Hoffmann rules. |
 | [Aromatic Heterocycles](simulaciones/quimica-organica/heterociclos/index.en.html) | Pyrrole, furan, thiophene, pyridine, imidazole and pyrimidine in 3D: lone pair in the π system or in the plane, basicity (pKa of the conjugate acid), reactivity and regioselectivity toward electrophiles and presence in biomolecules. |
 | [Terpenes and Steroids](simulaciones/quimica-organica/terpenos-esteroides/index.en.html) | The isoprene rule in 3D: linear monoterpenes, sesquiterpenes and diterpenes with their C₅ units, squalene cyclization and the steroid skeleton (rings A–D, numbering) with cholesterol, testosterone, estradiol and progesterone. |
+| [Alkynes: structure and reactions](simulaciones/quimica-organica/alquinos/index.en.html) | Linear sp geometry, acidity of the terminal alkyne and acetylides, selective hydrogenation (Lindlar cis, Na/NH₃ trans, H₂/Pd alkane), hydration to ketones or aldehydes and HBr addition with regiochemistry, with substrate and product in 3D. |
+| [Lipids, saponification and soaps](simulaciones/quimica-organica/lipidos-jabon/index.en.html) | Triglycerides with saturated and unsaturated fatty acids (melting point), saponification with NaOH and calculation of the saponification value, micelles that emulsify grease and the effect of hard water on soap. |
+| [Polymers: addition and condensation](simulaciones/quimica-organica/polimeros/index.en.html) | Chains of polyethylene, polypropylene, polystyrene, PVC, nylon 6,6 and PET in 3D: addition polymerization (initiation, propagation, termination) and condensation polymerization, degree of polymerization, Carothers equation, average molar mass and dispersity. |
+| [Synthesis of aspirin](simulaciones/quimica-organica/sintesis-aspirina/index.en.html) | Acetylation of salicylic acid with acetic anhydride: step-by-step mechanism, limiting and excess reagent, theoretical and percent yield, effect of temperature, time and catalyst, and a purity test with FeCl₃. |
+| [UV-Vis spectroscopy and conjugation](simulaciones/quimica-organica/uv-vis-conjugacion/index.en.html) | π → π* transition in polyenes: effect of conjugation on the HOMO–LUMO gap and the maximum wavelength, alkyl substituents, complementary color of the solution, absorption spectrum and the Beer–Lambert law, from ethene to β-carotene. |
 
 ### General chemistry
 Each simulation is independent; there is no collection home page or progress tracking.
@@ -79,6 +84,11 @@ Each simulation is independent; there is no collection home page or progress tra
 | [Semiconductors and Band Theory](simulaciones/quimica-general/semiconductores-bandas/index.en.html) | Band theory in 3D: metals, insulators and semiconductors according to the width of the band gap, thermal population of electrons, n- and p-type doping, p–n junction and LED color from the gap energy. |
 | [Inorganic Nomenclature](simulaciones/quimica-general/nomenclatura-inorganica/index.en.html) | Formulas and names of ionic compounds in 3D: charge balance, Stock, systematic and traditional nomenclature, halogen oxoanions, acids and oxoacids, with ion assembly. |
 | [Environmental chemistry and green chemistry](simulaciones/quimica-general/quimica-ambiental-verde/index.en.html) | Ozone layer and CFCs, greenhouse effect (radiative forcing of CO₂), acid rain and green chemistry in 3D: atom economy, E-factor and twelve principles with comparison of synthetic routes. |
+| [Redox balancing: the ion-electron method](simulaciones/quimica-general/balanceo-redox/index.en.html) | Balance redox reactions in acidic and basic media step by step: oxidation numbers, half-reactions, balancing of O, H and charge with electrons, and the final sum, with the electron flow in 3D. |
+| [Corrosion and protection of iron](simulaciones/quimica-general/corrosion-pilas/index.en.html) | Corrosion of iron as a galvanic cell in a water drop: anodic and cathodic zones, effect of salt, oxygen and pH, Zn, Sn and Cu coatings, Mg sacrificial anode and a comparison of commercial cells. |
+| [Solutions and dilutions](simulaciones/quimica-general/disoluciones-diluciones/index.en.html) | Molar, percent and molal concentration with a 3D volumetric flask, preparing solutions from a solid, dilution with C₁V₁ = C₂V₂ and mixing of solutions, with visible solute particles. |
+| [Gravimetric analysis](simulaciones/quimica-general/gravimetria/index.en.html) | Gravimetric determination of chloride, sulfate, iron and nickel: precipitation with excess reagent, digestion, filtration and ignition to constant mass, gravimetric factor and the effect of coprecipitation and residual moisture. |
+| [The mole and molar mass](simulaciones/quimica-general/mol-masa-molar/index.en.html) | Molar mass from the periodic table, Avogadro's number, conversions among grams, moles and particles, molar volume of gases at STP and percent composition, with molecules and piles of particles in 3D. |
 
 ### Biology
 | Simulation | Description |
@@ -95,6 +105,11 @@ Each simulation is independent; there is no collection home page or progress tra
 | [Nucleotides and Coenzymes](simulaciones/biologia/nucleotidos-coenzimas/index.en.html) | ATP, NAD⁺/NADH, FAD/FADH₂ and coenzyme A in 3D: modular structure (base, ribose, phosphates), precursor vitamins, ATP hydrolysis, hydride transfer and coupled energy. |
 | [Lipid and Amino Acid Metabolism](simulaciones/biologia/metabolismo-lipidos-aminoacidos/index.en.html) | β-oxidation of fatty acids in 3D (four reactions per cycle, FADH₂, NADH and acetyl-CoA), ATP balance by chain length, carnitine transport, transamination with PLP, the urea cycle and the fate of the carbon skeleton. |
 | [Drugs and Receptors](simulaciones/biologia/farmacos-receptores/index.en.html) | Drug–receptor interaction in 3D: occupancy according to Kd, agonists, partial agonists and antagonists, dose–response curves (EC₅₀), competitive antagonism with curve shift and Lipinski's rules for oral absorption. |
+| [Mendelian genetics and Hardy–Weinberg](simulaciones/biologia/genetica-mendel/index.en.html) | Monohybrid and dihybrid Punnett squares with phenotypic ratios, χ² test against a simulated sample of offspring, and Hardy–Weinberg equilibrium with selection against the recessive and genetic drift. |
+| [The lac operon and gene regulation](simulaciones/biologia/operon-lac/index.en.html) | Regulation of the E. coli lac operon: LacI repressor, operator, promoter and lacZYA genes, effect of lactose (allolactose) and glucose (cAMP–CAP), β-galactosidase expression level and lacI⁻ and lacOᶜ mutants in 3D. |
+| [PCR and gel electrophoresis](simulaciones/biologia/pcr-electroforesis/index.en.html) | Thermocycler with denaturation, primer annealing and extension, 2ⁿ exponential amplification, effect of annealing temperature (Tm) and reading of bands on an agarose gel with a molecular-weight ladder. |
+| [Membrane potential and action potential](simulaciones/biologia/potencial-accion/index.en.html) | Nernst and Goldman equations for K⁺ and Na⁺, resting potential, Hodgkin–Huxley-type model with adjustable stimulus, threshold, refractory period and blockers (TTX, TEA), with a 3D axon where channels open and the impulse propagates. |
+| [Cell signaling: receptor → second messenger](simulaciones/biologia/senalizacion-celular/index.en.html) | Cascade of a G protein-coupled receptor: ligand, receptor occupancy, G protein, adenylyl cyclase, cAMP, PKA and phosphodiesterase, with amplification, dose–response curves (Hill, EC50), partial agonists, antagonists, cholera toxin and comparison with a receptor tyrosine kinase. |
 
 ### Physics
 | Simulation | Description |
@@ -111,6 +126,9 @@ Each simulation is independent; there is no collection home page or progress tra
 | [Molecular orbitals in octahedral complexes](simulaciones/quimica-inorganica/om-complejos/index.en.html) | 3D simulator of molecular orbital theory in octahedral ML6 complexes: σ bonding, a1g, t1u, eg and t2g orbitals, Δo splitting, π effect (donor and acceptor), spectrochemical series, high and low spin, magnetism and color. |
 | [Organometallics: the 18-electron rule](simulaciones/quimica-inorganica/organometalica-18e/index.en.html) | 3D simulator of organometallic chemistry: the 18-electron rule, electron counting by the neutral method, metal carbonyls, ferrocene, 16-electron square planar complexes and the Wilkinson catalytic cycle (oxidative addition, coordination, migratory insertion and reductive elimination). |
 | [Descriptive Chemistry of the Groups](simulaciones/quimica-inorganica/quimica-descriptiva-grupos/index.en.html) | Trends and reactivity of alkali metals, alkaline earth metals, halogens and noble gases, and the acid–base character of period 3 oxides in 3D: radius, ionization energy, reaction with water and states of matter. |
+| [Bioinorganic chemistry: metals in life](simulaciones/quimica-inorganica/bioinorganica/index.en.html) | Active site of the heme group with Fe²⁺, histidine, O₂ and CO; cooperativity (Hill), the Bohr effect and CO poisoning; Zn in carbonic anhydrase, Mg in chlorophyll, Cu in azurin and Fe in cytochrome c; toxicity of Pb²⁺, Hg and Cd and chelation. |
+| [Hard and soft acids and bases (HSAB)](simulaciones/quimica-inorganica/hsab-acidos-bases-duros-blandos/index.en.html) | Classification of cations and bases as hard, borderline or soft according to charge, radius and polarizability; qualitative pair-stability score, prediction of the direction of exchange reactions and mineral examples (Al₂O₃, HgS, Cu₂S). |
+| [Molecular symmetry and point groups](simulaciones/quimica-inorganica/simetria-grupos-puntuales/index.en.html) | Symmetry elements and operations (E, Cn, σ, i, Sn) applied in 3D to H₂O, NH₃, CH₄, BF₃, SF₆, CO₂, HCl, trans-dichloroethene, benzene and a chiral molecule; point-group assignment with a decision diagram and relation to polarity and chirality. |
 
 ## Teacher guides and question banks
 
@@ -118,8 +136,8 @@ The [`simulaciones/guias/en/`](simulaciones/guias/en/index.html) folder contains
 
 ## Accessibility
 
-- Keyboard operation of every control, visible focus indicators and a navigable page structure (`main`, labeled regions, tab lists with ARIA roles).
-- Screen-reader support: labeled buttons and sliders, a live region that announces each lesson stage, and descriptive labels for the 3D viewport.
+- Keyboard operation of every control, visible focus indicators and a skip-friendly page structure (`main`, labeled regions, tab lists with ARIA roles).
+- Screen-reader support: labeled buttons and sliders, a live region that announces lesson steps and results, and descriptive labels for the 3D viewport.
 - Colors checked for WCAG 2.1 AA contrast in both light and dark themes; `prefers-reduced-motion` is respected.
 - Automated checks with axe-core on every page, in Spanish and English. Note that the 3D canvas itself is a graphic: its content is also described in text in the lesson, the panels and the live measurements.
 
@@ -135,6 +153,8 @@ All the simulations share an interface kit (`simulaciones/kit/`) that provides, 
 
 - **Guided lesson by stages** (book button or `L` key): each stage moves the simulation itself (tab, molecule, experiment) and highlights the relevant area; with pause, forward, back and speed.
 - **PNG capture** of the current view, **full screen**, **light/dark theme** and **help with shortcuts** (`?`).
+- **Assessment mode** in the quizzes: no feedback until the end, answer review and a 1.0–7.0 grade (60 % passing threshold), with a button to copy the result.
+- **Offline use (PWA)**: the portal can be installed and visited simulations stay available offline (`simulaciones/sw.js`).
 - Predictors and challenges: mechanism (SN/E), unknown sample (flame test), Werner isomer counter (isomerism) and Δ/Λ challenge (chirality).
 
 ## Requirements and technical notes
@@ -142,6 +162,10 @@ All the simulations share an interface kit (`simulaciones/kit/`) that provides, 
 - A modern browser with WebGL (Chrome, Edge, Firefox, Safari), on a computer, tablet or phone.
 - **3D engine with Three.js**: the 3D simulations render with Three.js (real lighting and z-buffer). Modules that are 2D diagrams or graphs (LewisLab, Electron configuration, Periodic properties) remain in Canvas 2D. The shared layer is in `simulaciones/kit/mol3d.js`.
 - **No simulation depends on a CDN or the internet**: Three.js, Tailwind (compiled), Lucide and the fonts (Inter, JetBrains Mono) are included in each `vendor/` folder.
+
+## Automated checks
+
+`npm install && npm run check` verifies syntax, links, metadata and that every simulation has an English version and teacher guides; `npm run smoke` loads every page (ES and EN) in jsdom. Both run on GitHub Actions (`.github/workflows/check.yml`).
 
 ## Running locally
 

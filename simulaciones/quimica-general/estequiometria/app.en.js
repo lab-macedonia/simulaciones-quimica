@@ -1,7 +1,7 @@
 /* Estequiometría y reactivo limitante — simulador 3D · Laboratorio MACEDONIA (UMCE)
    Usa el kit común ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, kit;
   var fmt = SimKit.fmt, clamp = SimKit.clamp;
   function lerp(a, b, t) { return a + (b - a) * t; }
@@ -289,8 +289,8 @@
     if (!ui.info) return;
     var m = M, A = m.r.R[0][0], B = m.r.R[1][0];
     ui.info.innerHTML = "<div class=\"card-kicker\">Mixture data</div>" +
-      kv("Molar mass " + fm(A), fmt(mm(A), 2) + ' g/mol') + kv("Molar mass " + fm(B), fmt(mm(B), 2) + ' g/mol') +
-      m.r.P.map(function (p) { return kv("Molar mass " + fm(p[0]), fmt(mm(p[0]), 2) + ' g/mol'); }).join('') +
+      kv("Molar mass " + fm(A), fmt(mm(A), 2) + " g/mol") + kv("Molar mass " + fm(B), fmt(mm(B), 2) + " g/mol") +
+      m.r.P.map(function (p) { return kv("Molar mass " + fm(p[0]), fmt(mm(p[0]), 2) + " g/mol"); }).join('') +
       kv("Possible batches", fm(A) + ' ' + fmt(m.ra, 2) + ' · ' + fm(B) + ' ' + fmt(m.rb, 2)) + kv("Complete batches", String(m.E));
   }
 
@@ -435,7 +435,7 @@
       stages: STAGES,
       mainTabLabel: "Guide",
       tabs: [
-        { id: 'lab', label: 'Lab', build: function (el, k) { kit = k; buildLab(el); } },
+        { id: 'lab', label: "Lab", build: function (el, k) { kit = k; buildLab(el); } },
         { id: 'graf', label: "Graphs", build: function (el, k) { kit = k; buildGraphs(el); } },
         { id: 'calc', label: "Calculation (g)", build: function (el, k) { kit = k; buildCalc(el); } },
         { id: 'quiz', label: "Challenge", build: function (el, k) { kit = k; buildQuiz(el); } }
@@ -498,7 +498,7 @@
         intro: "Choose the reaction and the amounts in the “Lab” tab, follow the lesson with the player below or press “React”. Rotate the scene by dragging; with “Back to the lesson” the script takes control again.",
         items: [
           ["Particles", "each molecule is a particle; they react in whole batches of the stoichiometric recipe."],
-          ['Halos', "red = limiting reagent; amber = leftover that remains unreacted."],
+          ["Halos", "red = limiting reagent; amber = leftover that remains unreacted."],
           ["Graphs", "before and now per species, and product versus the amount of the second reactant (limiting plateau)."],
           ["Calculation (g)", "step-by-step solution with molar masses, leftover, actual yield and mass check."],
           ["Challenge", "eight questions on limiting reagent, yield and conservation of mass."]

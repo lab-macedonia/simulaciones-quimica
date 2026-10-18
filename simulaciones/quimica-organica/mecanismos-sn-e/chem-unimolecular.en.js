@@ -2,7 +2,7 @@
  * SN1: 2-bromo-2-metilpropano + 2 H₂O → 2-metilpropan-2-ol + H₃O⁺ + Br⁻  (3 etapas)
  * E1 : 2-bromo-2-metilpropano + H₂O   → 2-metilpropeno + H₃O⁺ + Br⁻       (2 etapas) */
 (function (root) {
-  'use strict';
+  "use strict";
   const Chem = root.Chem;
   const { V, K, S, ss, clamp01, lerp, polar, basis, methylHs, waterHs, fmt, DEG } = Chem;
 

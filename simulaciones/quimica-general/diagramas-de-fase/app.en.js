@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -240,7 +240,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       hud: function () { var d = D(), P = Pnow(), r = info(S.T, P); var bp = Tbp(P), sb = Tsb(P);
         return { eq: { chip: d.f, name: r.name, body: '<div class="eqline"><small>T</small>' + fmt(S.T, 1) + ' K · ' + fmt(S.T - 273.15, 1) + ' °C</div><div class="eqline"><small>P</small>' + Ptxt(P) + ' (' + MSim.sci(P / ATM, 2) + " atm)</div><div class=\"eqline\"><small>Boiling T at this P</small>" + (isNaN(bp) ? '—' : fmt(bp, 1) + ' K') + '</div>' }, legend: [{ label: "Solid", color: '#a5d8ff', text: "ordered, vibrates" }, { label: "Liquid", color: '#339af0', text: "compact, flows" }, { label: 'Gas', color: '#ffd43b', text: "dispersed" }, { label: "Supercritical", color: '#f783ac', text: "T>Tc and P>Pc" }] }; },
       measures: function () { var d = D(), P = Pnow(), r = info(S.T, P), bp = Tbp(P), sb = Tsb(P); return [["Substance", d.name + ' (' + d.f + ')'], ["Phase", r.name], ['T', fmt(S.T, 1) + ' K'], ['P', Ptxt(P)], ["Triple point", fmt(d.Tt, 2) + ' K · ' + Ptxt(d.Pt)], ["Critical point", fmt(d.Tc, 1) + ' K · ' + Ptxt(d.Pc)], ["B.p. at this P", isNaN(bp) ? '—' : fmt(bp, 1) + ' K'], ["Subl. T at this P", isNaN(sb) ? '—' : fmt(sb, 1) + ' K'], ["Melting T at this P", P >= d.Pt ? fmt(Tm(P), 2) + ' K' : '—']]; },
-      ideas: ["Each point (T, P) has a <b>stable phase</b>; on the curves two phases coexist.", "<b>Triple point</b>: three phases, F = 0. <b>Critical point</b>: the liquid–gas curve ends.", "Melting slope: <b>negative</b> in water (ice less dense), positive in CO₂.", '<b>Clausius–Clapeyron</b>: d ln P/dT = ΔH<sub>vap</sub>/(RT²).', "If P &lt; P<sub>triple</sub> the solid <b>sublimes</b> instead of melting."],
+      ideas: ["Each point (T, P) has a <b>stable phase</b>; on the curves two phases coexist.", "<b>Triple point</b>: three phases, F = 0. <b>Critical point</b>: the liquid–gas curve ends.", "Melting slope: <b>negative</b> in water (ice less dense), positive in CO₂.", "<b>Clausius–Clapeyron</b>: d ln P/dT = ΔH<sub>vap</sub>/(RT²).", "If P &lt; P<sub>triple</sub> the solid <b>sublimes</b> instead of melting."],
       lab: function (el, ctx) {
         var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Control panel"); el.appendChild(c);
         ui.sub = kit.ui.options({ label: "Substance", cols: 2, value: S.id, options: [{ v: 'H2O', label: 'H₂O', sub: "water" }, { v: 'CO2', label: 'CO₂', sub: "carbon dioxide" }], onChange: function (v) { ctx.goManual(); S.id = v; S.T = v === 'H2O' ? 298 : 298; S.lp = Math.log10(ATM); ui.sT.set((S.T - D().Tlo) / (D().Thi - D().Tlo) * 1000); ui.sP.set((S.lp - D().lp0) / (D().lp1 - D().lp0) * 1000); } });
@@ -311,7 +311,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         { q: "At 1 atm, solid CO₂…", options: ["sublimes (there is no liquid)", "melts at −56.6 °C", "boils at 100 °C", "always remains solid"], answer: 0, why: "The triple point of CO₂ is at 5.1 atm; below that pressure it goes directly from solid to gas (−78.5 °C)." },
         { q: "Lowering the external pressure on boiling water makes the boiling point…", options: ["decrease", "increase", "not change", "reach the critical point"], answer: 0, why: "It boils when vapor P = external P; with lower external P it is reached at lower T (pressure cookers: the opposite)." },
         { q: "According to the phase rule (C = 1), on a two-phase equilibrium curve F equals…", options: ['1', '0', '2', '3'], answer: 0, why: "F = C − P + 2 = 1 − 2 + 2 = 1: T can be varied and P is fixed (or vice versa)." },
-        { q: "In a P–T diagram, the slope of the liquid–gas curve is related to…", options: ['ΔH<sub>vap</sub> (Clausius–Clapeyron)', "the molar mass", "polarity only", "the volume of the container"], answer: 0, why: "d ln P/dT = ΔH<sub>vap</sub>/(RT²): the greater the ΔH<sub>vap</sub>, the steeper the curve." }
+        { q: "In a P–T diagram, the slope of the liquid–gas curve is related to…", options: ["ΔH<sub>vap</sub> (Clausius–Clapeyron)", "the molar mass", "polarity only", "the volume of the container"], answer: 0, why: "d ln P/dT = ΔH<sub>vap</sub>/(RT²): the greater the ΔH<sub>vap</sub>, the steeper the curve." }
       ],
       help: { intro: "Follow the lesson or choose substance, T and P in “Lab”; the container shows the phase and the diagram the current point.", items: [["Container", "the particles show the order of each phase; the piston rises with the volume."], ["Diagram", "melting, vaporization and sublimation curves, with triple and critical points."], ["Heating", "plateaus at the chosen pressure."], ["Calculation", "phase-change T and ΔH<sub>vap</sub> from Clausius–Clapeyron."]] }
     };

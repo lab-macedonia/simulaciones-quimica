@@ -1,7 +1,7 @@
 /* Ácido–base, pH y titulación — simulador 3D · Laboratorio MACEDONIA (UMCE)
    Usa el kit común ../../kit/simkit.js. El pH se obtiene resolviendo el balance de carga (Kw = 1,0 × 10⁻¹⁴, 25 °C). */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, kit;
   var fmt = SimKit.fmt, clamp = SimKit.clamp;
   function ease(x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); }
@@ -11,11 +11,11 @@
   /* ------------------------- Sistemas ------------------------- */
   // kind 'acid': analito ácido valorado con NaOH · 'base': analito básico valorado con HCl
   var SYS = {
-    hcl: { kind: 'acid', an: 'HCl', pKas: [], titr: 'NaOH', name: "Strong acid + strong base", sub: "HCl with NaOH", eq: 'HCl + NaOH → NaCl + H₂O', sp: [] },
-    ace: { kind: 'acid', an: 'CH₃COOH', pKas: [4.76], titr: 'NaOH', name: "Weak acid + strong base", sub: "CH₃COOH with NaOH (pKa 4.76)", eq: 'CH₃COOH + NaOH → CH₃COONa + H₂O', sp: ['CH₃COOH', 'CH₃COO⁻'] },
-    hf: { kind: 'acid', an: 'HF', pKas: [3.17], titr: 'NaOH', name: "Weak acid (pKa 3.17)", sub: "HF with NaOH", eq: 'HF + NaOH → NaF + H₂O', sp: ['HF', 'F⁻'] },
-    h3po4: { kind: 'acid', an: 'H₃PO₄', pKas: [2.15, 7.20, 12.35], titr: 'NaOH', name: "Polyprotic acid", sub: "H₃PO₄ with NaOH (pKa 2.15 · 7.20 · 12.35)", eq: 'H₃PO₄ + NaOH → NaH₂PO₄ + H₂O', sp: ['H₃PO₄', 'H₂PO₄⁻', 'HPO₄²⁻', 'PO₄³⁻'] },
-    naoh: { kind: 'base', an: 'NaOH', pKas: [], titr: 'HCl', name: "Strong base + strong acid", sub: "NaOH with HCl", eq: 'NaOH + HCl → NaCl + H₂O', sp: [] },
+    hcl: { kind: 'acid', an: 'HCl', pKas: [], titr: "NaOH", name: "Strong acid + strong base", sub: "HCl with NaOH", eq: 'HCl + NaOH → NaCl + H₂O', sp: [] },
+    ace: { kind: 'acid', an: 'CH₃COOH', pKas: [4.76], titr: "NaOH", name: "Weak acid + strong base", sub: "CH₃COOH with NaOH (pKa 4.76)", eq: 'CH₃COOH + NaOH → CH₃COONa + H₂O', sp: ['CH₃COOH', 'CH₃COO⁻'] },
+    hf: { kind: 'acid', an: 'HF', pKas: [3.17], titr: "NaOH", name: "Weak acid (pKa 3.17)", sub: "HF with NaOH", eq: 'HF + NaOH → NaF + H₂O', sp: ['HF', 'F⁻'] },
+    h3po4: { kind: 'acid', an: 'H₃PO₄', pKas: [2.15, 7.20, 12.35], titr: "NaOH", name: "Polyprotic acid", sub: "H₃PO₄ with NaOH (pKa 2.15 · 7.20 · 12.35)", eq: 'H₃PO₄ + NaOH → NaH₂PO₄ + H₂O', sp: ['H₃PO₄', 'H₂PO₄⁻', 'HPO₄²⁻', 'PO₄³⁻'] },
+    naoh: { kind: 'base', an: "NaOH", pKas: [], titr: 'HCl', name: "Strong base + strong acid", sub: "NaOH with HCl", eq: 'NaOH + HCl → NaCl + H₂O', sp: [] },
     nh3: { kind: 'base', an: 'NH₃', pKas: [9.25], titr: 'HCl', name: "Weak base + strong acid", sub: "NH₃ with HCl (pKa NH₄⁺ 9.25)", eq: 'NH₃ + HCl → NH₄Cl', sp: ['NH₄⁺', 'NH₃'] }
   };
   var IND = {
@@ -345,7 +345,7 @@
     var s = S(), E = veq1(), v = vt, vtot = C.va + v, nA = C.ca * C.va, nB = C.cb * v, w = s.pKas.length > 0, ac = s.kind === 'acid', pH = cur.pH;
     var an = s.an, ti = s.titr, h = '', row = function (a, b) { return '<tr><th>' + a + '</th><td>' + b + '</td></tr>'; };
     h += "<div class=\"card-kicker\">Solution at the current point</div><div class=\"muted small\">" + s.eq + '</div>';
-    h += "<div class=\"calc-step\">1 · Amounts of substance (mmol)</div><table class=\"calc-table\">" + row('n(' + an + ") initial", fmt(C.ca, 3) + ' M × ' + fmt(C.va, 1) + ' mL = <b>' + fmt(nA, 3) + ' mmol</b>') + row('n(' + ti + ") added", fmt(C.cb, 3) + ' M × ' + fmt(v, 2) + ' mL = <b>' + fmt(nB, 3) + ' mmol</b>') + row("Total volume", fmt(vtot, 2) + ' mL') + row("Equivalence volume", fmt(nA, 3) + ' ÷ ' + fmt(C.cb, 3) + ' = <b>' + fmt(E, 2) + ' mL</b>') + '</table>';
+    h += "<div class=\"calc-step\">1 · Amounts of substance (mmol)</div><table class=\"calc-table\">" + row('n(' + an + ") initial", fmt(C.ca, 3) + ' M × ' + fmt(C.va, 1) + ' mL = <b>' + fmt(nA, 3) + " mmol</b>") + row('n(' + ti + ") added", fmt(C.cb, 3) + ' M × ' + fmt(v, 2) + ' mL = <b>' + fmt(nB, 3) + " mmol</b>") + row("Total volume", fmt(vtot, 2) + ' mL') + row("Equivalence volume", fmt(nA, 3) + ' ÷ ' + fmt(C.cb, 3) + ' = <b>' + fmt(E, 2) + ' mL</b>') + '</table>';
     h += "<div class=\"calc-step\">2 · Region: " + region() + '</div><table class="calc-table">';
     if (nEq() === 2) h += row("Exact pH (charge balance)", '<b>' + fmt(pH, 2) + '</b>') + row("Note", "Triprotic system: solved numerically with the three Ka. Compare with the curve and α(pH).");
     else {
@@ -419,7 +419,7 @@
       accent: { dark: '#7dd3fc', light: '#0369a1' }, viewLabel: "3D viewer: burette, beaker with indicator and ions",
       stages: STAGES, mainTabLabel: "Guide",
       tabs: [
-        { id: 'lab', label: 'Lab', build: function (el, k) { kit = k; buildLab(el); } },
+        { id: 'lab', label: "Lab", build: function (el, k) { kit = k; buildLab(el); } },
         { id: 'graf', label: "Graphs", build: function (el, k) { kit = k; buildGraphs(el); } },
         { id: 'calc', label: "Calculation", build: function (el, k) { kit = k; buildCalc(el); } },
         { id: 'quiz', label: "Challenge", build: function (el, k) { kit = k; buildQuiz(el); } }

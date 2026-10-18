@@ -1,6 +1,6 @@
 /* AtomLab 3D — modelos atómicos históricos y orbitales con Three.js (Laboratorio MACEDONIA · UMCE) */
 (function (g) {
-  'use strict';
+  "use strict";
   var T = g.THREE;
   var RM = g.matchMedia && g.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var API = { ok: false };

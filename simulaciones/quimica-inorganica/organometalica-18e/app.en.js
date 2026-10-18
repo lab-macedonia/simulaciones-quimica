@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -228,7 +228,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     sync: function (ctx) { var u = ctx.ui; if (u.c) u.c.set(S.c); if (u.cs) u.cs.set(S.cs); if (!ctx.P.manual && u.q) u.q.set(S.q); },
     hud: function () { if (S.mode === 'cyc') { var a = CYC[S.cs], b = CYC[S.cs === 4 ? 5 : S.cs + 1]; return { eq: { chip: 'Rh', name: "Wilkinson cycle", body: "<div class=\"eqline\"><small>Step</small>" + (S.cs + 1) + ' · ' + STEPN[S.cs] + "</div><div class=\"eqline\"><small>From</small>" + a.n + ' (' + cycCount(a) + ' e⁻)</div><div class="eqline"><small>A</small>' + b.n + ' (' + cycCount(b) + ' e⁻)</div>' }, legend: [{ label: "Blue cube", color: '#4dabf7', text: "metal electrons" }, { label: "Others", color: '#ff922b', text: "ligand electrons" }] }; } var c = C[S.c], cc = count(c); return { eq: { chip: String(cc.e), name: c.n, body: "<div class=\"eqline\"><small>Geometry</small>" + c.geom + "</div><div class=\"eqline\"><small>Valence e⁻</small>" + cc.e + "</div><div class=\"eqline\"><small>State</small>" + (cc.e === 18 ? "18 e⁻ (saturated)" : (cc.e === 16 ? "16 e⁻ (d⁸, unsaturated)" : cc.e + ' e⁻ (radical)')) + '</div>' }, legend: [{ label: "Blue cube", color: '#4dabf7', text: "metal electrons" }, { label: "Others", color: '#ff922b', text: "ligand electrons" }, { label: "Mesh", color: '#868e96', text: "electrons missing to reach 18" }] }; },
     measures: function () { if (S.mode === 'cyc') { var a = CYC[S.cs]; return [["Step", (S.cs + 1) + " of 5"], ["Species", a.n], ["No. of e⁻", String(cycCount(a))], ["Oxidation state", a.ox], ["Description", a.nm]]; } var c = C[S.c], cc = count(c); return [["Compound", c.n], ['Metal', c.m + " (group " + c.g + ')'], ["Charge", String(c.q)], ["valence e⁻", String(cc.e)], ["Geometry", c.geom], ["Configuration", c.d]]; },
-    ideas: ["<b>18 e⁻</b> = 5 d + 1 s + 3 p filled.", "Neutral count: group + ligands − charge (CO 2, Cl 1, Cp 5).", "d⁸ square planar: <b>16 e⁻</b>, reactive.", 'Wilkinson: 16 → 14 → 16 → 18 → 16 → 14 e⁻.', "Oxidative addition: +2 to the oxidation state; reductive elimination: −2."],
+    ideas: ["<b>18 e⁻</b> = 5 d + 1 s + 3 p filled.", "Neutral count: group + ligands − charge (CO 2, Cl 1, Cp 5).", "d⁸ square planar: <b>16 e⁻</b>, reactive.", "Wilkinson: 16 → 14 → 16 → 18 → 16 → 14 e⁻.", "Oxidative addition: +2 to the oxidation state; reductive elimination: −2."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Compound"); el.appendChild(c);
       ui.c = kit.ui.options({ label: "Complex", cols: 3, value: S.c, options: Object.keys(C).map(function (k) { return { v: k, label: C[k].n.replace(/ \(.*\)/, ''), sub: count(C[k]).e + ' e⁻' }; }), onChange: function (v) { ctx.goManual(); S.mode = 'comp'; S.c = v; ckey = ''; } }); c.appendChild(ui.c);
@@ -260,7 +260,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       { q: "Ferrocene obeys the 18 rule with…", options: ['8 + 2 × 5', '8 + 2 × 3', '10 + 2 × 4', '6 + 6 × 2'], answer: 0, why: "Fe (8) plus two Cp (5 e⁻ each, neutral method)." },
       { q: "Square planar d⁸ complexes have…", options: ['16 e⁻', '18 e⁻', '14 e⁻', '20 e⁻'], answer: 0, why: "The d_{x²−y²} is left empty." },
       { q: "In the Wilkinson cycle, the oxidative addition of H₂ changes the state of Rh from…", options: ["I to III", "III to I", '0 a I', "II to IV"], answer: 0, why: "H₂ contributes two hydride ligands and oxidizes the metal by 2 units." },
-      { q: "CO is a ligand that is…", options: ["σ-donor and π-acceptor", "σ-donor only", 'π-donor', "ionic"], answer: 0, why: "M → π*(CO) back-donation." },
+      { q: "CO is a ligand that is…", options: ["σ-donor and π-acceptor", "σ-donor only", "π-donor", "ionic"], answer: 0, why: "M → π*(CO) back-donation." },
       { q: "Ni(CO)₄ is…", options: ["tetrahedral and 18 e⁻", "planar and 16 e⁻", "octahedral", "a radical"], answer: 0, why: "10 + 8 = 18 and d¹⁰ → tetrahedral." },
       { q: "Reductive elimination…", options: ["lowers the oxidation state of the metal by 2", "raises it by 2", "does not change it", "adds ligands"], answer: 0, why: "A bond forms between two ligands that leave the metal." },
       { q: "V(CO)₆ is special because…", options: ["it has 17 e⁻", "it has 20 e⁻", "it is planar", "it is ionic"], answer: 0, why: "5 + 12 = 17: stable radical." }

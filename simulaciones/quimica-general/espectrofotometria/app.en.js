@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -137,9 +137,9 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   function mat(c, o) { return new T.MeshStandardMaterial({ color: c, roughness: 0.4, transparent: o < 1, opacity: o }); }
   function stages() {
     return [
-      ["Light, transmittance and absorbance", "Light and A", 'T = I/I₀ ; A = −log₁₀ T',
+      ["Light, transmittance and absorbance", "Light and A", "T = I/I₀ ; A = −log₁₀ T",
         "<p>A <b>spectrophotometer</b> sends monochromatic light of intensity <b>I₀</b> through a cuvette; the detector measures the transmitted light <b>I</b>. The <b>transmittance</b> is <b>T = I/I₀</b> and the <b>absorbance</b> <b>A = −log₁₀T</b>. T = 100 % ↔ A = 0; T = 10 % ↔ A = 1; T = 1 % ↔ A = 2. The <b>blank</b> (solvent) is measured first to set A = 0.</p>"],
-      ["Beer–Lambert law", 'Beer–Lambert', "A = ε·b·c : linear with concentration and path length",
+      ["Beer–Lambert law", "Beer–Lambert", "A = ε·b·c : linear with concentration and path length",
         "<p>The <b>Beer–Lambert law</b> states <b>A = ε·b·c</b>: ε is the <b>molar absorptivity</b> (L mol⁻¹ cm⁻¹), b the <b>path length</b> (cm) and c the concentration (mol/L). Doubling c or b doubles A. It is valid for <b>dilute</b> solutions; at A &gt; 1.5–2 deviations appear due to stray light and the detector loses precision (turn on “Stray light”).</p>"],
       ["Absorption spectrum and λmax", "Spectrum", "Measure at the wavelength of maximum absorption: greater sensitivity",
         "<p>The <b>absorption spectrum</b> is A versus λ. Work is done at <b>λ<sub>max</sub></b> because there ε is maximal (more sensitivity) and the error from a small shift in λ is minimal. The <b>color</b> of the solution is the <b>complement</b> of the light it absorbs: KMnO₄ absorbs ~525 nm (green) and looks violet.</p>"],

@@ -1,6 +1,6 @@
 /* Sistema Solar 3D — Laboratorio MACEDONIA (UMCE). Three.js + SimKit. Texturas procedurales (sin imágenes externas). */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, D = SolarData, B = D.B, TAU = Math.PI * 2, rad = Math.PI / 180;
   function V3(x, y, z) { return new T.Vector3(x, y, z); }
   function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }

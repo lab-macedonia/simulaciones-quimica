@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -149,7 +149,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     return [
       ["Ions and charge balance", "Formulas", "An ionic compound is neutral: Σ(+ charges) = Σ(− charges)",
         "<p>An ionic compound is formed with <b>cations</b> (+) and <b>anions</b> (−) in the proportion that cancels the charge. It is found with the <b>crisscross method</b>: the charge of one ion becomes the subscript of the other (Al³⁺ and O²⁻ → Al₂O₃). Polyatomic ions take parentheses if their subscript is greater than 1: Ca(OH)₂, Al₂(SO₄)₃. Choose a cation and an anion and watch the assembly.</p>"],
-      ["Stock nomenclature", 'Stock', "cation + anion; the oxidation state goes in Roman numerals if there are several",
+      ["Stock nomenclature", "Stock", "cation + anion; the oxidation state goes in Roman numerals if there are several",
         "<p>In <b>Stock</b> nomenclature the cation is named first, then the anion. If the metal has <b>more than one oxidation state</b> (Fe, Cu, Pb, Sn…), it is written in <b>Roman numerals in parentheses</b>: FeCl₃ = iron(III) chloride; FeCl₂ = iron(II) chloride. For metals with a single state (Na, Ca, Al) it is not written.</p>"],
       ["Systematic and traditional", "Other nomenclatures", "Prefixes mono-, di-, tri-… and suffixes -ous / -ic",
         "<p>The <b>systematic</b> one uses multiplicative prefixes: Fe₂O₃ = diiron trioxide; CaCl₂ = calcium dichloride. The <b>traditional</b> one uses suffixes for metals with two states: the lower ends in <b>-ous</b> and the higher in <b>-ic</b> (ferrous/ferric, cuprous/cupric). Today IUPAC recommends <b>Stock</b> and systematic; the traditional one is kept because of its use.</p>"],
@@ -179,7 +179,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     },
     sync: function (ctx) { var u = ctx.ui; if (u.c) u.c.set(S.c); if (u.a) u.a.set(S.a); if (u.h !== undefined && u.h) u.h.set(S.h); },
     hud: function () { var c = CA[S.c], a = AN[S.a], r = ratio(); return { eq: { chip: fml(c, a, r), name: stock(c, a), body: '<div class="eqline"><small>Stock</small>' + stock(c, a) + "</div><div class=\"eqline\"><small>Systematic</small>" + (sist(c, a, r) || '—') + "</div><div class=\"eqline\"><small>Traditional</small>" + (c.trad ? trad(c, a) : stock(c, a)) + "</div><div class=\"eqline\"><small>Charge crisscross</small>" + c.q + '+ / ' + a.q + '− → ' + r.nc + ' : ' + r.na + '</div>' }, legend: [{ label: "Spheres above", color: '#ab5cf2', text: "cations (+)" }, { label: "Below", color: '#3ddc5a', text: "anions (−)" }] }; },
-    measures: function () { var c = CA[S.c], a = AN[S.a], r = ratio(); return [["Formula", fml(c, a, r)], ["Cation", c.s + (c.q > 1 ? '^' + c.q + '+' : '⁺')], ["Anion", a.s + '^' + a.q + '−'], ["Cation : anion ratio", r.nc + ' : ' + r.na], ['Stock', stock(c, a)]]; },
+    measures: function () { var c = CA[S.c], a = AN[S.a], r = ratio(); return [["Formula", fml(c, a, r)], ["Cation", c.s + (c.q > 1 ? '^' + c.q + '+' : '⁺')], ["Anion", a.s + '^' + a.q + '−'], ["Cation : anion ratio", r.nc + ' : ' + r.na], ["Stock", stock(c, a)]]; },
     ideas: ["Crisscross: charge of one = subscript of the other (simplify).", "Fe, Cu, Pb: Roman numeral in Stock.", "-ite: fewer O · -ate: more O.", "-ide → hydro-…-ic acid · -ate → -ic · -ite → -ous."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Cation"); el.appendChild(c);
@@ -195,7 +195,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     } }],
     calc: function () { var c = CA[S.c], a = AN[S.a], r = ratio(), row = function (x, y) { return '<tr><th>' + x + '</th><td>' + y + '</td></tr>'; }; return '<div class="card-kicker">' + stock(c, a) + '</div><table class="calc-table">' + row("Cation", c.s + ' ' + c.q + '+') + row("Anion", a.s + ' ' + a.q + '−') + row("LCM of the charges", String(c.q * a.q / gcd(c.q, a.q))) + row("Ratio", r.nc + " cation(s) × " + c.q + ' = ' + r.na + " anion(s) × " + a.q) + row("Formula", '<b>' + fml(c, a, r) + '</b>') + row("Systematic", sist(c, a, r) || "use Stock (polyatomic anion)") + row("Traditional", c.trad ? trad(c, a) : stock(c, a)) + '</table>'; },
     quiz: [
-      { q: "The formula of aluminium oxide is…", options: ['Al₂O₃', 'AlO', 'Al₃O₂', 'Al₂O'], answer: 0, why: "Crisscross: Al³⁺ and O²⁻." },
+      { q: "The formula of aluminium oxide is…", options: ['Al₂O₃', "AlO", 'Al₃O₂', 'Al₂O'], answer: 0, why: "Crisscross: Al³⁺ and O²⁻." },
       { q: "FeCl₃ is called…", options: ["iron(III) chloride", "iron(II) chloride", "iron chlorate", "ferrous chloride"], answer: 0, why: 'Fe³⁺.' },
       { q: "The ClO₃⁻ ion is…", options: ["chlorate", "chlorite", "hypochlorite", "perchlorate"], answer: 0, why: "3 O: -ate." },
       { q: "H₂SO₃ is the acid…", options: ["sulfurous", "sulfuric", "hydrosulfuric", "persulfuric"], answer: 0, why: "-ite → -ous." },

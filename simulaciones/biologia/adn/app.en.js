@@ -2,7 +2,7 @@
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -48,7 +48,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -68,7 +68,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -325,7 +325,7 @@ var BP = (function () {
     hud: function () { var st = stats(S.seq), row = function (k, v) { return '<div class="eqline"><small>' + k + '</small>' + v + '</div>'; }; var nm = { nuc: "Nucleotide", pair: "Pair " + S.pair[0] + '–' + S.pair[1], helix: "B double helix", repl: "Replication", trans: "Transcription", code: "Genetic code" }[S.mode];
       var b = S.mode === 'pair' ? row("H bonds", S.pair === 'GC' ? '3' : '2') + row("Rings", "purine (2) + pyrimidine (1)") : (S.mode === 'nuc' ? row("Components", "phosphate · deoxyribose · base") + row("Polarity", '5′ → 3′') : row("Sequence", S.seq.length + " bp · GC " + fmt(st.gc, 0) + ' %') + row('Tm', fmt(st.Tm, 1) + ' °C') + row("Coding strand", '5′-' + (S.seq.length > 14 ? S.seq.slice(0, 14) + '…' : S.seq) + '-3′'));
       return { eq: { chip: "DNA", name: nm, body: b }, legend: [{ label: 'A', color: '#40c057', text: "adenine" }, { label: 'T', color: '#fa5252', text: "thymine" }, { label: 'G', color: '#fcc419', text: "guanine" }, { label: 'C', color: '#4dabf7', text: "cytosine" }, { label: 'U', color: '#ff922b', text: "uracil (RNA)" }] }; },
-    measures: function () { var st = stats(S.seq), pr = translate(S.seq); return [["Length", st.n + ' pb'], ['% GC', fmt(st.gc, 1) + ' %'], ['Tm', fmt(st.Tm, 1) + ' °C'], ['A / T / G / C', st.c.A + ' / ' + st.c.T + ' / ' + st.c.G + ' / ' + st.c.C], ["Strand mass (ss)", fmt(st.m1, 0) + ' g/mol'], ["Duplex mass", fmt(st.m1 + st.m2, 0) + ' g/mol'], ["Codons (frame 0)", String(pr.length)], ["Peptide", pr.map(function (x) { return x === '*' ? '■' : x; }).join('')]]; },
+    measures: function () { var st = stats(S.seq), pr = translate(S.seq); return [["Length", st.n + ' pb'], ['% GC', fmt(st.gc, 1) + ' %'], ['Tm', fmt(st.Tm, 1) + ' °C'], ['A / T / G / C', st.c.A + ' / ' + st.c.T + ' / ' + st.c.G + ' / ' + st.c.C], ["Strand mass (ss)", fmt(st.m1, 0) + " g/mol"], ["Duplex mass", fmt(st.m1 + st.m2, 0) + " g/mol"], ["Codons (frame 0)", String(pr.length)], ["Peptide", pr.map(function (x) { return x === '*' ? '■' : x; }).join('')]]; },
     ideas: ["<b>A–T: 2 H bonds; G–C: 3</b> → more GC = higher Tm.", "The strands are <b>antiparallel</b>: 5′→3′ and 3′→5′.", "B-DNA: 10 bp/turn, 0.34 nm/bp, pitch 3.4 nm, diameter 2 nm.", "Replication is <b>semiconservative</b>: each daughter = 1 old strand + 1 new.", "mRNA = copy of the coding strand with U instead of T."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Sequence and mode"); el.appendChild(c);
@@ -363,15 +363,15 @@ var BP = (function () {
         ['A', 'T', 'G', 'C'].forEach(function (b, i) { var v = st.c[b] + st.c[COMP[b]] , x = L0 + i * pw / 4 + 5, v1 = st.c[b], hh = ph * v1 / mx * 1.0; cx.fillStyle = '#' + BCOL[b].toString(16).padStart(6, '0'); cx.fillRect(x, Tp + ph - ph * v1 / (mx / 1), bw, ph * v1 / (mx / 1)); cx.fillStyle = c.ink; cx.textAlign = 'center'; cx.fillText(b + ' (' + v1 + ')', x + bw / 2, h - 8); }); } }
     ],
     calc: function () { var st = stats(S.seq), row = function (a, b) { return '<tr><th>' + a + '</th><td>' + b + '</td></tr>'; }, pr = translate(S.seq), cds = ''; for (var i = 0; i + 3 <= st.mrna.length; i += 3) cds += st.mrna.substr(i, 3) + ' ';
-      return "<div class=\"card-kicker\">Sequence of " + st.n + " nt</div><div class=\"calc-step\">1 · Strands</div><table class=\"calc-table\">" + row("Coding 5′→3′", '<span style="font-family:monospace">' + S.seq + '</span>') + row("Template 3′→5′", '<span style="font-family:monospace">' + st.comp + '</span>') + row("Reverse complement 5′→3′", '<span style="font-family:monospace">' + st.rc + '</span>') + row("mRNA 5′→3′", '<span style="font-family:monospace">' + st.mrna + '</span>') + "</table><div class=\"calc-step\">2 · Properties</div><table class=\"calc-table\">" + row('% GC', fmt(st.gc, 1) + ' %') + row('Tm', fmt(st.Tm, 1) + ' °C (' + (st.n < 14 ? "Wallace rule: 2·(A+T) + 4·(G+C)" : "64.9 + 41·(nGC − 16.4)/N") + ')') + row("H bonds", (st.c.A + st.c.T) * 2 + (st.c.G + st.c.C) * 3) + row("Mass (strand / duplex)", fmt(st.m1, 0) + ' / ' + fmt(st.m1 + st.m2, 0) + ' g/mol') + "</table><div class=\"calc-step\">3 · Translation (frame 0)</div><table class=\"calc-table\">" + row("Codons", '<span style="font-family:monospace">' + cds + '</span>') + row("Peptide", pr.map(function (x) { return x === '*' ? 'Stop' : AA3[x]; }).join('–')) + '</table>'; },
+      return "<div class=\"card-kicker\">Sequence of " + st.n + " nt</div><div class=\"calc-step\">1 · Strands</div><table class=\"calc-table\">" + row("Coding 5′→3′", '<span style="font-family:monospace">' + S.seq + '</span>') + row("Template 3′→5′", '<span style="font-family:monospace">' + st.comp + '</span>') + row("Reverse complement 5′→3′", '<span style="font-family:monospace">' + st.rc + '</span>') + row("mRNA 5′→3′", '<span style="font-family:monospace">' + st.mrna + '</span>') + "</table><div class=\"calc-step\">2 · Properties</div><table class=\"calc-table\">" + row('% GC', fmt(st.gc, 1) + ' %') + row('Tm', fmt(st.Tm, 1) + ' °C (' + (st.n < 14 ? "Wallace rule: 2·(A+T) + 4·(G+C)" : "64.9 + 41·(nGC − 16.4)/N") + ')') + row("H bonds", (st.c.A + st.c.T) * 2 + (st.c.G + st.c.C) * 3) + row("Mass (strand / duplex)", fmt(st.m1, 0) + ' / ' + fmt(st.m1 + st.m2, 0) + " g/mol") + "</table><div class=\"calc-step\">3 · Translation (frame 0)</div><table class=\"calc-table\">" + row("Codons", '<span style="font-family:monospace">' + cds + '</span>') + row("Peptide", pr.map(function (x) { return x === '*' ? 'Stop' : AA3[x]; }).join('–')) + '</table>'; },
     calcLabel: "Sequence",
     quiz: [
       { q: "How many hydrogen bonds does a G–C pair form?", options: ['3', '2', '1', '4'], answer: 0, why: "G≡C has three; A=T only two, which is why more GC increases Tm." },
-      { q: "If one strand is 5′-ATGC-3′, the complementary strand (5′→3′) is…", options: ['5′-GCAT-3′', '5′-TACG-3′', '5′-CGTA-3′', '5′-UACG-3′'], answer: 0, why: "Complement 3′-TACG-5′; read 5′→3′ it is GCAT (reverse complement)." },
+      { q: "If one strand is 5′-ATGC-3′, the complementary strand (5′→3′) is…", options: ["5′-GCAT-3′", "5′-TACG-3′", "5′-CGTA-3′", "5′-UACG-3′"], answer: 0, why: "Complement 3′-TACG-5′; read 5′→3′ it is GCAT (reverse complement)." },
       { q: "In B-DNA, how many base pairs are there per helix turn?", options: ['10', '3,6', '11', '12'], answer: 0, why: "10 bp per turn, pitch 3.4 nm (0.34 nm per pair)." },
       { q: "DNA replication is semiconservative because…", options: ["each daughter molecule has one original strand and one new strand", "the two original strands stay together", "RNA is synthesized first", "only one strand is copied"], answer: 0, why: "Demonstrated by Meselson and Stahl with heavy nitrogen (¹⁵N)." },
       { q: "In the mRNA the base complementary to the adenine of the template is…", options: ["uracil", "thymine", "cytosine", "guanine"], answer: 0, why: "RNA uses uracil instead of thymine: A (template) → U (RNA)." },
-      { q: "Which codon is the translation start codon?", options: ['AUG (Met)', 'UAA', 'GCC', 'UGA'], answer: 0, why: "AUG codes for methionine and marks the start; UAA, UAG and UGA are stop codons." },
+      { q: "Which codon is the translation start codon?", options: ["AUG (Met)", "UAA", "GCC", "UGA"], answer: 0, why: "AUG codes for methionine and marks the start; UAA, UAG and UGA are stop codons." },
       { q: "According to Chargaff, in a double-stranded DNA…", options: ['A = T y G = C', 'A = G y C = T', 'A + T = G + C', 'A = C'], answer: 0, why: "Each purine pairs with a specific pyrimidine." },
       { q: "A 20 bp fragment with 70 % GC, compared with another with 30 %, has…", options: ["a higher Tm", "a lower Tm", "the same Tm", "does not melt"], answer: 0, why: "More G–C pairs (3 H bonds) stabilize the duplex." }
     ],

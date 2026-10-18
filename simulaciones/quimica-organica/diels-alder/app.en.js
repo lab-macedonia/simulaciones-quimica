@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -238,7 +238,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         "<p>The reaction is allowed by orbital symmetry: the <b>HOMO of the diene (ψ₂)</b> and the <b>LUMO of the dienophile (π*)</b> have the same phase at the two pairs of atoms that bond (C1···Ca and C4···Cb): <b>constructive overlap at both ends</b>. The blue and red lobes indicate the phases. HOMO(dienophile)–LUMO(diene) overlap would also be possible, but with a larger energy gap.</p>"],
       ["Substituents and reactivity", "Substituents", "A dienophile with electron-withdrawing groups reacts much faster",
         "<p>In the <b>normal-demand</b> Diels–Alder the dominant interaction is HOMO(diene)–LUMO(dienophile). An <b>electron-withdrawing</b> group on the dienophile (C=O, C≡N, NO₂) <b>lowers the LUMO</b> and reduces the gap, and a <b>donor</b> group on the diene (OR, alkyl) <b>raises the HOMO</b>. Compare in “Graphs”: ethene barely reacts; with propenal or propenenitrile the reaction is much easier.</p>"],
-      ["Endo rule", 'Endo / exo', "The dienophile substituent usually ends up under the diene (endo)",
+      ["Endo rule", "Endo / exo", "The dienophile substituent usually ends up under the diene (endo)",
         "<p>If the dienophile substituent is placed <b>under the diene</b> (<b>endo</b>) or <b>away</b> (<b>exo</b>), different stereoisomers are obtained. In most cases the kinetic product is the <b>endo</b>, due to <b>secondary orbital interactions</b> between the π system of the substituent (C=O) and carbons C2 and C3 of the diene. The exo is usually more stable thermodynamically because of less steric hindrance.</p>"],
       ["Thermodynamics and retro-Diels–Alder", 'ΔG(T)', "Favorable at low T; at very high T it reverses (retro-Diels–Alder)",
         "<p>With <b>ΔH ≈ −168 kJ/mol</b> and <b>ΔS ≈ −148 J/(mol·K)</b> (freedom is lost when two molecules join into one), <b>ΔG = ΔH − TΔS</b> is very negative at room temperature. But at high temperatures the −TΔS term gains weight until ΔG = 0 (≈ 1135 K under standard conditions): the <b>retro-Diels–Alder</b> becomes favorable and is a way to generate dienes (e.g. cracking of cyclopentadiene from its dimer).</p>"]
@@ -338,7 +338,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       { q: "Why is ΔS < 0 in the Diels–Alder reaction?", options: ["Two molecules join into one: freedom of movement is lost", "A gas forms", "σ bonds break", "Disorder increases"], answer: 0, why: "The reduction in the number of particles decreases entropy." },
       { q: "A large increase in temperature can favor the reverse reaction because…", options: ["−TΔS becomes more positive and ΔG approaches 0", "ΔH changes sign", "the catalyst breaks down", "the concentration rises"], answer: 0, why: "ΔG = ΔH − TΔS with negative ΔS: at high T, ΔG rises until it becomes positive." }
     ],
-    help: { intro: "Move the progress, the diene dihedral and the orientation in “Lab”, or follow the lesson. Turn on “Frontier orbitals” to see the phases of the diene HOMO and the dienophile LUMO.", items: [["diene φ", "0° s-cis (reacts) · 180° s-trans."], ['Endo / exo', "position of the dienophile substituent relative to the diene."], ["Lobes", "blue + phase, red − phase."], ['ΔG(T)', "temperature and retro-Diels–Alder."]] }
+    help: { intro: "Move the progress, the diene dihedral and the orientation in “Lab”, or follow the lesson. Turn on “Frontier orbitals” to see the phases of the diene HOMO and the dienophile LUMO.", items: [["diene φ", "0° s-cis (reacts) · 180° s-trans."], ["Endo / exo", "position of the dienophile substituent relative to the diene."], ["Lobes", "blue + phase, red − phase."], ['ΔG(T)', "temperature and retro-Diels–Alder."]] }
   };
   def.sync = function (ctx) { var u = ctx.ui; if (!ctx.P.manual) { u.pg && u.pg.set(S.q); u.ph && u.ph.set(Math.round(S.phi / DEG)); u.tk && u.tk.set(Math.round(S.Tk)); } if (u.refresh) u.refresh(); };
   MSim.create(def);

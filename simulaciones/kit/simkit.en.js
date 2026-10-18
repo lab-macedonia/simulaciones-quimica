@@ -4,7 +4,7 @@
    de interfaz (controles, barras, gráficos en canvas, desafío tipo quiz).
    Sin dependencias. Licencia MIT. */
 (function (global) {
-  'use strict';
+  "use strict";
 
   var ICONS = {
     play: '<path d="M7 4.5v15l12.5-7.5z" fill="currentColor" stroke="none"/>',
@@ -82,7 +82,7 @@
     if (cfg.modes && cfg.modes.length) {
       modeTabs = '<nav class="mode-tabs" role="tablist" aria-label="' + (cfg.modesLabel || "Mode") + '">' +
         cfg.modes.map(function (m) {
-          return '<button role="tab" class="mode-tab" data-mode="' + m.id + '" style="--mc:' + (m.color || 'var(--accent)') + '"><b>' + m.label + '</b>' + (m.sub ? '<span>' + m.sub + '</span>' : '') + '</button>';
+          return '<button role="tab" class="mode-tab" data-mode="' + m.id + "\" style=\"--mc:" + (m.color || 'var(--accent)') + '"><b>' + m.label + '</b>' + (m.sub ? '<span>' + m.sub + '</span>' : '') + '</button>';
         }).join('') + '</nav>';
     }
     var homeHref = cfg.home || '../../';
@@ -245,7 +245,7 @@
       bars: function (host) {
         return function update(rows) {
           host.innerHTML = rows.map(function (r) {
-            return '<div class="bar-row' + (r.top ? ' top' : '') + '" style="--mc:' + (r.color || 'var(--accent)') + '"><b>' + r.label + '</b><div class="bar-track"><i style="width:' + Math.round(clamp(r.value, 0, 1) * 100) + '%"></i></div><span class="pc">' + (r.text != null ? r.text : Math.round(r.value * 100) + ' %') + '</span></div>';
+            return '<div class="bar-row' + (r.top ? ' top' : '') + "\" style=\"--mc:" + (r.color || 'var(--accent)') + '"><b>' + r.label + '</b><div class="bar-track"><i style="width:' + Math.round(clamp(r.value, 0, 1) * 100) + '%"></i></div><span class="pc">' + (r.text != null ? r.text : Math.round(r.value * 100) + ' %') + '</span></div>';
           }).join('');
         };
       },
@@ -283,31 +283,52 @@
       },
       quiz: function (host, o) {
         // o: {title, intro, items:[{q, options:[], answer:index, why}], onDone}
+        // Dos modos: práctica (retroalimentación inmediata) y evaluación (sin pistas hasta el final, con nota y resultado copiable)
         var items = o.items.slice(), order = items.map(function (_, i) { return i; });
         var body = h('div', { class: 'challenge' }); host.appendChild(body);
-        var idx = 0, score = 0, answered = false;
+        var idx = 0, score = 0, answered = false, exam = false, rec = [], t0 = 0, who = '';
         function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
-        function start() { shuffle(order); idx = 0; score = 0; render(); }
+        function start(ex) { exam = !!ex; shuffle(order); idx = 0; score = 0; rec = []; t0 = Date.now(); render(); }
+        function grade(p) { return p >= 0.6 ? 4 + 3 * (p - 0.6) / 0.4 : 1 + 3 * p / 0.6; }
         function intro() {
-          body.innerHTML = '<p>' + (o.intro || "Test what you have learned with quick questions.") + "</p><button class=\"btn\" id=\"qzStart\">Start challenge (" + items.length + " questions)</button>";
-          body.querySelector('#qzStart').addEventListener('click', start);
+          body.innerHTML = '<p>' + (o.intro || "Test what you have learned with quick questions.") + "</p><div class=\"btnrow\"><button class=\"btn\" id=\"qzStart\">Practice (" + items.length + " questions)</button> <button class=\"btn\" id=\"qzExam\">Assessment mode</button></div><p class=\"hint\">In assessment mode, answers are not shown until the end and a grade is calculated (1.0–7.0 scale with a 60% passing threshold).</p>";
+          body.querySelector('#qzStart').addEventListener('click', function () { start(false); });
+          body.querySelector('#qzExam').addEventListener('click', function () { start(true); });
+        }
+        function summary() {
+          var p = score / order.length, g = grade(p), mins = Math.max(1, Math.round((Date.now() - t0) / 60000)), nota = fmt(g, 1);
+          var rows = rec.map(function (r, k) { return '<li class="' + (r.ok ? 'ok' : 'no') + '"><b>' + (r.ok ? '✔' : '✘') + '</b> ' + r.q + "<br><small>Your answer: " + r.pick + (r.ok ? '' : " · Correct: " + r.right) + (r.why ? ' · ' + r.why : '') + '</small></li>'; }).join('');
+          body.innerHTML = '<div class="verdict ' + (p >= 0.6 ? 'ok' : 'no') + "\">Result: <b>" + score + ' / ' + order.length + "</b> · Grade: <b>" + nota + '</b></div><ol class="qz-review">' + rows + '</ol><label class="qz-name">Nombre (opcional) <input type="text" id="qzName" value="' + who.replace(/"/g, '') + "\"></label><div class=\"btnrow\"><button class=\"btn\" id=\"qzCopy\">Copy result</button> <button class=\"btn\" id=\"qzAgain\">Try again</button></div><div id=\"qzMsg\" role=\"status\" aria-live=\"polite\"></div>";
+          body.querySelector('#qzAgain').addEventListener('click', function () { start(true); });
+          body.querySelector('#qzCopy').addEventListener('click', function () {
+            who = body.querySelector('#qzName').value; var txt = (who ? who + ' · ' : '') + document.title + ' · ' + new Date().toLocaleDateString() + ' · ' + score + '/' + order.length + " · Grade " + nota + ' · ' + mins + ' min';
+            var msg = body.querySelector('#qzMsg');
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function () { msg.textContent = "Result copied."; }, function () { msg.textContent = txt; }); else msg.textContent = txt;
+          });
         }
         function render() {
           if (idx >= order.length) {
-            body.innerHTML = '<div class="verdict ' + (score >= order.length * 0.7 ? 'ok' : 'no') + "\">Result: <b>" + score + ' / ' + order.length + "</b></div><button class=\"btn\" id=\"qzAgain\">Try again</button>";
-            body.querySelector('#qzAgain').addEventListener('click', start);
+            if (exam) summary();
+            else { body.innerHTML = '<div class="verdict ' + (score >= order.length * 0.7 ? 'ok' : 'no') + "\">Result: <b>" + score + ' / ' + order.length + "</b></div><button class=\"btn\" id=\"qzAgain\">Try again</button>"; body.querySelector('#qzAgain').addEventListener('click', function () { start(false); }); }
             if (o.onDone) o.onDone(score, order.length);
             return;
           }
           var it = items[order[idx]]; answered = false;
           var opts = it.options.map(function (t, i) { return { t: t, i: i }; }); shuffle(opts);
-          body.innerHTML = "<div class=\"score\">Question " + (idx + 1) + ' de ' + order.length + " · correct: " + score + '</div><div class="q">' + it.q + '</div><div class="opts" id="qzOpts"></div><div id="qzOut"></div>';
+          body.innerHTML = "<div class=\"score\">Question " + (idx + 1) + ' de ' + order.length + (exam ? " · assessment mode" : " · correct: " + score) + '</div><div class="q">' + it.q + '</div><div class="opts" id="qzOpts"></div><div id="qzOut"></div>';
           var og = body.querySelector('#qzOpts');
           opts.forEach(function (op) {
             var b = h('button', { class: 'opt' }, op.t);
             b.addEventListener('click', function () {
               if (answered) return; answered = true;
               var ok = op.i === it.answer; if (ok) score++;
+              if (exam) {
+                rec.push({ q: it.q, ok: ok, pick: op.t, right: it.options[it.answer], why: it.why || '' });
+                og.querySelectorAll('button').forEach(function (x) { x.disabled = true; }); b.classList.add('picked');
+                body.querySelector('#qzOut').innerHTML = '<button class="btn primary" id="qzNext">' + (idx + 1 < order.length ? "Next" : "See result") + '</button>';
+                body.querySelector('#qzNext').addEventListener('click', function () { idx++; render(); });
+                return;
+              }
               og.querySelectorAll('button').forEach(function (x, k) { x.disabled = true; if (opts[k].i === it.answer) x.classList.add('right'); });
               if (!ok) b.classList.add('wrong');
               body.querySelector('#qzOut').innerHTML = '<div class="verdict ' + (ok ? 'ok' : 'no') + '">' + (ok ? "Correct! " : "Not quite. ") + (it.why || '') + '</div><button class="btn primary" id="qzNext">' + (idx + 1 < order.length ? "Next" : "See result") + '</button>';

@@ -1,7 +1,7 @@
 /* CellKit — núcleo común de los simuladores de célula 3D (Laboratorio MACEDONIA · UMCE)
    Geometrías procedurales de orgánulos + visor Three.js con selección, etiquetas, corte y atenuación por foco. */
 (function (g) {
-  'use strict';
+  "use strict";
   var T = g.THREE, K = {};
   g.CellKit = K;
   function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }

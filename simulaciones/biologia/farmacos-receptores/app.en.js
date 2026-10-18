@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -131,7 +131,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   function sm(x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
   function stages() {
     return [
-      ["Receptors and ligands", 'Receptor', "A drug binds reversibly to its receptor: occupancy = [L]/([L] + Kd)",
+      ["Receptors and ligands", "Receptor", "A drug binds reversibly to its receptor: occupancy = [L]/([L] + Kd)",
         "<p>A <b>receptor</b> is a protein (in the membrane or inside the cell) that recognizes a <b>ligand</b> with high affinity and specificity. Binding is reversible, L + R ⇌ LR, with dissociation constant <b>K<sub>d</sub> = [L][R]/[LR]</b>: the lower the K<sub>d</sub>, the higher the affinity. The fraction of occupied receptors is <b>[L]/([L] + K<sub>d</sub>)</b>: 50 % when [L] = K<sub>d</sub>.</p>"],
       ["Agonists, partial agonists and antagonists", "Efficacy", "Efficacy (e) distinguishes what the drug does once bound",
         "<p><b>Affinity</b> is the ability to bind; <b>efficacy</b> is the ability to <b>activate</b> the receptor. The <b>full agonist</b> (e = 1) produces the maximum response; the <b>partial</b> one (0 &lt; e &lt; 1) produces a smaller response even when occupying all the receptors; the <b>antagonist</b> (e = 0) binds without activating and <b>blocks</b> the agonist. Change the type of ligand and watch the illuminated receptors.</p>"],
@@ -187,14 +187,14 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     },
     graphs: [
       { title: "Dose–response curve", h: 250, note: "Green line: agonist alone. Red line: with antagonist (shifted). Dot: your dose.", draw: function (cx, w, h, col) {
-        var L = 36, Rr = 10, Tp = 12, B = 30, pw = w - L - Rr, ph = h - Tp - B, i, e = LG[S.lg].e; cx.font = '10px system-ui'; cx.fillStyle = col.muted; cx.textAlign = 'center'; for (i = -10; i <= -3; i++) cx.fillText(i, L + pw * (i + 10) / 7, h - B + 14); cx.fillText('log [L]', L + pw / 2, h - 6); cx.textAlign = 'right'; for (i = 0; i <= 4; i++) cx.fillText(i * 25 + '%', L - 4, Tp + ph * (1 - i / 4) + 3);
+        var L = 36, Rr = 10, Tp = 12, B = 30, pw = w - L - Rr, ph = h - Tp - B, i, e = LG[S.lg].e; cx.font = '10px system-ui'; cx.fillStyle = col.muted; cx.textAlign = 'center'; for (i = -10; i <= -3; i++) cx.fillText(i, L + pw * (i + 10) / 7, h - B + 14); cx.fillText("log [L]", L + pw / 2, h - 6); cx.textAlign = 'right'; for (i = 0; i <= 4; i++) cx.fillText(i * 25 + '%', L - 4, Tp + ph * (1 - i / 4) + 3);
         function crv(withB, color) { cx.strokeStyle = color; cx.lineWidth = 2; cx.beginPath(); for (var k = 0; k <= 100; k++) { var lg = -10 + 7 * k / 100; (k ? cx.lineTo : cx.moveTo).call(cx, L + pw * (lg + 10) / 7, Tp + ph * (1 - resp(lg, Math.max(e, 0.001), withB))); } cx.stroke(); }
         crv(false, '#40c057'); if (S.antag) crv(true, '#fa5252'); cx.lineWidth = 1;
         var rr = resp(S.logL, e, S.antag); cx.fillStyle = col.ink; cx.beginPath(); cx.arc(L + pw * (S.logL + 10) / 7, Tp + ph * (1 - rr), 5, 0, 6.28); cx.fill();
         cx.strokeStyle = col.muted; cx.setLineDash([3, 3]); cx.beginPath(); cx.moveTo(L, Tp + ph * (1 - e / 2)); cx.lineTo(L + pw, Tp + ph * (1 - e / 2)); cx.stroke(); cx.setLineDash([]);
       } },
       { title: "Lipinski's rule", h: 220, note: "Bars: drug value / limit. Red = exceeds the limit.", draw: function (cx, w, h, col) {
-        var d = DR[S.dr], D = [["MW", d.mw / 500, d.mw + ' g/mol'], ['logP', d.lp / 5, fmt(d.lp, 1)], ["H donors", d.hd / 5, String(d.hd)], ["H acceptors", d.ha / 10, String(d.ha)]], L = 88, Rr = 50, Tp = 8, B = 8, pw = w - L - Rr, bh = (h - Tp - B) / 4; cx.font = '10px system-ui';
+        var d = DR[S.dr], D = [["MW", d.mw / 500, d.mw + " g/mol"], ['logP', d.lp / 5, fmt(d.lp, 1)], ["H donors", d.hd / 5, String(d.hd)], ["H acceptors", d.ha / 10, String(d.ha)]], L = 88, Rr = 50, Tp = 8, B = 8, pw = w - L - Rr, bh = (h - Tp - B) / 4; cx.font = '10px system-ui';
         D.forEach(function (a, j) { var y = Tp + j * bh, v = Math.min(2.4, a[1]); cx.fillStyle = a[1] > 1 ? '#fa5252' : '#40c057'; cx.fillRect(L, y + 5, pw * v / 2.4, bh - 10); cx.fillStyle = col.ink; cx.textAlign = 'right'; cx.fillText(a[0], L - 4, y + bh / 2 + 3); cx.textAlign = 'left'; cx.fillText(a[2], L + pw * v / 2.4 + 4, y + bh / 2 + 3); });
         cx.strokeStyle = col.ink; cx.setLineDash([3, 3]); cx.beginPath(); cx.moveTo(L + pw / 2.4, Tp); cx.lineTo(L + pw / 2.4, h - B); cx.stroke(); cx.setLineDash([]);
       } }
@@ -205,7 +205,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       { q: "An antagonist has efficacy…", options: ["zero", 'uno', "greater than one", "always negative"], answer: 0, why: "It binds without activating." },
       { q: "A competitive antagonist shifts the curve…", options: ["to the right, with the same Emax", "to the left", "reduces the Emax", "does not change"], answer: 0, why: "It increases the EC₅₀." },
       { q: "A partial agonist…", options: ["does not reach the Emax of the full one", "always blocks", "has Kd = 0", "does not bind"], answer: 0, why: 'e < 1.' },
-      { q: "Lipinski's rule sets as the maximum molar mass…", options: ['500 g/mol', '1000 g/mol', '150 g/mol', '5000 g/mol'], answer: 0, why: "For oral absorption." }
+      { q: "Lipinski's rule sets as the maximum molar mass…", options: ["500 g/mol", "1000 g/mol", "150 g/mol", "5000 g/mol"], answer: 0, why: "For oral absorption." }
     ],
     help: { intro: "Each cylinder is a receptor; the green spheres are bound agonists and the red ones, antagonists. A yellow receptor is activated. In “Lipinski” you see the four properties of a drug.", items: [["Yellow receptor", 'activado.'], ["Red sphere", 'antagonista.']] }
   };

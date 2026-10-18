@@ -3,7 +3,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 /* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
 (function () {
-  'use strict';
+  "use strict";
   var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
   var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
   var matCache = {}, sphereGeo, cylGeo;
@@ -49,7 +49,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
     ctx.btnRow = function (list) {
       var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? ' primary' : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
+      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
       return r;
     };
     function ui(id, e) { ctx.ui[id] = e; }
@@ -69,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
     }
     var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: 'Lab', build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
+    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
     if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
       kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
         var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
@@ -138,7 +138,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     return [
       ["What distillation is", "Fundamentals", "It separates miscible liquids by difference in volatility",
         "<p><b>Distillation</b> separates the components of a liquid mixture by taking advantage of the fact that the <b>more volatile</b> one (lower boiling point) passes into vapor in greater proportion. The vapor is condensed and collected as the <b>distillate</b>. For an ideal mixture, <b>Raoult's law</b> gives the partial pressure: P<sub>i</sub> = x<sub>i</sub>·P<sub>i</sub>°. The mixture boils when P<sub>A</sub> + P<sub>B</sub> = external pressure; the vapor composition is y<sub>A</sub> = x<sub>A</sub>·P<sub>A</sub>°/P.</p>"],
-      ["Simple distillation", 'Simple', "A single equilibrium stage: suitable if boiling points differ by > 70 °C or for purification",
+      ["Simple distillation", "Simple", "A single equilibrium stage: suitable if boiling points differ by > 70 °C or for purification",
         "<p>In <b>simple distillation</b> the vapor goes directly to the condenser: this is equivalent to <b>one theoretical plate</b>. The distillate is enriched in the volatile component, but is not completely separated. Setup: flask with <b>boiling chips</b>, head with thermometer (bulb level with the side arm), condenser with water <b>in countercurrent</b> (enters from below) and receiving flask.</p>"],
       ["Fractional distillation", "Fractional", "The column adds theoretical plates: each one repeats the liquid–vapor equilibrium",
         "<p>The <b>fractionating column</b> (Vigreux, packed) causes successive condensations and evaporations; each one is equivalent to a <b>theoretical plate</b> and enriches the vapor in the more volatile component. With more plates, the distillate is purer, but the process is slower. Use the “Theoretical plates” control to see it.</p>"],
@@ -216,15 +216,15 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ],
     calc: function () {
       var p = PAIRS[S.pair], t = bubble(S.x0), PA = psat(p[0], t), PB = psat(p[1], t), y = S.x0 * PA / S.P, row = function (a, b) { return '<tr><th>' + a + '</th><td>' + b + '</td></tr>'; };
-      return "<div class=\"card-kicker\">First equilibrium (Raoult's law)</div><table class=\"calc-table\">" + row("Bubble T", fmt(t, 1) + ' °C (' + fmt(S.P, 0) + ' mmHg)') + row('P° ' + AN[p[0]].n, fmt(PA, 0) + ' mmHg') + row('P° ' + AN[p[1]].n, fmt(PB, 0) + ' mmHg') + row('y = x·P°/P', fmt(S.x0, 2) + ' × ' + fmt(PA, 0) + ' / ' + fmt(S.P, 0) + ' = <b>' + fmt(y, 3) + '</b>') + row("Relative volatility α", fmt(PA / PB, 2)) + row("After " + S.N + " plate(s)", '<b>' + fmt(stairs(S.x0, S.N).y * 100, 1) + " %</b> of " + AN[p[0]].n) + "</table><p class=\"muted small\">Antoine: log₁₀P° = A − B/(T + C). Ideal mixture: approximation without azeotropes.</p>";
+      return "<div class=\"card-kicker\">First equilibrium (Raoult's law)</div><table class=\"calc-table\">" + row("Bubble T", fmt(t, 1) + ' °C (' + fmt(S.P, 0) + " mmHg)") + row('P° ' + AN[p[0]].n, fmt(PA, 0) + ' mmHg') + row('P° ' + AN[p[1]].n, fmt(PB, 0) + ' mmHg') + row('y = x·P°/P', fmt(S.x0, 2) + ' × ' + fmt(PA, 0) + ' / ' + fmt(S.P, 0) + ' = <b>' + fmt(y, 3) + '</b>') + row("Relative volatility α", fmt(PA / PB, 2)) + row("After " + S.N + " plate(s)", '<b>' + fmt(stairs(S.x0, S.N).y * 100, 1) + " %</b> of " + AN[p[0]].n) + "</table><p class=\"muted small\">Antoine: log₁₀P° = A − B/(T + C). Ideal mixture: approximation without azeotropes.</p>";
     },
     quiz: [
       { q: "In a simple distillation the component collected first is the…", options: ["more volatile", "less volatile", "denser", "more polar"], answer: 0, why: "It has a higher vapor pressure." },
       { q: "Each theoretical plate is equivalent to…", options: ["one liquid–vapor equilibrium", "a filtration", "a solid phase change", "a total reflux"], answer: 0, why: "One evaporation and condensation." },
       { q: "The condenser water must enter through…", options: ["down", "up", "either one", "the center"], answer: 0, why: "Countercurrent: the condenser fills and cools better." },
-      { q: "As it distills, the boiling T of the residue…", options: ["rises", 'baja', "stays constant", "oscillates"], answer: 0, why: "The residue becomes enriched in the less volatile component." },
+      { q: "As it distills, the boiling T of the residue…", options: ["rises", "low", "stays constant", "oscillates"], answer: 0, why: "The residue becomes enriched in the less volatile component." },
       { q: "Boiling chips are used to…", options: ["avoid superheating and bumping", "increase polarity", "cool", "filter"], answer: 0, why: "They provide bubble nuclei." },
-      { q: "To separate liquids with very similar boiling points it is advisable to use…", options: ["fractional with many plates", 'simple', "filtration", "decantation"], answer: 0, why: "Many equilibria are needed." }
+      { q: "To separate liquids with very similar boiling points it is advisable to use…", options: ["fractional with many plates", "simple", "filtration", "decantation"], answer: 0, why: "Many equilibria are needed." }
     ],
     help: { intro: "Choose a pair, the initial composition and the theoretical plates; press “Distill”. The T–x–y diagram shows the plate staircase.", items: [["Blue rings", "theoretical plates of the column."], ["Bubbles", "rising vapor."]] }
   };

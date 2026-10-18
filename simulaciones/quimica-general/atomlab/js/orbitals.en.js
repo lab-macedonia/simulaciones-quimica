@@ -2,7 +2,7 @@
    Funciones radiales R(n,l) exactas (Z = 1) y partes angulares reales (s, p, d).
    Las nubes se generan muestreando |ψ|² = R²·Y²: radio por transformada inversa de r²R², dirección por rechazo sobre Y². */
 (function (g) {
-  'use strict';
+  "use strict";
   var T = g.THREE;
   var S = Math.sqrt;
 
