@@ -1,6 +1,6 @@
 # Simulaciones interactivas de ciencias · Laboratorio MACEDONIA
 
-Colección de 61 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología celular y molecular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
+Colección de 68 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología celular y molecular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
 
 ## Simulaciones por área
 
@@ -26,6 +26,11 @@ Colección de 61 simulaciones interactivas para la enseñanza de la química (ge
 | [Oxidación y reducción en química orgánica](simulaciones/quimica-organica/oxidacion-reduccion/) | Simulador 3D de oxidación y reducción orgánica: estados de oxidación del carbono, oxidación de alcoholes primarios, secundarios y terciarios con PCC y Jones, reducción de carbonilos con NaBH₄ y LiAlH₄, mecanismo del hidruro y selectividad de los reactivos. |
 | [Radicales y halogenación en cadena](simulaciones/quimica-organica/radicales-halogenacion/) | Simulador 3D de la halogenación radicalaria de alcanos: estabilidad de radicales, iniciación, propagación y terminación, selectividad cloración frente a bromación (postulado de Hammond) y reparto de productos del propano. |
 
+| [Destilación simple y fraccionada](simulaciones/quimica-organica/destilacion/) | Montaje 3D de destilación simple y fraccionada de mezclas binarias ideales (ley de Raoult): diagrama temperatura–composición, platos teóricos, composición del destilado y curva de destilación. |
+| [Punto de fusión y pureza](simulaciones/quimica-organica/punto-fusion/) | Capilar y aparato de punto de fusión en 3D: rango de fusión, depresión por impurezas (eutéctico), velocidad de calentamiento y punto de fusión mixto para identificar compuestos. |
+| [Recristalización](simulaciones/quimica-organica/recristalizacion/) | Purificación de sólidos por recristalización: curvas de solubilidad frente a temperatura, volumen mínimo de disolvente caliente, velocidad de enfriamiento, formación de cristales y rendimiento. |
+| [Extracción líquido–líquido](simulaciones/quimica-organica/extraccion-liquido-liquido/) | Embudo de decantación 3D: coeficiente de reparto, fases según densidad, extracciones múltiples con porciones pequeñas y extracción ácido–base según pH y pKa. |
+| [Cromatografía en capa fina y en columna](simulaciones/quimica-organica/cromatografia/) | Placa TLC y columna de sílice en 3D: polaridad de compuestos y eluyente, factor de retención Rf, resolución entre manchas y cromatograma de elución en columna. |
 
 ### Química general
 Cada simulación es independiente; no hay portada de colección ni seguimiento de progreso.
@@ -60,6 +65,8 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Sólidos cristalinos y celdas unitarias](simulaciones/quimica-general/solidos-cristalinos/) | Simulador 3D de sólidos cristalinos: celdas cúbicas simple, centrada en el cuerpo y centrada en las caras, empaquetamiento compacto hcp y ccp, estructuras iónicas (NaCl, CsCl, ZnS, CaF₂), átomos por celda, número de coordinación, fracción de empaquetamiento y densidad. |
 | [Solubilidad y producto de solubilidad (Kps)](simulaciones/quimica-general/solubilidad-kps/) | Simulador 3D de solubilidad de sales poco solubles: Kps, solubilidad molar, efecto del ion común, efecto del pH, cociente Q frente a Kps y precipitación selectiva (AgI/AgCl). |
 
+| [Cifras significativas e incertidumbre](simulaciones/quimica-general/cifras-incertidumbre/) | Precisión frente a exactitud con un blanco 3D, error aleatorio y sistemático, instrumentos de laboratorio con su incertidumbre, cifras significativas en sumas y productos y propagación de incertidumbres. |
+| [Espectrofotometría y ley de Beer–Lambert](simulaciones/quimica-general/espectrofotometria/) | Espectrofotómetro UV-Vis en 3D: transmitancia y absorbancia, ley de Beer–Lambert, espectro y λmáx, curva de calibración con regresión lineal y determinación de una muestra desconocida. |
 
 ### Biología
 | Simulación | Descripción |
