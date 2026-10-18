@@ -208,7 +208,7 @@ function showRes(k){let R=RES[k],buttons=document.getElementById("resButtons");
     : `The contributor(s) marked with ★ combine the lowest sum of formal charges, the most favorable placement of the negative charge (on the most electronegative atom) and no like charges on adjacent atoms.`;
   document.getElementById("resExplain").innerHTML=R.ex+"<br><br><strong>Stability comparison:</strong> "+stab;
 }
-function excSetup(){document.getElementById("exceptionGrid").innerHTML=EXC.map(e=>`<article class="exception"><span class="badge alt">${e[0]}</span><h3>${e[1]}</h3><p>${e[2]}</p></article>`).join("")}
+function excSetup(){document.getElementById("exceptionGrid").innerHTML=EXC.map(e=>`<article class="exception"><span class="badge alt">${e[0]}</span><h2 style="font-size:1.05rem">${e[1]}</h2><p>${e[2]}</p></article>`).join("")}
 const QUIZ=[
   ["How many valence electrons does O have?",["4","5","6","8"],2,"Oxygen is in group 16: it has 6 valence electrons."],
   ["Which species is a radical with an odd number of electrons?",["CO₂","NO₂","CH₄","BF₃"],1,"NO₂ has 17 valence electrons (an odd number), so one electron is left unpaired."],

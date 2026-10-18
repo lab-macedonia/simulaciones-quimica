@@ -431,7 +431,7 @@ function compare(){
   const keys=["CO2","SO2","CH4","NH3","H2O","BF3","SF4","XeF4","SF6"];
   document.getElementById("compareGrid").innerHTML=keys.map(k=>{
     const m=MOLS[k], g=GEOM[m.ax];
-    return `<article class="miniMol"><canvas id="cmp_${k}" width="220" height="160" style="width:100%;height:auto;border-radius:8px;cursor:grab" title="Arrastra para rotar"></canvas><span class="badge">${m.name}</span><h3>${m.ax} · ${g.mg}</h3><p>${g.ang} · ${m.pol}</p></article>`;
+    return `<article class="miniMol"><canvas id="cmp_${k}" width="220" height="160" style="width:100%;height:auto;border-radius:8px;cursor:grab" title="Arrastra para rotar"></canvas><span class="badge">${m.name}</span><h2 style="font-size:1.05rem">${m.ax} · ${g.mg}</h2><p>${g.ang} · ${m.pol}</p></article>`;
   }).join("");
   keys.forEach(k=>{
     const c=document.getElementById("cmp_"+k);
