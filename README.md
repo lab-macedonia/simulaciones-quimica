@@ -1,5 +1,7 @@
 # Simulaciones interactivas de ciencias · Laboratorio MACEDONIA
 
+*[English version](README.en.md)*
+
 Colección de 80 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología celular y molecular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
 
 ## Simulaciones por área
@@ -105,6 +107,17 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Orbitales moleculares en complejos octaédricos](simulaciones/quimica-inorganica/om-complejos/) | Simulador 3D de la teoría de orbitales moleculares en complejos octaédricos ML6: enlace σ, orbitales a1g, t1u, eg y t2g, desdoblamiento Δo, efecto π (donor y aceptor), serie espectroquímica, alto y bajo espín, magnetismo y color. |
 | [Organometálica: regla de 18 electrones](simulaciones/quimica-inorganica/organometalica-18e/) | Simulador 3D de química organometálica: regla de los 18 electrones, conteo de electrones por el método neutro, carbonilos metálicos, ferroceno, complejos planos de 16 electrones y ciclo catalítico de Wilkinson (adición oxidante, coordinación, inserción migratoria y eliminación reductora). |
 | [Química descriptiva de los grupos](simulaciones/quimica-inorganica/quimica-descriptiva-grupos/) | Tendencias y reactividad de alcalinos, alcalinotérreos, halógenos y gases nobles, y carácter ácido–base de los óxidos del periodo 3 en 3D: radio, energía de ionización, reacción con agua y estados de la materia. |
+
+## Idiomas
+
+Cada página existe en **español** (`index.html`) y en **inglés** (`index.en.html`), incluidas las lecciones, los cuestionarios, las etiquetas, las guías docentes y los bancos de preguntas. Un botón flotante **EN / ES** en cada página permite cambiar de idioma. La versión en inglés se genera desde el original en español; la lógica de las simulaciones es la misma en ambos idiomas. Guías en inglés: [`simulaciones/guias/en/`](simulaciones/guias/en/index.html).
+
+## Accesibilidad
+
+- Todos los controles se pueden usar con teclado, con indicadores de foco visibles y estructura de página navegable (`main`, regiones con nombre, pestañas con roles ARIA).
+- Apoyo a lectores de pantalla: botones y deslizadores con etiqueta, una región en vivo que anuncia cada etapa de la lección, y descripciones del visor 3D.
+- Colores revisados para contraste WCAG 2.1 AA en tema claro y oscuro; se respeta `prefers-reduced-motion`.
+- Revisión automática con axe-core en todas las páginas, en español e inglés. El lienzo 3D es un gráfico: su contenido también se describe en texto en la lección, los paneles y las mediciones en vivo.
 
 ## Guías docentes y bancos de preguntas
 

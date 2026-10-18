@@ -7,6 +7,7 @@
   <meta name="description" content="Simulador 3D interactivo de los mecanismos de sustitución nucleofílica y eliminación: geometrías, flechas de electrones, orbitales, perfiles de energía y predictor de mecanismo.">
   <meta name="color-scheme" content="dark light">
   <link rel="stylesheet" href="style.css">
+<script defer src="../../kit/langswitch.js?v=20261018a"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -32,7 +33,7 @@
     <div class="brand">
       <span class="brand-mark" aria-hidden="true"></span>
       <div class="brand-text">
-        <strong>Mecanismos de sustitución y eliminación</strong>
+        <h1 class="brand-title">Mecanismos de sustitución y eliminación</h1>
         <small>Simulador 3D · química orgánica</small>
       </div>
     </div>
@@ -54,7 +55,7 @@
   </header>
 
   <main class="stage">
-    <div id="canvas-container" class="viewport" aria-label="Visor 3D de la reacción"></div>
+    <div id="canvas-container" class="viewport" role="group" aria-roledescription="visor 3D" aria-label="Visor 3D de la reacción"></div>
     <div class="vignette" aria-hidden="true"></div>
 
     <!-- HUD: etapa actual -->
@@ -65,7 +66,7 @@
     </div>
 
     <div class="hud-col">
-    <section class="hud hud-eq" aria-live="polite">
+    <section class="hud hud-eq" aria-label="Datos en vivo">
       <div class="eq-head">
         <span class="eq-chip" id="eqChip">SN2</span>
         <span class="eq-name" id="eqName"></span>
@@ -121,7 +122,7 @@
               <label><span>[R–Br]</span><input type="range" id="kS" min="0" max="4" step="1" value="2"><output id="kSo">×1</output></label>
               <label><span id="kNuLbl">[Nu⁻]</span><input type="range" id="kN" min="0" max="4" step="1" value="2"><output id="kNo">×1</output></label>
             </div>
-            <div class="rate-meter" aria-live="polite">
+            <div class="rate-meter">
               <div class="rate-bar"><i id="rateFill"></i></div>
               <div class="rate-val">v / v₀ = <b id="rateVal">1,0</b></div>
             </div>

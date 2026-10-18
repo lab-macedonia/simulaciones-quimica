@@ -52,7 +52,7 @@
     new MutationObserver(syncTheme).observe(document.body, { attributes: true, attributeFilter: ['data-theme', 'class', 'style'] });
 
     /* ---- Barra de herramientas ---- */
-    var bar = h('div', 'sk-bar'); bar.setAttribute('role', 'toolbar'); bar.setAttribute('aria-label', 'Herramientas de la simulación');
+    var bar = h('nav', 'sk-bar'); bar.setAttribute('aria-label', 'Herramientas de la simulación');
     function btn(id, icon, title, fn, href) {
       var b = href ? h('a', 'sk-btn') : h('button', 'sk-btn');
       b.id = 'sk-' + id; b.title = title; b.setAttribute('aria-label', title); b.innerHTML = ic(icon);

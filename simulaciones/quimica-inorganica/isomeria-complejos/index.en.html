@@ -1,0 +1,933 @@
+<!DOCTYPE html><!--
+ARCHIVO AUTÓNOMO Y COMENTADO · Isomería geométrica · Laboratorio 3D (v2)
+Uso: guardar con extensión .html y abrir en un navegador moderno.
+No requiere instalaciones, bibliotecas, conexión ni servidor (los enlaces de fuentes sí necesitan conexión).
+Estructura: CSS (apariencia) · HTML (interfaz) · JavaScript (geometría, simetría, dibujo 3D e interacción).
+
+NOVEDADES RESPECTO DE LA VERSIÓN 1
+ 1. Prueba de superposición: el programa prueba TODOS los giros rígidos posibles (24 en el octaedro) y
+    anima el mejor intento; si no existe ninguno, marca en rojo los ligandos que no coinciden.
+ 2. Constructor (módulo 05): el estudiante cambia ligandos Cl⁻ ↔ NH₃ y el programa identifica el isómero
+    por su geometría, lo compara con una referencia y propone retos.
+ 3. Ejes de simetría calculados (no dibujados a mano): se pueden mostrar, recorrer con una animación de giro
+    (la estructura "cae" sobre sí misma) y usar como punto de vista.
+ 4. Medidor de ángulos: clic en dos ligandos cualesquiera.
+ 5. Vector dipolar idealizado (suma de vectores M→Cl) y ficha de cada isómero (grupo puntual, giros, polaridad).
+ 6. NH₃ con sus tres H (opcional), niebla de profundidad, halos, sombra de suelo y wireframe de la geometría.
+ 7. Argumento de Werner: por qué solo el octaedro explica los 2 isómeros observados.
+
+Para cambiar textos y datos: editar el objeto "configs" y las tablas de "Constructor".
+Los modelos son idealizados: los ligandos son puntos de coordinación, no se respetan longitudes de enlace.
+--><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Isomerism · 3D Lab</title>
+<style>
+/* ===== VARIABLES DE COLOR ===== */
+:root{
+  --bg:#0a121b; --ink:#ecf3f8; --mute:#a9bccb; --line:#2b3f50;
+  --teal:#72cebb; --gold:#eabb6b; --blue:#70a9f5; --rose:#ff7d8d;
+  --cyan:#7fe8ff; --violet:#b9a2ff; --coral:#ff9a73; --panel:#142231;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0; color:var(--ink); font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(1000px 520px at 85% -10%,#1c3a4a55,transparent 70%),
+    radial-gradient(800px 500px at -10% 30%,#2a2a5a40,transparent 70%),
+    var(--bg);
+  min-height:100vh;
+}
+main{max-width:1250px;margin:auto;padding:32px 24px 48px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--line);padding-bottom:22px}
+.eyebrow{color:var(--teal);letter-spacing:3px;font-size:12px}
+h1{
+  font-size:clamp(28px,4.2vw,48px);line-height:1.1;margin:12px 0;
+  background:linear-gradient(100deg,#fff 10%,#9fe8d8 55%,#f3cf8e);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+p{color:var(--mute);line-height:1.6;margin:.4em 0}
+.badge{border:1px solid #4b6577;padding:8px 14px;border-radius:30px;font-size:12px;white-space:nowrap;background:#ffffff08}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0}
+button,select{
+  font:inherit;color:inherit;background:#18293a;border:1px solid #405568;border-radius:10px;
+  padding:10px 15px;cursor:pointer;transition:border-color .15s,background .15s,transform .1s;
+}
+button:hover:not(:disabled){border-color:#83e3d0}
+button:active:not(:disabled){transform:translateY(1px)}
+button:disabled{opacity:.45;cursor:default}
+button[aria-pressed=true]{background:var(--teal);color:#09242a;border-color:var(--teal);font-weight:600}
+button:focus-visible,canvas:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h2{font-size:24px;margin:0 0 6px}
+h3{font-size:17px;margin:0 0 8px}
+.intro{display:flex;justify-content:space-between;gap:20px;align-items:center}
+.formula{font-size:25px;color:var(--gold);text-align:right}
+.legend{display:flex;gap:18px;flex-wrap:wrap;color:#bcd0df;font-size:14px;margin-top:6px}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+
+/* ===== CONSTRUCTOR ===== */
+.builder{margin-top:18px;padding:18px 20px;border:1px solid #36506a;border-radius:16px;background:linear-gradient(160deg,#17283a,#132030)}
+.builder .bhead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}
+.builder .bhead span{color:var(--mute);font-size:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:8px 12px;font-size:14px}
+.chal{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.chal select{padding:9px 12px;max-width:100%}
+#bstatus{margin-top:12px;font-weight:600;min-height:24px}
+#bstatus.ok{color:#7be3a8}
+#bstatus.no{color:var(--gold)}
+
+/* ===== TARJETAS 3D ===== */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+.card{
+  background:radial-gradient(ellipse at 50% 38%,#2a4256,#16283a 70%);
+  border:1px solid #35506a;border-radius:18px;overflow:hidden;position:relative;
+  box-shadow:0 24px 60px -34px #000,inset 0 1px 0 #ffffff12;
+}
+.cardhead{padding:18px 22px 0;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.isomer{font-size:26px;font-weight:700}
+.angle{color:var(--gold);font-size:14px}
+canvas{display:block;width:100%;height:380px;touch-action:none;cursor:grab}
+.tools{display:flex;gap:8px;flex-wrap:wrap;padding:0 18px 4px}
+.mini{padding:6px 11px;font-size:13px;border-radius:8px}
+.measure{padding:6px 22px 0;font-size:14px;color:var(--cyan);min-height:28px}
+.spec{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:8px 22px 4px;padding:12px 14px;font-size:14px;background:#0c182340;border:1px solid #2f475b;border-radius:12px}
+.spec dt{color:var(--teal);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+.spec dd{margin:0;color:#d5e3ed}
+.caption{padding:8px 22px 20px;color:#bdd0dc;min-height:60px;line-height:1.5;font-size:15px}
+
+/* ===== SUPERPOSICIÓN Y CONTROLES ===== */
+.super{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:18px;padding:16px 18px;border:1px solid #3b5870;border-radius:14px;background:#10202f}
+.super button{background:linear-gradient(135deg,#2c5f78,#2b8f86);border-color:#5bd3c0;font-weight:600}
+#supres{flex:1;min-width:240px;color:var(--mute);font-size:15px}
+#supres.ok{color:#7be3a8}
+#supres.no{color:#ffb3bc}
+.controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:20px 0}
+label{display:flex;gap:8px;align-items:center;font-size:14px}
+input[type=checkbox]{accent-color:var(--teal);width:16px;height:16px}
+input[type=range]{accent-color:var(--teal)}
+.hint{font-size:13px}
+.note{background:#18293a;border-left:3px solid var(--gold);padding:16px 20px;line-height:1.6;color:#bdcedb;border-radius:0 10px 10px 0}
+
+/* ===== APRENDIZAJE ===== */
+.learn{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}
+details{border:1px solid #3a5163;border-radius:12px;padding:14px 16px;background:#ffffff05}
+summary{cursor:pointer}
+ul.how{margin:6px 0;padding-left:20px;color:var(--mute);line-height:1.6}
+.werner{margin-top:26px;padding:20px 22px;border:1px solid #3a5163;border-radius:16px;background:linear-gradient(160deg,#17283a,#12202e)}
+table{border-collapse:collapse;width:100%;max-width:560px;margin:10px 0;font-size:15px}
+th,td{padding:8px 12px;border-bottom:1px solid #2f4558;text-align:center}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--teal);font-weight:600}
+tr.win td{color:#7be3a8;font-weight:700}
+footer{font-size:12px;color:#92acbf;margin-top:30px}
+a{color:#87d6c7}
+
+@media(max-width:760px){
+  main{padding:20px 14px 40px}
+  .grid,.learn{grid-template-columns:1fr}
+  canvas{height:330px}
+  .intro{display:block}
+  .formula{text-align:left;margin-top:6px;font-size:21px}
+  .badge{display:none}
+  header{padding-bottom:12px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<link rel="stylesheet" href="extras.css">
+<link rel="alternate" hreflang="es" href="index.html"><script defer src="../../kit/langswitch.js?v=20261018a"></script>
+</head>
+<body>
+<!-- ===== INTERFAZ ===== -->
+<main>
+<header>
+  <div>
+    <div class="eyebrow">COORDINATION CHEMISTRY / 3D EXPLORER</div>
+    <h1>Same formula.<br>Different arrangement.</h1>
+    <p>Rotate, measure, build and try to superimpose: discover why these structures are different compounds.</p>
+  </div>
+  <span class="badge">INTERACTIVE TEACHING RESOURCE</span>
+</header>
+
+<nav aria-label="Module">
+  <button data-mode="oct" aria-pressed="true">01 · Octahedral cis / trans</button>
+  <button data-mode="fac" aria-pressed="false">02 · Fac / mer</button>
+  <button data-mode="square" aria-pressed="false">03 · Square planar</button>
+  <button data-mode="tetra" aria-pressed="false">04 · Tetrahedral contrast</button>
+  <button data-mode="build" aria-pressed="false">05 · ✦ Builder and challenges</button>
+</nav>
+
+<section>
+  <div class="intro">
+    <div><h2 id="title"></h2><p id="subtitle"></p></div>
+    <div class="formula" id="formula"></div>
+  </div>
+  <div class="legend">
+    <span><i class="dot" style="background:#70a9f5"></i><span id="metal"></span></span>
+    <span><i class="dot" style="background:#75d5bd"></i>Cl⁻ · ligand B</span>
+    <span><i class="dot" style="background:#ecc276"></i>NH₃ · ligand A</span>
+    <span><i class="dot" style="background:#f4f8fb;width:8px;height:8px"></i>H of NH₃</span>
+  </div>
+
+  <!-- Panel del constructor (solo visible en el módulo 05) -->
+  <div class="builder" id="builder" hidden="">
+    <div class="bhead"><strong>Isomer builder</strong><span>Click a ligand on the left model or use the buttons: each click toggles NH₃ ↔ Cl⁻.</span></div>
+    <div class="chips" id="chips"></div>
+    <div class="chal">
+      <label>Challenge <select id="chal"></select></label>
+      <button id="newchal">🎲 New challenge</button>
+      <button id="clearb">Clear (all NH₃)</button>
+    </div>
+    <div id="bstatus" role="status" aria-live="polite"></div>
+    <p id="binfo"></p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="super">
+    <button id="sup">⇄ Try to superimpose</button>
+    <div id="supres" role="status" aria-live="polite"></div>
+  </div>
+
+  <div class="controls">
+    <button id="play" aria-pressed="true">⏸ Pause rotation</button>
+    <button id="reset">Reset all</button>
+    <label><input type="checkbox" id="guide" checked=""> Geometric guides</label>
+    <label><input type="checkbox" id="labels" checked=""> Labels</label>
+    <label><input type="checkbox" id="hyd" checked=""> H of NH₃</label>
+    <label><input type="checkbox" id="dip"> Dipole vector</label>
+    <label>Rate <input type="range" id="speed" min="0.1" max="1.5" step="0.1" value="0.4"></label>
+  </div>
+  <p class="hint">Drag a model to rotate both · keyboard arrows on the model · rotation preserves the relative positions of the ligands.</p>
+  <div class="note" id="note"></div>
+</section>
+
+<section class="learn">
+  <div>
+    <h3>How to read and use the model</h3>
+    <ul class="how">
+      <li><b>Spheres and lines:</b> each outer sphere is a ligand; the line to the metal is its coordination bond.</li>
+      <li><b>Measure:</b> click two ligands and the angle appears (sky-blue arc).</li>
+      <li><b>Symmetry:</b> “Symmetry axis” cycles through the calculated axes; “Rotate” turns the structure and it falls onto itself; “Look along the axis” changes the viewpoint.</li>
+      <li><b>Superimpose:</b> the program tries every possible rigid rotation. If it fails, no rotation achieves it: they are different compounds.</li>
+    </ul>
+    <p>These are idealized models of coordination positions: bond lengths are not shown to scale and the interconversion between isomers is not simulated. The dipole vector adds up only the M→Cl vectors and is a qualitative criterion, not a calculation of the real dipole moment.</p>
+  </div>
+  <div>
+    <h3>Question for discussion</h3>
+    <details>
+      <summary id="question"></summary>
+      <p id="answer"></p>
+    </details>
+  </div>
+</section>
+
+<section class="werner">
+  <h3>Werner's argument: counting isomers to deduce the geometry</h3>
+  <p>Alfred Werner (coordination theory, 1893) reasoned as follows: if the number of isolated isomers is known, only some geometries are possible. For six ligands, the expected number of isomers is:</p>
+  <table>
+    <thead><tr><th>Assumed geometry</th><th>MA₄B₂</th><th>MA₃B₃</th></tr></thead>
+    <tbody>
+      <tr><td>Planar hexagon</td><td>3</td><td>3</td></tr>
+      <tr><td>Trigonal prism</td><td>3</td><td>3</td></tr>
+      <tr class="win"><td>Octahedron</td><td>2</td><td>2</td></tr>
+      <tr><td>Observed (e.g. cis/trans and fac/mer)</td><td>2</td><td>2</td></tr>
+    </tbody>
+  </table>
+  <p>Only the octahedron matches the observations. Test in module 05 that two Cl⁻ in an octahedron give exactly two isomers, even though there are 15 ways to place them.</p>
+</section>
+
+<footer>Sources: <a href="https://www.chem.purdue.edu/gchelp/cchem/geomi.html" target="_blank" rel="noopener">Purdue · geometric isomerism</a> · <a href="https://sathee.iitk.ac.in/ncert-books/ncert-books-theory/class-12/nbt-che-12/chem-12-unit-9-coordination-compounds/" target="_blank" rel="noopener">IIT Kanpur / NCERT · coordination compounds</a></footer>
+</main>
+
+<script src="../../kit/vendor/three.min.js"></script><script src="../../kit/mol3d.en.js?v=20261017a"></script>
+<script>
+'use strict';
+/* =====================================================================
+   1. ÁLGEBRA BÁSICA: vectores, matrices 3×3 y cuaterniones
+   ===================================================================== */
+const TAU=Math.PI*2;
+const $=id=>document.getElementById(id);
+const fmt=(x,d=1)=>x.toFixed(d).replace('.', '.');              // coma decimal
+const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+const len=a=>Math.hypot(a[0],a[1],a[2]);
+const norm=a=>{const l=len(a)||1;return [a[0]/l,a[1]/l,a[2]/l]};
+const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const add=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]];
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+const mul=(a,s)=>[a[0]*s,a[1]*s,a[2]*s];
+const mv=(M,v)=>[dot(M[0],v),dot(M[1],v),dot(M[2],v)];
+const mm=(A,B)=>A.map(r=>[0,1,2].map(j=>r[0]*B[0][j]+r[1]*B[1][j]+r[2]*B[2][j]));
+const tr=M=>[[M[0][0],M[1][0],M[2][0]],[M[0][1],M[1][1],M[2][1]],[M[0][2],M[1][2],M[2][2]]];
+const I3=[[1,0,0],[0,1,0],[0,0,1]];
+const QI=[1,0,0,0];                                             // cuaternión identidad [w,x,y,z]
+const qAxis=(ax,ang)=>{const n=norm(ax),s=Math.sin(ang/2);return [Math.cos(ang/2),n[0]*s,n[1]*s,n[2]*s]};
+function qMat(q){
+  const [w,x,y,z]=q;
+  return [[1-2*(y*y+z*z),2*(x*y-z*w),2*(x*z+y*w)],
+          [2*(x*y+z*w),1-2*(x*x+z*z),2*(y*z-x*w)],
+          [2*(x*z-y*w),2*(y*z+x*w),1-2*(x*x+y*y)]];
+}
+function matQ(m){
+  const t=m[0][0]+m[1][1]+m[2][2];let w,x,y,z,s;
+  if(t>0){s=Math.sqrt(t+1)*2;w=s/4;x=(m[2][1]-m[1][2])/s;y=(m[0][2]-m[2][0])/s;z=(m[1][0]-m[0][1])/s}
+  else if(m[0][0]>m[1][1]&&m[0][0]>m[2][2]){s=Math.sqrt(1+m[0][0]-m[1][1]-m[2][2])*2;w=(m[2][1]-m[1][2])/s;x=s/4;y=(m[0][1]+m[1][0])/s;z=(m[0][2]+m[2][0])/s}
+  else if(m[1][1]>m[2][2]){s=Math.sqrt(1+m[1][1]-m[0][0]-m[2][2])*2;w=(m[0][2]-m[2][0])/s;x=(m[0][1]+m[1][0])/s;y=s/4;z=(m[1][2]+m[2][1])/s}
+  else{s=Math.sqrt(1+m[2][2]-m[0][0]-m[1][1])*2;w=(m[1][0]-m[0][1])/s;x=(m[0][2]+m[2][0])/s;y=(m[1][2]+m[2][1])/s;z=s/4}
+  const l=Math.hypot(w,x,y,z);return [w/l,x/l,y/l,z/l];
+}
+function qSlerp(a,b,t){                                         // interpolación esférica (camino corto)
+  let d=a[0]*b[0]+a[1]*b[1]+a[2]*b[2]+a[3]*b[3];
+  if(d<0){b=b.map(x=>-x);d=-d}
+  if(d>.9995){const r=a.map((x,i)=>x+(b[i]-x)*t),l=Math.hypot(...r);return r.map(x=>x/l)}
+  const th=Math.acos(d),s=Math.sin(th),k1=Math.sin((1-t)*th)/s,k2=Math.sin(t*th)/s;
+  return a.map((x,i)=>k1*x+k2*b[i]);
+}
+const ease=u=>u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
+
+/* =====================================================================
+   2. GEOMETRÍAS Y GRUPOS DE ROTACIÓN
+   Octaedro: vértices ±x, ±y, ±z. Tetraedro: normalizado a distancia 1.
+   Las 24 rotaciones propias del octaedro son matrices de permutación con signos y det = +1.
+   Cada geometría usa solo las rotaciones que la llevan sobre sí misma.
+   ===================================================================== */
+const OCT=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
+const TET=[[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]].map(v=>mul(v,1/Math.sqrt(3)));
+const GEOM={oct:OCT,fac:OCT,build:OCT,square:OCT.slice(0,4),tetra:TET};
+const POSN={oct:['+x','−x','+y','−y','+z','−z'],tetra:["vertex 1","vertex 2","vertex 3","vertex 4"]};
+const posName=(V,j)=>V===TET?POSN.tetra[j]:POSN.oct[j];
+function octRotations(){
+  const out=[],perms=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
+  for(const p of perms)for(let s=0;s<8;s++){
+    const sg=[s&1?-1:1,s&2?-1:1,s&4?-1:1],M=[[0,0,0],[0,0,0],[0,0,0]];
+    for(let r=0;r<3;r++)M[r][p[r]]=sg[r];
+    if(dot(M[0],cross(M[1],M[2]))>0)out.push(M);
+  }
+  return out;                                                   // 24 matrices
+}
+const ROT24=octRotations();
+function permOf(R,V){                                           // vértice j → vértice p[j]; null si no es simetría de V
+  const p=[];
+  for(const v of V){const w=mv(R,v),k=V.findIndex(u=>len(sub(u,w))<1e-6);if(k<0)return null;p.push(k)}
+  return p;
+}
+const groupOf=V=>ROT24.map(R=>({R,p:permOf(R,V)})).filter(g=>g.p);
+const GROUP={oct:groupOf(OCT),square:groupOf(OCT.slice(0,4)),tetra:groupOf(TET)};
+GROUP.fac=GROUP.build=GROUP.oct;
+const T0TET=qMat(qAxis([.35,1,.2],1.25));                       // orientación inicial "torcida" (no es una simetría)
+const cols=(idx,n)=>Array.from({length:n},(_,j)=>idx.includes(j)?1:0);   // 1 = Cl⁻, 0 = NH₃
+
+/* =====================================================================
+   3. QUÍMICA: clasificación de isómeros, fórmulas, ángulos, dipolo
+   ===================================================================== */
+const SUBS='₀₁₂₃₄₅₆₇₈₉',SUPS='⁰¹²³⁴⁵⁶⁷⁸⁹';
+const sb=n=>n===1?'':String(n).replace(/\d/g,d=>SUBS[d]);
+const sp=n=>String(n).replace(/\d/g,d=>SUPS[d]);
+function formulaOf(k){                                          // [Co(NH₃)₆₋ₖClₖ] con su carga (Co(III))
+  const nA=6-k,q=3-k;
+  let s='[Co'+(nA?'(NH₃)'+sb(nA):'')+(k?'Cl'+sb(k):'')+']';
+  if(q>0)s+=(q>1?sp(q):'')+'⁺';else if(q<0)s+=(q<-1?sp(-q):'')+'⁻';
+  return s;
+}
+function classify(col){                                         // clasificación por geometría en el octaedro
+  const k=col.reduce((a,b)=>a+b,0),cl=[],am=[];
+  col.forEach((c,j)=>(c?cl:am).push(j));
+  if(k===0||k===6)return {k,kind:'homo'};
+  if(k===1||k===5)return {k,kind:'mono'};
+  if(k===2||k===4){const m=k===2?cl:am;return {k,kind:dot(OCT[m[0]],OCT[m[1]])<-.5?'trans':'cis'}}
+  const opp=cl.some((a,x)=>cl.some((b,y)=>y>x&&dot(OCT[a],OCT[b])<-.5));
+  return {k,kind:opp?'mer':'fac'};
+}
+function canonCols(c){                                          // representante de cada clase
+  const T={homo0:[],homo6:[0,1,2,3,4,5],mono1:[0],mono5:[1,2,3,4,5],cis2:[0,2],trans2:[0,1],cis4:[1,3,4,5],trans4:[2,3,4,5],fac3:[0,2,4],mer3:[0,1,2]};
+  return cols(T[c.kind+c.k],6);
+}
+const KIND_PG={homo:'Oₕ',mono:'C₄ᵥ',cis:'C₂ᵥ',trans:'D₄ₕ',fac:'C₃ᵥ',mer:'C₂ᵥ'};
+const KIND_FACT={
+  cis:"The two minority ligands are adjacent (90°).",
+  trans:"The two minority ligands are opposite (180°).",
+  fac:"The three Cl⁻ cover one face of the octahedron; all their pairs are cis.",
+  mer:"The three Cl⁻ and the metal share a plane; one pair of Cl⁻ is trans.",
+  mono:"With only one different ligand, all positions are equivalent: there are no geometric isomers.",
+  homo:"Six identical ligands: there is no geometric isomerism."};
+const KIND_NAME={cis:'cis',trans:'trans',fac:'fac',mer:'mer',mono:"no isomerism",homo:"no isomerism"};
+const NISO={0:1,1:1,2:2,3:2,4:2,5:1,6:1};
+const NCHOOSE=[1,6,15,20,15,6,1];
+const angDeg=(a,b)=>Math.acos(Math.max(-1,Math.min(1,dot(a,b))))*180/Math.PI;
+const fa=x=>fmt(x,Math.abs(x-Math.round(x))<.05?0:1)+'°';
+function angleText(card,sym){                                   // ángulos entre ligandos minoritarios
+  const V=card.V,k=card.col.reduce((a,b)=>a+b,0),useCl=k<=V.length/2;
+  const S=[];card.col.forEach((c,j)=>{if((c===1)===useCl)S.push(j)});
+  if(S.length<2)return '';
+  const nm=useCl?'Cl':'N',list=[];
+  for(let a=0;a<S.length;a++)for(let b=a+1;b<S.length;b++)list.push(angDeg(V[S[a]],V[S[b]]));
+  list.sort((x,y)=>x-y);
+  return `${nm}–${sym}–${nm}`+(list.length===1?' = ':': ')+list.map(fa).join(', ');
+}
+function dipoleOf(card){                                        // suma de vectores M→Cl (modelo cualitativo)
+  let s=[0,0,0];card.col.forEach((c,j)=>{if(c)s=add(s,card.V[j])});
+  return {s,m:len(s)};
+}
+const dipoleText=m=>m<1e-6?"nonpolar (the vectors cancel)":`polar · relative |μ| ≈ ${fmt(m,2)}`;
+function computeAxes(card){                                     // ejes de simetría = ejes de las rotaciones que conservan colores
+  const out=[],stab=card.grp.filter(g=>card.col.every((c,j)=>card.col[g.p[j]]===c));
+  stab.forEach(g=>{
+    let q=matQ(g.R);if(q[0]<0)q=q.map(x=>-x);
+    const ang=2*Math.acos(Math.min(1,q[0]));if(ang<1e-3)return;
+    const s=Math.sin(ang/2),a=[q[1]/s,q[2]/s,q[3]/s],n=Math.round(TAU/ang);
+    const ex=out.find(o=>Math.abs(dot(o.a,a))>.999);
+    if(!ex)out.push({a,n});else if(n>ex.n){ex.a=a;ex.n=n}
+  });
+  out.sort((x,y)=>y.n-x.n);
+  return {axes:out,stab:stab.length};
+}
+
+/* =====================================================================
+   4. CONTENIDO DE LOS MÓDULOS
+   cols: posiciones ocupadas por Cl⁻ en cada isómero (izquierda, derecha).
+   ===================================================================== */
+const configs={
+  oct:{geo:'oct',title:"Cis / trans · octahedral",sub:"Six coordination positions · MA₄B₂ type",formula:'[Co(NH₃)₄Cl₂]⁺',metal:'Co(III)',sym:'Co',
+    names:['cis','trans'],cols:[[0,2],[0,1]],
+    spec:[{pg:'C₂ᵥ',fact:"Violet salt (“violeo”). Polar molecule."},{pg:'D₄ₕ',fact:"Green salt (“praseo”). The M→Cl vectors cancel."}],
+    caps:["The two chlorides occupy adjacent positions.","The two chlorides occupy opposite positions."],
+    note:"Cis and trans have the same composition and connectivity, but a different spatial arrangement. No rigid rotation of the complex can superimpose them: try it with the superposition button.",
+    q:"Can looking at the cis complex from another angle turn it into trans?",a:"No. The Cl–Co–Cl angle remains 90° whatever the orientation of the model. Going from cis to trans would require breaking and remaking bonds."},
+  fac:{geo:'fac',title:"Fac / mer · octahedral",sub:"Three ligands of each type · MA₃B₃",formula:'[Co(NH₃)₃Cl₃]',metal:'Co(III)',sym:'Co',
+    names:['fac · facial','mer · meridional'],cols:[[0,2,4],[0,1,2]],
+    spec:[{pg:'C₃ᵥ',fact:"The three Cl⁻ and the three NH₃ each form one face of the octahedron."},{pg:'C₂ᵥ',fact:"The three Cl⁻ and the metal share a plane; there is one pair of Cl⁻ in trans."}],
+    caps:["The three chlorides delimit a triangular face of the octahedron. All their pairs are cis.","The three chlorides and the metal lie in a plane. One pair of chlorides is trans."],
+    note:"The green surface highlights the face in fac and the plane containing the metal in mer. The three Cl⁻ are used as the reference; the three NH₃ also form a fac or mer arrangement, respectively.",
+    q:"Does the triangular face of fac contain the metal?",a:"No. The metal is at the center of the octahedron, outside the plane of that face. In mer, the plane of the three identical ligands does contain the metal."},
+  square:{geo:'square',title:"Cis / trans · square planar",sub:"Four coplanar positions · MA₂B₂",formula:'[Pt(NH₃)₂Cl₂]',metal:'Pt(II)',sym:'Pt',
+    names:["cis · cisplatin","trans · transplatin"],cols:[[0,2],[0,1]],
+    spec:[{pg:'C₂ᵥ',fact:"Cisplatin: antitumor drug in clinical use. Polar."},{pg:'D₂ₕ',fact:"Transplatin: nonpolar; it does not reproduce the clinical action of cisplatin."}],
+    caps:["The chlorides are adjacent in the coordination plane.","The chlorides are opposite in the coordination plane."],
+    note:"The square planar geometry also allows cis/trans isomerism. When rotated edge-on, the ligands may look aligned: the projection changes, not the geometry.",
+    q:"Are four ligands enough for cis/trans to exist?",a:"No. The geometry is essential: a square planar MA₂B₂ complex can show cis/trans; an ideal tetrahedral MA₂B₂ cannot."},
+  tetra:{geo:'tetra',title:"Tetrahedral · no cis/trans pair",sub:"Four equivalent vertices · MA₂B₂ contrast",formula:"MA₂B₂ · geometric model",metal:'Metal M',sym:'M',
+    names:["Single arrangement","The same arrangement"],cols:[[0,1],[0,1]],
+    spec:[{pg:'C₂ᵥ',fact:"Only one possible arrangement; polar in this model."},{pg:'C₂ᵥ',fact:"It is the same structure, just seen with another orientation."}],
+    caps:["Every pair of vertices has the same angle with respect to the center.","The same structure is seen with a different orientation."],
+    note:"In an ideal tetrahedral MA₂B₂ with monodentate ligands, all pairs of positions are equivalent: there is no cis/trans pair. Here the superposition test DOES succeed. The optical isomerism of other complexes is a different topic.",
+    q:"Why is there no trans position in the tetrahedron?",a:"No pair of vertices is at 180° with respect to the metal. All the angles between positions are approximately 109.5°."},
+  build:{geo:'build',title:"Isomer builder",sub:"Change ligands and check which isomer you get · octahedron MA₆₋ₖBₖ",formula:'',metal:'Co(III)',sym:'Co',
+    names:['',''],cols:[[],[]],spec:[{},{}],
+    caps:["Your structure is classified by its geometry, not by how you drew it or by its orientation.","Reference: isomer of the same class, shown in another orientation so that you have to check the superposition."],
+    note:"Counting positions is not enough: 15 ways of placing two Cl⁻ in an octahedron amount to only 2 isomers, because the rigid rotations of the octahedron (24) group equivalent placements. See in the top panel how many placements are “the same”.",
+    q:"Why do 15 ways of placing two Cl⁻ reduce to only 2 isomers?",a:"The 24 rigid rotations of the octahedron group the equivalent placements: 12 of the 15 are cis (the same isomer seen from another side) and 3 are trans."}
+};
+const TARGETS=[{k:2,kind:'cis'},{k:2,kind:'trans'},{k:3,kind:'fac'},{k:3,kind:'mer'},{k:4,kind:'cis'},{k:4,kind:'trans'}];
+
+/* =====================================================================
+   5. ESTADO GLOBAL
+   ===================================================================== */
+let mode='oct',rx=-.38,ry=.6,last=0,busy=false,epoch=0,chal=-1;
+let playing=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+let bset=[1,0,1,0,0,0];                                         // constructor: 1 = Cl⁻ en esa posición
+const HOME={rx:-.38,ry:.6};
+const cards=[0,1].map(()=>({V:OCT,grp:[],col:[],T0:I3,qd:QI,tmp:QI,sel:[],hover:-1,bad:[],axes:[],axIdx:-1,stab:1,hits:[],press:null,busy:false,mx:0,my:0}));
+const cfg=()=>configs[mode];
+// Matriz de orientación de una tarjeta: giro transitorio · giro de superposición · orientación base
+const cardM=c=>mm(qMat(c.tmp),mm(qMat(c.qd),c.T0));
+// Vista compartida: giro alrededor de y (ry) y luego de x (rx)
+function view(v){
+  const x=v[0]*Math.cos(ry)+v[2]*Math.sin(ry),z=-v[0]*Math.sin(ry)+v[2]*Math.cos(ry);
+  return [x,v[1]*Math.cos(rx)-z*Math.sin(rx),v[1]*Math.sin(rx)+z*Math.cos(rx)];
+}
+
+/* ---- Animaciones ---- */
+const tweens=[];
+function tween(dur,fn,end){tweens.push({dur,fn,end,t0:null,ep:epoch})}
+function stepTweens(t){
+  for(const tw of tweens.slice()){
+    if(tw.ep!==epoch){tweens.splice(tweens.indexOf(tw),1);continue}
+    if(tw.t0===null)tw.t0=t;
+    const u=Math.min(1,(t-tw.t0)/tw.dur);
+    tw.fn(ease(u));
+    if(u>=1){tweens.splice(tweens.indexOf(tw),1);tw.end&&tw.end()}
+  }
+}
+const shortest=a=>((a+Math.PI)%TAU+TAU)%TAU-Math.PI;
+function lookAlong(u){                                          // gira la vista para mirar de frente a lo largo de u
+  u=norm(u);
+  const r=Math.hypot(u[0],u[2]),ry1=r<1e-6?ry:Math.atan2(-u[0],u[2]),rx1=Math.atan2(u[1],r);
+  const r0=ry,x0=rx,dy=shortest(ry1-r0),dx=shortest(rx1-x0);
+  playing=false;playUI();
+  tween(900,e=>{ry=r0+dy*e;rx=x0+dx*e});
+}
+
+/* =====================================================================
+   6. CONSTRUCCIÓN DE ESTADO Y TEXTOS
+   ===================================================================== */
+function rebuild(){                                             // recalcula ambas tarjetas tras un cambio estructural
+  const c=cfg();epoch++;busy=false;
+  const cl=mode==='build'?classify(bset):null;
+  for(let i=0;i<2;i++){
+    const card=cards[i];
+    card.V=GEOM[c.geo];card.grp=GROUP[c.geo];
+    card.col=mode==='build'?(i===0?bset.slice():canonCols(cl)):cols(c.cols[i],card.V.length);
+    card.T0=((mode==='tetra'||mode==='build')&&i===1)?T0TET:I3;
+    card.qd=QI;card.tmp=QI;card.sel=[];card.hover=-1;card.bad=[];card.busy=false;card.axIdx=-1;
+    const ax=computeAxes(card);card.axes=ax.axes;card.stab=ax.stab;
+  }
+  refreshText();resetSuperText();
+}
+function resetModels(){                                         // vuelve a la orientación inicial sin cambiar la estructura
+  epoch++;busy=false;
+  cards.forEach(c=>{c.qd=QI;c.tmp=QI;c.bad=[];c.busy=false});
+  resetSuperText();
+}
+function resetSuperText(){
+  const s=$('supres');s.className='';
+  s.textContent=mode==='build'
+    ?"Test whether a rigid rotation takes your construction onto the reference."
+    :"Is there any rigid rotation that takes one model onto the other? Try it.";
+  $('sup').textContent=mode==='build'?"⇄ Superimpose on the reference":"⇄ Try to superimpose";
+}
+function axisBtnText(card){
+  if(!card.axes.length)return "No symmetry axes";
+  return card.axIdx<0?"Symmetry axis: none":`Axis C${sb(card.axes[card.axIdx].n)} (${card.axIdx+1}/${card.axes.length})`;
+}
+function measureText(i){
+  const card=cards[i],sym=cfg().sym;
+  if(mode==='build')return i===0?"Click a ligand to switch it between Cl⁻ and NH₃.":"Reference (not editable).";
+  if(card.sel.length===2){
+    const [a,b]=card.sel,L=j=>card.col[j]?'Cl':'N';
+    return `Measurement: ${L(a)}–${sym}–${L(b)} = ${fa(angDeg(card.V[a],card.V[b]))}`;
+  }
+  return card.sel.length===1?"Choose a second ligand to measure the angle.":"Meter: click two ligands to see their angle.";
+}
+function refreshText(){
+  const c=cfg(),cl=mode==='build'?classify(bset):null;
+  $('title').textContent=c.title;$('subtitle').textContent=c.sub;$('metal').textContent=c.metal;
+  $('formula').textContent=mode==='build'?formulaOf(cl.k):c.formula;
+  $('note').textContent=c.note;$('question').textContent=c.q;$('answer').textContent=c.a;
+  document.querySelector('details').open=false;
+  document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===mode));
+  $('builder').hidden=mode!=='build';
+  for(let i=0;i<2;i++){
+    const card=cards[i],kc=mode==='build'?classify(card.col):null,dp=dipoleOf(card);
+    const nm=mode==='build'?(i===0?"Your construction · ":"Reference · ")+KIND_NAME[kc.kind]:c.names[i];
+    $('name'+i).textContent=nm;
+    $('angle'+i).textContent=angleText(card,c.sym);
+    $('cap'+i).textContent=c.caps[i];
+    $('pg'+i).textContent=mode==='build'?KIND_PG[kc.kind]:c.spec[i].pg;
+    $('rt'+i).textContent=card.stab+" (includes the identity)";
+    $('dp'+i).textContent=dipoleText(dp.m);
+    $('ft'+i).textContent=mode==='build'?KIND_FACT[kc.kind]:c.spec[i].fact;
+    $('ax'+i).textContent=axisBtnText(card);$('ax'+i).disabled=!card.axes.length;
+    $('sp'+i).disabled=!card.axes.length;$('lk'+i).disabled=!card.axes.length;
+    $('me'+i).textContent=measureText(i);
+  }
+  if(mode==='build')refreshBuilder(cl);
+}
+function refreshBuilder(cl){
+  const chips=$('chips').children;
+  for(let j=0;j<6;j++){
+    chips[j].setAttribute('aria-pressed',bset[j]===1);
+    chips[j].textContent=`${POSN.oct[j]} · ${bset[j]?'Cl⁻':'NH₃'}`;
+  }
+  const eq=24/cards[0].stab,tot=NCHOOSE[cl.k];
+  $('binfo').textContent=
+    `Composition: ${cl.k} Cl⁻ + ${6-cl.k} NH₃ · Classification: ${KIND_NAME[cl.kind]} · `+
+    `${eq} of the ${tot} ways of placing ${cl.k} Cl⁻ in the octahedron correspond to this same isomer (the rotations make them equivalent). `+
+    `Possible geometric isomers with this composition: ${NISO[cl.k]}.`;
+  const st=$('bstatus');
+  if(chal<0){st.textContent='';st.className=''}
+  else{
+    const t=TARGETS[chal],ok=cl.k===t.k&&cl.kind===t.kind;
+    st.className=ok?'ok':'no';
+    st.textContent=ok?`✓ Correct! You built the isomer ${t.kind} de ${formulaOf(t.k)}.`
+      :`Challenge: build the isomer ${t.kind} de ${formulaOf(t.k)}. Ahora tienes ${cl.k} Cl⁻ and your structure is: ${KIND_NAME[cl.kind]}.`;
+  }
+}
+function toggleBuild(j){bset[j]^=1;rebuild()}
+
+/* =====================================================================
+   7. SUPERPOSICIÓN: busca el mejor giro rígido entre todos los permitidos
+   ===================================================================== */
+function superpose(){
+  if(busy)return;
+  resetModels();
+  const c0=cards[0],c1=cards[1];let best=null;
+  for(const g of c1.grp){                                       // g.p[j] = posición a la que va el vértice j de la tarjeta 2
+    const bad=[];c1.col.forEach((cc,j)=>{if(cc!==c0.col[g.p[j]])bad.push(j)});
+    const Q=mm(g.R,tr(c1.T0)),q=matQ(Q),ang=2*Math.acos(Math.min(1,Math.abs(q[0])));
+    if(!best||bad.length<best.bad.length||(bad.length===best.bad.length&&ang<best.ang-1e-6))best={g,bad,ang,q};
+  }
+  busy=true;$('sup').disabled=true;
+  $('supres').className='';$('supres').textContent="Testing rotations…";
+  const qt=best.q,ep=epoch;
+  tween(1900,e=>{c1.qd=qSlerp(QI,qt,e)},()=>{
+    busy=false;$('sup').disabled=false;
+    c1.bad=best.bad;c0.bad=best.bad.map(j=>best.g.p[j]);
+    const s=$('supres'),n=c1.grp.length,deg=Math.round(best.ang*180/Math.PI);
+    if(!best.bad.length){
+      s.className='ok';
+      s.textContent=`✓ Superimposable: a rigid rotation of ${deg}° makes them coincide. It is the same isomer (the ${n} possible rotations were tested).`;
+    }else{
+      s.className='no';
+      s.textContent=`✗ Not superimposable: after testing the ${n} possible rotations, the best match leaves ${best.bad.length} positions with a different ligand (red circles). No rigid rotation achieves it: they are different isomers.`;
+    }
+  });
+}
+
+/* =====================================================================
+   8. DIBUJO 3D (Canvas 2D con perspectiva, niebla y esferas sombreadas)
+   ===================================================================== */
+const ATOM={
+  M:{l:'#70a9f5',d:'#234e89',h:'112,169,245'},
+  Cl:{l:'#75d5bd',d:'#277d68',h:'117,213,189'},
+  N:{l:'#ecc276',d:'#917039',h:'236,194,118'},
+  H:{l:'#f6fafc',d:'#9fb2c0',h:'246,250,252'}};
+const fog=z=>Math.max(.55,Math.min(1,.78+.22*(z+1)/2));
+function sphere(ctx,x,y,r,t,alpha){
+  ctx.globalAlpha=alpha*.9;
+  const hg=ctx.createRadialGradient(x,y,r*.5,x,y,r*1.9);
+  hg.addColorStop(0,`rgba(${t.h},.30)`);hg.addColorStop(1,`rgba(${t.h},0)`);
+  ctx.fillStyle=hg;ctx.beginPath();ctx.arc(x,y,r*1.9,0,TAU);ctx.fill();
+  ctx.globalAlpha=alpha;
+  const g=ctx.createRadialGradient(x-r*.3,y-r*.4,1,x,y,r);
+  g.addColorStop(0,'#f2ffff');g.addColorStop(.3,t.l);g.addColorStop(1,t.d);
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();
+  ctx.globalAlpha=1;
+}
+function ring(ctx,x,y,r,color,w,dash){
+  ctx.save();ctx.setLineDash(dash||[]);ctx.strokeStyle=color;ctx.lineWidth=w;
+  ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.stroke();ctx.restore();
+}
+function arrow(ctx,x0,y0,x1,y1,color,w){
+  const a=Math.atan2(y1-y0,x1-x0),h=12+w;
+  ctx.strokeStyle=color;ctx.lineWidth=w;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1-Math.cos(a)*h*.7,y1-Math.sin(a)*h*.7);ctx.stroke();
+  ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(x1,y1);
+  ctx.lineTo(x1-Math.cos(a-.4)*h,y1-Math.sin(a-.4)*h);ctx.lineTo(x1-Math.cos(a+.4)*h,y1-Math.sin(a+.4)*h);
+  ctx.closePath();ctx.fill();
+}
+function arcPts(a,b,rad,n=48){                                  // arco circular entre dos direcciones unitarias
+  const d=Math.max(-1,Math.min(1,dot(a,b))),th=Math.acos(d);
+  if(th<1e-3)return [];
+  // Para 180° el arco sale por la diagonal entre dos ejes, evitando pasar justo sobre otro ligando
+  const nr=d<-.999?norm(sub([1,1,1],mul(a,dot([1,1,1],a)))):norm(sub(b,mul(a,d))),out=[];
+  for(let k=0;k<=n;k++){const t=th*k/n;out.push(add(mul(a,Math.cos(t)*rad),mul(nr,Math.sin(t)*rad)))}
+  return out;
+}
+function planeIds(cl){                                          // plano que contiene al metal y a los tres Cl⁻ de mer
+  for(const a of cl)for(const b of cl)if(a<b&&dot(OCT[a],OCT[b])<-.5){
+    const c=cl.find(x=>x!==a&&x!==b),oc=OCT.findIndex(u=>len(add(u,OCT[c]))<1e-6);
+    return [a,c,b,oc];
+  }
+  return cl;
+}
+function tooltip(ctx,x,y,text,w,h){
+  ctx.font='600 13px system-ui';
+  const tw=ctx.measureText(text).width+18,th=26;
+  let bx=Math.min(Math.max(8,x+14),w-tw-8),by=Math.max(8,y-th-10);
+  ctx.fillStyle='rgba(8,18,28,.92)';ctx.strokeStyle='#5bd3c0';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(bx+7,by);ctx.lineTo(bx+tw-7,by);ctx.quadraticCurveTo(bx+tw,by,bx+tw,by+7);
+  ctx.lineTo(bx+tw,by+th-7);ctx.quadraticCurveTo(bx+tw,by+th,bx+tw-7,by+th);ctx.lineTo(bx+7,by+th);
+  ctx.quadraticCurveTo(bx,by+th,bx,by+th-7);ctx.lineTo(bx,by+7);ctx.quadraticCurveTo(bx,by,bx+7,by);
+  ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.fillStyle='#ecf3f8';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(text,bx+9,by+th/2+1);
+}
+
+function drawCard(i,time){
+  const cv=$('c'+i),card=cards[i],w=cv.clientWidth,h=cv.clientHeight,dpr=window.devicePixelRatio||1;
+  if(!w||!h)return;
+  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  const ctx=cv.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+  const V=card.V,col=card.col,M=cardM(card),sym=cfg().sym;
+  const showH=$('hyd').checked,guides=$('guide').checked,labels=$('labels').checked,dip=$('dip').checked;
+  const scale=Math.min(w*.27,h*.27),cx=w/2,cy=h/2-8;
+  const proj=v=>{const f=4/(4-v[2]);return [cx+v[0]*scale*f,cy-v[1]*scale*f,f,v[2]]};
+  const T=v=>view(mv(M,v)),Pj=v=>proj(T(v));
+  const pts=V.map(T),ps=pts.map(proj),c0=proj([0,0,0]);
+
+  // Sombra de suelo
+  ctx.save();ctx.translate(cx,cy+scale*1.6);ctx.scale(1,.2);
+  const sg=ctx.createRadialGradient(0,0,0,0,0,scale*1.3);
+  sg.addColorStop(0,'rgba(0,0,0,.45)');sg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=sg;ctx.beginPath();ctx.arc(0,0,scale*1.3,0,TAU);ctx.fill();ctx.restore();
+
+  // Guías: wireframe, caras/planos y arco del ángulo entre ligandos minoritarios
+  const tags=[];                                                // etiquetas de ángulo: se dibujan al final para no quedar tapadas
+  const poly=(ids,fill,stroke)=>{
+    ctx.beginPath();
+    ids.forEach((id,k)=>{const p=id===-1?c0:ps[id];k?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])});
+    ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();
+  };
+  const arcDraw=(a,b,rad,color,wd,showLabel)=>{
+    const pa=arcPts(V[a],V[b],rad);if(!pa.length)return;
+    ctx.beginPath();pa.forEach((p,k)=>{const q=Pj(p);k?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});
+    ctx.strokeStyle=color;ctx.lineWidth=wd;ctx.lineCap='round';ctx.stroke();
+    if(showLabel){
+      const m=pa[Math.floor(pa.length/2)],q=Pj(mul(m,1.3));
+      tags.push({x:q[0],y:q[1],text:fa(angDeg(V[a],V[b])),color});
+    }
+  };
+  if(guides){
+    ctx.strokeStyle='#7597ad30';ctx.lineWidth=1;
+    for(let a=0;a<V.length;a++)for(let b=a+1;b<V.length;b++){
+      const d=dot(V[a],V[b]);
+      if(V===TET||Math.abs(d)<.01){ctx.beginPath();ctx.moveTo(ps[a][0],ps[a][1]);ctx.lineTo(ps[b][0],ps[b][1]);ctx.stroke()}
+    }
+    if(V.length===4&&V!==TET)poly([0,2,1,3],'#71a9ed14','#7398b660');
+  }
+  if(guides&&V.length===6){
+    const cl=[];col.forEach((c,j)=>{if(c)cl.push(j)});
+    const kind=classify(col).kind;
+    if(kind==='fac')poly(cl,'#72d9bb28','#72d9bb99');
+    if(kind==='mer')poly(planeIds(cl),'#72d9bb22','#72d9bb99');
+  }
+  if(guides){
+    const k=col.reduce((a,b)=>a+b,0),useCl=k<=V.length/2,S=[];
+    col.forEach((c,j)=>{if((c===1)===useCl)S.push(j)});
+    if(S.length===2)arcDraw(S[0],S[1],.43,'#f2cc85',2.5,labels);
+  }
+
+  // Objetos con orden de profundidad: enlaces, ligandos, átomos de H y metal
+  // Three.js (Mol3D) dibuja esferas y enlaces con z-buffer; los rótulos y superposiciones siguen en 2D.
+  const gl3=[],useGL=!!(window.Mol3D&&Mol3D.available());
+  const fogc=(hex,z)=>{const f=fog(z),a=[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)],g=[22,40,58];
+    return '#'+a.map((c,q)=>Math.round(c*f+g[q]*(1-f)).toString(16).padStart(2,'0')).join('')};
+  const items=[],hits=[];
+  const metalR=25*c0[2];
+  if(useGL)gl3.push({t:'s',p:[0,0,0],r:25/scale,color:ATOM.M.l,shin:90});
+  items.push({z:0,f:()=>{
+    if(!useGL)sphere(ctx,c0[0],c0[1],metalR,ATOM.M,1);
+    if(labels){ctx.font='700 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#0b2230';ctx.fillText(sym,c0[0],c0[1]+1)}
+  }});
+  V.forEach((v,j)=>{
+    const p=ps[j],z=pts[j][2],isCl=col[j]===1,t=isCl?ATOM.Cl:ATOM.N;
+    const hasH=!isCl&&showH,r=(isCl?20:(hasH?16:19))*p[2];
+    hits.push({x:p[0],y:p[1],r:r+9,j,z});
+    // Enlace de coordinación: se divide en tramos 3D, cada uno con su propia profundidad, y va de la
+    // superficie del metal a la superficie del ligando. Así queda delante o detrás de cada átomo según
+    // corresponda al girar (un solo trazo centro-a-centro quedaba siempre encima del metal).
+    if(useGL){
+      const col1=isCl?'#7cc9b4':'#d4be8c',s1=1-(isCl?.17:.15),pj=pts[j],mid=mul(pj,.5);
+      gl3.push({t:'c',a:mul(pj,.2),b:mid,r:3.5/scale,color:fogc('#8fb6e8',pj[2]*.35),shin:40});
+      gl3.push({t:'c',a:mid,b:mul(pj,s1),r:3.5/scale,color:fogc(col1,pj[2]*.75),shin:40});
+      gl3.push({t:'s',p:pj,r:r/p[2]/scale,color:fogc(t.l,z),shin:80});
+    }else{
+      const BC0=[143,182,232],BC1=isCl?[124,207,184]:[212,190,140],BG=[22,40,58];
+      const NS=8,s0=.2,s1=1-(isCl?.17:.15);
+      for(let k=0;k<NS;k++){
+        const sa=s0+(s1-s0)*k/NS,se=s0+(s1-s0)*(k+1)/NS,sm=(sa+se)/2;
+        const a=proj(mul(pts[j],sa)),b=proj(mul(pts[j],se)),zm=pts[j][2]*sm,fg=fog(zm);
+        const rgb=[0,1,2].map(q=>Math.round((BC0[q]+(BC1[q]-BC0[q])*sm)*fg+BG[q]*(1-fg)));
+        items.push({z:zm,f:()=>{
+          ctx.strokeStyle=`rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;ctx.lineWidth=7*(a[2]+b[2])/2;ctx.lineCap='round';
+          ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
+        }});
+      }
+    }
+    items.push({z:z,f:()=>{
+      if(!useGL)sphere(ctx,p[0],p[1],r,t,fog(z));
+      if(labels){
+        ctx.font=`600 ${Math.round(13*p[2])}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillStyle='#0e2632';ctx.fillText(isCl?'Cl':(hasH?'N':'NH₃'),p[0],p[1]+1);
+      }
+    }});
+    if(hasH){                                                   // tres H del NH₃ apuntando hacia afuera del metal
+      const u=V[j],ref=Math.abs(u[1])<.9?[0,1,0]:[1,0,0],e1=norm(cross(u,ref)),e2=cross(u,e1);
+      for(let k=0;k<3;k++){
+        const ph=k*TAU/3+.5,dir=add(mul(u,.35),mul(add(mul(e1,Math.cos(ph)),mul(e2,Math.sin(ph))),.94));
+        const hp=proj(T(add(u,mul(dir,.34)))),hz=hp[3];
+        if(useGL){const hw=T(add(u,mul(dir,.34)));
+          gl3.push({t:'c',a:pts[j],b:hw,r:1.5/scale,color:'#d6e2ea',shin:40});
+          gl3.push({t:'s',p:hw,r:8/scale,color:fogc(ATOM.H.l,hz),shin:80});
+        }else{
+        items.push({z:Math.min(z,hz)-1e-3,f:()=>{                // el enlace N–H queda debajo de ambas esferas
+          ctx.globalAlpha=fog(hz);ctx.strokeStyle='#d6e2ea';ctx.lineWidth=3*hp[2];ctx.lineCap='round';
+          ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(hp[0],hp[1]);ctx.stroke();ctx.globalAlpha=1;
+        }});
+        items.push({z:hz,f:()=>sphere(ctx,hp[0],hp[1],8*hp[2],ATOM.H,fog(hz))});
+        }
+      }
+    }
+  });
+  if(useGL){
+    const gl=Mol3D.render(Math.round(w*dpr),Math.round(h*dpr),{yaw:0,pitch:0,world:1,camd:4,focpx:4*scale*dpr},gl3);
+    if(gl)ctx.drawImage(gl,0,-8,w,h);
+  }
+  items.sort((a,b)=>a.z-b.z).forEach(o=>o.f());
+  card.hits=hits;
+
+  // Superposiciones sobre el modelo: eje de simetría, dipolo, medida, errores y selección
+  if(card.axIdx>=0&&card.axes[card.axIdx]){
+    const ax=card.axes[card.axIdx],a=Pj(mul(ax.a,-1.6)),b=Pj(mul(ax.a,1.6));
+    ctx.save();ctx.setLineDash([7,6]);ctx.strokeStyle='#b9a2ff';ctx.lineWidth=2.2;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();ctx.restore();
+    ctx.font='700 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#d3c6ff';
+    ctx.fillText(`C${sb(ax.n)}`,b[0]+(b[0]>=c0[0]?14:-14),b[1]-(b[1]>=c0[1]?-10:10));
+  }
+  if(dip){
+    const d=dipoleOf(card);
+    if(d.m>1e-6){
+      const tip=Pj(mul(d.s,.55));
+      arrow(ctx,c0[0],c0[1],tip[0],tip[1],'#ff9a73',4);
+      if(labels){ctx.font='700 15px system-ui';ctx.textAlign='center';ctx.fillStyle='#ffc2ab';ctx.fillText('μ',tip[0]+12,tip[1]-12)}
+    }else if(labels){ctx.font='700 14px system-ui';ctx.textAlign='center';ctx.fillStyle='#ffc2ab';ctx.fillText('μ ≈ 0',cx,cy-scale*1.5)}
+  }
+  if(card.sel.length===2)arcDraw(card.sel[0],card.sel[1],.62,'#7fe8ff',3.2,true);
+  card.sel.forEach(j=>ring(ctx,ps[j][0],ps[j][1],(col[j]?25:22)*ps[j][2],'#7fe8ff',2.5));
+  if(card.hover>=0&&!card.sel.includes(card.hover))ring(ctx,ps[card.hover][0],ps[card.hover][1],(col[card.hover]?24:21)*ps[card.hover][2],'#ffffffaa',1.5);
+  card.bad.forEach(j=>{
+    ctx.globalAlpha=.65+.35*Math.sin(time/230);
+    ring(ctx,ps[j][0],ps[j][1],28*ps[j][2],'#ff7d8d',3,[6,5]);ctx.globalAlpha=1;
+  });
+  tags.forEach(tg=>{                                            // etiqueta con fondo oscuro, siempre por delante de átomos y enlaces
+    ctx.font='700 13px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+    const tw=ctx.measureText(tg.text).width+12;
+    ctx.fillStyle='rgba(8,18,28,.82)';ctx.strokeStyle=tg.color;ctx.lineWidth=1;
+    ctx.beginPath();ctx.rect(tg.x-tw/2,tg.y-10,tw,20);ctx.fill();ctx.stroke();
+    ctx.fillStyle=tg.color;ctx.fillText(tg.text,tg.x,tg.y+1);
+  });
+  if(card.hover>=0&&!card.press){
+    const j=card.hover;
+    tooltip(ctx,card.mx,card.my,`${col[j]?'Cl⁻':'NH₃'} · position ${posName(V,j)}`,w,h);
+  }
+}
+
+/* =====================================================================
+   9. INTERACCIÓN: arrastre, clic en ligandos, teclado y botones
+   ===================================================================== */
+function hitTest(card,x,y){
+  let best=-1,bz=-1e9;
+  card.hits.forEach(h=>{if(Math.hypot(x-h.x,y-h.y)<=h.r&&h.z>bz){bz=h.z;best=h.j}});
+  return best;
+}
+function clickLigand(i,j){
+  if(j<0)return;
+  if(mode==='build'){if(i===0)toggleBuild(j);return}
+  const card=cards[i];
+  if(card.sel.length>=2)card.sel=[j];
+  else if(card.sel.includes(j))card.sel=card.sel.filter(x=>x!==j);
+  else card.sel.push(j);
+  $('me'+i).textContent=measureText(i);
+}
+function playUI(){
+  $('play').textContent=playing?"⏸ Pause rotation":"▶ Start rotation";
+  $('play').setAttribute('aria-pressed',playing);
+}
+
+// Las tarjetas se generan una sola vez (misma estructura para ambas)
+$('grid').innerHTML=[0,1].map(i=>`
+<article class="card">
+  <div class="cardhead"><span class="isomer" id="name${i}"></span><span class="angle" id="angle${i}"></span></div>
+  <canvas id="c${i}" tabindex="0" aria-label="3D model ${i?"right":"left"}: drag or use the arrows to rotate; click the ligands"></canvas>
+  <div class="tools">
+    <button class="mini" id="ax${i}">Symmetry axis: none</button>
+    <button class="mini" id="sp${i}">↻ Rotate about the axis</button>
+    <button class="mini" id="lk${i}">◎ Look along the axis</button>
+  </div>
+  <div class="measure" id="me${i}" aria-live="polite"></div>
+  <dl class="spec">
+    <dt>Point group</dt><dd id="pg${i}"></dd>
+    <dt>Symmetry rotations</dt><dd id="rt${i}"></dd>
+    <dt>Idealized dipole</dt><dd id="dp${i}"></dd>
+    <dt>Fact</dt><dd id="ft${i}"></dd>
+  </dl>
+  <div class="caption" id="cap${i}"></div>
+</article>`).join('');
+
+for(let i=0;i<2;i++){
+  const cv=$('c'+i),card=cards[i];
+  const pos=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]};
+  cv.addEventListener('pointerdown',e=>{
+    const [x,y]=pos(e);card.press={x:e.clientX,y:e.clientY,px:e.clientX,py:e.clientY,moved:false,cx:x,cy:y};
+    cv.setPointerCapture(e.pointerId);
+  });
+  cv.addEventListener('pointermove',e=>{
+    const [x,y]=pos(e);card.mx=x;card.my=y;
+    const p=card.press;
+    if(p){
+      if(!p.moved&&Math.hypot(e.clientX-p.x,e.clientY-p.y)>5){p.moved=true;playing=false;playUI();cv.style.cursor='grabbing'}
+      if(p.moved){ry+=(e.clientX-p.px)*.009;rx+=(e.clientY-p.py)*.009}
+      p.px=e.clientX;p.py=e.clientY;
+    }else{
+      card.hover=hitTest(card,x,y);cv.style.cursor=card.hover>=0?'pointer':'grab';
+    }
+  });
+  const end=e=>{
+    const p=card.press;card.press=null;cv.style.cursor='grab';
+    if(p&&!p.moved&&e.type==='pointerup')clickLigand(i,hitTest(card,p.cx,p.cy));
+  };
+  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+  cv.addEventListener('pointerleave',()=>{if(!card.press)card.hover=-1});
+  cv.addEventListener('keydown',e=>{
+    if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){
+      e.preventDefault();playing=false;playUI();
+      ry+=e.key==='ArrowRight'?.12:e.key==='ArrowLeft'?-.12:0;
+      rx+=e.key==='ArrowDown'?.12:e.key==='ArrowUp'?-.12:0;
+    }
+  });
+  // Botones por tarjeta: ciclar eje, girar sobre el eje y mirar por el eje
+  $('ax'+i).onclick=()=>{
+    if(!card.axes.length)return;
+    card.axIdx=card.axIdx+1>=card.axes.length?-1:card.axIdx+1;
+    $('ax'+i).textContent=axisBtnText(card);
+  };
+  const ensureAxis=()=>{if(card.axIdx<0){card.axIdx=0;$('ax'+i).textContent=axisBtnText(card)}};
+  $('sp'+i).onclick=()=>{
+    if(card.busy||!card.axes.length)return;
+    ensureAxis();
+    const ax=card.axes[card.axIdx],u=mv(cardM(card),ax.a),qt=qAxis(u,TAU/ax.n);
+    card.busy=true;
+    tween(1700,e=>{card.tmp=qSlerp(QI,qt,e)},()=>{
+      card.tmp=QI;card.busy=false;
+      $('me'+i).textContent=`Rotation of ${Math.round(360/ax.n)}° about C${sb(ax.n)}: the structure coincides with itself. That is a symmetry.`;
+    });
+  };
+  $('lk'+i).onclick=()=>{
+    if(!card.axes.length)return;
+    ensureAxis();lookAlong(mv(cardM(card),card.axes[card.axIdx].a));
+  };
+}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{
+  mode=b.dataset.mode;rx=HOME.rx;ry=HOME.ry;
+  if(mode==='build'&&chal<0)bset=[1,0,1,0,0,0];
+  rebuild();
+});
+$('play').onclick=()=>{playing=!playing;playUI()};
+$('reset').onclick=()=>{
+  const r0=ry,x0=rx,dy=shortest(HOME.ry-r0),dx=HOME.rx-x0;
+  resetModels();cards.forEach(c=>{c.sel=[];c.axIdx=-1});refreshText();
+  tween(700,e=>{ry=r0+dy*e;rx=x0+dx*e});
+};
+$('sup').onclick=superpose;
+
+// Constructor: botones de posición, retos y vaciado
+for(let j=0;j<6;j++){
+  const b=document.createElement('button');b.className='chip';b.dataset.j=j;b.onclick=()=>toggleBuild(j);
+  $('chips').appendChild(b);
+}
+$('chal').innerHTML="<option value=\"-1\">Free mode</option>"+
+  TARGETS.map((t,n)=>`<option value="${n}">${t.kind} · ${formulaOf(t.k)}</option>`).join('');
+$('chal').onchange=()=>{chal=Number($('chal').value);refreshBuilder(classify(bset))};
+$('newchal').onclick=()=>{
+  let n;do{n=Math.floor(Math.random()*TARGETS.length)}while(n===chal&&TARGETS.length>1);
+  chal=n;$('chal').value=String(n);bset=[0,0,0,0,0,0];rebuild();
+};
+$('clearb').onclick=()=>{bset=[0,0,0,0,0,0];rebuild()};
+
+/* =====================================================================
+   10. BUCLE DE ANIMACIÓN
+   ===================================================================== */
+function frame(t){
+  stepTweens(t);
+  if(playing&&last)ry+=Math.min((t-last)/1000,.05)*Number($('speed').value);
+  last=t;
+  drawCard(0,t);drawCard(1,t);
+  requestAnimationFrame(frame);
+}
+rebuild();playUI();requestAnimationFrame(frame);
+</script>
+<script src="../../kit/simkit-lite.en.js?v=20261017a"></script>
+<script src="extras.en.js"></script>
+
+
+</body></html>

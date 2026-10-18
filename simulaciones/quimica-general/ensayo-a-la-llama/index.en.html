@@ -1,0 +1,1728 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Laboratory: Flame Test and Quantum Transitions</title>
+    <link rel="stylesheet" href="vendor/tailwind.css">
+    <!-- Three.js and OrbitControls -->
+    <script src="vendor/three.min.js"></script>
+    <script src="vendor/OrbitControls.js"></script>
+    <!-- Lucide Icons (pinned version: @latest is non-deterministic and defeats CDN caching) -->
+    <script src="vendor/lucide.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080a0f;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.8);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 1);
+        }
+        /* Glassmorphism panel styling */
+        .glass-panel {
+            background: rgba(13, 18, 30, 0.78);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.7);
+        }
+        .glow-box {
+            box-shadow: 0 0 25px -5px var(--glow-color, rgba(59, 130, 246, 0.4));
+        }
+        /* Cobalt glass filter overlay */
+        #cobalt-filter-overlay {
+            pointer-events: none;
+            mix-blend-mode: multiply;
+            background: radial-gradient(circle, rgba(16, 37, 133, 0.85) 0%, rgba(5, 12, 58, 0.95) 100%);
+            transition: opacity 0.5s ease-in-out;
+        }
+        /* Photon particle wave animation */
+        @keyframes photon-wave {
+            0% { transform: translateX(0) scale(0.8); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(120px) scale(1.2); opacity: 0; }
+        }
+        .animate-photon {
+            animation: photon-wave 1.8s infinite ease-out;
+        }
+    </style>
+    <link rel="stylesheet" href="vendor/fonts.css">
+    <link rel="stylesheet" href="extras.css">
+<link rel="alternate" hreflang="es" href="index.html"><script defer src="../../kit/langswitch.js?v=20261018a"></script>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col">
+    <!-- Top Header Bar -->
+    <header class="h-14 border-b border-slate-800/80 bg-slate-950/80 px-4 flex items-center justify-between z-20 shrink-0">
+        <div class="flex items-center space-x-3">
+            <div class="p-1.5 rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-400">
+                <i data-lucide="flame" class="w-5 h-5 text-amber-400"></i>
+            </div>
+            <div>
+                <h1 class="text-sm md:text-base font-bold tracking-tight text-white flex items-center gap-2">
+                    Flame Test &amp; Quantum Spectroscopy
+                    <span class="text-xs font-mono font-normal px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800/60 hidden sm:inline-block">3D Physical Simulator</span>
+                </h1>
+            </div>
+        </div>
+
+        <!-- Header Actions: Sound, Views, Cobalt, Reset -->
+        <div class="flex items-center space-x-2 md:space-x-3 text-xs">
+            <!-- Audio Toggle -->
+            <button id="btn-audio" class="px-2.5 py-1.5 rounded-md bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60 flex items-center gap-1.5 transition">
+                <i data-lucide="volume-2" id="audio-icon" class="w-4 h-4"></i>
+                <span class="hidden md:inline" id="audio-label">Sound</span>
+            </button>
+
+            <!-- Cobalt Glass Filter Switch -->
+            <button id="btn-cobalt" class="px-3 py-1.5 rounded-md bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-700/60 text-indigo-200 flex items-center gap-1.5 transition">
+                <i data-lucide="eye" class="w-4 h-4 text-blue-400"></i>
+                <span>Cobalt Filter</span>
+                <span id="cobalt-status-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+            </button>
+
+            <!-- Clean Loop Button -->
+            <button id="btn-clean" class="px-3 py-1.5 rounded-md bg-rose-950/50 hover:bg-rose-900/60 border border-rose-800/50 text-rose-200 flex items-center gap-1.5 transition">
+                <i data-lucide="sparkles" class="w-4 h-4 text-rose-400"></i>
+                <span class="hidden sm:inline">Clean Loop (HCl)</span>
+                <span class="sm:hidden">Clean</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace: Left Controls, Center 3D, Right Quantum Inspector -->
+    <main class="flex-1 relative flex overflow-hidden">
+        <!-- 3D Canvas Container -->
+        <div id="canvas-container" class="absolute inset-0 z-0"></div>
+
+        <!-- Cobalt Filter Simulation Layer (overlaid on 3D scene) -->
+        <div id="cobalt-filter-overlay" class="absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none z-10">
+            <div class="absolute top-4 left-1/2 -translate-x-1/2 bg-blue-900/80 border border-blue-400/40 text-blue-100 text-xs px-3 py-1 rounded-full shadow-lg flex items-center gap-2">
+                <i data-lucide="info" class="w-3.5 h-3.5 text-blue-300"></i>
+                Cobalt Glass Filter On (Attenuates the yellow Na⁺ doublet)
+            </div>
+        </div>
+
+        <!-- Camera Controls Quick Floating Toolbar -->
+        <div class="absolute top-3 left-3 z-10 flex gap-1.5 bg-slate-900/80 p-1 rounded-lg border border-slate-800 backdrop-blur-md">
+            <button id="cam-overview" title="Overview" class="p-1.5 rounded hover:bg-slate-800 text-slate-300 active:bg-slate-700">
+                <i data-lucide="maximize-2" class="w-4 h-4"></i>
+            </button>
+            <button id="cam-burner" title="Focus on Flame" class="p-1.5 rounded hover:bg-slate-800 text-slate-300 active:bg-slate-700">
+                <i data-lucide="flame" class="w-4 h-4 text-amber-400"></i>
+            </button>
+            <button id="cam-loop" title="Focus on Platinum Loop" class="p-1.5 rounded hover:bg-slate-800 text-slate-300 active:bg-slate-700">
+                <i data-lucide="crosshair" class="w-4 h-4 text-cyan-400"></i>
+            </button>
+        </div>
+
+        <!-- Left Interactive Drawer: Element Selection & Bunsen Tuning -->
+        <div class="absolute top-14 bottom-24 left-3 w-80 max-w-[calc(100vw-24px)] z-10 flex flex-col gap-3 pointer-events-auto">
+            <!-- Elements Selector Card -->
+            <div class="glass-panel rounded-xl p-3.5 flex flex-col gap-2.5 overflow-hidden">
+                <div class="flex items-center justify-between pb-1 border-b border-slate-800">
+                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-400 flex items-center gap-1.5">
+                        <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-emerald-400"></i>
+                        Metal Salts
+                    </span>
+                    <span class="text-[10px] mono text-slate-400 bg-slate-800/80 px-1.5 py-0.5 rounded">Select sample</span>
+                </div>
+
+                <!-- Element Buttons Grid -->
+                <div class="grid grid-cols-2 gap-1.5 max-h-56 overflow-y-auto pr-1" id="elements-grid">
+                    <!-- Injected dynamically via JavaScript -->
+                </div>
+
+                <!-- Loop Action Button -->
+                <button id="btn-toggle-loop" class="w-full py-2.5 px-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium text-xs flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98]">
+                    <i data-lucide="arrow-right-circle" class="w-4 h-4" id="loop-btn-icon"></i>
+                    <span id="loop-btn-text">Insert Loop into Flame</span>
+                </button>
+            </div>
+
+            <!-- Bunsen Burner Air Collar Control -->
+            <div class="glass-panel rounded-xl p-3 flex flex-col gap-2">
+                <div class="flex items-center justify-between text-xs">
+                    <span class="font-medium text-slate-300 flex items-center gap-1.5">
+                        <i data-lucide="sliders" class="w-3.5 h-3.5 text-amber-400"></i>
+                        Bunsen Air Collar
+                    </span>
+                    <span id="collar-label" class="mono text-[11px] text-blue-400">Fully Open (Oxidizing)</span>
+                </div>
+                <input id="air-collar-slider" aria-label="Air collar opening" type="range" min="0" max="100" value="100" class="w-full accent-blue-500 cursor-pointer h-1.5 bg-slate-700 rounded-lg">
+                <div class="flex justify-between text-[10px] text-slate-400">
+                    <span>Reducing Flame (Yellow)</span>
+                    <span>Oxidizing Flame (Blue)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Quantum Energy Levels & Spectroscopic Analysis -->
+        <div id="quantum-panel" class="absolute top-3 bottom-24 right-3 w-96 max-w-[calc(100vw-24px)] z-10 flex flex-col gap-3 pointer-events-auto">
+            <div class="glass-panel rounded-xl p-4 flex-1 flex flex-col overflow-y-auto">
+                <!-- Title & Element header badge -->
+                <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <div>
+                        <div class="text-[11px] font-mono text-indigo-400 font-semibold tracking-wider uppercase">Quantum Physics &amp; Orbitals</div>
+                        <h2 id="active-element-title" class="text-base font-bold text-white flex items-center gap-2">
+                            Lithium (Li)
+                            <span id="active-element-ion" class="text-xs px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">LiCl</span>
+                        </h2>
+                    </div>
+                    <div id="element-color-indicator" class="w-6 h-6 rounded-full border border-white/30 shadow-md" style="background-color: #ff1a40;"></div>
+                </div>
+
+                <!-- Quantum Energy Transitions Canvas – Grotrian / Orbital tabs -->
+                <div class="mt-3 flex flex-col">
+                    <div class="flex items-center justify-between text-[11px] text-slate-300 mb-1">
+                        <span class="flex items-center gap-1">
+                            <i data-lucide="activity" class="w-3 h-3 text-cyan-400"></i>
+                            Quantum Diagram
+                        </span>
+                        <div class="flex rounded-md overflow-hidden border border-slate-700 text-[10px] font-medium">
+                            <button id="tab-grotrian" class="px-2.5 py-0.5 bg-indigo-900/80 text-indigo-200 transition-colors">Grotrian</button>
+                            <button id="tab-orbital" class="px-2.5 py-0.5 bg-slate-900/60 text-slate-400 hover:bg-slate-800 border-l border-slate-700 transition-colors">Orbital</button>
+                        </div>
+                    </div>
+                    <div class="relative w-full h-44 bg-slate-950/80 rounded-lg border border-slate-800 overflow-hidden">
+                        <canvas id="energy-level-canvas" class="w-full h-full block"></canvas>
+                    </div>
+                </div>
+
+                <!-- Electron Configuration & Orbital Jump Info -->
+                <div class="mt-3 bg-slate-900/60 rounded-lg p-3 border border-slate-800/80 flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] text-slate-400">Ground configuration:</span>
+                        <span id="conf-electronica" class="mono text-xs font-semibold text-emerald-400">[He] 2s¹</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] text-slate-400">Key optical transition:</span>
+                        <span id="transicion-term" class="mono text-xs font-semibold text-cyan-300">2p¹ → 2s¹</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] text-slate-400">Spectral nature:</span>
+                        <span id="spectral-nature" class="text-xs text-amber-300 font-medium">Pure atomic emission (Δl = -1)</span>
+                    </div>
+                </div>
+
+                <!-- Quantitative Spectroscopic Values -->
+                <div class="grid grid-cols-2 gap-2 mt-3 text-xs">
+                    <div class="bg-slate-900/50 p-2 rounded-lg border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 block">Wavelength (λ)</span>
+                        <span id="val-wavelength" class="mono font-bold text-sm text-white">670.8 nm</span>
+                    </div>
+                    <div class="bg-slate-900/50 p-2 rounded-lg border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 block">Photon Energy (ΔE)</span>
+                        <span id="val-energy-ev" class="mono font-bold text-sm text-indigo-300">1.85 eV</span>
+                    </div>
+                    <div class="bg-slate-900/50 p-2 rounded-lg border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 block">Frequency (ν)</span>
+                        <span id="val-frequency" class="mono font-semibold text-xs text-slate-300">446.9 THz</span>
+                    </div>
+                    <div class="bg-slate-900/50 p-2 rounded-lg border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 block">Energy in Joules</span>
+                        <span id="val-joules" class="mono font-semibold text-xs text-slate-300">2.96 × 10⁻¹⁹ J</span>
+                    </div>
+                </div>
+
+                <!-- Explanatory Observation Note -->
+                <div class="mt-3 p-2.5 rounded-lg bg-indigo-950/30 border border-indigo-800/30 text-[11px] text-slate-300 leading-relaxed" id="element-note">
+                    The heat of the flame excites the $2s$ electron of the gaseous Li atoms to the $2p$ level. The red emission corresponds to the $2p \rightarrow 2s$ de-excitation.
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar: Continuous Calibrated Visible Spectrum -->
+        <div class="absolute bottom-2 left-3 right-3 h-20 glass-panel rounded-xl p-2.5 flex flex-col justify-between z-10">
+            <div class="flex items-center justify-between text-[11px] text-slate-300">
+                <span class="flex items-center gap-1.5 font-medium">
+                    <i data-lucide="rainbow" class="w-3.5 h-3.5 text-pink-400"></i>
+                    Calibrated Visible Emission Spectrum (380 nm - 750 nm)
+                </span>
+                <span class="text-[10px] mono text-slate-400">Characteristic lines of the analyte</span>
+            </div>
+
+            <!-- Spectrum container with line indicators -->
+            <div class="relative w-full h-8 rounded-md overflow-hidden bg-slate-950 border border-slate-700/80" id="spectrum-bar-wrap">
+                <!-- Rainbow Gradient Background representing visible spectrum -->
+                <div class="w-full h-full" style="background: linear-gradient(to right, 
+                    #4b0082 0%, 
+                    #0000ff 15%, 
+                    #00ffff 30%, 
+                    #00ff00 45%, 
+                    #ffff00 65%, 
+                    #ff7f00 80%, 
+                    #ff0000 100%); opacity: 0.35;"></div>
+
+                <!-- Dynamic Spectral Lines Canvas Overlay -->
+                <canvas id="spectrum-canvas" class="absolute inset-0 w-full h-full block"></canvas>
+            </div>
+
+            <div class="flex justify-between text-[9px] mono text-slate-400 px-1">
+                <span>380 nm (UV / Violet)</span>
+                <span>450 nm</span>
+                <span>500 nm</span>
+                <span>550 nm</span>
+                <span>600 nm</span>
+                <span>650 nm</span>
+                <span>750 nm (Deep Red)</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // -------------------------------------------------------------
+        // Elements Data & Quantum Spectroscopic Constants
+        // -------------------------------------------------------------
+        const ELEMENTS_DATA = {
+            'Li': {
+                id: 'Li',
+                name: "Lithium",
+                salt: "LiCl (Lithium Chloride)",
+                flameColorHex: '#ff1447',
+                threeColor: 0xff1447,
+                wavelength: 670.8,
+                lines: [670.8],
+                energyEv: 1.85,
+                frequencyThz: 446.9,
+                joules: '2.96 × 10⁻¹⁹',
+                groundState: '[He] 2s¹',
+                transitionTerm: '2p¹ → 2s¹ (Δl = -1)',
+                spectralNature: "Fine atomic resonance line",
+                levels: [
+                    { name: '2s (Fundamental)', energy: 0.0, yRatio: 0.8 },
+                    { name: "2p (Excited)", energy: 1.85, yRatio: 0.25 }
+                ],
+                activeTransition: { from: 1, to: 0, label: '670.8 nm (1.85 eV)' },
+                note: "The Li⁺ cation is thermally reduced in the flame to gaseous Li⁰. Its single valence electron is promoted to 2p and decays to 2s, producing the characteristic vibrant carmine red."
+            },
+            'Na': {
+                id: 'Na',
+                name: "Sodium",
+                salt: "NaCl (Sodium Chloride)",
+                flameColorHex: '#ffb700',
+                threeColor: 0xffb700,
+                wavelength: 589.0,
+                lines: [589.0, 589.6],
+                energyEv: 2.10,
+                frequencyThz: 508.9,
+                joules: '3.37 × 10⁻¹⁹',
+                groundState: '[Ne] 3s¹',
+                transitionTerm: "3p → 3s (D₁ and D₂ doublet)",
+                spectralNature: "High-intensity atomic doublet",
+                levels: [
+                    { name: '3s (Fundamental)', energy: 0.0, yRatio: 0.82 },
+                    { name: '3p ₁/₂', energy: 2.102, yRatio: 0.24 },
+                    { name: '3p ₃/₂', energy: 2.104, yRatio: 0.20 }
+                ],
+                activeTransition: { from: 2, to: 0, label: '589.0 / 589.6 nm' },
+                note: "Spin-orbit coupling in the 3p level splits the state into two very close levels (D doublet). It has an enormous quantum transition probability that masks traces of other ions."
+            },
+            'K': {
+                id: 'K',
+                name: "Potassium",
+                salt: "KCl (Potassium Chloride)",
+                flameColorHex: '#b780ff',
+                threeColor: 0xb780ff,
+                wavelength: 404.4,
+                lines: [404.4, 766.5, 769.9],
+                energyEv: 3.06,
+                frequencyThz: 741.3,
+                joules: '4.91 × 10⁻¹⁹',
+                groundState: '[Ar] 4s¹',
+                transitionTerm: "5p → 4s (404 nm) & 4p → 4s (766 nm)",
+                spectralNature: "Double emission (Violet + Deep red)",
+                levels: [
+                    { name: '4s (Fundamental)', energy: 0.0, yRatio: 0.85 },
+                    { name: "4p (Near IR)", energy: 1.61, yRatio: 0.55 },
+                    { name: "5p (Violet)", energy: 3.06, yRatio: 0.18 }
+                ],
+                activeTransition: { from: 2, to: 0, label: '404.4 nm (3.06 eV)' },
+                note: "The main transition (4p→4s at ~766 nm) lies at the limit of human vision. The faint lilac color comes from the more energetic secondary transition 5p→4s. Cobalt glass allows it to be isolated from sodium contamination."
+            },
+            'Ca': {
+                id: 'Ca',
+                name: "Calcium",
+                salt: "CaCl₂ (Calcium Chloride)",
+                flameColorHex: '#ff5e13',
+                threeColor: 0xff5e13,
+                wavelength: 622.0,
+                lines: [422.7, 554.0, 622.0],
+                energyEv: 1.99,
+                frequencyThz: 482.0,
+                joules: '3.19 × 10⁻¹⁹',
+                groundState: '[Ar] 4s²',
+                transitionTerm: "CaOH* (Bands) + 4s4p → 4s²",
+                spectralNature: "CaOH* molecular bands + atomic line",
+                levels: [
+                    { name: '4s² ¹S₀ (ground state)', energy: 0.0, yRatio: 0.8 },
+                    { name: "CaOH* (Orange vibronic band)", energy: 1.99, yRatio: 0.35 },
+                    { name: "4s4p ¹P₁ (Resonant singlet)", energy: 2.93, yRatio: 0.18 }
+                ],
+                activeTransition: { from: 1, to: 0, label: "CaOH* band (~622 nm)" },
+                note: "Unlike the alkali metals, in the alkaline earths the brick red-orange color is mainly due to transient calcium monohydroxide CaOH* species chemically excited in the combustion."
+            },
+            'Sr': {
+                id: 'Sr',
+                name: "Strontium",
+                salt: "SrCl₂ (Strontium Chloride)",
+                flameColorHex: '#ff0b37',
+                threeColor: 0xff0b37,
+                wavelength: 650.0,
+                lines: [460.7, 650.0, 680.0],
+                energyEv: 1.91,
+                frequencyThz: 461.2,
+                joules: '3.05 × 10⁻¹⁹',
+                groundState: '[Kr] 5s²',
+                transitionTerm: "SrOH* (Scarlet bands) + 5s5p → 5s²",
+                spectralNature: "Predominance of SrOH* molecular emission",
+                levels: [
+                    { name: '5s² ¹S₀', energy: 0.0, yRatio: 0.82 },
+                    { name: "SrOH* (Vibrational red)", energy: 1.91, yRatio: 0.32 },
+                    { name: '5s5p ¹P₁ (460.7 nm)', energy: 2.69, yRatio: 0.20 }
+                ],
+                activeTransition: { from: 1, to: 0, label: 'SrOH* (~650-680 nm)' },
+                note: "The brilliant scarlet red comes from the excited SrOH* radical. Its radiative intensity makes it the standard for red flare pyrotechnics and maritime distress beacons."
+            },
+            'Ba': {
+                id: 'Ba',
+                name: "Barium",
+                salt: "BaCl₂ (Barium Chloride)",
+                flameColorHex: '#84f032',
+                threeColor: 0x84f032,
+                wavelength: 524.2,
+                lines: [513.0, 524.2, 553.5],
+                energyEv: 2.36,
+                frequencyThz: 571.9,
+                joules: '3.78 × 10⁻¹⁹',
+                groundState: '[Xe] 6s²',
+                transitionTerm: 'BaOH* / BaO* + 6s6p → 6s²',
+                spectralNature: "Complex of green molecular bands",
+                levels: [
+                    { name: '6s² ¹S₀ (Fundamental)', energy: 0.0, yRatio: 0.8 },
+                    { name: '6s6p ¹P₁ (553.5 nm)', energy: 2.24, yRatio: 0.38 },
+                    { name: "BaOH* (Apple-green band)", energy: 2.36, yRatio: 0.22 }
+                ],
+                activeTransition: { from: 2, to: 0, label: 'BaOH* (~524 nm)' },
+                note: "It presents a rich spectrum of bands in the apple green (510 - 550 nm) produced by the transient BaOH* and BaO* radicals formed in the intermediate zones of the flame."
+            },
+            'Cu': {
+                id: 'Cu',
+                name: "Copper",
+                salt: "CuCl₂ (Copper(II) Chloride)",
+                flameColorHex: '#00e8a7',
+                threeColor: 0x00e8a7,
+                wavelength: 510.5,
+                lines: [435.0, 480.0, 510.5],
+                energyEv: 2.43,
+                frequencyThz: 587.2,
+                joules: '3.89 × 10⁻¹⁹',
+                groundState: '[Ar] 3d¹⁰ 4s¹',
+                transitionTerm: "CuCl* (Excited diatomic species)",
+                spectralNature: "Emerald-green / cyan molecular bands",
+                levels: [
+                    { name: "CuCl (Bonding ground state)", energy: 0.0, yRatio: 0.8 },
+                    { name: "CuOH* (Green band)", energy: 2.30, yRatio: 0.35 },
+                    { name: "CuCl* (Emerald vibronic band)", energy: 2.43, yRatio: 0.20 }
+                ],
+                activeTransition: { from: 2, to: 0, label: 'CuCl* (~510.5 nm)' },
+                note: "The pure atomic emission of Cu occurs in the invisible ultraviolet. The spectacular emerald green and blue comes from molecular species such as CuCl* (formed thanks to the presence of the chloride ion)."
+            }
+        };
+
+        // -------------------------------------------------------------
+        // Web Audio API Sound Synthesizer
+        // -------------------------------------------------------------
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = false;
+                this.burnerGain = null;
+                this.noiseNode = null;
+            }
+
+            init() {
+                if (this.ctx) return;
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                this.ctx = new AudioContext();
+
+                // Continuous Gas Hissing Noise
+                const bufferSize = this.ctx.sampleRate * 2;
+                const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+
+                const whiteNoise = this.ctx.createBufferSource();
+                whiteNoise.buffer = noiseBuffer;
+                whiteNoise.loop = true;
+
+                // Bandpass filter for gas whoosh sound
+                const bandpass = this.ctx.createBiquadFilter();
+                bandpass.type = 'bandpass';
+                bandpass.frequency.value = 650;
+                bandpass.Q.value = 1.2;
+
+                this.burnerGain = this.ctx.createGain();
+                this.burnerGain.gain.value = 0.025;
+
+                whiteNoise.connect(bandpass);
+                bandpass.connect(this.burnerGain);
+                this.burnerGain.connect(this.ctx.destination);
+                whiteNoise.start(0);
+            }
+
+            toggle() {
+                if (!this.ctx) this.init();
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+                this.enabled = !this.enabled;
+                if (this.burnerGain) {
+                    this.burnerGain.gain.setTargetAtTime(this.enabled ? 0.03 : 0.0, this.ctx.currentTime, 0.1);
+                }
+                return this.enabled;
+            }
+
+            playSizzle() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    // Crackle / combustion whoosh when salt enters the flame
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(280, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.35);
+
+                    gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.4);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.45);
+                } catch(e) {}
+            }
+        }
+        const audioEngine = new SoundFX();
+
+        // -------------------------------------------------------------
+        // Three.js 3D Scene Initialization
+        // -------------------------------------------------------------
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x06080e, 0.035);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 4.2, 7.5);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 + 0.02; // Don't go below floor
+        controls.minDistance = 2.0;
+        controls.maxDistance = 14;
+        controls.target.set(0, 2.2, 0);
+
+        // Ambient and Directional Key Lighting
+        const ambientLight = new THREE.AmbientLight(0x161b2b, 0.9);
+        scene.add(ambientLight);
+
+        const roomKeyLight = new THREE.DirectionalLight(0x6080a0, 0.7);
+        roomKeyLight.position.set(5, 8, 5);
+        roomKeyLight.castShadow = true;
+        roomKeyLight.shadow.mapSize.width = 1024;
+        roomKeyLight.shadow.mapSize.height = 1024;
+        scene.add(roomKeyLight);
+
+        // Flame Dynamic Point Light (Flickers in render loop)
+        // castShadow left off intentionally: a point light shadow map is a 6-pass
+        // cubemap render, and this light's intensity/color change every frame
+        // (flicker), forcing that cubemap to be rebuilt constantly. The visual
+        // contribution of its shadow was negligible next to the additive-blended
+        // translucent flame cones, so disabling it removes a large per-frame GPU
+        // cost for essentially no visible difference.
+        const flamePointLight = new THREE.PointLight(0x0088ff, 2.8, 6.5, 1.8);
+        flamePointLight.position.set(0, 2.3, 0);
+        flamePointLight.castShadow = false;
+        scene.add(flamePointLight);
+
+        // Laboratory Work Table Top
+        const tableGeo = new THREE.BoxGeometry(14, 0.4, 10);
+        const tableMat = new THREE.MeshStandardMaterial({
+            color: 0x121722,
+            roughness: 0.35,
+            metalness: 0.2
+        });
+        const table = new THREE.Mesh(tableGeo, tableMat);
+        table.position.y = -0.2;
+        table.receiveShadow = true;
+        scene.add(table);
+
+        // Table Grid line accents
+        const gridHelper = new THREE.GridHelper(12, 24, 0x1e293b, 0x0f172a);
+        gridHelper.position.y = 0.01;
+        scene.add(gridHelper);
+
+        // -------------------------------------------------------------
+        // Mechero Bunsen Detailed 3D Model Construction
+        // -------------------------------------------------------------
+        const bunsenGroup = new THREE.Group();
+
+        // 1. Cast Iron Heavy Base (Octagonal / Round stepped)
+        const baseMat = new THREE.MeshStandardMaterial({ color: 0x1f242d, roughness: 0.65, metalness: 0.8 });
+        const baseGeo = new THREE.CylinderGeometry(0.72, 0.82, 0.22, 24);
+        const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+        baseMesh.position.y = 0.11;
+        baseMesh.castShadow = true;
+        baseMesh.receiveShadow = true;
+        bunsenGroup.add(baseMesh);
+
+        // 2. Brass Air Collar
+        const collarMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.85 });
+        const collarGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.28, 20);
+        const collarMesh = new THREE.Mesh(collarGeo, collarMat);
+        collarMesh.position.y = 0.35;
+        bunsenGroup.add(collarMesh);
+
+        // Air port hole cutouts (visual cues)
+        const holeMat = new THREE.MeshBasicMaterial({ color: 0x0a0a0a });
+        const holeGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.29, 12);
+        const holeMesh = new THREE.Mesh(holeGeo, holeMat);
+        holeMesh.rotation.z = Math.PI / 2;
+        holeMesh.position.y = 0.35;
+        bunsenGroup.add(holeMesh);
+
+        // 3. Chrome / Nickel Plated Chimney Tube
+        const barrelMat = new THREE.MeshStandardMaterial({ color: 0xc0c8d0, roughness: 0.22, metalness: 0.95 });
+        const barrelGeo = new THREE.CylinderGeometry(0.18, 0.18, 1.4, 24);
+        const barrelMesh = new THREE.Mesh(barrelGeo, barrelMat);
+        barrelMesh.position.y = 1.15;
+        barrelMesh.castShadow = true;
+        bunsenGroup.add(barrelMesh);
+
+        // 4. Gas Hose Inlet (Rubber tube connection)
+        const inletMat = new THREE.MeshStandardMaterial({ color: 0x997733, metalness: 0.7, roughness: 0.4 });
+        const inletGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.5, 12);
+        const inletMesh = new THREE.Mesh(inletGeo, inletMat);
+        inletMesh.rotation.z = Math.PI / 2.2;
+        inletMesh.position.set(-0.45, 0.25, 0);
+        bunsenGroup.add(inletMesh);
+
+        // Flexible gas rubber tube
+        const tubeCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(-0.65, 0.23, 0),
+            new THREE.Vector3(-1.4, 0.15, -0.4),
+            new THREE.Vector3(-2.6, 0.05, -1.0),
+            new THREE.Vector3(-4.0, 0.02, -1.5)
+        ]);
+        const tubeGeo = new THREE.TubeGeometry(tubeCurve, 20, 0.055, 8, false);
+        const tubeMat = new THREE.MeshStandardMaterial({ color: 0x24201a, roughness: 0.9 });
+        const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
+        bunsenGroup.add(tubeMesh);
+
+        scene.add(bunsenGroup);
+
+        // -------------------------------------------------------------
+        // Inoculating Platinum Loop (Asa de Siembra con Platino)
+        // -------------------------------------------------------------
+        const loopGroup = new THREE.Group();
+
+        // Glass Handle (Vástago de vidrio transparente / aislante)
+        const glassMat = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            transmission: 0.85,
+            opacity: 1,
+            transparent: true,
+            roughness: 0.1,
+            ior: 1.5
+        });
+        const handleGeo = new THREE.CylinderGeometry(0.055, 0.055, 2.2, 16);
+        const handleMesh = new THREE.Mesh(handleGeo, glassMat);
+        handleMesh.position.y = -1.1;
+        loopGroup.add(handleMesh);
+
+        // Platinum Straight Needle Wire
+        const wireMat = new THREE.MeshStandardMaterial({ color: 0xe0e5ea, metalness: 0.98, roughness: 0.2 });
+        const wireGeo = new THREE.CylinderGeometry(0.015, 0.015, 1.1, 12);
+        const wireMesh = new THREE.Mesh(wireGeo, wireMat);
+        wireMesh.position.y = 0.55;
+        loopGroup.add(wireMesh);
+
+        // Circular Platinum Tip Loop
+        const loopRingGeo = new THREE.TorusGeometry(0.065, 0.014, 12, 24);
+        const loopRingMesh = new THREE.Mesh(loopRingGeo, wireMat);
+        loopRingMesh.rotation.x = Math.PI / 2;
+        loopRingMesh.position.y = 1.15;
+        loopGroup.add(loopRingMesh);
+
+        // Chemical Salt Deposit inside the loop tip
+        const saltMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.9,
+            emissive: 0x000000,
+            emissiveIntensity: 0.0
+        });
+        const saltGeo = new THREE.SphereGeometry(0.052, 12, 12);
+        const saltMesh = new THREE.Mesh(saltGeo, saltMat);
+        saltMesh.position.y = 1.15;
+        loopGroup.add(saltMesh);
+
+        // Rest / insertion pose for the platinum loop.
+        // The rod pivots around the group's local origin (0,0,0), which sits at
+        // the glass-handle/platinum-wire joint — the "grip" point. The loop tip
+        // (torus + salt bead) is at local y=1.15, and the handle's free end is at
+        // local y=-2.2, so rotating around Z swings both ends in opposite
+        // directions. A constant -60° tilt (vs. the previous -40°/-10°, which
+        // was nearly upright when inserted) reads as a horizontally-held wand;
+        // the positions below were re-solved trigonometrically at that angle so
+        // the tip still lands inside the flame column and the handle clears the
+        // table and burner instead of poking through them.
+        const LOOP_TILT_Z = -Math.PI / 3; // -60°
+        const LOOP_REST_POS = new THREE.Vector3(1.3, 1.3, 0.4);
+        const LOOP_REST_ROT = new THREE.Euler(0, 0, LOOP_TILT_Z);
+        const LOOP_BURN_POS = new THREE.Vector3(-0.85, 1.42, 0.0);
+        const LOOP_BURN_ROT = new THREE.Euler(0, 0, LOOP_TILT_Z);
+
+        loopGroup.position.copy(LOOP_REST_POS);
+        loopGroup.rotation.copy(LOOP_REST_ROT);
+        scene.add(loopGroup);
+
+        // -------------------------------------------------------------
+        // Realistic 3D Flame System: Inner Blue Cone + Outer Ion Flame
+        // -------------------------------------------------------------
+        const flameOriginY = 1.86; // Burner barrel top height
+
+        // 1. Inner Bunsen Cone (Cold Reducing Methane Cone)
+        const innerConeGeo = new THREE.ConeGeometry(0.12, 0.65, 24, 1, true);
+        innerConeGeo.translate(0, 0.325, 0);
+        const innerConeMat = new THREE.MeshBasicMaterial({
+            color: 0x00d4ff,
+            transparent: true,
+            opacity: 0.75,
+            blending: THREE.AdditiveBlending,
+            side: THREE.DoubleSide
+        });
+        const innerCone = new THREE.Mesh(innerConeGeo, innerConeMat);
+        innerCone.position.set(0, flameOriginY, 0);
+        scene.add(innerCone);
+
+        // 2. Base Outer Bunsen Sheath (Blue / Pale Cyan High Temperature)
+        const outerConeGeo = new THREE.ConeGeometry(0.24, 1.35, 24, 1, true);
+        outerConeGeo.translate(0, 0.675, 0);
+        const outerConeMat = new THREE.MeshBasicMaterial({
+            color: 0x1d4ed8,
+            transparent: true,
+            opacity: 0.45,
+            blending: THREE.AdditiveBlending,
+            side: THREE.DoubleSide
+        });
+        const outerCone = new THREE.Mesh(outerConeGeo, outerConeMat);
+        outerCone.position.set(0, flameOriginY, 0);
+        scene.add(outerCone);
+
+        // 3. Dynamic Metal Emission Flame Zone
+        const metalFlameGeo = new THREE.ConeGeometry(0.26, 1.6, 24, 1, true);
+        metalFlameGeo.translate(0, 0.8, 0);
+        const metalFlameMat = new THREE.MeshBasicMaterial({
+            color: 0x0044ff,
+            transparent: true,
+            opacity: 0.0, // Hidden until salt is introduced
+            blending: THREE.AdditiveBlending,
+            side: THREE.DoubleSide
+        });
+        const metalFlame = new THREE.Mesh(metalFlameGeo, metalFlameMat);
+        metalFlame.position.set(0, flameOriginY, 0);
+        scene.add(metalFlame);
+
+        // 4. Particle System for Turbulent Emissive Flame Flares & Sparks
+        const PARTICLE_COUNT = 140;
+        const particleGeo = new THREE.BufferGeometry();
+        const pPositions = new Float32Array(PARTICLE_COUNT * 3);
+        const pVelocities = [];
+        const pLifetimes = new Float32Array(PARTICLE_COUNT);
+        const pMaxLifetimes = new Float32Array(PARTICLE_COUNT);
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            pPositions[i * 3 + 0] = (Math.random() - 0.5) * 0.15;
+            pPositions[i * 3 + 1] = flameOriginY + Math.random() * 0.4;
+            pPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.15;
+
+            pVelocities.push({
+                x: (Math.random() - 0.5) * 0.008,
+                y: 0.035 + Math.random() * 0.035,
+                z: (Math.random() - 0.5) * 0.008
+            });
+            pLifetimes[i] = Math.random();
+            pMaxLifetimes[i] = 0.5 + Math.random() * 0.5;
+        }
+
+        particleGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+
+        // Procedural circular particle texture
+        const particleCanvas = document.createElement('canvas');
+        particleCanvas.width = 32;
+        particleCanvas.height = 32;
+        const pCtx = particleCanvas.getContext('2d');
+        const grad = pCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
+        grad.addColorStop(0, 'rgba(255,255,255,1)');
+        grad.addColorStop(0.3, 'rgba(255,255,255,0.7)');
+        grad.addColorStop(1, 'rgba(255,255,255,0)');
+        pCtx.fillStyle = grad;
+        pCtx.fillRect(0, 0, 32, 32);
+
+        const pTexture = new THREE.CanvasTexture(particleCanvas);
+        const particleMat = new THREE.PointsMaterial({
+            size: 0.22,
+            map: pTexture,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            color: 0x0088ff
+        });
+        const particleSystem = new THREE.Points(particleGeo, particleMat);
+        scene.add(particleSystem);
+
+        // -------------------------------------------------------------
+        // State Management
+        // -------------------------------------------------------------
+        let currentElementKey = 'Li';
+        let isLoopInFlame = false;
+        let loopLerpFactor = 0; // 0 = at rest, 1 = inside flame
+        let isClean = false;
+        let isCobaltFilter = false;
+        let airCollarValue = 100; // 0 = pure yellow soot, 100 = roaring hot blue
+
+        // Target flame color state for smooth transition
+        const targetColor = new THREE.Color(ELEMENTS_DATA['Li'].threeColor);
+        const currentFlameColor = new THREE.Color(0x0077ff);
+        let metalFlameTargetOpacity = 0.0;
+        let metalFlameCurrentOpacity = 0.0;
+
+        // Reusable THREE.Color instances for the base flame color blend.
+        // Allocating new THREE.Color objects (or calling .clone()) every animation
+        // frame generates constant garbage-collector pressure; these are created
+        // once and mutated in place inside animate().
+        const SOOT_YELLOW = new THREE.Color(0xf59e0b);
+        const HOT_BLUE = new THREE.Color(0x1d4ed8);
+        const baseFlameColor = new THREE.Color();
+
+        // Cached DOM references (avoids repeated getElementById lookups in hot paths)
+        const dom = {
+            elementTitle: document.getElementById('active-element-title'),
+            colorIndicator: document.getElementById('element-color-indicator'),
+            confElectronica: document.getElementById('conf-electronica'),
+            transicionTerm: document.getElementById('transicion-term'),
+            spectralNature: document.getElementById('spectral-nature'),
+            valWavelength: document.getElementById('val-wavelength'),
+            valEnergyEv: document.getElementById('val-energy-ev'),
+            valFrequency: document.getElementById('val-frequency'),
+            valJoules: document.getElementById('val-joules'),
+            elementNote: document.getElementById('element-note'),
+            loopBtnIcon: document.getElementById('loop-btn-icon'),
+            loopBtnText: document.getElementById('loop-btn-text'),
+        };
+
+        // Populate Left Panel with Element Selection Buttons
+        const elementsGrid = document.getElementById('elements-grid');
+        const elementButtons = new Map(); // id -> button element, avoids querySelectorAll on every selection
+        Object.values(ELEMENTS_DATA).forEach(elem => {
+            const btn = document.createElement('button');
+            btn.className = `element-select-btn p-2 rounded-lg border text-left flex items-center justify-between transition-all ${
+                elem.id === currentElementKey 
+                    ? 'border-indigo-400 bg-indigo-950/70 shadow-md ring-1 ring-indigo-400' 
+                    : 'border-slate-800 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-800/80'
+            }`;
+            btn.dataset.id = elem.id;
+            btn.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span class="w-3.5 h-3.5 rounded-full shadow-inner" style="background-color: ${elem.flameColorHex}"></span>
+                    <div>
+                        <div class="font-bold text-xs text-white">${elem.name}</div>
+                        <div class="text-[10px] text-slate-400 mono">${elem.id} · ${elem.wavelength}nm</div>
+                    </div>
+                </div>
+            `;
+            btn.addEventListener('click', () => selectElement(elem.id));
+            elementsGrid.appendChild(btn);
+            elementButtons.set(elem.id, btn);
+        });
+
+        // Select an element and update quantum inspector + salt color
+        function selectElement(key) {
+            currentElementKey = key;
+            const data = ELEMENTS_DATA[key];
+            isClean = false;
+
+            // Update element buttons highlight (iterate the cached Map instead of re-querying the DOM)
+            elementButtons.forEach((b, id) => {
+                b.className = id === key
+                    ? 'element-select-btn p-2 rounded-lg border border-indigo-400 bg-indigo-950/70 shadow-md ring-1 ring-indigo-400 text-left flex items-center justify-between transition-all'
+                    : 'element-select-btn p-2 rounded-lg border border-slate-800 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-800/80 text-left flex items-center justify-between transition-all';
+            });
+
+            // Update UI Card Details
+            dom.elementTitle.innerHTML = `
+                ${data.name} (${data.id})
+                <span id="active-element-ion" class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-indigo-300 border border-slate-700">${data.salt}</span>
+            `;
+            dom.colorIndicator.style.backgroundColor = data.flameColorHex;
+            dom.colorIndicator.style.boxShadow = `0 0 15px ${data.flameColorHex}`;
+            dom.confElectronica.innerText = data.groundState;
+            dom.transicionTerm.innerText = data.transitionTerm;
+            dom.spectralNature.innerText = data.spectralNature;
+            dom.valWavelength.innerText = `${data.wavelength} nm`;
+            dom.valEnergyEv.innerText = `${data.energyEv} eV`;
+            dom.valFrequency.innerText = `${data.frequencyThz} THz`;
+            dom.valJoules.innerText = `${data.joules} J`;
+            dom.elementNote.innerText = data.note;
+
+            // Update Salt Appearance on Loop Tip
+            saltMat.color.set(data.flameColorHex);
+            saltMat.emissive.set(data.flameColorHex);
+            saltMat.emissiveIntensity = 0.2;
+
+            // Automatically move loop into flame if already active or user is exploring
+            if (!isLoopInFlame) {
+                toggleLoopPosition(true);
+            } else {
+                audioEngine.playSizzle();
+            }
+
+            renderSpectrumBar();
+            renderActiveDiagram();
+        }
+
+        // Toggle loop insertion into flame
+        function toggleLoopPosition(forceIn = null) {
+            isLoopInFlame = forceIn !== null ? forceIn : !isLoopInFlame;
+
+            if (isLoopInFlame) {
+                dom.loopBtnText.innerText = "Remove Loop from Flame";
+                dom.loopBtnIcon.setAttribute('data-lucide', 'arrow-left-circle');
+                audioEngine.playSizzle();
+            } else {
+                dom.loopBtnText.innerText = "Insert Loop into Flame";
+                dom.loopBtnIcon.setAttribute('data-lucide', 'arrow-right-circle');
+            }
+            lucide.createIcons();
+        }
+        document.getElementById('btn-toggle-loop').addEventListener('click', () => toggleLoopPosition());
+
+        // Clean Platinum Loop in HCl
+        document.getElementById('btn-clean').addEventListener('click', () => {
+            isClean = true;
+            saltMat.color.set(0xcccccc);
+            saltMat.emissive.set(0x000000);
+            saltMat.emissiveIntensity = 0;
+            metalFlameTargetOpacity = 0.0;
+
+            dom.elementTitle.innerHTML = `
+                Clean Loop (pure HCl)
+                <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">No analyte</span>
+            `;
+            dom.colorIndicator.style.backgroundColor = '#0066ff';
+            dom.colorIndicator.style.boxShadow = 'none';
+            dom.confElectronica.innerText = "HCl matrix";
+            dom.transicionTerm.innerText = "CH₄ combustion";
+            dom.spectralNature.innerText = "Bunsen combustion background";
+            dom.valWavelength.innerText = "Base Blue Flame";
+            dom.valEnergyEv.innerText = '--';
+            dom.valFrequency.innerText = '--';
+            dom.valJoules.innerText = '--';
+            dom.elementNote.innerText = "The platinum loop has been dipped in concentrated hydrochloric acid (HCl) and heated to remove any remaining salts or persistent alkali traces.";
+
+            renderSpectrumBar(true);
+            renderActiveDiagram(true);
+        });
+
+        // Cobalt Glass Filter Toggle
+        const btnCobalt = document.getElementById('btn-cobalt');
+        const cobaltOverlay = document.getElementById('cobalt-filter-overlay');
+        const cobaltDot = document.getElementById('cobalt-status-dot');
+
+        btnCobalt.addEventListener('click', () => {
+            isCobaltFilter = !isCobaltFilter;
+            if (isCobaltFilter) {
+                cobaltOverlay.classList.remove('opacity-0');
+                cobaltOverlay.classList.add('opacity-100');
+                cobaltDot.className = 'w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_#60a5fa]';
+            } else {
+                cobaltOverlay.classList.remove('opacity-100');
+                cobaltOverlay.classList.add('opacity-0');
+                cobaltDot.className = 'w-2 h-2 rounded-full bg-slate-500';
+            }
+        });
+
+        // Air Collar Range Input
+        const collarSlider = document.getElementById('air-collar-slider');
+        const collarLabel = document.getElementById('collar-label');
+
+        collarSlider.addEventListener('input', (e) => {
+            airCollarValue = parseInt(e.target.value);
+            if (airCollarValue > 70) {
+                collarLabel.innerText = "Open (Hot Oxidizing)";
+                collarLabel.className = "mono text-[11px] text-blue-400";
+            } else if (airCollarValue > 25) {
+                collarLabel.innerText = "Half-open (Mixed)";
+                collarLabel.className = "mono text-[11px] text-amber-400";
+            } else {
+                collarLabel.innerText = "Closed (Cold Luminous Flame)";
+                collarLabel.className = "mono text-[11px] text-yellow-500";
+            }
+        });
+
+        // Audio Toggle
+        const btnAudio = document.getElementById('btn-audio');
+        btnAudio.addEventListener('click', () => {
+            const on = audioEngine.toggle();
+            const icon = document.getElementById('audio-icon');
+            if (on) {
+                icon.setAttribute('data-lucide', 'volume-2');
+                btnAudio.classList.add('text-indigo-400', 'border-indigo-500/50');
+            } else {
+                icon.setAttribute('data-lucide', 'volume-x');
+                btnAudio.classList.remove('text-indigo-400', 'border-indigo-500/50');
+            }
+            lucide.createIcons();
+        });
+
+        // Camera Quick Presets
+        document.getElementById('cam-overview').addEventListener('click', () => {
+            controls.target.set(0, 2.2, 0);
+            camera.position.set(0, 4.2, 7.5);
+            controls.update();
+        });
+        document.getElementById('cam-burner').addEventListener('click', () => {
+            controls.target.set(0, 2.2, 0);
+            camera.position.set(0, 2.3, 3.4);
+            controls.update();
+        });
+        document.getElementById('cam-loop').addEventListener('click', () => {
+            controls.target.set(loopGroup.position.x, loopGroup.position.y + 0.8, loopGroup.position.z);
+            camera.position.set(loopGroup.position.x + 1.2, loopGroup.position.y + 1.4, loopGroup.position.z + 2.2);
+            controls.update();
+        });
+
+        // Diagram view tab buttons
+        document.getElementById('tab-grotrian').addEventListener('click', () => setDiagramMode('grotrian'));
+        document.getElementById('tab-orbital').addEventListener('click',  () => setDiagramMode('orbital'));
+
+        // -------------------------------------------------------------
+        // Quantum Energy Diagram Canvas Drawing (Grotrian Diagram)
+        // -------------------------------------------------------------
+        const energyCanvas = document.getElementById('energy-level-canvas');
+        const eCtx = energyCanvas.getContext('2d');
+        const spectrumCanvas = document.getElementById('spectrum-canvas');
+        const sCtx = spectrumCanvas.getContext('2d');
+        let quantumAnimProgress = 0;
+        let diagramMode = 'grotrian'; // 'grotrian' | 'orbital'
+        const ORB_CYCLE_LEN = 10.0;  // seconds per full excitation→emission cycle
+
+        function resizeCanvases() {
+            const dpr = window.devicePixelRatio;
+            energyCanvas.width = energyCanvas.clientWidth * dpr;
+            energyCanvas.height = energyCanvas.clientHeight * dpr;
+            spectrumCanvas.width = spectrumCanvas.clientWidth * dpr;
+            spectrumCanvas.height = spectrumCanvas.clientHeight * dpr;
+        }
+        // Throttled to one update per animation frame: the browser can fire many
+        // 'resize' events per second while a window edge is being dragged, and
+        // each one previously triggered a full renderer resize + two canvas
+        // redraws synchronously.
+        let resizePending = false;
+        function handleResize() {
+            resizePending = false;
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            resizeCanvases();
+            renderActiveDiagram();
+            renderSpectrumBar();
+        }
+        window.addEventListener('resize', () => {
+            if (resizePending) return;
+            resizePending = true;
+            requestAnimationFrame(handleResize);
+        });
+
+        function renderEnergyLevels(isResetClean = false) {
+            // Called every animation frame; resolve devicePixelRatio once.
+            const dpr = window.devicePixelRatio;
+            const w   = energyCanvas.width;
+            const h   = energyCanvas.height;
+            eCtx.clearRect(0, 0, w, h);
+
+            if (isResetClean) {
+                eCtx.fillStyle = '#64748b';
+                eCtx.font = `${13 * dpr}px Inter, sans-serif`;
+                eCtx.textAlign = 'center';
+                eCtx.fillText("No metal analyte on the loop", w / 2, h / 2);
+                return;
+            }
+
+            const data = ELEMENTS_DATA[currentElementKey];
+            if (!data) return;
+
+            // Truncates text to maxW canvas-pixels with an ellipsis.
+            // eCtx.font must already be set to the desired font before calling.
+            function clampText(text, maxW) {
+                if (eCtx.measureText(text).width <= maxW) return text;
+                let t = text;
+                while (t.length > 1 && eCtx.measureText(t + '…').width > maxW) t = t.slice(0, -1);
+                return t + '…';
+            }
+
+            // ── Layout constants ────────────────────────────────────────────
+            // The excitation arrow is at midX - 22*dpr = w*0.50 - 22*dpr.
+            // "Calor (Q)" is centred at w*0.50 - 34*dpr (to the left of that arrow).
+            // NAME_MAX_W is computed so level names can't spill past the safe margin
+            // before "Calor (Q)" — prevents the right-end of long names (SrOH*, CaOH*…)
+            // from visually touching the vertical rotated label.
+            const NAME_X     = w * 0.05;
+            const EV_X       = w * 0.95;
+            const NAME_MAX_W = (w * 0.50 - 34 * dpr) - NAME_X - 14 * dpr; // safe gap
+            const FONT_SM    = `${9 * dpr}px JetBrains Mono, monospace`;
+            const FONT_SM_B  = `bold ${9 * dpr}px JetBrains Mono, monospace`;
+            const LABEL_OFF  = 10 * dpr;
+            const FLIP_GAP   = 30 * dpr;
+
+            // ── Pre-compute Y positions and per-level label directions ───────
+            const ys  = data.levels.map(lvl => lvl.yRatio * h);
+            // dir[i]: -1 = label above line (default), +1 = label below line
+            const dir = data.levels.map(() => -1);
+            for (let i = 0; i < data.levels.length - 1; i++) {
+                // ys[i] > ys[i+1]: level i is lower on canvas (lower energy)
+                if (ys[i] - ys[i + 1] < FLIP_GAP) dir[i] = +1;
+            }
+
+            // ── Draw level lines and their labels ───────────────────────────
+            data.levels.forEach((lvl, idx) => {
+                const y      = ys[idx];
+                const labelY = y + dir[idx] * LABEL_OFF;
+                const color  = idx === 0 ? '#94a3b8' : '#38bdf8';
+
+                // Horizontal level line
+                eCtx.beginPath();
+                eCtx.moveTo(w * 0.12, y);
+                eCtx.lineTo(w * 0.88, y);
+                eCtx.strokeStyle = idx === 0 ? 'rgba(148,163,184,0.7)' : 'rgba(96,165,250,0.6)';
+                eCtx.lineWidth = 2 * dpr;
+                eCtx.stroke();
+
+                // Level name — left strip, clamped with ellipsis
+                eCtx.font = FONT_SM;
+                eCtx.fillStyle = color;
+                eCtx.textAlign = 'left';
+                eCtx.fillText(clampText(lvl.name, NAME_MAX_W), NAME_X, labelY);
+
+                // Energy value — right strip (short text, always fits)
+                eCtx.font = FONT_SM_B;
+                eCtx.textAlign = 'right';
+                eCtx.fillText(`${lvl.energy.toFixed(2)} eV`, EV_X, labelY);
+            });
+
+            // ── Quantum transition arrows and photon wave ───────────────────
+            const groundY  = ys[0];
+            const excitedY = ys[data.levels.length - 1];
+            const midX     = w * 0.50;   // center strip for arrows
+
+            // 1. Excitation arrow (dashed, pointing up)
+            eCtx.beginPath();
+            eCtx.setLineDash([4 * dpr, 4 * dpr]);
+            eCtx.moveTo(midX - 22 * dpr, groundY);
+            eCtx.lineTo(midX - 22 * dpr, excitedY);
+            eCtx.strokeStyle = 'rgba(251,191,36,0.6)';
+            eCtx.lineWidth = 1.5 * dpr;
+            eCtx.stroke();
+            eCtx.setLineDash([]);
+
+            // Arrowhead (up)
+            eCtx.fillStyle = '#fbbf24';
+            eCtx.beginPath();
+            eCtx.moveTo(midX - 22 * dpr, excitedY);
+            eCtx.lineTo(midX - 27 * dpr, excitedY + 8 * dpr);
+            eCtx.lineTo(midX - 17 * dpr, excitedY + 8 * dpr);
+            eCtx.fill();
+
+            // "Calor (Q)" rotated 90° along the excitation arrow — avoids
+            // overlapping with any horizontal level label.
+            eCtx.save();
+            eCtx.fillStyle = 'rgba(251,191,36,0.85)';
+            eCtx.font = `${8 * dpr}px JetBrains Mono, monospace`;
+            eCtx.textAlign = 'center';
+            eCtx.translate(midX - 34 * dpr, (groundY + excitedY) / 2);
+            eCtx.rotate(-Math.PI / 2);
+            eCtx.fillText("Heat (Q)", 0, 0);
+            eCtx.restore();
+
+            // 2. De-excitation arrow (solid, pointing down)
+            eCtx.beginPath();
+            eCtx.moveTo(midX + 8 * dpr, excitedY);
+            eCtx.lineTo(midX + 8 * dpr, groundY);
+            eCtx.strokeStyle = data.flameColorHex;
+            eCtx.lineWidth = 2.5 * dpr;
+            eCtx.stroke();
+
+            // Arrowhead (down)
+            eCtx.fillStyle = data.flameColorHex;
+            eCtx.beginPath();
+            eCtx.moveTo(midX + 8  * dpr, groundY);
+            eCtx.lineTo(midX + 3  * dpr, groundY - 9 * dpr);
+            eCtx.lineTo(midX + 13 * dpr, groundY - 9 * dpr);
+            eCtx.fill();
+
+            // 3. Emitted sinusoidal photon wave (hν).
+            // The simple midpoint between groundY and excitedY can coincide with an
+            // intermediate level line (e.g. K's 4p sits almost exactly at the midpoint
+            // of the 4s–5p span). Instead, find the LARGEST GAP between consecutive
+            // level lines within the active transition range and centre the wave there.
+            const photonStartX = midX + 18 * dpr;
+            const waveLen      = 42 * dpr;
+            let   photonStartY = (groundY + excitedY) / 2;   // safe fallback
+
+            {
+                const tr      = data.activeTransition;
+                const trTop   = Math.min(ys[tr.from], ys[tr.to]);
+                const trBot   = Math.max(ys[tr.from], ys[tr.to]);
+                // Level lines that fall strictly between the two transition endpoints
+                const inner   = ys.filter(y => y > trTop && y < trBot)
+                                   .sort((a, b) => a - b);
+                const anchors = [trTop, ...inner, trBot];
+                let bestGap   = 0;
+                for (let g = 0; g < anchors.length - 1; g++) {
+                    const gap = anchors[g + 1] - anchors[g];
+                    if (gap > bestGap) {
+                        bestGap      = gap;
+                        photonStartY = (anchors[g] + anchors[g + 1]) / 2;
+                    }
+                }
+            }
+
+            eCtx.beginPath();
+            for (let x = 0; x < waveLen; x++) {
+                const angle = (x / (8 * dpr)) * Math.PI * 2 - quantumAnimProgress * 4;
+                const waveY = photonStartY + Math.sin(angle) * (5 * dpr);
+                if (x === 0) eCtx.moveTo(photonStartX + x, waveY);
+                else         eCtx.lineTo(photonStartX + x, waveY);
+            }
+            eCtx.strokeStyle = data.flameColorHex;
+            eCtx.lineWidth = 2 * dpr;
+            eCtx.stroke();
+
+            // Photon label (right of wave, clamped to canvas)
+            const photonLabelX = photonStartX + waveLen + 5 * dpr;
+            eCtx.fillStyle = data.flameColorHex;
+            eCtx.font = FONT_SM_B;
+            eCtx.textAlign = 'left';
+            eCtx.fillText(
+                clampText(`hν ${data.wavelength}nm`, w - photonLabelX - 4 * dpr),
+                photonLabelX, photonStartY + 3 * dpr
+            );
+        }
+
+        // -------------------------------------------------------------
+        // Animated Bohr-Model Orbital Diagram
+        // Called every frame when diagramMode === 'orbital'.
+        // Shows a simplified atom with concentric orbital shells and an
+        // electron that cycles through excitation → excited state →
+        // photon emission → ground state while the loop is in the flame.
+        // -------------------------------------------------------------
+        function renderOrbitalDiagram(t) {
+            const dpr = window.devicePixelRatio;
+            const w   = energyCanvas.width;
+            const h   = energyCanvas.height;
+            eCtx.clearRect(0, 0, w, h);
+
+            if (isClean) {
+                eCtx.fillStyle = '#64748b';
+                eCtx.font      = `${13 * dpr}px Inter, sans-serif`;
+                eCtx.textAlign = 'center';
+                eCtx.fillText("No metal analyte on the loop", w / 2, h / 2);
+                return;
+            }
+            const data = ELEMENTS_DATA[currentElementKey];
+            if (!data) return;
+
+            // ── Layout ─────────────────────────────────────────────────────
+            // Nucleus sits left-of-center; the right strip holds text labels.
+            const cx   = w * 0.37;
+            const cy   = h * 0.50;
+            const RMAX = Math.min(cx * 0.90, cy * 0.82);
+            const RMIN = RMAX * 0.22;
+
+            // Map each level's yRatio to an orbit radius.
+            // Ground state (largest yRatio) → RMIN (smallest orbit).
+            // Highest excited (smallest yRatio) → RMAX (largest orbit).
+            const yMax  = Math.max(...data.levels.map(l => l.yRatio));
+            const yMin  = Math.min(...data.levels.map(l => l.yRatio));
+            const ySpan = (yMax - yMin) || 1;
+            const orbitR = data.levels.map(l =>
+                RMIN + ((yMax - l.yRatio) / ySpan) * (RMAX - RMIN)
+            );
+
+            // Active transition (from = excited level index, to = ground index)
+            const { from: iFrom, to: iTo } = data.activeTransition;
+
+            // ── Excitation/emission cycle ───────────────────────────────────
+            // Phase boundaries (fraction of ORB_CYCLE_LEN):
+            //   0.00 → PH_EX  : electron jumps from ground to excited orbit
+            //   PH_EX → PH_EXC: electron orbits excited shell (fast)
+            //   PH_EXC → PH_EM: electron falls back + photon burst
+            //   PH_EM → 1.00  : electron orbits ground shell (slow)
+            const PH_EX  = 0.12;
+            const PH_EXC = 0.55;
+            const PH_EM  = 0.74;
+            const cycleT = isLoopInFlame ? (t % ORB_CYCLE_LEN) / ORB_CYCLE_LEN : 1.0;
+
+            const slowAng = (t * 0.5) % (Math.PI * 2);  // ~12.6 s per orbit in ground state
+            const fastAng = (t * 1.2) % (Math.PI * 2);  // ~5.2 s per orbit in excited state
+            let eR, eAngle, photonFrac = 0, isExcited = false, isEmitting = false;
+
+            if (!isLoopInFlame) {
+                // Loop not in flame: slow ground orbit only
+                eR = orbitR[iTo]; eAngle = slowAng;
+            } else if (cycleT < PH_EX) {
+                // Excitation jump: interpolate from ground to excited radius
+                const p = cycleT / PH_EX;
+                eR = orbitR[iTo] + (orbitR[iFrom] - orbitR[iTo]) * p;
+                eAngle = slowAng;
+            } else if (cycleT < PH_EXC) {
+                // Excited state: faster orbit on outer shell
+                eR = orbitR[iFrom]; eAngle = fastAng; isExcited = true;
+            } else if (cycleT < PH_EM) {
+                // De-excitation: interpolate back + emit photon
+                const p = (cycleT - PH_EXC) / (PH_EM - PH_EXC);
+                eR = orbitR[iFrom] + (orbitR[iTo] - orbitR[iFrom]) * p;
+                eAngle = fastAng; photonFrac = p; isEmitting = true;
+            } else {
+                // Ground state rest
+                eR = orbitR[iTo]; eAngle = slowAng;
+            }
+
+            const ex = cx + Math.cos(eAngle) * eR;
+            const ey = cy + Math.sin(eAngle) * eR;
+            const elColor = (isExcited || isEmitting) ? data.flameColorHex : '#60a5fa';
+
+            // ── Orbit rings ─────────────────────────────────────────────────
+            data.levels.forEach((lvl, idx) => {
+                const r    = orbitR[idx];
+                const isGnd = idx === iTo;
+                const isExR = idx === iFrom;
+                const act   = isExR && (isExcited || isEmitting);
+
+                // Soft glow halo on active excited ring
+                if (act) {
+                    eCtx.beginPath();
+                    eCtx.arc(cx, cy, r, 0, Math.PI * 2);
+                    eCtx.strokeStyle = data.flameColorHex;
+                    eCtx.globalAlpha = 0.18;
+                    eCtx.lineWidth   = 10 * dpr;
+                    eCtx.stroke();
+                    eCtx.globalAlpha = 1;
+                }
+
+                eCtx.beginPath();
+                eCtx.arc(cx, cy, r, 0, Math.PI * 2);
+                eCtx.strokeStyle = act    ? data.flameColorHex
+                                 : isGnd  ? 'rgba(96,165,250,0.45)'
+                                          : 'rgba(60,100,180,0.22)';
+                eCtx.lineWidth = (act || isGnd ? 1.8 : 1.2) * dpr;
+                eCtx.setLineDash([3 * dpr, 5 * dpr]);
+                eCtx.stroke();
+                eCtx.setLineDash([]);
+                // Labels are in the top-left legend below — no per-ring text here
+                // (all ring labels at the same y=cy overlap when radii are close).
+            });
+
+            // ── Top-left corner legend (ground at bottom → highest at top) ───
+            // Each level owns one line, so no overlap regardless of orbital spacing.
+            {
+                const LEG_X  = 4 * dpr;
+                const LEG_LH = 14 * dpr;           // line height
+                const numLvl = data.levels.length;
+
+                data.levels.forEach((lvl, idx) => {
+                    const isGnd = idx === iTo;
+                    const isExR = idx === iFrom;
+                    const act   = isExR && (isExcited || isEmitting);
+                    const color = act    ? data.flameColorHex
+                                : isGnd  ? 'rgba(148,163,184,0.9)'
+                                         : 'rgba(80,130,200,0.75)';
+
+                    // idx=0 (ground) maps to the BOTTOM row of the legend
+                    // idx=numLvl-1 (highest excited) maps to the TOP row.
+                    const ly = (numLvl - 1 - idx) * LEG_LH + 5 * dpr;
+
+                    // Short tick matching ring style
+                    eCtx.strokeStyle = color;
+                    eCtx.lineWidth   = 2 * dpr;
+                    eCtx.setLineDash([2 * dpr, 2 * dpr]);
+                    eCtx.beginPath();
+                    eCtx.moveTo(LEG_X,             ly + 3 * dpr);
+                    eCtx.lineTo(LEG_X + 7 * dpr,  ly + 3 * dpr);
+                    eCtx.stroke();
+                    eCtx.setLineDash([]);
+
+                    // Level name (parenthetical stripped for brevity)
+                    const shortName = lvl.name.replace(/\s*\(.*/, '').trim();
+                    eCtx.fillStyle  = color;
+                    eCtx.font       = `${8 * dpr}px JetBrains Mono, monospace`;
+                    eCtx.textAlign  = 'left';
+                    eCtx.fillText(shortName, LEG_X + 10 * dpr, ly + 4 * dpr);
+                });
+            }
+
+            // ── Photon rings (expanding on de-excitation) ───────────────────
+            if (isEmitting && photonFrac > 0) {
+                const maxBurst = RMAX * 1.40;
+                for (let ring = 0; ring < 4; ring++) {
+                    const f = photonFrac - ring * 0.20;
+                    if (f <= 0 || f > 1) continue;
+                    const ringR = RMIN * 0.40 + f * maxBurst;
+                    eCtx.beginPath();
+                    eCtx.arc(cx, cy, ringR, 0, Math.PI * 2);
+                    eCtx.strokeStyle  = data.flameColorHex;
+                    eCtx.globalAlpha  = (1 - f) * 0.72;
+                    eCtx.lineWidth    = dpr * 2.2 * (1 - f * 0.55);
+                    eCtx.stroke();
+                }
+                eCtx.globalAlpha = 1;
+            }
+
+            // ── Excitation flash at electron position ───────────────────────
+            if (isLoopInFlame && cycleT < PH_EX) {
+                const p     = cycleT / PH_EX;
+                const fR    = RMIN * (0.6 + p * 0.9);
+                const fAlpha = (1 - p) * 0.55;
+                const fGrd  = eCtx.createRadialGradient(ex, ey, 0, ex, ey, fR);
+                fGrd.addColorStop(0, `rgba(251,191,36,${fAlpha.toFixed(3)})`);
+                fGrd.addColorStop(1, 'rgba(0,0,0,0)');
+                eCtx.fillStyle = fGrd;
+                eCtx.beginPath();
+                eCtx.arc(ex, ey, fR, 0, Math.PI * 2);
+                eCtx.fill();
+            }
+
+            // ── Nucleus ─────────────────────────────────────────────────────
+            {
+                const nGrd = eCtx.createRadialGradient(cx, cy, 0, cx, cy, 15 * dpr);
+                nGrd.addColorStop(0,   'rgba(255,255,255,1)');
+                nGrd.addColorStop(0.4, 'rgba(160,210,255,0.85)');
+                nGrd.addColorStop(1,   'rgba(40,100,200,0)');
+                eCtx.fillStyle = nGrd;
+                eCtx.beginPath();
+                eCtx.arc(cx, cy, 15 * dpr, 0, Math.PI * 2);
+                eCtx.fill();
+                eCtx.fillStyle = 'rgba(230,245,255,0.95)';
+                eCtx.beginPath();
+                eCtx.arc(cx, cy, 4 * dpr, 0, Math.PI * 2);
+                eCtx.fill();
+                eCtx.fillStyle  = 'rgba(80,140,210,0.85)';
+                eCtx.font       = `bold ${9 * dpr}px Inter, sans-serif`;
+                eCtx.textAlign  = 'center';
+                eCtx.fillText(data.id, cx, cy + 3 * dpr);
+            }
+
+            // ── Electron dot with glow ───────────────────────────────────────
+            {
+                const gR  = 11 * dpr;
+                const eGrd = eCtx.createRadialGradient(ex, ey, 0, ex, ey, gR);
+                eGrd.addColorStop(0,   '#ffffff');
+                eGrd.addColorStop(0.3, elColor);
+                eGrd.addColorStop(1,   'rgba(0,0,0,0)');
+                eCtx.fillStyle = eGrd;
+                eCtx.beginPath();
+                eCtx.arc(ex, ey, gR, 0, Math.PI * 2);
+                eCtx.fill();
+                eCtx.fillStyle = '#ffffff';
+                eCtx.beginPath();
+                eCtx.arc(ex, ey, 3 * dpr, 0, Math.PI * 2);
+                eCtx.fill();
+            }
+
+            // ── Info panel (right strip) ─────────────────────────────────────
+            {
+                const panX = Math.min(cx + RMAX + 14 * dpr, w * 0.59);
+                eCtx.textAlign = 'left';
+
+                // Current state badge
+                let stateTxt   = "○ Ground state";
+                let stateColor = '#60a5fa';
+                if (isLoopInFlame) {
+                    if      (cycleT < PH_EX)   { stateTxt = "⚡ Excitation ↑";    stateColor = '#fbbf24'; }
+                    else if (cycleT < PH_EXC)  { stateTxt = "● Excited state";  stateColor = data.flameColorHex; }
+                    else if (cycleT < PH_EM)   { stateTxt = "→ Emission hν";       stateColor = data.flameColorHex; }
+                    else                        { stateTxt = "○ Relaxation";        stateColor = '#60a5fa'; }
+                }
+                eCtx.fillStyle = stateColor;
+                eCtx.font      = `bold ${9 * dpr}px Inter, sans-serif`;
+                eCtx.fillText(stateTxt, panX, h * 0.18);
+
+                // Transition label
+                eCtx.fillStyle = 'rgba(100,120,150,0.9)';
+                eCtx.font      = `${8 * dpr}px JetBrains Mono, monospace`;
+                eCtx.fillText("Transition:", panX, h * 0.36);
+                eCtx.fillStyle = '#38bdf8';
+                eCtx.font      = `bold ${8 * dpr}px JetBrains Mono, monospace`;
+                const tShort = data.transitionTerm.split('(')[0].trim().split('&')[0].trim();
+                eCtx.fillText(tShort.length > 17 ? tShort.slice(0, 15) + '…' : tShort, panX, h * 0.49);
+
+                // λ + ΔE — fades in during emission window, out after
+                const emWinStart = PH_EXC - 0.02;
+                const emWinEnd   = PH_EM  + 0.06;
+                if (isLoopInFlame && cycleT >= emWinStart && cycleT <= emWinEnd) {
+                    const raw = cycleT < PH_EXC ? (cycleT - emWinStart) / 0.02
+                              : cycleT > PH_EM  ? 1 - (cycleT - PH_EM) / 0.06
+                              : 1.0;
+                    eCtx.globalAlpha = Math.max(0, Math.min(1, raw));
+                    eCtx.fillStyle   = data.flameColorHex;
+                    eCtx.font        = `bold ${10 * dpr}px JetBrains Mono, monospace`;
+                    eCtx.fillText(`λ = ${data.wavelength} nm`, panX, h * 0.66);
+                    eCtx.fillStyle = '#94a3b8';
+                    eCtx.font      = `${8 * dpr}px JetBrains Mono, monospace`;
+                    eCtx.fillText(`ΔE = ${data.energyEv} eV`, panX, h * 0.80);
+                    eCtx.globalAlpha = 1.0;
+                }
+            }
+        }
+
+        // ── Diagram mode tab helpers ──────────────────────────────────────────
+        function setDiagramMode(mode) {
+            diagramMode = mode;
+            const tabG = document.getElementById('tab-grotrian');
+            const tabO = document.getElementById('tab-orbital');
+            if (mode === 'grotrian') {
+                tabG.className = 'px-2.5 py-0.5 bg-indigo-900/80 text-indigo-200 font-medium transition-colors';
+                tabO.className = 'px-2.5 py-0.5 bg-slate-900/60 text-slate-400 hover:bg-slate-800 border-l border-slate-700 transition-colors';
+            } else {
+                tabO.className = 'px-2.5 py-0.5 bg-indigo-900/80 text-indigo-200 font-medium border-l border-slate-700 transition-colors';
+                tabG.className = 'px-2.5 py-0.5 bg-slate-900/60 text-slate-400 hover:bg-slate-800 transition-colors';
+            }
+            // Immediate redraw so the tab switch feels instant
+            if (mode === 'orbital') renderOrbitalDiagram(clock.getElapsedTime());
+            else renderEnergyLevels(isClean);
+        }
+
+        // Convenience: call the correct diagram renderer based on current mode
+        function renderActiveDiagram(isReset = false) {
+            if (diagramMode === 'orbital') renderOrbitalDiagram(clock.getElapsedTime());
+            else renderEnergyLevels(isReset);
+        }
+
+        // -------------------------------------------------------------
+        // Calibrated Visible Spectrum Line Rendering
+        // -------------------------------------------------------------
+        function wavelengthToX(nm, width) {
+            const minNm = 380;
+            const maxNm = 750;
+            return ((nm - minNm) / (maxNm - minNm)) * width;
+        }
+
+        function renderSpectrumBar(isResetClean = false) {
+            const dpr = window.devicePixelRatio;
+            const w   = spectrumCanvas.width;
+            const h   = spectrumCanvas.height;
+            sCtx.clearRect(0, 0, w, h);
+
+            if (isResetClean) return;
+
+            const data = ELEMENTS_DATA[currentElementKey];
+            if (!data) return;
+
+            // Sort lines by wavelength so deconfliction logic is always left→right.
+            const sorted = [...data.lines].sort((a, b) => a - b);
+            const xs     = sorted.map(nm => wavelengthToX(nm, w));
+
+            // Pre-compute label Y for each line.
+            // If two consecutive lines are closer than MIN_LABEL_GAP canvas-pixels,
+            // alternate their label between bottom and top to avoid overlap.
+            // The alternation propagates: each label flips relative to the previous.
+            const MIN_LABEL_GAP = 34 * dpr;
+            const LABEL_Y_BOT   = h - 3 * dpr;
+            const LABEL_Y_TOP   = h * 0.30;
+            const labelYs       = sorted.map(() => LABEL_Y_BOT);
+            for (let i = 1; i < sorted.length; i++) {
+                if (xs[i] - xs[i - 1] < MIN_LABEL_GAP) {
+                    // Flip current label to opposite side of previous
+                    labelYs[i] = labelYs[i - 1] > h * 0.5 ? LABEL_Y_TOP : LABEL_Y_BOT;
+                }
+            }
+
+            sorted.forEach((nm, i) => {
+                const x = xs[i];
+                const lineAlpha = (isCobaltFilter && nm >= 585 && nm <= 595) ? 0.08 : 1.0;
+
+                // Glow bloom
+                sCtx.beginPath();
+                sCtx.moveTo(x, 0); sCtx.lineTo(x, h);
+                sCtx.strokeStyle = data.flameColorHex;
+                sCtx.globalAlpha = 0.45 * lineAlpha;
+                sCtx.lineWidth   = 8 * dpr;
+                sCtx.stroke();
+
+                // Sharp core
+                sCtx.beginPath();
+                sCtx.moveTo(x, 0); sCtx.lineTo(x, h);
+                sCtx.strokeStyle = '#ffffff';
+                sCtx.globalAlpha = 0.95 * lineAlpha;
+                sCtx.lineWidth   = 2 * dpr;
+                sCtx.stroke();
+
+                // Label at deconflicted Y
+                sCtx.fillStyle  = '#ffffff';
+                sCtx.globalAlpha = lineAlpha;
+                sCtx.font       = `bold ${9 * dpr}px JetBrains Mono, monospace`;
+                sCtx.textAlign  = 'center';
+                sCtx.fillText(`${nm} nm`, x, labelYs[i]);
+            });
+            sCtx.globalAlpha = 1.0;
+        }
+
+        // -------------------------------------------------------------
+        // Main Animation Loop
+        // -------------------------------------------------------------
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            const time = clock.getElapsedTime();
+
+            // 1. Smooth Loop Kinematic Interpolation
+            const targetPos = isLoopInFlame ? LOOP_BURN_POS : LOOP_REST_POS;
+            const targetRot = isLoopInFlame ? LOOP_BURN_ROT : LOOP_REST_ROT;
+
+            loopGroup.position.lerp(targetPos, 0.08);
+            loopGroup.rotation.x = THREE.MathUtils.lerp(loopGroup.rotation.x, targetRot.x, 0.08);
+            loopGroup.rotation.y = THREE.MathUtils.lerp(loopGroup.rotation.y, targetRot.y, 0.08);
+            loopGroup.rotation.z = THREE.MathUtils.lerp(loopGroup.rotation.z, targetRot.z, 0.08);
+
+            // Determine if the loop is close enough to the flame center
+            const distToFlame = loopGroup.position.distanceTo(LOOP_BURN_POS);
+            const isInFlameZone = distToFlame < 0.25;
+
+            // 2. Air Collar Combustion Effects (Air ratio)
+            const airRatio = airCollarValue / 100.0; // 0 to 1
+
+            // Base Blue Flame Cone Visibility
+            innerConeMat.opacity = 0.3 + 0.45 * airRatio;
+            outerConeMat.opacity = 0.2 + 0.3 * airRatio;
+
+            // Adjust base color based on air collar (closed air = yellow luminous soot flame)
+            baseFlameColor.copy(HOT_BLUE).lerp(SOOT_YELLOW, (1.0 - airRatio) * 0.95);
+            outerConeMat.color.copy(baseFlameColor);
+
+            // 3. Dynamic Metal Emission Blending
+            const data = ELEMENTS_DATA[currentElementKey];
+            if (isInFlameZone && !isClean) {
+                metalFlameTargetOpacity = 0.75;
+                let activeHex = data.threeColor;
+
+                // Cobalt glass optical extinction filter effect on 3D flame
+                if (isCobaltFilter) {
+                    if (data.id === 'Na') {
+                        // Sodium 589nm strongly absorbed by cobalt
+                        activeHex = 0x223366;
+                        metalFlameTargetOpacity = 0.12;
+                    } else if (data.id === 'K') {
+                        // Potassium violet is easily transmitted
+                        activeHex = 0x8a2be2;
+                        metalFlameTargetOpacity = 0.85;
+                    }
+                }
+                targetColor.setHex(activeHex);
+            } else {
+                metalFlameTargetOpacity = 0.0;
+                targetColor.copy(baseFlameColor);
+            }
+
+            metalFlameCurrentOpacity = THREE.MathUtils.lerp(metalFlameCurrentOpacity, metalFlameTargetOpacity, 0.1);
+            metalFlameMat.opacity = metalFlameCurrentOpacity;
+            currentFlameColor.lerp(targetColor, 0.12);
+            metalFlameMat.color.copy(currentFlameColor);
+
+            // 4. Flame Point Light Dynamics & Organic Turbulence
+            const flicker = Math.sin(time * 18.0) * 0.08 + Math.cos(time * 26.0) * 0.05;
+            flamePointLight.intensity = (1.8 + metalFlameCurrentOpacity * 2.2 + (1.0 - airRatio) * 1.5) + flicker;
+            flamePointLight.color.copy(currentFlameColor);
+
+            // Organic scale deformation of the flame cones
+            const waveWobble = Math.sin(time * 14.0) * 0.035;
+            innerCone.scale.set(1.0 + waveWobble, 1.0 + Math.cos(time * 20.0) * 0.06, 1.0 - waveWobble);
+            outerCone.scale.set(1.0 - waveWobble * 0.7, 1.0 + waveWobble * 1.2, 1.0 + waveWobble * 0.7);
+            metalFlame.scale.set(1.0 + waveWobble * 0.5, 1.0 + Math.sin(time * 16.0) * 0.08, 1.0 - waveWobble * 0.5);
+
+            // 5. Update Flame Particles (Ascent and dissipation)
+            const posAttr = particleGeo.attributes.position;
+            const positions = posAttr.array;
+            particleMat.color.copy(currentFlameColor);
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                pLifetimes[i] += delta;
+                if (pLifetimes[i] >= pMaxLifetimes[i]) {
+                    // Respawn near base of flame
+                    pLifetimes[i] = 0;
+                    positions[i * 3 + 0] = (Math.random() - 0.5) * 0.14;
+                    positions[i * 3 + 1] = flameOriginY + 0.1;
+                    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.14;
+                } else {
+                    // Ascend with drift
+                    const v = pVelocities[i];
+                    positions[i * 3 + 0] += v.x + (Math.random() - 0.5) * 0.003;
+                    positions[i * 3 + 1] += v.y;
+                    positions[i * 3 + 2] += v.z + (Math.random() - 0.5) * 0.003;
+                }
+            }
+            posAttr.needsUpdate = true;
+
+            // 6. Update Quantum Diagram (Grotrian or Orbital model)
+            quantumAnimProgress += delta;
+            if (diagramMode === 'orbital') {
+                renderOrbitalDiagram(time);
+            } else {
+                renderEnergyLevels(isClean);
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Initialize icons, canvas sizes, and start the simulation
+        window.addEventListener('load', () => {
+            lucide.createIcons();
+            resizeCanvases();
+            selectElement('Li');
+            animate();
+        });
+    </script>
+    <script src="../../kit/simkit-lite.en.js?v=20261017a"></script>
+    <script src="extras.en.js"></script>
+
+</body></html>

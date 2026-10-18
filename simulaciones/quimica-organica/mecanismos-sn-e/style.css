@@ -16,7 +16,7 @@
   --panel-solid: #131929;
   --card: rgba(255, 255, 255, 0.045);
   --ink: #e9eef9;
-  --muted: #98a4c0;
+  --muted: #aab5cd;
   --line: rgba(255, 255, 255, 0.11);
   --accent: #5cc8ff;
   --warn: #ffb020;
@@ -32,7 +32,7 @@
   --panel-solid: #ffffff;
   --card: rgba(20, 30, 60, 0.04);
   --ink: #141a2b;
-  --muted: #56627f;
+  --muted: #485470;
   --line: rgba(20, 30, 60, 0.13);
   --accent: #0a86cc;
   --warn: #b86e00;
@@ -74,7 +74,7 @@ sub, sup { line-height: 0; }
   box-shadow: 0 4px 14px rgba(92, 200, 255, 0.35);
 }
 .brand-text { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
-.brand-text strong { font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand-text .brand-title { margin: 0; font-weight: 700; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .brand-text small { color: var(--muted); font-size: 0.74rem; }
 
 .mech-tabs { display: flex; gap: 6px; margin: 0 auto; padding: 4px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; }
@@ -362,3 +362,6 @@ kbd { font-family: inherit; font-size: 0.78rem; padding: 1px 6px; border-radius:
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }

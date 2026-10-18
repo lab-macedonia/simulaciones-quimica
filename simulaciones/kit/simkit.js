@@ -89,7 +89,7 @@
     app.innerHTML =
       '<header class="topbar">' +
         '<div class="brand"><span class="brand-mark" aria-hidden="true"></span>' +
-        '<div class="brand-text"><strong>' + cfg.title + '</strong><small>' + (cfg.subtitle || '') + '</small></div></div>' +
+        '<div class="brand-text"><h1 class="brand-title">' + cfg.title + '</h1><small>' + (cfg.subtitle || '') + '</small></div></div>' +
         modeTabs +
         '<div class="top-actions">' +
           '<a class="icon-btn" id="kHome" href="' + homeHref + '" title="Volver a las simulaciones" aria-label="Volver a las simulaciones">' + icon('home') + '</a>' +
@@ -100,12 +100,12 @@
           '<button class="icon-btn only-narrow" id="kPanelBtn" title="Mostrar/ocultar panel" aria-label="Panel" aria-expanded="false">' + icon('panel') + '</button>' +
         '</div>' +
       '</header>' +
-      '<main class="stage">' +
-        '<div id="canvas-container" class="viewport" aria-label="' + (cfg.viewLabel || 'Visor interactivo') + '"></div>' +
+      '<main class="stage" id="main"><div class="sr-only" id="srLive" role="status" aria-live="polite" aria-atomic="true"></div>' +
+        '<div id="canvas-container" class="viewport" role="group" tabindex="0" aria-roledescription="visor 3D" aria-label="' + (cfg.viewLabel || 'Visor interactivo') + '" aria-describedby="' + (stages.length ? 'phName ' : '') + 'viewHint"></div><span class="sr-only" id="viewHint">Con el visor enfocado: flechas para girar la cámara, más y menos para acercar o alejar.</span>' +
         '<div class="vignette" aria-hidden="true"></div>' +
-        (stages.length ? '<div class="hud hud-phase" id="phaseBadge" aria-live="polite"><span class="ph-step" id="phStep"></span><span class="ph-name" id="phName"></span><span class="ph-ts" id="phTs" hidden>[‡]</span></div>' : '') +
+        (stages.length ? '<div class="hud hud-phase" id="phaseBadge"><span class="ph-step" id="phStep"></span><span class="ph-name" id="phName"></span><span class="ph-ts" id="phTs" hidden>[‡]</span></div>' : '') +
         '<div class="hud-col">' +
-          '<section class="hud hud-eq" id="eqBox" aria-live="polite" hidden><div class="eq-head"><span class="eq-chip" id="eqChip"></span><span class="eq-name" id="eqName"></span></div><div class="eq-body" id="eqBody"></div></section>' +
+          '<section class="hud hud-eq" id="eqBox" aria-label="Datos en vivo" hidden><div class="eq-head"><span class="eq-chip" id="eqChip"></span><span class="eq-name" id="eqName"></span></div><div class="eq-body" id="eqBody"></div></section>' +
           '<section class="hud hud-layers" id="layersBox" aria-label="Capas del visor" hidden>' +
             '<button class="layers-head" id="layersHead" aria-expanded="true">' + icon('layers') + '<span>Capas</span></button>' +
             '<div class="layers-body" id="layersBody"></div>' +
@@ -113,7 +113,7 @@
           '</section>' +
         '</div>' +
         '<section class="hud hud-legend" id="legend" aria-label="Leyenda" hidden></section>' +
-        '<aside class="panel" id="panel"><div class="panel-tabs" role="tablist" id="ptabs"></div><div class="panel-body" id="pbody"></div></aside>' +
+        '<aside class="panel" id="panel" aria-label="Panel de la simulación"><div class="panel-tabs" role="tablist" id="ptabs"></div><div class="panel-body" id="pbody" tabindex="0"></div></aside>' +
         (stages.length ? dockHTML() : '') +
       '</main>';
     document.body.innerHTML = '';
@@ -156,12 +156,32 @@
     kit.panel = $('#panel');
     kit.dock = $('#dock');
 
+    kit.viewport.addEventListener('keydown', function (e) {
+      if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+      var s = global.__sim; if (!s || !s.camera || !s.controls) return;
+      var k = e.key, st = 0.14, c = s.camera, t = s.controls.target, o = c.position.clone().sub(t), r = o.length(), th = Math.atan2(o.x, o.z), ph = Math.acos(Math.max(-1, Math.min(1, o.y / r)));
+      if (k === 'ArrowLeft') th -= st; else if (k === 'ArrowRight') th += st; else if (k === 'ArrowUp') ph = Math.max(0.1, ph - st); else if (k === 'ArrowDown') ph = Math.min(Math.PI - 0.1, ph + st); else if (k === '+' || k === '=') r *= 0.9; else if (k === '-' || k === '_') r /= 0.9; else return;
+      e.preventDefault(); e.stopPropagation(); if (s.P) s.P.camGoal = null;
+      c.position.set(t.x + r * Math.sin(ph) * Math.sin(th), t.y + r * Math.cos(ph), t.z + r * Math.sin(ph) * Math.cos(th)); c.lookAt(t); s.controls.update();
+    });
+    kit.announce = function (msg) { var r = $('#srLive'); if (!r) return; r.textContent = ''; setTimeout(function () { r.textContent = msg; }, 60); };
     /* ---------- Tema ---------- */
+    kit.updateOnAccent = function () {
+      var a = (getComputedStyle(root).getPropertyValue('--accent') || '').trim(), m = /^#?([0-9a-f]{6})$/i.exec(a); if (!m) return;
+      var n = parseInt(m[1], 16), rgb = [n >> 16 & 255, n >> 8 & 255, n & 255];
+      function lum(c) { var q = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * q[0] + 0.7152 * q[1] + 0.0722 * q[2]; }
+      function cr(l1, l2) { return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); }
+      var dark = [7, 16, 28], dl = lum(dark), white = cr(lum(rgb), 1), blk = cr(lum(rgb), dl), useWhite = white >= blk, bg = rgb.slice(), k = 0;
+      while (k++ < 40 && cr(lum(bg), useWhite ? 1 : dl) < 4.6) bg = bg.map(function (v) { return Math.round(useWhite ? v * 0.93 : v + (255 - v) * 0.07); });
+      root.style.setProperty('--on-accent', useWhite ? '#ffffff' : '#07101c');
+      root.style.setProperty('--accent-solid', 'rgb(' + bg.join(',') + ')');
+    };
     function applyTheme() {
       root.setAttribute('data-theme', S.theme);
       var b = $('#kTheme');
       if (b) b.innerHTML = icon(S.theme === 'dark' ? 'sun' : 'moon');
       prefs.theme = S.theme; store.set(key, prefs);
+      kit.updateOnAccent();
       if (cfg.onTheme) cfg.onTheme(S.theme, kit);
       kit.redrawCanvases();
     }
@@ -424,6 +444,7 @@
       var s = stages[i];
       if (refs.phStep) refs.phStep.textContent = 'Etapa ' + (i + 1) + ' / ' + stages.length;
       if (refs.phName) refs.phName.textContent = s.name;
+      if (kit.announce && S._lastAnn !== i) { S._lastAnn = i; kit.announce('Etapa ' + (i + 1) + ' de ' + stages.length + ': ' + s.name); }
       if (refs.phTs) refs.phTs.hidden = !s.ts;
       if (refs.badge) refs.badge.classList.toggle('is-ts', !!s.ts);
       if (refs.pcKicker) refs.pcKicker.textContent = 'Etapa ' + (i + 1) + ' de ' + stages.length;

@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23226f92%22/%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2211%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223.5%22/%3E%3Cg%20fill%3D%22%23fff%22%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2212%22%20r%3D%223.5%22/%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2252%22%20r%3D%223.5%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2232%22%20r%3D%223.5%22/%3E%3Ccircle%20cx%3D%2252%22%20cy%3D%2232%22%20r%3D%223.5%22/%3E%3C/g%3E%3Ctext%20x%3D%2232%22%20y%3D%2237%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-weight%3D%22800%22%20font-size%3D%2214%22%20fill%3D%22%23fff%22%3EX%3C/text%3E%3C/svg%3E">
+<meta name="description" content="LewisLab: interactive builder of Lewis symbols and structures.">
+<title>LewisLab — Lewis Structures</title><link rel="stylesheet" href="css/styles.css">
+<style>
+.atomLewis{display:grid;place-items:center;min-height:300px;font-size:4rem}.lewisSymbol{position:relative;width:170px;height:170px;display:grid;place-items:center;
+font-size:4.5rem;font-weight:800}.dot{position:absolute;width:12px;height:12px;background:var(--accent);border-radius:50%}
+.dot.t1{top:8px;left:68px}.dot.t2{top:8px;left:91px}.dot.r1{right:7px;top:68px}.dot.r2{right:7px;top:91px}
+.dot.b1{bottom:8px;left:68px}.dot.b2{bottom:8px;left:91px}.dot.l1{left:7px;top:68px}.dot.l2{left:7px;top:91px}
+.structure svg{width:100%;height:420px}.atomNode{fill:var(--panel);stroke:var(--text);stroke-width:2}.bond{stroke:var(--text);stroke-width:4;stroke-linecap:round}
+.lp{fill:var(--purple)}.charge{fill:var(--accent2);font-weight:800}.step{border-left:4px solid var(--border);padding:8px 12px;margin:8px 0}
+.step.active{border-color:var(--accent);background:var(--soft)}.moleculeBtns{display:flex;gap:7px;flex-wrap:wrap}.molbtn{padding:8px 10px;border-radius:10px;
+border:1px solid var(--border);background:var(--panel);color:var(--text);cursor:pointer}.molbtn.active{border-color:var(--accent);background:var(--soft)}
+.exception{padding:14px;border:1px solid var(--border);border-radius:14px;background:var(--panel)}
+</style><link rel="stylesheet" href="../shared/suite.css">
+<link rel="alternate" hreflang="es" href="index.html"><script defer src="../../kit/langswitch.js?v=20261018a"></script>
+</head>
+<body data-module="lewislab" data-module-title="LewisLab">
+<header><div class="container head"><div><p class="eyebrow">Structure and chemical bonding</p><h1>LewisLab</h1>
+<p class="sub">From atomic Lewis symbols to organic and inorganic molecules, resonance, formal charge and exceptions to the octet rule.</p></div>
+<button id="theme" class="btn">Switch theme</button></div></header>
+<main class="container">
+<nav class="tabs">
+<button class="tab active" data-tab="atomos">Atoms</button><button class="tab" data-tab="moleculas">Molecules</button>
+<button class="tab" data-tab="construir">Build</button><button class="tab" data-tab="resonancia">Resonance</button>
+<button class="tab" data-tab="excepciones">Exceptions</button><button class="tab" data-tab="desafio">Challenges</button>
+</nav>
+
+<section id="atomos" class="panel active">
+<div class="grid2">
+<article class="card"><h2>Lewis symbols of atoms</h2>
+<div class="controls"><label><span>Element</span><select id="atomSelect"></select></label>
+<label><span>Show electrons</span><input id="electronRange" type="range" min="0" max="8" value="4"></label></div>
+<div class="atomLewis"><div id="lewisSymbol" class="lewisSymbol"></div></div></article>
+<article class="card"><h2>What does it represent?</h2><div class="grid2">
+<div class="stat"><span class="muted">Principal group</span><strong id="aGroup"></strong></div>
+<div class="stat"><span class="muted">valence e⁻</span><strong id="aValence"></strong></div></div>
+<p id="atomExplain"></p><div class="note">A Lewis symbol represents the valence electrons. First one electron is placed on each side of the symbol and then they are paired.</div></article>
+</div></section>
+
+<section id="moleculas" class="panel">
+<div class="card"><h2>Guided construction</h2><div id="molButtons" class="moleculeBtns"></div></div>
+<div class="grid2" style="margin-top:16px">
+<article class="card structure"><div class="toolbar"><span id="molBadge" class="badge"></span><span id="classBadge" class="badge alt"></span><button id="fcToggle" class="btn" type="button" aria-pressed="false">Show formal charges</button><button id="polToggle" class="btn" type="button" aria-pressed="false">Show bond polarity</button><button id="octetToggle" class="btn" type="button" aria-pressed="false">Show octet deviations</button><a id="viewIn3D" class="btn" href="#" target="_blank" rel="noopener" hidden="">View in 3D (GeoMol) →</a></div>
+<div class="vizbox"><svg id="molSvg" viewBox="0 0 720 420" role="img" aria-label="Lewis structure"></svg></div></article>
+<article class="card"><h2 id="molTitle"></h2><div class="grid2"><div class="stat"><span class="muted">total valence e⁻</span><strong id="totalVE"></strong></div>
+<div class="stat"><span class="muted">Charge</span><strong id="molCharge"></strong></div></div>
+<div id="steps"></div><div class="toolbar"><button id="prevStep" class="btn">← Previous</button><button id="nextStep" class="btn primary">Next →</button></div>
+<p id="molNote" class="muted"></p></article></div></section>
+
+<section id="construir" class="panel">
+<div class="grid2"><article class="card"><h2>Build it yourself</h2><p class="muted">Select an exercise and adjust the bond orders. The checker reviews the bond pattern of the contributor shown.</p>
+<label><span>Exercise</span><select id="builderSelect"></select></label>
+<div id="builderControls" class="toolbar"></div><div class="note" id="builderHint"></div></article>
+<article class="card structure"><div class="vizbox"><svg id="builderSvg" viewBox="0 0 720 420"></svg></div>
+<div class="toolbar"><button id="checkBuilder" class="btn primary">Check</button><button id="resetBuilder" class="btn">Restart</button></div><p id="builderFeedback"></p></article></div></section>
+
+<section id="resonancia" class="panel">
+<div class="grid2"><article class="card"><h2>Resonance</h2><label><span>Species</span><select id="resSelect"></select></label>
+<div id="resButtons" class="toolbar"></div><div class="vizbox structure"><svg id="resSvg" viewBox="0 0 720 420"></svg></div></article>
+<article class="card"><h2>What you should interpret</h2><p id="resExplain"></p>
+<div class="note">Resonance forms are not distinct molecules that alternate. They are contributors to a delocalized electronic structure.</div></article></div></section>
+
+<section id="excepciones" class="panel">
+<div class="grid3" id="exceptionGrid"></div>
+<div class="note warn" style="margin-top:16px"><strong>Hypervalence:</strong> Lewis structures are useful for electron bookkeeping, but the modern explanation of hypervalent species does not require invoking a simple octet expansion through hybrid d orbitals.</div>
+</section>
+
+<section id="desafio" class="panel"><article class="card"><h2>Mini-challenge</h2><div id="quiz"></div>
+<div class="toolbar"><button id="checkQuiz" class="btn primary">Review</button><button id="resetQuiz" class="btn">New attempt</button><button id="printAnswers" class="btn" type="button">Answer key (teacher)</button></div><p id="quizResult"></p><div id="answerKey" class="answer-key" hidden=""></div></article></section>
+</main>
+<footer><div class="container">LewisLab · Open educational resource for GitHub Pages.</div></footer>
+<script src="../shared/canvas-utils.en.js"></script><script src="../shared/embed.en.js"></script><script src="../shared/palette.en.js"></script><script src="js/app.en.js"></script>
+<script src="../../kit/simkit-lite.en.js?v=20261017a"></script><script src="../shared/suite-lite.en.js"></script>
+</body></html>
