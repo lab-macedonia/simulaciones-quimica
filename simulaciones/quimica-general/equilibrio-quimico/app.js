@@ -296,7 +296,7 @@
     h += '<div class="calc-step">2 · Q con las concentraciones actuales</div><table class="calc-table">' + s.sp.map(function (sp, i) { return row('[' + fm(sp[0]) + ']', fmt(st.n[i], 3) + ' mol ÷ ' + fmt(st.V, 2) + ' L = ' + fmt(st.n[i] / st.V, 4) + ' M'); }).join('') + row('Q', '<b>' + sci(q) + '</b>') + row('Q ÷ K', fmt(q / k, 3)) + row('Conclusión', '<b>' + dirTxt(dirOf(q, k)) + '</b>') + '</table>';
     if (ice0) {
       var d = dxEq(ice0.n, ice0.V, ice0.T), V = ice0.V;
-      h += '<div class="calc-step">3 · Tabla ICE desde la última perturbación (' + fmt(ice0.T, 0) + ' K, ' + fmt(V, 2) + ' L)</div><table class="calc-table"><tr><th></th><td><b>I (M)</b></td><td><b>C (M)</b></td><td><b>E (M)</b></td></tr>' +
+      h += '<div class="calc-step">3 · Tabla ICE desde la última perturbación (' + fmt(ice0.T, 0) + ' K, ' + fmt(V, 2) + ' L)</div><table class="calc-table"><tr><th>&mdash;</th><td><b>I (M)</b></td><td><b>C (M)</b></td><td><b>E (M)</b></td></tr>' +
         s.sp.map(function (sp, i) { var ci = ice0.n[i] / V, cc = sp[1] * d / V; return '<tr><th>' + fm(sp[0]) + '</th><td>' + fmt(ci, 4) + '</td><td>' + (cc >= 0 ? '+' : '−') + fmt(Math.abs(cc), 4) + '</td><td><b>' + fmt(Math.max(ci + cc, 0), 4) + '</b></td></tr>'; }).join('') + '</table>' +
         '<p class="muted small">x = ' + fmt(d / V, 4) + ' M: se resuelve Q(equilibrio) = K. Con x &gt; 0 avanza hacia productos.</p>';
     }

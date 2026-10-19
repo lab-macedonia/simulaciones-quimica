@@ -208,7 +208,7 @@ function showRes(k){let R=RES[k],buttons=document.getElementById("resButtons");
     : `El o los contribuyentes marcados con ★ combinan la menor suma de cargas formales, la ubicación más favorable de la carga negativa (sobre el átomo más electronegativo) y ausencia de cargas iguales en átomos adyacentes.`;
   document.getElementById("resExplain").innerHTML=R.ex+"<br><br><strong>Comparación de estabilidad:</strong> "+stab;
 }
-function excSetup(){document.getElementById("exceptionGrid").innerHTML=EXC.map(e=>`<article class="exception"><span class="badge alt">${e[0]}</span><h3>${e[1]}</h3><p>${e[2]}</p></article>`).join("")}
+function excSetup(){document.getElementById("exceptionGrid").innerHTML=EXC.map(e=>`<article class="exception"><span class="badge alt">${e[0]}</span><h2 style="font-size:1.05rem">${e[1]}</h2><p>${e[2]}</p></article>`).join("")}
 const QUIZ=[
   ["¿Cuántos electrones de valencia tiene O?",["4","5","6","8"],2,"El oxígeno está en el grupo 16: tiene 6 electrones de valencia."],
   ["¿Qué especie es un radical con número impar de electrones?",["CO₂","NO₂","CH₄","BF₃"],1,"NO₂ suma 17 electrones de valencia (número impar), por lo que queda un electrón desapareado."],

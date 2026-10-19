@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%237654a4%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2244%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-weight%3D%22700%22%20font-size%3D%2236%22%20fill%3D%22%23fff%22%3E%CF%80%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Interactive educational simulator of sigma and pi bonds, hybridization, molecular geometry and bond angles.">
+  <meta name="theme-color" content="#1f2937">
+  <title>σ and π Bond Simulator</title>
+  <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="../shared/suite.css">
+<script defer="" src="../../kit/langswitch.en.js?v=20261018a"></script>
+<link rel="alternate" hreflang="es" href="index.html"></head>
+<body data-module="sigma-pi" data-module-title="Enlaces σ y π">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div>
+        <p class="eyebrow">Organic chemistry · interactive resource</p>
+        <h1>σ and π Bond Simulator</h1>
+        <p class="subtitle">
+          Explore single, double and triple bonds, their hybridization, geometry, bond angles and possibility of rotation.
+        </p>
+      </div>
+      <button id="themeToggle" class="secondary-btn" type="button" aria-label="Switch theme">
+        Switch theme
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="tabs" aria-label="Simulator sections">
+      <button class="tab active" data-tab="simulador" type="button">Simulator</button>
+      <button class="tab" data-tab="comparar" type="button">Compare</button>
+      <button class="tab" data-tab="aprender" type="button">Learn</button>
+      <button class="tab" data-tab="quiz" type="button">Mini-quiz</button>
+    </nav>
+
+    <section id="simulador" class="tab-panel active">
+      <div class="control-panel">
+        <label>
+          <span>C–C bond type</span>
+          <select id="bondSelect">
+            <option value="single">Single — C–C</option>
+            <option value="double">Double — C=C</option>
+            <option value="triple">Triple — C≡C</option>
+            <option value="benzene">Benzene (aromatic) — C₆H₆</option>
+          </select>
+        </label>
+
+        <label class="switch-row">
+          <input id="orbitalToggle" type="checkbox" checked="">
+          <span>Show orbitals</span>
+        </label>
+
+        <label class="switch-row">
+          <input id="animationToggle" type="checkbox" checked="">
+          <span>Animate overlap</span>
+        </label>
+
+        <label class="switch-row">
+          <input id="labelsToggle" type="checkbox" checked="">
+          <span>Show labels</span>
+        </label>
+      </div>
+
+      <div class="stats-grid" aria-live="polite">
+        <article class="stat-card">
+          <span class="stat-label">σ bonds</span>
+          <strong id="sigmaCount">1</strong>
+          <small>between the carbons</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">π bonds</span>
+          <strong id="piCount">0</strong>
+          <small>between the carbons</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Hybridization</span>
+          <strong id="hybridValue">sp³</strong>
+          <small id="geometryValue">tetrahedral</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Ideal angle</span>
+          <strong id="angleValue">109,5°</strong>
+          <small>around each C</small>
+        </article>
+      </div>
+
+      <section class="visual-section" style="margin-bottom:10px">
+        <div class="visual-heading">
+          <p class="muted" style="margin:0">Where do hybrid orbitals come from?</p>
+        </div>
+        <canvas id="hybridDiagram" width="700" height="120" role="img" style="width:100%;height:auto;display:block" aria-label="Schematic diagram: pure atomic s and p orbitals combine (mix) to form equivalent hybrid orbitals"></canvas>
+      </section>
+
+      <section class="visual-section">
+        <div class="visual-heading">
+          <div>
+            <span id="bondBadge" class="badge">Single bond</span>
+            <span id="formulaBadge" class="badge outline">Ethane · C₂H₆</span>
+          </div>
+          <p id="visualCaption" class="muted">
+            The σ bond forms by head-on overlap.
+          </p>
+        </div>
+
+        <div class="diagram-wrap">
+          <canvas id="bondCanvas" width="820" height="470" role="img" tabindex="0" aria-label="3D model of the carbon–carbon bond. Drag with the mouse, use two fingers on a touch screen, or the arrows to rotate."></canvas>
+        </div>
+        <p class="muted" style="margin:.3rem 0 0">On a touch screen: one finger scrolls the page, two fingers rotate the model.</p>
+
+        <div class="action-row">
+          <button id="rotateButton" class="primary-btn" type="button">
+            Try C–C rotation
+          </button>
+          <button id="resetButton" class="secondary-btn" type="button">
+            Reset view
+          </button>
+        </div>
+        <p id="twistReadout" class="muted" style="margin:.4rem 0 0"></p>
+        <canvas id="energyBar" width="600" height="54" style="width:100%;max-width:600px;display:block;margin-top:6px" role="img" aria-label="Qualitative bar of the pi bond energy according to the twist angle"></canvas>
+        <p id="cisTransNote" class="muted" style="margin:.5rem 0 0"></p>
+        <p id="rotationFeedback" class="feedback" aria-live="polite"></p>
+      </section>
+
+      <section class="explanation-grid">
+        <article class="info-card">
+          <h2>What is happening?</h2>
+          <p id="explanation"></p>
+        </article>
+
+        <article class="info-card">
+          <h2>Structure ↔ bond relationship</h2>
+          <dl class="property-list">
+            <div><dt>σ bond</dt><dd id="sigmaOrigin"></dd></div>
+            <div><dt>Unhybridized p orbitals</dt><dd id="pOrbitals"></dd></div>
+            <div><dt>Geometry</dt><dd id="geometryDetail"></dd></div>
+            <div><dt>C–C rotation</dt><dd id="rotationDetail"></dd></div>
+          </dl>
+        </article>
+      </section>
+    </section>
+
+    <section id="comparar" class="tab-panel">
+      <div class="section-heading">
+        <h2>Quick comparison</h2>
+        <p>Observe how the electronic structure changes as the bond order increases.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Example</th>
+              <th>σ</th>
+              <th>π</th>
+              <th>Hybridization</th>
+              <th>Geometry</th>
+              <th>Angle</th>
+              <th>unhybridized p</th>
+              <th>Rotation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Simple</td>
+              <td>Ethane, C₂H₆</td>
+              <td>1</td>
+              <td>0</td>
+              <td>sp³</td>
+              <td>Tetrahedral</td>
+              <td>109,5°</td>
+              <td>0</td>
+              <td>Relatively free</td>
+            </tr>
+            <tr>
+              <td>Double</td>
+              <td>Ethene, C₂H₄</td>
+              <td>1</td>
+              <td>1</td>
+              <td>sp²</td>
+              <td>Trigonal planar</td>
+              <td>120°</td>
+              <td>1 per C</td>
+              <td>Restricted</td>
+            </tr>
+            <tr>
+              <td>Triple</td>
+              <td>Ethyne, C₂H₂</td>
+              <td>1</td>
+              <td>2</td>
+              <td>sp</td>
+              <td>Linear</td>
+              <td>180°</td>
+              <td>2 per C</td>
+              <td>Not equivalent to a single bond</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="key-rule">
+        <strong>Key rule:</strong>
+        a multiple bond always has a single σ bond; the additional bonds are π.
+      </div>
+    </section>
+
+    <section id="aprender" class="tab-panel">
+      <div class="section-heading">
+        <h2>Conceptual route</h2>
+        <p>Follow the sequence that connects hybridization, orbitals and geometry.</p>
+      </div>
+
+      <div class="learning-flow">
+        <article>
+          <span class="step-number">1</span>
+          <h3>Hybridization</h3>
+          <p>It determines how many atomic orbitals combine to produce hybrid orbitals.</p>
+        </article>
+        <article>
+          <span class="step-number">2</span>
+          <h3>Available p orbitals</h3>
+          <p>The p orbitals that do not hybridize can take part in π bonds.</p>
+        </article>
+        <article>
+          <span class="step-number">3</span>
+          <h3>Overlap</h3>
+          <p>Head-on overlap produces σ; side-by-side overlap produces π.</p>
+        </article>
+        <article>
+          <span class="step-number">4</span>
+          <h3>Geometry</h3>
+          <p>sp³ → tetrahedral; sp² → trigonal planar; sp → linear.</p>
+        </article>
+        <article>
+          <span class="step-number">5</span>
+          <h3>Ideal angles</h3>
+          <p>109.5° for sp³; 120° for sp²; 180° for sp.</p>
+        </article>
+        <article>
+          <span class="step-number">6</span>
+          <h3>Rotation</h3>
+          <p>The presence of π bonds restricts rotation because it depends on the parallel orientation of p orbitals.</p>
+        </article>
+      </div>
+
+      <div class="concept-note">
+        <h3>Teaching note</h3>
+        <p>
+          The orbital representation is a model. In real molecules electron densities are not rigid surfaces and angles may deviate from the ideal values.
+        </p>
+      </div>
+    </section>
+
+    <section id="quiz" class="tab-panel">
+      <div class="section-heading">
+        <h2>Mini-quiz</h2>
+        <p>Check whether you can relate bond order, hybridization and geometry.</p>
+      </div>
+
+      <div id="quizContainer" class="quiz-container"></div>
+
+      <div class="quiz-actions">
+        <button id="checkQuiz" class="primary-btn" type="button">Check answers</button>
+        <button id="newQuiz" class="secondary-btn" type="button">Restart quiz</button>
+        <button id="printAnswers" class="secondary-btn" type="button">Answer key (teacher)</button>
+      </div>
+
+      <div id="quizResult" class="quiz-result" aria-live="polite"></div>
+      <div id="answerKey" class="answer-key" hidden=""></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        Open educational resource for teaching chemistry. Designed to run directly on GitHub Pages.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/vendor/three.min.js"></script><script src="../../kit/mol3d.en.js?v=20261017a"></script><script src="../shared/canvas-utils.en.js"></script><script src="../shared/embed.en.js"></script><script src="../shared/palette.en.js"></script>
+  <script src="js/simulator.en.js"></script>
+
+<script src="../../kit/simkit-lite.en.js?v=20261017a"></script><script src="../shared/suite-lite.en.js"></script>
+
+
+</body></html>

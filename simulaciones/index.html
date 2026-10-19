@@ -7,7 +7,7 @@
 <meta name="description" content="Simulaciones interactivas 3D de química (orgánica, general e inorgánica), biología celular y física (Sistema Solar) del Laboratorio MACEDONIA, UMCE.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232a9d9d'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%23fff'/%3E%3Cellipse cx='32' cy='32' rx='24' ry='9' fill='none' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E">
 <style>
-:root{--bg:#f4f7f8;--card:#fff;--ink:#14232b;--muted:#566872;--line:#d8e2e6;--accent:#1f8a8a;--chip:#e3f3f3}
+:root{--bg:#f4f7f8;--card:#fff;--ink:#14232b;--muted:#566872;--line:#d8e2e6;--accent:#136a6a;--chip:#e3f3f3}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d1519;--card:#152228;--ink:#e6f0f2;--muted:#93a9b0;--line:#25373e;--accent:#3ecfcf;--chip:#16363a}}
 :root[data-theme=dark]{--bg:#0d1519;--card:#152228;--ink:#e6f0f2;--muted:#93a9b0;--line:#25373e;--accent:#3ecfcf;--chip:#16363a}
 *{box-sizing:border-box}
@@ -30,12 +30,23 @@ section>p{margin:0 0 14px;color:var(--muted)}
 .card p{margin:0 0 12px;color:var(--muted);font-size:.92rem;flex:1}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tags span{background:var(--chip);color:var(--accent);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:600}
+.sub{margin:22px 0 10px;font-size:1.02rem;color:var(--accent);font-weight:700}
+.finder{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0 0}
+.finder label{font-weight:600;font-size:.9rem}
+.finder input{flex:1 1 240px;max-width:420px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+.finder input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#qn{color:var(--muted);font-size:.86rem}
+[hidden]{display:none!important}
 footer{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:.86rem}
 footer a{color:var(--accent)}
 @media (prefers-reduced-motion:reduce){.card{transition:none}}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f6f6f">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
+<nav aria-label="Language"><a class="lang-switch" href="index.en.html" hreflang="en" lang="en" aria-label="View in English" title="View in English" style="position:fixed;top:8px;right:8px;z-index:60;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font:600 13px/1 system-ui,sans-serif;letter-spacing:.04em;text-decoration:none;color:#fff;background:#1f6f6f;border:2px solid #fff;border-radius:22px;padding:0 12px;box-shadow:0 1px 6px rgba(0,0,0,.4)">EN</a></nav>
 <div class="wrap">
 <header>
   <div class="eyebrow">Laboratorio MACEDONIA · UMCE</div>
@@ -46,25 +57,19 @@ footer a{color:var(--accent)}
     <a href="#general">Química general</a>
     <a href="#inorganica">Química inorgánica</a>
     <a href="#biologia">Biología</a>
+    <a href="#laboratorio">Técnicas de laboratorio</a>
     <a href="#fisica">Física</a>
+    <a href="guias/">Guías docentes</a>
   </nav>
+  <div class="finder"><label for="q">Buscar simulación</label><input id="q" type="search" placeholder="Ej.: titulación, Grignard, PCR…" autocomplete="off"><span id="qn" role="status" aria-live="polite"></span></div>
 </header>
 
 <main>
 <section id="organica">
   <h2>Química orgánica</h2>
-  <p>Mecanismos de reacción y estereoquímica orgánica.</p>
+  <p>Estructura, mecanismos de reacción, familias de compuestos, síntesis y espectroscopía orgánica.</p>
+  <h3 class="sub">Estructura y estereoquímica</h3>
   <div class="grid">
-    <a class="card" href="quimica-organica/mecanismos-sn-e/">
-      <h3>Mecanismos SN1 · SN2 · E1 · E2</h3>
-      <p>Geometrías 3D, flechas de movimiento de electrones, orbitales, perfiles de energía y un predictor de mecanismo según sustrato, nucleófilo/base y disolvente.</p>
-      <div class="tags"><span>3D</span><span>Mecanismos</span><span>Sustitución y eliminación</span></div>
-    </a>
-    <a class="card" href="quimica-organica/carbohidratos-fischer-haworth/">
-      <h3>Carbohidratos: Fischer → Haworth → silla</h3>
-      <p>De la proyección de Fischer a la de Haworth: piranosas y furanosas de aldosas y cetosas, carbono anomérico (α/β), conformación silla o sobre y repulsiones 1,3-diaxiales, con lección guiada y desafío.</p>
-      <div class="tags"><span>3D</span><span>Estereoquímica</span><span>Carbohidratos</span></div>
-    </a>
     <a class="card" href="quimica-organica/estereoquimica-rs/">
       <h3>Estereoquímica R/S (CIP) 3D</h3>
       <p>Prioridades Cahn–Ingold–Prelog, asignación R/S mirando desde el lado opuesto al grupo de menor prioridad, enantiómeros en espejo y desafío de configuración.</p>
@@ -75,10 +80,33 @@ footer a{color:var(--accent)}
       <p>Proyecciones de Newman con energía torsional, conformaciones anti/gauche/eclipsada, silla del ciclohexano con inversión, valores A y repulsión 1,3-diaxial.</p>
       <div class="tags"><span>3D</span><span>Newman</span><span>Ciclohexano</span></div>
     </a>
+    <a class="card" href="quimica-organica/carbohidratos-fischer-haworth/">
+      <h3>Carbohidratos: Fischer → Haworth → silla</h3>
+      <p>De la proyección de Fischer a la de Haworth: piranosas y furanosas de aldosas y cetosas, carbono anomérico (α/β), conformación silla o sobre y repulsiones 1,3-diaxiales, con lección guiada y desafío.</p>
+      <div class="tags"><span>3D</span><span>Estereoquímica</span><span>Carbohidratos</span></div>
+    </a>
     <a class="card" href="quimica-organica/grupos-funcionales/">
       <h3>Grupos funcionales 3D</h3>
       <p>Veinte moléculas con quince grupos funcionales resaltados, bandas IR características, prioridad de nomenclatura y desafío de identificación.</p>
       <div class="tags"><span>3D</span><span>Grupos funcionales</span><span>IR</span></div>
+    </a>
+    <a class="card" href="quimica-organica/nomenclatura-iupac/">
+      <h3>Nomenclatura IUPAC orgánica</h3>
+      <p>Simulador 3D para aprender y practicar la nomenclatura IUPAC orgánica: cadena principal, numeración y localizadores, sustituyentes en orden alfabético y prioridad de grupos funcionales, con moléculas en 3D y modo de práctica.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/aromaticidad-huckel/">
+      <h3>Aromaticidad y regla de Hückel</h3>
+      <p>Simulador 3D de aromaticidad: regla 4n + 2 de Hückel, orbitales moleculares π y círculo de Frost, antiaromaticidad, iones aromáticos y heterociclos (pirrol, piridina, furano).</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Mecanismos y reactividad</h3>
+  <div class="grid">
+    <a class="card" href="quimica-organica/mecanismos-sn-e/">
+      <h3>Mecanismos SN1 · SN2 · E1 · E2</h3>
+      <p>Geometrías 3D, flechas de movimiento de electrones, orbitales, perfiles de energía y un predictor de mecanismo según sustrato, nucleófilo/base y disolvente.</p>
+      <div class="tags"><span>3D</span><span>Mecanismos</span><span>Sustitución y eliminación</span></div>
     </a>
     <a class="card" href="quimica-organica/adicion-electrofila-sear/">
       <h3>Adición electrofílica y SEAr 3D</h3>
@@ -90,17 +118,112 @@ footer a{color:var(--accent)}
       <p>Aldehídos y cetonas frente a distintos nucleófilos: ángulo de Bürgi–Dunitz, intermediario tetraédrico, hemiacetal/acetal y sustitución nucleofílica acílica.</p>
       <div class="tags"><span>3D</span><span>Carbonilo</span><span>Mecanismos</span></div>
     </a>
+    <a class="card" href="quimica-organica/acidez-pka/">
+      <h3>Acidez orgánica y pKa</h3>
+      <p>Simulador 3D de acidez orgánica: pKa, estabilidad de la base conjugada, hibridación, electronegatividad, resonancia y efecto inductivo, con equilibrio ácido–base y ionización según el pH.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/radicales-halogenacion/">
+      <h3>Radicales y halogenación en cadena</h3>
+      <p>Simulador 3D de la halogenación radicalaria de alcanos: estabilidad de radicales, iniciación, propagación y terminación, selectividad cloración frente a bromación (postulado de Hammond) y reparto de productos del propano.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/enolatos-aldolica/">
+      <h3>Enolatos y condensación aldólica</h3>
+      <p>Simulador 3D de enolatos y reacción aldólica: acidez del hidrógeno α, resonancia del enolato, adición aldólica, deshidratación E1cB y condensación cruzada de Claisen–Schmidt, con flechas de electrones.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/derivados-acido/">
+      <h3>Ácidos carboxílicos y derivados</h3>
+      <p>Simulador 3D de derivados de ácidos carboxílicos: reactividad (cloruro, anhídrido, éster, amida), resonancia, sustitución nucleófila acílica por adición–eliminación, hidrólisis e interconversión.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/diels-alder/">
+      <h3>Reacción de Diels–Alder</h3>
+      <p>Simulador 3D de la reacción de Diels–Alder [4+2]: conformación s-cis del dieno, mecanismo concertado, orbitales frontera, efecto de sustituyentes, regla endo y termodinámica (ΔG frente a T).</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/pericliclicas/">
+      <h3>Reacciones electrocíclicas y sigmatrópicas</h3>
+      <p>Reacciones pericíclicas más allá de Diels–Alder: electrociclaciones de 4, 6 y 8 electrones (conrotatoria y disrotatoria), orbitales frontera, control térmico y fotoquímico, desplazamientos [1,5] de H y transposición de Cope [3,3] con reglas de Woodward–Hoffmann.</p>
+      <div class="tags"><span>3D</span><span>Woodward–Hoffmann</span><span>Orbitales</span></div>
+    </a>
+    <a class="card" href="quimica-organica/oxidacion-reduccion/">
+      <h3>Oxidación y reducción en química orgánica</h3>
+      <p>Simulador 3D de oxidación y reducción orgánica: estados de oxidación del carbono, oxidación de alcoholes primarios, secundarios y terciarios con PCC y Jones, reducción de carbonilos con NaBH₄ y LiAlH₄, mecanismo del hidruro y selectividad de los reactivos.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Familias de compuestos</h3>
+  <div class="grid">
+    <a class="card" href="quimica-organica/alcoholes-eteres-aminas/">
+      <h3>Alcoholes, éteres y aminas</h3>
+      <p>Simulador 3D de alcoholes, éteres y aminas: polaridad, puentes de hidrógeno (dímeros), puntos de ebullición, solubilidad en agua según la cadena, basicidad de las aminas (pKaH) y reactividad comparada.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/alquinos/">
+      <h3>Alquinos: estructura y reacciones</h3>
+      <p>Geometría lineal sp, acidez del alquino terminal y acetiluros, hidrogenación selectiva (Lindlar cis, Na/NH₃ trans, H₂/Pd alcano), hidratación a cetonas o aldehídos y adición de HBr con regioquímica, con sustrato y producto en 3D.</p>
+      <div class="tags"><span>3D</span><span>Alquinos</span><span>Reacciones</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/heterociclos/">
+      <h3>Heterociclos aromáticos</h3>
+      <p>Pirrol, furano, tiofeno, piridina, imidazol y pirimidina en 3D: par libre en el sistema π o en el plano, basicidad (pKa del ácido conjugado), reactividad y regioselectividad frente a electrófilos y presencia en biomoléculas.</p>
+      <div class="tags"><span>3D</span><span>Heterociclos</span><span>Aromaticidad</span></div>
+    </a>
+    <a class="card" href="quimica-organica/lipidos-jabon/">
+      <h3>Lípidos, saponificación y jabones</h3>
+      <p>Triglicéridos con ácidos grasos saturados e insaturados (punto de fusión), saponificación con NaOH y cálculo del índice de saponificación, micelas que emulsionan la grasa y efecto del agua dura sobre el jabón.</p>
+      <div class="tags"><span>3D</span><span>Lípidos</span><span>Saponificación</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/polimeros/">
+      <h3>Polímeros: adición y condensación</h3>
+      <p>Cadenas de polietileno, polipropileno, poliestireno, PVC, nailon 6,6 y PET en 3D: polimerización por adición (inicio, propagación, terminación) y por condensación, grado de polimerización, ecuación de Carothers, masa molar promedio y dispersidad.</p>
+      <div class="tags"><span>3D</span><span>Polímeros</span><span>Materiales</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/terpenos-esteroides/">
+      <h3>Terpenos y esteroides</h3>
+      <p>Regla del isopreno en 3D: monoterpenos, sesquiterpenos y diterpenos lineales con sus unidades C₅, ciclación del escualeno y esqueleto esteroidal (anillos A–D, numeración) con colesterol, testosterona, estradiol y progesterona.</p>
+      <div class="tags"><span>3D</span><span>Biosíntesis</span><span>Esteroides</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Síntesis</h3>
+  <div class="grid">
+    <a class="card" href="quimica-organica/grignard-organometalicos/">
+      <h3>Reactivos de Grignard y organometálicos</h3>
+      <p>Simulador 3D de reactivos de Grignard: formación de RMgX, inversión de polaridad del carbono, adición a aldehídos, cetonas, CO₂ y ésteres, incompatibilidad con protones ácidos y comparación con organolitios y cupratos.</p>
+      <div class="tags"><span>3D</span><span>Mecanismos</span><span>Organometálicos</span></div>
+    </a>
+    <a class="card" href="quimica-organica/retrosintesis/">
+      <h3>Retrosíntesis y síntesis multipaso</h3>
+      <p>Análisis retrosintético en 3D: desconexión de enlaces C–C, sintones y equivalentes sintéticos (Grignard), interconversión de grupos funcionales y rendimiento global en síntesis lineales y convergentes.</p>
+      <div class="tags"><span>3D</span><span>Síntesis</span><span>Retrosíntesis</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Espectroscopía</h3>
+  <div class="grid">
     <a class="card" href="quimica-organica/espectroscopia/">
       <h3>Espectroscopía IR y RMN ¹H 3D</h3>
       <p>Vibraciones animadas de enlaces y bandas IR, desplazamiento químico, integración y multiplicidad (regla n+1) con espectros asignados a átomos de la molécula.</p>
       <div class="tags"><span>3D</span><span>IR</span><span>RMN</span></div>
+    </a>
+    <a class="card" href="quimica-organica/espectrometria-ms-rmn13c/">
+      <h3>Espectrometría de masas y RMN de 13C</h3>
+      <p>Simulador 3D de espectrometría de masas (ion molecular, patrón isotópico del Cl y Br, rotura α, McLafferty) y de RMN de 13C (carbonos no equivalentes, desplazamiento químico) para resolver estructuras orgánicas.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/uv-vis-conjugacion/">
+      <h3>Espectroscopía UV-Vis y conjugación</h3>
+      <p>Transición π → π* en polienos: efecto de la conjugación sobre el gap HOMO–LUMO y la longitud de onda máxima, sustituyentes alquilo, color complementario de la disolución, espectro de absorción y ley de Beer–Lambert, desde el eteno hasta el β-caroteno.</p>
+      <div class="tags"><span>3D</span><span>Espectroscopía</span><span>UV-Vis</span><span>Nuevo</span></div>
     </a>
   </div>
 </section>
 
 <section id="general">
   <h2>Química general</h2>
-  <p>Estructura atómica, enlace, periodicidad y electroquímica. Cada simulación es independiente.</p>
+  <p>Estructura atómica, enlace, estados de la materia, reacciones, equilibrio, termodinámica y electroquímica. Cada simulación es independiente.</p>
+  <h3 class="sub">Estructura atómica y enlace</h3>
   <div class="grid">
     <a class="card" href="quimica-general/atomlab/">
       <h3>AtomLab: modelos atómicos</h3>
@@ -132,70 +255,15 @@ footer a{color:var(--accent)}
       <p>Hibridación y enlaces simples, dobles y triples en 3D; benceno con π deslocalizado.</p>
       <div class="tags"><span>3D</span><span>Hibridación</span></div>
     </a>
-    <a class="card" href="quimica-general/ensayo-a-la-llama/">
-      <h3>Ensayo a la llama y transiciones cuánticas</h3>
-      <p>Relaciona el color de la llama de cada elemento con las transiciones electrónicas entre niveles de energía.</p>
-      <div class="tags"><span>3D</span><span>Espectros</span><span>Estructura atómica</span></div>
-    </a>
-    <a class="card" href="quimica-general/electrolisis-agua/">
-      <h3>Electrólisis del agua 3D</h3>
-      <p>Celda electrolítica con control de voltaje y electrolito, semirreacciones en cátodo y ánodo, y vista molecular del proceso.</p>
-      <div class="tags"><span>3D</span><span>Electroquímica</span><span>Redox</span></div>
-    </a>
     <a class="card" href="quimica-general/enlace-quimico/">
       <h3>Enlace químico 3D</h3>
       <p>Enlace iónico (NaCl, LiF, KBr, MgO), covalente (apolar y polar) y metálico (mar de electrones): transferencia, solapamiento, red cristalina, curvas de energía y predictor por ΔEN.</p>
       <div class="tags"><span>3D</span><span>Enlace</span><span>Electronegatividad</span></div>
     </a>
-    <a class="card" href="quimica-general/colisiones-estado-transicion/">
-      <h3>Colisiones y estado de transición 3D</h3>
-      <p>Teoría de las colisiones (energía, orientación, temperatura, catalizador) y estado de transición con diagrama de coordenada de reacción, postulado de Hammond y gráfico de Arrhenius.</p>
-      <div class="tags"><span>3D</span><span>Cinética</span><span>Arrhenius</span></div>
-    </a>
-    <a class="card" href="quimica-general/estequiometria/">
-      <h3>Estequiometría y reactivo limitante 3D</h3>
-      <p>Reacciones balanceadas por tandas de moléculas: reactivo limitante y en exceso, producto teórico, sobrante, conservación de la masa, calculadora en gramos con % de rendimiento y desafío.</p>
-      <div class="tags"><span>3D</span><span>Estequiometría</span><span>Rendimiento</span></div>
-    </a>
-    <a class="card" href="quimica-general/acido-base-titulacion/">
-      <h3>Ácido–base, pH y titulación 3D</h3>
-      <p>Bureta y vaso con indicador: ácidos y bases fuertes, débiles y poliprótico (H₃PO₄), curva de titulación, zona tampón (Henderson–Hasselbalch), distribución de especies, punto de equivalencia y elección del indicador.</p>
-      <div class="tags"><span>3D</span><span>pH</span><span>Titulación</span><span>Tampones</span></div>
-    </a>
-    <a class="card" href="quimica-general/equilibrio-quimico/">
-      <h3>Equilibrio químico y Le Châtelier 3D</h3>
-      <p>Recipiente con émbolo y moléculas: cociente Q frente a K, perturbaciones por concentración, volumen, temperatura (van 't Hoff), catalizador y gas inerte, con tabla ICE, gráficos y desafío.</p>
-      <div class="tags"><span>3D</span><span>Equilibrio</span><span>Le Châtelier</span></div>
-    </a>
-    <a class="card" href="quimica-general/gases/">
-      <h3>Gases ideales y reales 3D</h3>
-      <p>Recipiente con partículas: leyes de Boyle, Charles, Gay-Lussac y Avogadro, mezcla de gases (Dalton), distribución de Maxwell–Boltzmann y desviaciones de van der Waals.</p>
-      <div class="tags"><span>3D</span><span>Gases</span><span>Maxwell–Boltzmann</span></div>
-    </a>
-    <a class="card" href="quimica-general/coligativas/">
-      <h3>Disoluciones y propiedades coligativas 3D</h3>
-      <p>Ley de Raoult, descenso de la presión de vapor, ascenso ebulloscópico, descenso crioscópico y presión osmótica con factor de van 't Hoff, en vasos y membrana semipermeable.</p>
-      <div class="tags"><span>3D</span><span>Disoluciones</span><span>Coligativas</span></div>
-    </a>
-    <a class="card" href="quimica-general/termoquimica/">
-      <h3>Termoquímica y calorimetría 3D</h3>
-      <p>Calorímetro, calor específico, entalpía de reacción, ley de Hess y entalpías de formación con diagramas de niveles de energía.</p>
-      <div class="tags"><span>3D</span><span>Termoquímica</span><span>Hess</span></div>
-    </a>
-    <a class="card" href="quimica-general/cinetica-ordenes/">
-      <h3>Cinética: órdenes de reacción 3D</h3>
-      <p>Leyes de velocidad integradas de orden 0, 1 y 2, vida media, linealización ([A], ln[A], 1/[A]) y experimento misterioso para determinar el orden por velocidades iniciales.</p>
-      <div class="tags"><span>3D</span><span>Cinética</span><span>Órdenes</span></div>
-    </a>
-    <a class="card" href="quimica-general/pilas-galvanicas/">
-      <h3>Pilas galvánicas y ecuación de Nernst 3D</h3>
-      <p>Celdas con puente salino y voltímetro: potenciales estándar, E°celda, ecuación de Nernst, Q frente a K, ΔG° = −nFE° y masa transferida al descargar la pila.</p>
-      <div class="tags"><span>3D</span><span>Electroquímica</span><span>Nernst</span></div>
-    </a>
-    <a class="card" href="quimica-general/diagramas-de-fase/">
-      <h3>Diagramas de fase 3D</h3>
-      <p>Diagramas P–T de agua y CO₂: fases, curvas de equilibrio, punto triple y crítico, fluido supercrítico, curva de calentamiento y Clausius–Clapeyron.</p>
-      <div class="tags"><span>3D</span><span>Fases</span><span>Triple</span><span>Crítico</span></div>
+    <a class="card" href="quimica-general/orbitales-moleculares/">
+      <h3>Orbitales moleculares en diatómicas</h3>
+      <p>Simulador 3D de la teoría de orbitales moleculares (LCAO) en moléculas diatómicas homonucleares del periodo 1 y 2: diagramas de energía, orden de enlace, paramagnetismo y forma de los orbitales σ, σ*, π y π*.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-general/radiacion-em/">
       <h3>Radiación electromagnética 3D</h3>
@@ -207,17 +275,156 @@ footer a{color:var(--accent)}
       <p>Niveles de H, He⁺ y Li²⁺, absorción y emisión de fotones, series de Lyman, Balmer y Paschen, ondas de de Broglie, ionización y espectro de líneas.</p>
       <div class="tags"><span>3D</span><span>Bohr</span><span>Espectros</span></div>
     </a>
+    <a class="card" href="quimica-general/radiactividad/">
+      <h3>Radiactividad y química nuclear</h3>
+      <p>Simulador 3D de radiactividad: núcleo y notación, banda de estabilidad N/Z, desintegración alfa, beta y captura electrónica, vida media, actividad y datación con carbono-14.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Estados de la materia y fuerzas</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/gases/">
+      <h3>Gases ideales y reales 3D</h3>
+      <p>Recipiente con partículas: leyes de Boyle, Charles, Gay-Lussac y Avogadro, mezcla de gases (Dalton), distribución de Maxwell–Boltzmann y desviaciones de van der Waals.</p>
+      <div class="tags"><span>3D</span><span>Gases</span><span>Maxwell–Boltzmann</span></div>
+    </a>
+    <a class="card" href="quimica-general/diagramas-de-fase/">
+      <h3>Diagramas de fase 3D</h3>
+      <p>Diagramas P–T de agua y CO₂: fases, curvas de equilibrio, punto triple y crítico, fluido supercrítico, curva de calentamiento y Clausius–Clapeyron.</p>
+      <div class="tags"><span>3D</span><span>Fases</span><span>Triple</span><span>Crítico</span></div>
+    </a>
     <a class="card" href="quimica-general/interacciones-intermoleculares/">
       <h3>Interacciones intermoleculares 3D</h3>
       <p>38 pares de especies: London, ion–ion, ion–dipolo, dipolo–dipolo, cuadrupolo, puente de H y enlace de halógeno, con curva U(r), promedio térmico y comparador de energías.</p>
       <div class="tags"><span>3D</span><span>Fuerzas</span><span>Energía</span></div>
+    </a>
+    <a class="card" href="quimica-general/solidos-cristalinos/">
+      <h3>Sólidos cristalinos y celdas unitarias</h3>
+      <p>Simulador 3D de sólidos cristalinos: celdas cúbicas simple, centrada en el cuerpo y centrada en las caras, empaquetamiento compacto hcp y ccp, estructuras iónicas (NaCl, CsCl, ZnS, CaF₂), átomos por celda, número de coordinación, fracción de empaquetamiento y densidad.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-general/semiconductores-bandas/">
+      <h3>Semiconductores y teoría de bandas</h3>
+      <p>Teoría de bandas en 3D: metales, aislantes y semiconductores según el ancho de la banda prohibida, población térmica de electrones, dopaje tipo n y p, unión p–n y color de un LED a partir de la energía de gap.</p>
+      <div class="tags"><span>3D</span><span>Bandas</span><span>Semiconductores</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Reacciones y estequiometría</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/mol-masa-molar/">
+      <h3>El mol y la masa molar</h3>
+      <p>Masa molar a partir de la tabla periódica, número de Avogadro, conversiones entre gramos, moles y partículas, volumen molar de gases en CNTP y composición porcentual, con moléculas y montones de partículas en 3D.</p>
+      <div class="tags"><span>3D</span><span>Mol</span><span>Estequiometría</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-general/estequiometria/">
+      <h3>Estequiometría y reactivo limitante 3D</h3>
+      <p>Reacciones balanceadas por tandas de moléculas: reactivo limitante y en exceso, producto teórico, sobrante, conservación de la masa, calculadora en gramos con % de rendimiento y desafío.</p>
+      <div class="tags"><span>3D</span><span>Estequiometría</span><span>Rendimiento</span></div>
+    </a>
+    <a class="card" href="quimica-general/balanceo-redox/">
+      <h3>Balanceo redox: método ion-electrón</h3>
+      <p>Balancea reacciones redox en medio ácido y básico paso a paso: números de oxidación, semirreacciones, balance de O, H y carga con electrones, y suma final, con el flujo de electrones en 3D.</p>
+      <div class="tags"><span>3D</span><span>Redox</span><span>Electroquímica</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-general/nomenclatura-inorganica/">
+      <h3>Nomenclatura inorgánica</h3>
+      <p>Fórmulas y nombres de compuestos iónicos en 3D: balance de cargas, nomenclatura Stock, sistemática y tradicional, oxoaniones de los halógenos, ácidos y oxoácidos, con ensamblado de iones.</p>
+      <div class="tags"><span>3D</span><span>Nomenclatura</span><span>Estequiometría</span></div>
+    </a>
+    <a class="card" href="quimica-general/quimica-ambiental-verde/">
+      <h3>Química ambiental y química verde</h3>
+      <p>Capa de ozono y CFC, efecto invernadero (forzamiento radiativo del CO₂), lluvia ácida y química verde en 3D: economía atómica, factor E y doce principios con comparación de rutas sintéticas.</p>
+      <div class="tags"><span>3D</span><span>Ambiente</span><span>Química verde</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Disoluciones y equilibrio</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/coligativas/">
+      <h3>Disoluciones y propiedades coligativas 3D</h3>
+      <p>Ley de Raoult, descenso de la presión de vapor, ascenso ebulloscópico, descenso crioscópico y presión osmótica con factor de van 't Hoff, en vasos y membrana semipermeable.</p>
+      <div class="tags"><span>3D</span><span>Disoluciones</span><span>Coligativas</span></div>
+    </a>
+    <a class="card" href="quimica-general/equilibrio-quimico/">
+      <h3>Equilibrio químico y Le Châtelier 3D</h3>
+      <p>Recipiente con émbolo y moléculas: cociente Q frente a K, perturbaciones por concentración, volumen, temperatura (van 't Hoff), catalizador y gas inerte, con tabla ICE, gráficos y desafío.</p>
+      <div class="tags"><span>3D</span><span>Equilibrio</span><span>Le Châtelier</span></div>
+    </a>
+    <a class="card" href="quimica-general/acido-base-titulacion/">
+      <h3>Ácido–base, pH y titulación 3D</h3>
+      <p>Bureta y vaso con indicador: ácidos y bases fuertes, débiles y poliprótico (H₃PO₄), curva de titulación, zona tampón (Henderson–Hasselbalch), distribución de especies, punto de equivalencia y elección del indicador.</p>
+      <div class="tags"><span>3D</span><span>pH</span><span>Titulación</span><span>Tampones</span></div>
+    </a>
+    <a class="card" href="quimica-general/solubilidad-kps/">
+      <h3>Solubilidad y producto de solubilidad (Kps)</h3>
+      <p>Simulador 3D de solubilidad de sales poco solubles: Kps, solubilidad molar, efecto del ion común, efecto del pH, cociente Q frente a Kps y precipitación selectiva (AgI/AgCl).</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Termodinámica y cinética</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/termoquimica/">
+      <h3>Termoquímica y calorimetría 3D</h3>
+      <p>Calorímetro, calor específico, entalpía de reacción, ley de Hess y entalpías de formación con diagramas de niveles de energía.</p>
+      <div class="tags"><span>3D</span><span>Termoquímica</span><span>Hess</span></div>
+    </a>
+    <a class="card" href="quimica-general/entropia-gibbs/">
+      <h3>Entropía y energía libre de Gibbs</h3>
+      <p>Simulador 3D de entropía y energía libre de Gibbs: microestados y S = k·ln W, expansión espontánea, entropía de los estados de agregación, ΔG = ΔH − TΔS, temperatura de equilibrio y relación con K.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-general/colisiones-estado-transicion/">
+      <h3>Colisiones y estado de transición 3D</h3>
+      <p>Teoría de las colisiones (energía, orientación, temperatura, catalizador) y estado de transición con diagrama de coordenada de reacción, postulado de Hammond y gráfico de Arrhenius.</p>
+      <div class="tags"><span>3D</span><span>Cinética</span><span>Arrhenius</span></div>
+    </a>
+    <a class="card" href="quimica-general/cinetica-ordenes/">
+      <h3>Cinética: órdenes de reacción 3D</h3>
+      <p>Leyes de velocidad integradas de orden 0, 1 y 2, vida media, linealización ([A], ln[A], 1/[A]) y experimento misterioso para determinar el orden por velocidades iniciales.</p>
+      <div class="tags"><span>3D</span><span>Cinética</span><span>Órdenes</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Electroquímica</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/electrolisis-agua/">
+      <h3>Electrólisis del agua 3D</h3>
+      <p>Celda electrolítica con control de voltaje y electrolito, semirreacciones en cátodo y ánodo, y vista molecular del proceso.</p>
+      <div class="tags"><span>3D</span><span>Electroquímica</span><span>Redox</span></div>
+    </a>
+    <a class="card" href="quimica-general/pilas-galvanicas/">
+      <h3>Pilas galvánicas y ecuación de Nernst 3D</h3>
+      <p>Celdas con puente salino y voltímetro: potenciales estándar, E°celda, ecuación de Nernst, Q frente a K, ΔG° = −nFE° y masa transferida al descargar la pila.</p>
+      <div class="tags"><span>3D</span><span>Electroquímica</span><span>Nernst</span></div>
+    </a>
+    <a class="card" href="quimica-general/corrosion-pilas/">
+      <h3>Corrosión y protección del hierro</h3>
+      <p>Corrosión del hierro como pila galvánica en una gota de agua: zona anódica y catódica, efecto de la sal, el oxígeno y el pH, recubrimientos de Zn, Sn y Cu, ánodo de sacrificio de Mg y comparación de pilas comerciales.</p>
+      <div class="tags"><span>3D</span><span>Electroquímica</span><span>Corrosión</span><span>Nuevo</span></div>
     </a>
   </div>
 </section>
 
 <section id="inorganica">
   <h2>Química inorgánica</h2>
-  <p>Química de coordinación: isomería y quiralidad en complejos.</p>
+  <p>Compuestos de coordinación, organometálica, bioinorgánica, simetría y reactividad.</p>
+  <h3 class="sub">Fundamentos</h3>
+  <div class="grid">
+    <a class="card" href="quimica-inorganica/quimica-descriptiva-grupos/">
+      <h3>Química descriptiva de los grupos</h3>
+      <p>Tendencias y reactividad de alcalinos, alcalinotérreos, halógenos y gases nobles, y carácter ácido–base de los óxidos del periodo 3 en 3D: radio, energía de ionización, reacción con agua y estados de la materia.</p>
+      <div class="tags"><span>3D</span><span>Grupos</span><span>Tendencias</span></div>
+    </a>
+    <a class="card" href="quimica-inorganica/hsab-acidos-bases-duros-blandos/">
+      <h3>Ácidos y bases duros y blandos (HSAB)</h3>
+      <p>Clasificación de cationes y bases como duros, frontera o blandos según carga, radio y polarizabilidad; puntaje cualitativo de estabilidad de pares, predicción del sentido de reacciones de intercambio y ejemplos de minerales (Al₂O₃, HgS, Cu₂S).</p>
+      <div class="tags"><span>3D</span><span>HSAB</span><span>Enlace</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-inorganica/simetria-grupos-puntuales/">
+      <h3>Simetría molecular y grupos puntuales</h3>
+      <p>Elementos y operaciones de simetría (E, Cn, σ, i, Sn) aplicados en 3D a H₂O, NH₃, CH₄, BF₃, SF₆, CO₂, HCl, trans-dicloroeteno, benceno y una molécula quiral; asignación del grupo puntual con diagrama de decisión y relación con polaridad y quiralidad.</p>
+      <div class="tags"><span>3D</span><span>Simetría</span><span>Grupos puntuales</span><span>Nuevo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Compuestos de coordinación</h3>
   <div class="grid">
     <a class="card" href="quimica-inorganica/isomeria-complejos/">
       <h3>Isomería · Laboratorio 3D</h3>
@@ -234,22 +441,37 @@ footer a{color:var(--accent)}
       <p>Desdoblamiento d en campos octaédrico, tetraédrico y plano-cuadrado, serie espectroquímica, alto/bajo espín, EECC y color del complejo a partir de Δ.</p>
       <div class="tags"><span>3D</span><span>Complejos</span><span>Espectroquímica</span></div>
     </a>
+    <a class="card" href="quimica-inorganica/nomenclatura-complejos/">
+      <h3>Nomenclatura y fórmulas de complejos</h3>
+      <p>Simulador 3D para nombrar y formular compuestos de coordinación: átomo central, ligandos monodentados y quelatos, índice de coordinación, geometría, carga y número de oxidación, orden alfabético, prefijos, complejos aniónicos (-ato) y sales.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-inorganica/om-complejos/">
+      <h3>Orbitales moleculares en complejos octaédricos</h3>
+      <p>Simulador 3D de la teoría de orbitales moleculares en complejos octaédricos ML6: enlace σ, orbitales a1g, t1u, eg y t2g, desdoblamiento Δo, efecto π (donor y aceptor), serie espectroquímica, alto y bajo espín, magnetismo y color.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Organometálica y bioinorgánica</h3>
+  <div class="grid">
+    <a class="card" href="quimica-inorganica/organometalica-18e/">
+      <h3>Organometálica: regla de 18 electrones</h3>
+      <p>Simulador 3D de química organometálica: regla de los 18 electrones, conteo de electrones por el método neutro, carbonilos metálicos, ferroceno, complejos planos de 16 electrones y ciclo catalítico de Wilkinson (adición oxidante, coordinación, inserción migratoria y eliminación reductora).</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-inorganica/bioinorganica/">
+      <h3>Química bioinorgánica: metales en la vida</h3>
+      <p>Sitio activo del grupo hemo con Fe²⁺, histidina, O₂ y CO; cooperatividad (Hill), efecto Bohr y envenenamiento por CO; Zn en la anhidrasa carbónica, Mg en la clorofila, Cu en la azurina y Fe en el citocromo c; toxicidad de Pb²⁺, Hg y Cd y quelación.</p>
+      <div class="tags"><span>3D</span><span>Bioinorgánica</span><span>Hemoglobina</span><span>Nuevo</span></div>
+    </a>
   </div>
 </section>
+
 <section id="biologia">
   <h2>Biología</h2>
-  <p>Biología celular: modelos 3D con todos sus componentes rotulados.</p>
+  <p>Biología celular y molecular: biomoléculas, célula, metabolismo, genética y señalización.</p>
+  <h3 class="sub">Biomoléculas</h3>
   <div class="grid">
-    <a class="card" href="biologia/celula-animal/">
-      <h3>Célula animal 3D</h3>
-      <p>Núcleo, retículos, Golgi, mitocondrias, lisosomas, centrosoma y citoesqueleto en un modelo 3D con corte, etiquetas, funciones por sistema y desafío.</p>
-      <div class="tags"><span>3D</span><span>Orgánulos</span><span>Eucariota</span></div>
-    </a>
-    <a class="card" href="biologia/celula-vegetal/">
-      <h3>Célula vegetal 3D</h3>
-      <p>Pared celular, vacuola central, cloroplastos, plasmodesmos y el resto de los orgánulos, con fotosíntesis animada y comparación con la célula animal.</p>
-      <div class="tags"><span>3D</span><span>Cloroplastos</span><span>Pared celular</span></div>
-    </a>
     <a class="card" href="biologia/aminoacidos-proteinas/">
       <h3>Aminoácidos y estructura de proteínas 3D</h3>
       <p>Aminoácidos con carga según pH y pI, enlace peptídico, mapa de Ramachandran por impedimento estérico, hélice α y lámina β con puentes de hidrógeno.</p>
@@ -265,6 +487,32 @@ footer a{color:var(--accent)}
       <p>Fosfolípidos, bicapa fluida, efecto de temperatura y colesterol, transporte pasivo y activo con canales, GLUT y bomba Na⁺/K⁺.</p>
       <div class="tags"><span>3D</span><span>Membrana</span><span>Transporte</span></div>
     </a>
+    <a class="card" href="biologia/nucleotidos-coenzimas/">
+      <h3>Nucleótidos y coenzimas</h3>
+      <p>ATP, NAD⁺/NADH, FAD/FADH₂ y coenzima A en 3D: estructura modular (base, ribosa, fosfatos), vitaminas precursoras, hidrólisis del ATP, transferencia de hidruro y energía acoplada.</p>
+      <div class="tags"><span>3D</span><span>Coenzimas</span><span>Bioquímica</span></div>
+    </a>
+  </div>
+  <h3 class="sub">La célula</h3>
+  <div class="grid">
+    <a class="card" href="biologia/celula-animal/">
+      <h3>Célula animal 3D</h3>
+      <p>Núcleo, retículos, Golgi, mitocondrias, lisosomas, centrosoma y citoesqueleto en un modelo 3D con corte, etiquetas, funciones por sistema y desafío.</p>
+      <div class="tags"><span>3D</span><span>Orgánulos</span><span>Eucariota</span></div>
+    </a>
+    <a class="card" href="biologia/celula-vegetal/">
+      <h3>Célula vegetal 3D</h3>
+      <p>Pared celular, vacuola central, cloroplastos, plasmodesmos y el resto de los orgánulos, con fotosíntesis animada y comparación con la célula animal.</p>
+      <div class="tags"><span>3D</span><span>Cloroplastos</span><span>Pared celular</span></div>
+    </a>
+    <a class="card" href="biologia/mitosis-meiosis/">
+      <h3>Mitosis y meiosis</h3>
+      <p>Simulador 3D de la división celular: ciclo celular e interfase, fases de la mitosis, meiosis I y II, sinapsis y entrecruzamiento, segregación independiente de cromosomas homólogos, contenido de ADN por célula y comparación de ambos procesos.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Enzimas y metabolismo</h3>
+  <div class="grid">
     <a class="card" href="biologia/enzimas-cinetica/">
       <h3>Enzimas y cinética enzimática 3D</h3>
       <p>Llave–cerradura y ajuste inducido, ciclo catalítico, Michaelis–Menten con población de enzimas, inhibición competitiva y no competitiva, Lineweaver–Burk, pH y temperatura.</p>
@@ -275,8 +523,132 @@ footer a{color:var(--accent)}
       <p>Glucólisis, ciclo de Krebs, cadena respiratoria y ATP sintasa, balance aerobio frente a fermentación e inhibidores (rotenona, cianuro, oligomicina, DNP).</p>
       <div class="tags"><span>3D</span><span>ATP</span><span>Respiración</span></div>
     </a>
+    <a class="card" href="biologia/fotosintesis/">
+      <h3>Fotosíntesis: reacciones luminosas y ciclo de Calvin</h3>
+      <p>Simulador 3D de la fotosíntesis: estructura del cloroplasto, absorción de luz, fotólisis del agua, cadena de transporte de electrones, gradiente de H⁺ y ATP sintasa, producción de NADPH y ciclo de Calvin con fijación de CO₂, reducción y regeneración.</p>
+      <div class="tags"><span>3D</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="biologia/metabolismo-lipidos-aminoacidos/">
+      <h3>Metabolismo de lípidos y aminoácidos</h3>
+      <p>β-oxidación de ácidos grasos en 3D (cuatro reacciones por ciclo, FADH₂, NADH y acetil-CoA), balance de ATP según la longitud de la cadena, transporte por carnitina, transaminación con PLP, ciclo de la urea y destino del esqueleto carbonado.</p>
+      <div class="tags"><span>3D</span><span>β-oxidación</span><span>Metabolismo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Genética y expresión génica</h3>
+  <div class="grid">
+    <a class="card" href="biologia/genetica-mendel/">
+      <h3>Genética mendeliana y Hardy–Weinberg</h3>
+      <p>Cuadros de Punnett monohíbrido y dihíbrido con proporciones fenotípicas, prueba de χ² frente a una muestra simulada de descendientes, y equilibrio de Hardy–Weinberg con selección contra el recesivo y deriva genética.</p>
+      <div class="tags"><span>3D</span><span>Genética</span><span>Poblaciones</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="biologia/operon-lac/">
+      <h3>Operón lac y regulación génica</h3>
+      <p>Regulación del operón lac de E. coli: represor LacI, operador, promotor y genes lacZYA, efecto de la lactosa (alolactosa) y de la glucosa (AMPc–CAP), nivel de expresión de β-galactosidasa y mutantes lacI⁻ y lacOᶜ en 3D.</p>
+      <div class="tags"><span>3D</span><span>Genética</span><span>Regulación génica</span><span>Nuevo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Fisiología y señalización</h3>
+  <div class="grid">
+    <a class="card" href="biologia/potencial-accion/">
+      <h3>Potencial de membrana y potencial de acción</h3>
+      <p>Ecuación de Nernst y de Goldman para K⁺ y Na⁺, potencial de reposo, modelo tipo Hodgkin–Huxley con estímulo ajustable, umbral, periodo refractario y bloqueadores (TTX, TEA), con un axón 3D donde los canales se abren y el impulso se propaga.</p>
+      <div class="tags"><span>3D</span><span>Neurobiología</span><span>Electrofisiología</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="biologia/senalizacion-celular/">
+      <h3>Señalización celular: receptor → segundo mensajero</h3>
+      <p>Cascada de un receptor acoplado a proteína G: ligando, ocupación del receptor, proteína G, adenilil ciclasa, AMPc, PKA y fosfodiesterasa, con amplificación, curvas dosis–respuesta (Hill, EC50), agonistas parciales, antagonistas, toxina colérica y comparación con un receptor tirosina quinasa.</p>
+      <div class="tags"><span>3D</span><span>Señalización</span><span>Biología celular</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="biologia/farmacos-receptores/">
+      <h3>Fármacos y receptores</h3>
+      <p>Interacción fármaco–receptor en 3D: ocupación según Kd, agonistas, agonistas parciales y antagonistas, curvas dosis–respuesta (EC₅₀), antagonismo competitivo con desplazamiento de la curva y reglas de Lipinski para la absorción oral.</p>
+      <div class="tags"><span>3D</span><span>Fármacos</span><span>Lipinski</span></div>
+    </a>
   </div>
 </section>
+
+<section id="laboratorio">
+  <h2>Técnicas de laboratorio</h2>
+  <p>Técnicas experimentales de separación, preparación, análisis y biología molecular, con el montaje, la teoría y el cálculo asociados.</p>
+  <h3 class="sub">Separación y purificación</h3>
+  <div class="grid">
+    <a class="card" href="quimica-organica/destilacion/">
+      <h3>Destilación simple y fraccionada</h3>
+      <p>Montaje 3D de destilación simple y fraccionada de mezclas binarias ideales (ley de Raoult): diagrama temperatura–composición, platos teóricos, composición del destilado y curva de destilación.</p>
+      <div class="tags"><span>3D</span><span>Laboratorio</span></div>
+    </a>
+    <a class="card" href="quimica-organica/extraccion-liquido-liquido/">
+      <h3>Extracción líquido–líquido</h3>
+      <p>Embudo de decantación 3D: coeficiente de reparto, fases según densidad, extracciones múltiples con porciones pequeñas y extracción ácido–base según pH y pKa.</p>
+      <div class="tags"><span>3D</span><span>Laboratorio</span></div>
+    </a>
+    <a class="card" href="quimica-organica/recristalizacion/">
+      <h3>Recristalización</h3>
+      <p>Purificación de sólidos por recristalización: curvas de solubilidad frente a temperatura, volumen mínimo de disolvente caliente, velocidad de enfriamiento, formación de cristales y rendimiento.</p>
+      <div class="tags"><span>3D</span><span>Laboratorio</span></div>
+    </a>
+    <a class="card" href="quimica-organica/cromatografia/">
+      <h3>Cromatografía en capa fina y en columna</h3>
+      <p>Placa TLC y columna de sílice en 3D: polaridad de compuestos y eluyente, factor de retención Rf, resolución entre manchas y cromatograma de elución en columna.</p>
+      <div class="tags"><span>3D</span><span>Laboratorio</span></div>
+    </a>
+    <a class="card" href="quimica-organica/punto-fusion/">
+      <h3>Punto de fusión y pureza</h3>
+      <p>Capilar y aparato de punto de fusión en 3D: rango de fusión, depresión por impurezas (eutéctico), velocidad de calentamiento y punto de fusión mixto para identificar compuestos.</p>
+      <div class="tags"><span>3D</span><span>Laboratorio</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Preparación y síntesis</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/disoluciones-diluciones/">
+      <h3>Disoluciones y diluciones</h3>
+      <p>Concentración molar, porcentual y molal con un matraz aforado 3D, preparación de disoluciones a partir de un sólido, dilución con C₁V₁ = C₂V₂ y mezcla de disoluciones, con partículas de soluto visibles.</p>
+      <div class="tags"><span>3D</span><span>Disoluciones</span><span>Laboratorio</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-organica/sintesis-aspirina/">
+      <h3>Síntesis de la aspirina</h3>
+      <p>Acetilación del ácido salicílico con anhídrido acético: mecanismo paso a paso, reactivo limitante y exceso, rendimiento teórico y porcentual, efecto de la temperatura, el tiempo y el catalizador, y prueba de pureza con FeCl₃.</p>
+      <div class="tags"><span>3D</span><span>Laboratorio</span><span>Síntesis</span><span>Nuevo</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Análisis cuantitativo</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/acido-base-titulacion/">
+      <h3>Ácido–base, pH y titulación 3D</h3>
+      <p>Bureta y vaso con indicador: ácidos y bases fuertes, débiles y poliprótico (H₃PO₄), curva de titulación, zona tampón (Henderson–Hasselbalch), distribución de especies, punto de equivalencia y elección del indicador.</p>
+      <div class="tags"><span>3D</span><span>pH</span><span>Titulación</span><span>Tampones</span></div>
+    </a>
+    <a class="card" href="quimica-general/gravimetria/">
+      <h3>Análisis gravimétrico</h3>
+      <p>Determinación gravimétrica de cloruro, sulfato, hierro y níquel: precipitación con reactivo en exceso, digestión, filtración y calcinación a masa constante, factor gravimétrico y efecto de la coprecipitación y la humedad residual.</p>
+      <div class="tags"><span>3D</span><span>Análisis</span><span>Laboratorio</span><span>Nuevo</span></div>
+    </a>
+    <a class="card" href="quimica-general/espectrofotometria/">
+      <h3>Espectrofotometría y ley de Beer–Lambert</h3>
+      <p>Espectrofotómetro UV-Vis en 3D: transmitancia y absorbancia, ley de Beer–Lambert, espectro y λmáx, curva de calibración con regresión lineal y determinación de una muestra desconocida.</p>
+      <div class="tags"><span>3D</span><span>Laboratorio</span></div>
+    </a>
+    <a class="card" href="quimica-general/cifras-incertidumbre/">
+      <h3>Cifras significativas e incertidumbre</h3>
+      <p>Precisión frente a exactitud con un blanco 3D, error aleatorio y sistemático, instrumentos de laboratorio con su incertidumbre, cifras significativas en sumas y productos y propagación de incertidumbres.</p>
+      <div class="tags"><span>3D</span><span>Laboratorio</span></div>
+    </a>
+  </div>
+  <h3 class="sub">Análisis cualitativo y biología molecular</h3>
+  <div class="grid">
+    <a class="card" href="quimica-general/ensayo-a-la-llama/">
+      <h3>Ensayo a la llama y transiciones cuánticas</h3>
+      <p>Relaciona el color de la llama de cada elemento con las transiciones electrónicas entre niveles de energía.</p>
+      <div class="tags"><span>3D</span><span>Espectros</span><span>Estructura atómica</span></div>
+    </a>
+    <a class="card" href="biologia/pcr-electroforesis/">
+      <h3>PCR y electroforesis en gel</h3>
+      <p>Termociclador con desnaturalización, hibridación de cebadores y extensión, amplificación exponencial 2ⁿ, efecto de la temperatura de hibridación (Tm) y lectura de bandas en un gel de agarosa con escalera de peso molecular.</p>
+      <div class="tags"><span>3D</span><span>PCR</span><span>Biología molecular</span><span>Nuevo</span></div>
+    </a>
+  </div>
+</section>
+
 <section id="fisica">
   <h2>Física</h2>
   <p>Astronomía y mecánica celeste.</p>
@@ -295,5 +667,14 @@ footer a{color:var(--accent)}
   <a href="https://github.com/lab-macedonia/lab-macedonia.github.io">Código en GitHub</a>.
 </footer>
 </div>
+<script>
+(function(){var q=document.getElementById('q'),n=document.getElementById('qn');if(!q)return;
+var norm=function(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')};
+var cards=[].slice.call(document.querySelectorAll('.card'));var idx=cards.map(function(c){return norm(c.textContent)});
+q.addEventListener('input',function(){var t=norm(q.value.trim()),k=0;
+cards.forEach(function(c,i){var ok=!t||t.split(/\s+/).every(function(w){return idx[i].indexOf(w)>-1});c.hidden=!ok;if(ok)k++});
+[].forEach.call(document.querySelectorAll('section'),function(s){var g=[].slice.call(s.querySelectorAll('.grid'));g.forEach(function(x){var v=x.querySelector('.card:not([hidden])');x.hidden=!v;var p=x.previousElementSibling;if(p&&p.classList.contains('sub'))p.hidden=!v});s.hidden=!s.querySelector('.card:not([hidden])')});
+var en=document.documentElement.lang==='en';n.textContent=t?(k+(en?' result':' resultado')+(k===1?'':'s')):''})})();
+</script>
 </body>
 </html>

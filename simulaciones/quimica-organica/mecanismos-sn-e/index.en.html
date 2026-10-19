@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SN1 · SN2 · E1 · E2 Mechanisms — 3D Simulator</title>
+  <meta name="description" content="Interactive 3D simulator of nucleophilic substitution and elimination mechanisms: geometries, electron-pushing arrows, orbitals, energy profiles and a mechanism predictor.">
+  <meta name="color-scheme" content="dark light">
+  <link rel="stylesheet" href="style.css">
+<script defer="" src="../../kit/langswitch.en.js?v=20261018a"></script>
+<link rel="alternate" hreflang="es" href="index.html"></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor" stroke="none"></path></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z" fill="currentColor" stroke="none"></path></symbol>
+    <symbol id="i-restart" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.8-6.3M3.5 4v4.8h4.8"></path></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path d="M6 5v14M19 5.5v13L9 12z"></path></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M18 5v14M5 5.5v13L15 12z"></path></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24"><path d="M17 3l3.5 3.5L17 10M4 11V9.5A3 3 0 0 1 7 6.5h13M7 21l-3.5-3.5L7 14M20 13v1.5a3 3 0 0 1-3 3H4"></path></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1zM12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"></path></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM9.1 9a3 3 0 0 1 5.8 1c0 2-2.9 2.4-2.9 4.4M12 17.6h.01"></path></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"></path></symbol>
+    <symbol id="i-panel" viewBox="0 0 24 24"><path d="M3.5 5h17v14h-17zM14.5 5v14"></path></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 16.5l9 5 9-5"></path></symbol>
+  </defs>
+</svg>
+
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div class="brand-text">
+        <h1 class="brand-title">Substitution and elimination mechanisms</h1>
+        <small>3D simulator · organic chemistry</small>
+      </div>
+    </div>
+
+    <nav class="mech-tabs" role="tablist" aria-label="Mechanism">
+      <button role="tab" class="mech-tab" data-mech="sn2" style="--mc:var(--c-sn2)"><b>SN2</b><span>bimolecular</span></button>
+      <button role="tab" class="mech-tab" data-mech="sn1" style="--mc:var(--c-sn1)"><b>SN1</b><span>unimolecular</span></button>
+      <button role="tab" class="mech-tab" data-mech="e2" style="--mc:var(--c-e2)"><b>E2</b><span>bimolecular</span></button>
+      <button role="tab" class="mech-tab" data-mech="e1" style="--mc:var(--c-e1)"><b>E1</b><span>unimolecular</span></button>
+    </nav>
+
+    <div class="top-actions">
+      <button class="icon-btn" id="btnSnap" title="Capture image (PNG)" aria-label="Capture image"><svg class="ic"><use href="#i-camera"></use></svg></button>
+      <button class="icon-btn" id="btnFull" title="Fullscreen" aria-label="Fullscreen"><svg class="ic"><use href="#i-expand"></use></svg></button>
+      <button class="icon-btn" id="btnTheme" title="Switch light/dark theme" aria-label="Switch theme"><svg class="ic"><use href="#i-sun"></use></svg></button>
+      <button class="icon-btn" id="btnHelp" title="Help and shortcuts (?)" aria-label="Help"><svg class="ic"><use href="#i-help"></use></svg></button>
+      <button class="icon-btn only-narrow" id="btnPanel" title="Show/hide panel" aria-label="Panel" aria-expanded="false"><svg class="ic"><use href="#i-panel"></use></svg></button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div id="canvas-container" class="viewport" role="group" aria-roledescription="3D viewer" aria-label="3D viewer of the reaction"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <!-- HUD: etapa actual -->
+    <div class="hud hud-phase" id="phaseBadge" aria-live="polite">
+      <span class="ph-step" id="phStep">Stage 1 / 3</span>
+      <span class="ph-name" id="phName"></span>
+      <span class="ph-ts" id="phTs" hidden="">[‡]</span>
+    </div>
+
+    <div class="hud-col">
+    <section class="hud hud-eq" aria-label="Live data">
+      <div class="eq-head">
+        <span class="eq-chip" id="eqChip">SN2</span>
+        <span class="eq-name" id="eqName"></span>
+      </div>
+      <div class="eq-body" id="eqBody"></div>
+      <div class="seg" id="variantSeg" role="group" aria-label="Variant" hidden=""></div>
+    </section>
+
+    <section class="hud hud-layers" aria-label="Viewer layers">
+      <button class="layers-head" id="layersHead" aria-expanded="true"><svg class="ic"><use href="#i-layers"></use></svg><span>Layers</span></button>
+      <div class="layers-body" id="layersBody"></div>
+      <div class="views">
+        <span class="lbl">View</span>
+        <div class="seg" id="viewSeg" role="group" aria-label="Camera view"></div>
+      </div>
+    </section>
+
+    </div>
+
+    <!-- HUD: leyenda dinámica -->
+    <section class="hud hud-legend" id="legend" aria-label="Legend"></section>
+
+    <!-- Panel lateral -->
+    <aside class="panel" id="panel">
+      <div class="panel-tabs" role="tablist">
+        <button role="tab" class="ptab is-on" data-tab="mec" aria-selected="true">Mechanism</button>
+        <button role="tab" class="ptab" data-tab="ene" aria-selected="false">Energy</button>
+        <button role="tab" class="ptab" data-tab="pre" aria-selected="false">Which one predominates?</button>
+      </div>
+
+      <div class="panel-body" tabindex="0">
+        <!-- ===== Mecanismo ===== -->
+        <div class="tabpane is-on" id="tab-mec" role="tabpanel">
+          <div class="card phase-card">
+            <div class="card-kicker" id="pcKicker">Stage</div>
+            <h2 id="pcTitle"></h2>
+            <p id="pcText"></p>
+          </div>
+
+          <div class="stepper" id="stepper" aria-label="Mechanism stages"></div>
+
+          <div class="card">
+            <div class="card-kicker">Live measurements</div>
+            <table class="meas" id="measTable"><tbody></tbody></table>
+            <div class="extras" id="extras"></div>
+          </div>
+
+          <div class="card kin">
+            <div class="card-kicker">Kinetics</div>
+            <div class="rate-law" id="rateLaw"></div>
+            <p class="muted" id="rateNote"></p>
+            <div class="sliders">
+              <label><span>[R–Br]</span><input type="range" id="kS" min="0" max="4" step="1" value="2"><output id="kSo">×1</output></label>
+              <label><span id="kNuLbl">[Nu⁻]</span><input type="range" id="kN" min="0" max="4" step="1" value="2"><output id="kNo">×1</output></label>
+            </div>
+            <div class="rate-meter">
+              <div class="rate-bar"><i id="rateFill"></i></div>
+              <div class="rate-val">v / v₀ = <b id="rateVal">1,0</b></div>
+            </div>
+            <p class="muted small" id="rateMsg"></p>
+          </div>
+
+          <div class="card">
+            <div class="card-kicker">Key ideas</div>
+            <ul class="ideas" id="ideas"></ul>
+          </div>
+        </div>
+
+        <!-- ===== Energía ===== -->
+        <div class="tabpane" id="tab-ene" role="tabpanel" hidden="">
+          <div class="card">
+            <div class="card-kicker">Energy profile</div>
+            <canvas id="energyCanvas" class="energy"></canvas>
+            <p class="muted small">Click or drag along the curve to move through the reaction. [‡] = transition state (maximum, not isolable); an intermediate valley = real intermediate.</p>
+          </div>
+          <div class="card">
+            <div class="card-kicker">Quick comparison</div>
+            <div class="table-wrap" tabindex="0">
+              <table class="cmp">
+                <thead><tr><th><span class="sr-only">Property</span></th><th>SN2</th><th>SN1</th><th>E2</th><th>E1</th></tr></thead>
+                <tbody>
+                  <tr><th>Steps</th><td>1</td><td>2 (+ deprot.)</td><td>1</td><td>2</td></tr>
+                  <tr><th>Rate</th><td>k[RX][Nu]</td><td>k[RX]</td><td>k[RX][B]</td><td>k[RX]</td></tr>
+                  <tr><th>Intermediate</th><td>no</td><td>carbocation</td><td>no</td><td>carbocation</td></tr>
+                  <tr><th>Substrate</th><td>CH₃ &gt; 1° &gt; 2°</td><td>3.º &gt; 2.º</td><td>3.º &gt; 2.º &gt; 1.º</td><td>3.º &gt; 2.º</td></tr>
+                  <tr><th>Reagent</th><td>strong Nu</td><td>weak Nu</td><td>strong base</td><td>weak base</td></tr>
+                  <tr><th>Solvent</th><td>aprotic</td><td>protic</td><td>any</td><td>protic</td></tr>
+                  <tr><th>Stereochemistry</th><td>inversion</td><td>racemization</td><td>anti-periplanar</td><td>Zaitsev</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Predictor ===== -->
+        <div class="tabpane" id="tab-pre" role="tabpanel" hidden="">
+          <div class="card">
+            <div class="card-kicker">Reaction conditions</div>
+            <div class="form" id="predForm"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-kicker">Relative tendency <span class="tag">qualitative</span></div>
+            <div class="bars" id="predBars"></div>
+            <ul class="reasons" id="predReasons"></ul>
+            <p class="note" id="predNote" hidden=""></p>
+            <div class="row">
+              <button class="btn primary" id="predGo">See the main mechanism in 3D</button>
+            </div>
+            <p class="muted small">Textbook heuristic guide; these are not experimental yields. Actual proportions depend on the specific substrate, reagent and conditions.</p>
+          </div>
+
+          <div class="card challenge" id="challenge">
+            <div class="card-kicker">Challenge mode</div>
+            <div id="chBody">
+              <p>I give you some conditions; you choose the predominant mechanism.</p>
+              <button class="btn" id="chStart">Start challenge</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Barra de control inferior -->
+    <section class="dock" aria-label="Playback controls">
+      <div class="dock-row">
+        <button class="icon-btn" id="bReset" title="Restart (R)" aria-label="Restart"><svg class="ic"><use href="#i-restart"></use></svg></button>
+        <button class="icon-btn" id="bPrev" title="Previous stage (Shift + ←)" aria-label="Previous stage"><svg class="ic"><use href="#i-prev"></use></svg></button>
+        <button class="play-btn" id="bPlay" title="Play / pause (Space)" aria-label="Play"><svg class="ic"><use href="#i-play"></use></svg></button>
+        <button class="icon-btn" id="bNext" title="Next stage (Shift + →)" aria-label="Next stage"><svg class="ic"><use href="#i-next"></use></svg></button>
+        <button class="icon-btn toggle" id="bLoop" title="Loop" aria-label="Loop" aria-pressed="true"><svg class="ic"><use href="#i-loop"></use></svg></button>
+
+        <div class="timeline" id="timeline">
+          <div class="segs" id="segs" aria-hidden="true"></div>
+          <div class="ticks" id="ticks" aria-hidden="true"></div>
+          <input type="range" id="slider" min="0" max="1" step="0.0005" value="0" aria-label="Reaction progress">
+        </div>
+        <output class="pct" id="pct">0 %</output>
+
+        <div class="dock-opts">
+          <label class="mini-select" title="Playback speed">
+            <select id="speed" aria-label="Rate">
+              <option value="0.25">0,25×</option>
+              <option value="0.5">0,5×</option>
+              <option value="1" selected="">1×</option>
+              <option value="2">2×</option>
+            </select>
+          </label>
+          <button class="chip-btn toggle" id="bGuided" aria-pressed="false" title="Pause at the end of each stage">By stages</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="helpDlg" aria-labelledby="helpTitle">
+  <form method="dialog" class="dlg">
+    <h2 id="helpTitle">How to use the simulator</h2>
+    <p>Choose a mechanism above, drag to rotate the molecule, use the wheel to zoom in and move the progress bar to see every instant of the reaction.</p>
+    <ul>
+      <li><b>Arrows</b>: movement of electron pairs (curved arrows).</li>
+      <li><b>Orbitals</b>: lobes of the participating orbitals (colors = phase; gold = lone pair).</li>
+      <li><b>Charges and cloud</b>: δ⁻ / δ⁺ and electrostatic potential color (red = negative, blue = positive).</li>
+      <li><b>Measurements</b>: live bond distances and angles.</li>
+      <li>The animation slows down by itself near each transition state [‡].</li>
+    </ul>
+    <table class="keys">
+      <tbody><tr><td><kbd>Space</kbd></td><td>Play / pause</td></tr>
+      <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Step back / forward 1 %</td></tr>
+      <tr><td><kbd>Shift</kbd> + <kbd>←</kbd> <kbd>→</kbd></td><td>Previous / next stage</td></tr>
+      <tr><td><kbd>1</kbd>–<kbd>4</kbd></td><td>SN2, SN1, E2, E1</td></tr>
+      <tr><td><kbd>R</kbd></td><td>Restart</td></tr>
+      <tr><td><kbd>A</kbd> <kbd>O</kbd> <kbd>C</kbd> <kbd>M</kbd> <kbd>T</kbd></td><td>Arrows, orbitals, charges, measurements, trajectories</td></tr>
+      <tr><td><kbd>V</kbd></td><td>Switch camera view</td></tr>
+    </tbody></table>
+    <menu><button class="btn primary" value="ok">Got it</button></menu>
+  </form>
+</dialog>
+
+<noscript><p style="padding:2rem;color:#fff">This simulator needs JavaScript and WebGL.</p></noscript>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/OrbitControls.js"></script>
+<script src="chem-core.en.js"></script>
+<script src="chem-sn2.en.js"></script>
+<script src="chem-unimolecular.en.js"></script>
+<script src="chem-e2.en.js"></script>
+<script src="chem-predictor.en.js"></script>
+<script src="viewer.en.js"></script>
+<script src="energy.en.js"></script>
+<script src="app.en.js?v=20261017a"></script>
+
+
+</body></html>

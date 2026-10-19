@@ -89,7 +89,7 @@
     app.innerHTML =
       '<header class="topbar">' +
         '<div class="brand"><span class="brand-mark" aria-hidden="true"></span>' +
-        '<div class="brand-text"><strong>' + cfg.title + '</strong><small>' + (cfg.subtitle || '') + '</small></div></div>' +
+        '<div class="brand-text"><h1 class="brand-title">' + cfg.title + '</h1><small>' + (cfg.subtitle || '') + '</small></div></div>' +
         modeTabs +
         '<div class="top-actions">' +
           '<a class="icon-btn" id="kHome" href="' + homeHref + '" title="Volver a las simulaciones" aria-label="Volver a las simulaciones">' + icon('home') + '</a>' +
@@ -100,12 +100,12 @@
           '<button class="icon-btn only-narrow" id="kPanelBtn" title="Mostrar/ocultar panel" aria-label="Panel" aria-expanded="false">' + icon('panel') + '</button>' +
         '</div>' +
       '</header>' +
-      '<main class="stage">' +
-        '<div id="canvas-container" class="viewport" aria-label="' + (cfg.viewLabel || 'Visor interactivo') + '"></div>' +
+      '<main class="stage" id="main"><div class="sr-only" id="srLive" role="status" aria-live="polite" aria-atomic="true"></div>' +
+        '<div id="canvas-container" class="viewport" role="group" tabindex="0" aria-roledescription="visor 3D" aria-label="' + (cfg.viewLabel || 'Visor interactivo') + '" aria-describedby="' + (stages.length ? 'phName ' : '') + 'viewHint"></div><span class="sr-only" id="viewHint">Con el visor enfocado: flechas para girar la cámara, más y menos para acercar o alejar.</span>' +
         '<div class="vignette" aria-hidden="true"></div>' +
-        (stages.length ? '<div class="hud hud-phase" id="phaseBadge" aria-live="polite"><span class="ph-step" id="phStep"></span><span class="ph-name" id="phName"></span><span class="ph-ts" id="phTs" hidden>[‡]</span></div>' : '') +
+        (stages.length ? '<div class="hud hud-phase" id="phaseBadge"><span class="ph-step" id="phStep"></span><span class="ph-name" id="phName"></span><span class="ph-ts" id="phTs" hidden>[‡]</span></div>' : '') +
         '<div class="hud-col">' +
-          '<section class="hud hud-eq" id="eqBox" aria-live="polite" hidden><div class="eq-head"><span class="eq-chip" id="eqChip"></span><span class="eq-name" id="eqName"></span></div><div class="eq-body" id="eqBody"></div></section>' +
+          '<section class="hud hud-eq" id="eqBox" aria-label="Datos en vivo" hidden><div class="eq-head"><span class="eq-chip" id="eqChip"></span><span class="eq-name" id="eqName"></span></div><div class="eq-body" id="eqBody"></div></section>' +
           '<section class="hud hud-layers" id="layersBox" aria-label="Capas del visor" hidden>' +
             '<button class="layers-head" id="layersHead" aria-expanded="true">' + icon('layers') + '<span>Capas</span></button>' +
             '<div class="layers-body" id="layersBody"></div>' +
@@ -113,7 +113,7 @@
           '</section>' +
         '</div>' +
         '<section class="hud hud-legend" id="legend" aria-label="Leyenda" hidden></section>' +
-        '<aside class="panel" id="panel"><div class="panel-tabs" role="tablist" id="ptabs"></div><div class="panel-body" id="pbody"></div></aside>' +
+        '<aside class="panel" id="panel" aria-label="Panel de la simulación"><div class="panel-tabs" role="tablist" id="ptabs"></div><div class="panel-body" id="pbody" tabindex="0"></div></aside>' +
         (stages.length ? dockHTML() : '') +
       '</main>';
     document.body.innerHTML = '';
@@ -156,12 +156,32 @@
     kit.panel = $('#panel');
     kit.dock = $('#dock');
 
+    kit.viewport.addEventListener('keydown', function (e) {
+      if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+      var s = global.__sim; if (!s || !s.camera || !s.controls) return;
+      var k = e.key, st = 0.14, c = s.camera, t = s.controls.target, o = c.position.clone().sub(t), r = o.length(), th = Math.atan2(o.x, o.z), ph = Math.acos(Math.max(-1, Math.min(1, o.y / r)));
+      if (k === 'ArrowLeft') th -= st; else if (k === 'ArrowRight') th += st; else if (k === 'ArrowUp') ph = Math.max(0.1, ph - st); else if (k === 'ArrowDown') ph = Math.min(Math.PI - 0.1, ph + st); else if (k === '+' || k === '=') r *= 0.9; else if (k === '-' || k === '_') r /= 0.9; else return;
+      e.preventDefault(); e.stopPropagation(); if (s.P) s.P.camGoal = null;
+      c.position.set(t.x + r * Math.sin(ph) * Math.sin(th), t.y + r * Math.cos(ph), t.z + r * Math.sin(ph) * Math.cos(th)); c.lookAt(t); s.controls.update();
+    });
+    kit.announce = function (msg) { var r = $('#srLive'); if (!r) return; r.textContent = ''; setTimeout(function () { r.textContent = msg; }, 60); };
     /* ---------- Tema ---------- */
+    kit.updateOnAccent = function () {
+      var a = (getComputedStyle(root).getPropertyValue('--accent') || '').trim(), m = /^#?([0-9a-f]{6})$/i.exec(a); if (!m) return;
+      var n = parseInt(m[1], 16), rgb = [n >> 16 & 255, n >> 8 & 255, n & 255];
+      function lum(c) { var q = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * q[0] + 0.7152 * q[1] + 0.0722 * q[2]; }
+      function cr(l1, l2) { return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); }
+      var dark = [7, 16, 28], dl = lum(dark), white = cr(lum(rgb), 1), blk = cr(lum(rgb), dl), useWhite = white >= blk, bg = rgb.slice(), k = 0;
+      while (k++ < 40 && cr(lum(bg), useWhite ? 1 : dl) < 4.6) bg = bg.map(function (v) { return Math.round(useWhite ? v * 0.93 : v + (255 - v) * 0.07); });
+      root.style.setProperty('--on-accent', useWhite ? '#ffffff' : '#07101c');
+      root.style.setProperty('--accent-solid', 'rgb(' + bg.join(',') + ')');
+    };
     function applyTheme() {
       root.setAttribute('data-theme', S.theme);
       var b = $('#kTheme');
       if (b) b.innerHTML = icon(S.theme === 'dark' ? 'sun' : 'moon');
       prefs.theme = S.theme; store.set(key, prefs);
+      kit.updateOnAccent();
       if (cfg.onTheme) cfg.onTheme(S.theme, kit);
       kit.redrawCanvases();
     }
@@ -230,7 +250,7 @@
         };
       },
       table: function (head, rows, cls) {
-        return '<div class="table-wrap"><table class="' + (cls || 'cmp') + '">' + (head ? '<thead><tr>' + head.map(function (x) { return '<th>' + x + '</th>'; }).join('') + '</tr></thead>' : '') +
+        return '<div class="table-wrap" tabindex="0"><table class="' + (cls || 'cmp') + '">' + (head ? '<thead><tr>' + head.map(function (x) { return '<th>' + (x === '' ? '&mdash;' : x) + '</th>'; }).join('') + '</tr></thead>' : '') +
           '<tbody>' + rows.map(function (r) { return '<tr>' + r.map(function (x, i) { return i === 0 ? '<th>' + x + '</th>' : '<td>' + x + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
       },
       canvas: function (host, o) {
@@ -263,31 +283,52 @@
       },
       quiz: function (host, o) {
         // o: {title, intro, items:[{q, options:[], answer:index, why}], onDone}
+        // Dos modos: práctica (retroalimentación inmediata) y evaluación (sin pistas hasta el final, con nota y resultado copiable)
         var items = o.items.slice(), order = items.map(function (_, i) { return i; });
         var body = h('div', { class: 'challenge' }); host.appendChild(body);
-        var idx = 0, score = 0, answered = false;
+        var idx = 0, score = 0, answered = false, exam = false, rec = [], t0 = 0, who = '';
         function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
-        function start() { shuffle(order); idx = 0; score = 0; render(); }
+        function start(ex) { exam = !!ex; shuffle(order); idx = 0; score = 0; rec = []; t0 = Date.now(); render(); }
+        function grade(p) { return p >= 0.6 ? 4 + 3 * (p - 0.6) / 0.4 : 1 + 3 * p / 0.6; }
         function intro() {
-          body.innerHTML = '<p>' + (o.intro || 'Pon a prueba lo aprendido con preguntas rápidas.') + '</p><button class="btn" id="qzStart">Empezar desafío (' + items.length + ' preguntas)</button>';
-          body.querySelector('#qzStart').addEventListener('click', start);
+          body.innerHTML = '<p>' + (o.intro || 'Pon a prueba lo aprendido con preguntas rápidas.') + '</p><div class="btnrow"><button class="btn" id="qzStart">Práctica (' + items.length + ' preguntas)</button> <button class="btn" id="qzExam">Modo evaluación</button></div><p class="hint">En el modo evaluación no se muestran las respuestas hasta el final y se calcula una nota (escala 1,0–7,0 con 60 % de exigencia).</p>';
+          body.querySelector('#qzStart').addEventListener('click', function () { start(false); });
+          body.querySelector('#qzExam').addEventListener('click', function () { start(true); });
+        }
+        function summary() {
+          var p = score / order.length, g = grade(p), mins = Math.max(1, Math.round((Date.now() - t0) / 60000)), nota = fmt(g, 1);
+          var rows = rec.map(function (r, k) { return '<li class="' + (r.ok ? 'ok' : 'no') + '"><b>' + (r.ok ? '✔' : '✘') + '</b> ' + r.q + '<br><small>Tu respuesta: ' + r.pick + (r.ok ? '' : ' · Correcta: ' + r.right) + (r.why ? ' · ' + r.why : '') + '</small></li>'; }).join('');
+          body.innerHTML = '<div class="verdict ' + (p >= 0.6 ? 'ok' : 'no') + '">Resultado: <b>' + score + ' / ' + order.length + '</b> · Nota: <b>' + nota + '</b></div><ol class="qz-review">' + rows + '</ol><label class="qz-name">Nombre (opcional) <input type="text" id="qzName" value="' + who.replace(/"/g, '') + '"></label><div class="btnrow"><button class="btn" id="qzCopy">Copiar resultado</button> <button class="btn" id="qzAgain">Intentar de nuevo</button></div><div id="qzMsg" role="status" aria-live="polite"></div>';
+          body.querySelector('#qzAgain').addEventListener('click', function () { start(true); });
+          body.querySelector('#qzCopy').addEventListener('click', function () {
+            who = body.querySelector('#qzName').value; var txt = (who ? who + ' · ' : '') + document.title + ' · ' + new Date().toLocaleDateString() + ' · ' + score + '/' + order.length + ' · Nota ' + nota + ' · ' + mins + ' min';
+            var msg = body.querySelector('#qzMsg');
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function () { msg.textContent = 'Resultado copiado.'; }, function () { msg.textContent = txt; }); else msg.textContent = txt;
+          });
         }
         function render() {
           if (idx >= order.length) {
-            body.innerHTML = '<div class="verdict ' + (score >= order.length * 0.7 ? 'ok' : 'no') + '">Resultado: <b>' + score + ' / ' + order.length + '</b></div><button class="btn" id="qzAgain">Intentar de nuevo</button>';
-            body.querySelector('#qzAgain').addEventListener('click', start);
+            if (exam) summary();
+            else { body.innerHTML = '<div class="verdict ' + (score >= order.length * 0.7 ? 'ok' : 'no') + '">Resultado: <b>' + score + ' / ' + order.length + '</b></div><button class="btn" id="qzAgain">Intentar de nuevo</button>'; body.querySelector('#qzAgain').addEventListener('click', function () { start(false); }); }
             if (o.onDone) o.onDone(score, order.length);
             return;
           }
           var it = items[order[idx]]; answered = false;
           var opts = it.options.map(function (t, i) { return { t: t, i: i }; }); shuffle(opts);
-          body.innerHTML = '<div class="score">Pregunta ' + (idx + 1) + ' de ' + order.length + ' · aciertos: ' + score + '</div><div class="q">' + it.q + '</div><div class="opts" id="qzOpts"></div><div id="qzOut"></div>';
+          body.innerHTML = '<div class="score">Pregunta ' + (idx + 1) + ' de ' + order.length + (exam ? ' · modo evaluación' : ' · aciertos: ' + score) + '</div><div class="q">' + it.q + '</div><div class="opts" id="qzOpts"></div><div id="qzOut"></div>';
           var og = body.querySelector('#qzOpts');
           opts.forEach(function (op) {
             var b = h('button', { class: 'opt' }, op.t);
             b.addEventListener('click', function () {
               if (answered) return; answered = true;
               var ok = op.i === it.answer; if (ok) score++;
+              if (exam) {
+                rec.push({ q: it.q, ok: ok, pick: op.t, right: it.options[it.answer], why: it.why || '' });
+                og.querySelectorAll('button').forEach(function (x) { x.disabled = true; }); b.classList.add('picked');
+                body.querySelector('#qzOut').innerHTML = '<button class="btn primary" id="qzNext">' + (idx + 1 < order.length ? 'Siguiente' : 'Ver resultado') + '</button>';
+                body.querySelector('#qzNext').addEventListener('click', function () { idx++; render(); });
+                return;
+              }
               og.querySelectorAll('button').forEach(function (x, k) { x.disabled = true; if (opts[k].i === it.answer) x.classList.add('right'); });
               if (!ok) b.classList.add('wrong');
               body.querySelector('#qzOut').innerHTML = '<div class="verdict ' + (ok ? 'ok' : 'no') + '">' + (ok ? '¡Correcto! ' : 'No exactamente. ') + (it.why || '') + '</div><button class="btn primary" id="qzNext">' + (idx + 1 < order.length ? 'Siguiente' : 'Ver resultado') + '</button>';
@@ -424,6 +465,7 @@
       var s = stages[i];
       if (refs.phStep) refs.phStep.textContent = 'Etapa ' + (i + 1) + ' / ' + stages.length;
       if (refs.phName) refs.phName.textContent = s.name;
+      if (kit.announce && S._lastAnn !== i) { S._lastAnn = i; kit.announce('Etapa ' + (i + 1) + ' de ' + stages.length + ': ' + s.name); }
       if (refs.phTs) refs.phTs.hidden = !s.ts;
       if (refs.badge) refs.badge.classList.toggle('is-ts', !!s.ts);
       if (refs.pcKicker) refs.pcKicker.textContent = 'Etapa ' + (i + 1) + ' de ' + stages.length;
