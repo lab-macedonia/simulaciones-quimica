@@ -1,122 +1,5 @@
 /* Adición electrófila y SEAr — simulador 3D · Laboratorio MACEDONIA (UMCE). Usa el kit común ../../kit/simkit.js */
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
-/* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
-(function () {
-  "use strict";
-  var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
-  var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
-  var matCache = {}, sphereGeo, cylGeo;
-  function mat(el) { if (!matCache[el]) { var d = EL[el] || [0xcccccc, 1]; matCache[el] = new T.MeshStandardMaterial({ color: d[0], roughness: 0.4, metalness: 0.1 }); } return matCache[el]; }
-  var bondMat = null;
-  /* geo = { a: [[el,x,y,z],...], b: [[i,j],...] }, opts = { gs: escala de coordenadas, ar: escala de radios } */
-  function mol(geo, o) {
-    o = o || {}; var gs = o.gs || 0.5, ar = o.ar || 0.42, g = new T.Group();
-    sphereGeo = sphereGeo || new T.SphereGeometry(1, 16, 12); cylGeo = cylGeo || new T.CylinderGeometry(1, 1, 1, 8, 1, true);
-    bondMat = bondMat || new T.MeshStandardMaterial({ color: 0xbfc7d1, roughness: 0.5 });
-    geo.a.forEach(function (a) { var m = new T.Mesh(sphereGeo, o.mat ? o.mat : mat(a[0])); m.scale.setScalar((EL[a[0]] ? EL[a[0]][1] : 1) * ar * (o.rs || 1)); m.position.set(a[1] * gs, a[2] * gs, a[3] * gs); g.add(m); });
-    (geo.b || []).forEach(function (b) {
-      var p = new T.Vector3(geo.a[b[0]][1], geo.a[b[0]][2], geo.a[b[0]][3]).multiplyScalar(gs), q = new T.Vector3(geo.a[b[1]][1], geo.a[b[1]][2], geo.a[b[1]][3]).multiplyScalar(gs);
-      var d = q.clone().sub(p), len = d.length(), order = b[2] || 1;
-      for (var k = 0; k < order; k++) {
-        var c = new T.Mesh(cylGeo, bondMat), off = new T.Vector3(0, 0, (k - (order - 1) / 2) * 0.16 * (o.bw || 1));
-        c.scale.set(0.055 * (o.bw || 1), len, 0.055 * (o.bw || 1)); c.position.copy(p).add(q).multiplyScalar(0.5).add(off); c.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), d.clone().normalize()); g.add(c);
-      }
-    });
-    return g;
-  }
-  function ease(x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); }
-  function kv(a, b) { return '<div class="kv"><span>' + a + '</span><b>' + b + '</b></div>'; }
-  function sci(x, d) { if (x === 0) return '0'; var e = Math.floor(Math.log(Math.abs(x)) / Math.LN10); if (e > -3 && e < 4) return fmt(x, d == null ? (Math.abs(x) < 1 ? 4 : 2) : d); var m = x / Math.pow(10, e); return fmt(m, 2) + ' × 10' + String(e).replace(/-/g, '⁻').replace(/\d/g, function (c) { return '⁰¹²³⁴⁵⁶⁷⁸⁹'[+c]; }); }
-
-  function create(def) {
-    var ctx = { T: T, THREE: T, fmt: fmt, clamp: clamp, ease: ease, kv: kv, sci: sci, mol: mol, mat: mat, EL: EL, P: { manual: false, camGoal: null }, ui: {}, def: def, now: 0, dt: 0 };
-    var nSt = def.nStages || 6, STAGES = []; for (var q = 0; q < nSt; q++) STAGES.push({ name: '', short: '', title: '', text: '', dur: def.dur || 10 });
-    var kit, labels = [], lastSync = -1, lastHud = '', lastCalc = '', calcCard = null, graphUi = [];
-    ctx.STAGES = STAGES;
-    function applyStageDom() {
-      var s = STAGES[kit.state.stage]; document.querySelectorAll('.step span').forEach(function (b, k) { if (STAGES[k]) b.textContent = STAGES[k].short; });
-      var a = document.getElementById('phName'), b = document.getElementById('pcTitle'), c = document.getElementById('pcText');
-      if (a) a.textContent = s.name; if (b) b.innerHTML = s.title; if (c) c.innerHTML = s.text;
-    }
-    ctx.refreshStages = function () {
-      def.stages(ctx).forEach(function (a, i) { var t = STAGES[i]; if (!t) return; t.name = a[0]; t.short = a[1]; t.title = a[2]; t.text = a[3]; if (a[4]) t.dur = a[4]; });
-      if (kit) applyStageDom();
-    };
-    ctx.goManual = function () { if (!ctx.P.manual) { ctx.P.manual = true; kit.toast("Free mode: you control the simulation"); } if (kit.state.playing) kit.pause(); };
-    ctx.toLesson = function () { ctx.P.manual = false; kit.toast("The lesson controls the simulation"); if (def.onStage) def.onStage(kit.state.stage, ctx); };
-    ctx.layer = function (id) { return kit.layer(id); };
-    ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
-    ctx.btnRow = function (list) {
-      var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
-      return r;
-    };
-    function ui(id, e) { ctx.ui[id] = e; }
-    ctx.label = function (txt, cls) {
-      var d = document.createElement('div'); d.className = 'bond-label ' + (cls || 'bl-d'); d.textContent = txt; var o = new T.CSS2DObject(d); ctx.scene.add(o);
-      var L = { d: d, o: o, set: function (t, c) { if (d.textContent !== t) d.textContent = t; if (c && d.className !== 'bond-label ' + c) d.className = 'bond-label ' + c; return L; }, pos: function (x, y, z) { o.position.set(x, y, z); return L; }, vis: function (b) { o.visible = !!b && (L.force !== false) && ctx.layer('labels') !== false; return L; } };
-      labels.push(L); return L;
-    };
-    ctx.redraw = function () { graphUi.forEach(function (g) { g.redraw(); }); };
-    function resize() {
-      if (!ctx.renderer) return; var w = kit.viewport.clientWidth, h = kit.viewport.clientHeight; if (w < 2 || h < 2) return;
-      var cam = ctx.camera; cam.aspect = w / h; cam.zoom = clamp(cam.aspect / 1.6, 0.4, 1.15) * (w > 900 ? (def.zoom || 1) : 0.9);
-      var off = w > 900 ? Math.min(280, w * (def.offset == null ? 0.25 : def.offset)) : 0; if (off) cam.setViewOffset(w, h, -off, 0, w, h); else cam.clearViewOffset();
-      cam.updateProjectionMatrix(); ctx.renderer.setSize(w, h); ctx.labelRenderer.setSize(w, h);
-    }
-    function syncHud() {
-      if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
-    }
-    var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
-    if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
-      kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
-        var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
-        graphUi.push(cv); if (g.note) c.insertAdjacentHTML('beforeend', '<p class="muted small">' + g.note + '</p>'); el.appendChild(c);
-      });
-    } });
-    if (def.calc) tabs.push({ id: 'calc', label: def.calcLabel || "Calculation", build: function (el, k) { kit = k; ctx.kit = k; calcCard = kit.ui.card(''); el.appendChild(calcCard); lastCalc = ''; calcCard.innerHTML = lastCalc = def.calc(ctx); } });
-    if (def.quiz) tabs.push({ id: 'quiz', label: "Challenge", build: function (el, k) { kit = k; ctx.kit = k; var c = kit.ui.card("Challenge"); kit.ui.quiz(c, { items: def.quiz, intro: def.quizIntro || ("Review questions (" + def.quiz.length + ').') }); el.appendChild(c); } });
-    (def.tabsExtra || []).forEach(function (t) { tabs.push(t); });
-    var bg = def.bg || [0x0e131a, 0xdbe6f1];
-    ctx.kit = null;
-    kit = SimKit.create({
-      key: def.key, title: def.title, subtitle: def.subtitle || "3D Simulator", accent: def.accent || { dark: '#7dd3fc', light: '#0369a1' }, viewLabel: def.viewLabel || ("3D viewer · " + def.title),
-      stages: STAGES, mainTabLabel: "Guide", tabs: tabs, measuresTitle: "Live measurements", measures: function () { return def.measures ? def.measures(ctx) : []; },
-      ideas: def.ideas || [], layers: [{ id: 'labels', label: "Labels", icon: 'Aa' }].concat(def.layers || []),
-      onLayer: function (id, on) { if (id === 'labels') labels.forEach(function (l) { l.vis(l.want !== false); }); if (def.onLayer) def.onLayer(id, on, ctx); },
-      views: (def.views || [{ id: 'libre', label: "Free", pos: [0, 6, 22], target: [0, 3, 0] }]).map(function (v) { return { id: v.id, label: v.label }; }),
-      onView: function (id) { ctx.view(id); },
-      onTheme: function (th) { if (ctx.scene) { ctx.scene.background = new T.Color(th === 'dark' ? bg[0] : bg[1]); } ctx.theme = th; if (def.onTheme) def.onTheme(th, ctx); },
-      onStage: function (i) { ctx.refreshStages(); if (ctx.P.manual) return; if (def.stageViews && def.stageViews[i]) ctx.view(def.stageViews[i]); if (def.onStage) def.onStage(i, ctx); },
-      onGuide: function () { if (ctx.P.manual) ctx.toLesson(); },
-      onResize: resize,
-      render: function () { ctx.renderer.render(ctx.scene, ctx.camera); ctx.labelRenderer.render(ctx.scene, ctx.camera); },
-      onFrame: function (f) {
-        var dt = Math.min(f.dt, 0.05); ctx.now = f.now; ctx.dt = dt; ctx.f = f;
-        def.frame && def.frame(ctx, f, dt);
-        if (ctx.P.camGoal) { ctx.camera.position.lerp(ctx.P.camGoal.pos, 0.08); ctx.controls.target.lerp(ctx.P.camGoal.target, 0.08); if (ctx.camera.position.distanceTo(ctx.P.camGoal.pos) < 0.05) ctx.P.camGoal = null; }
-        if (f.now - lastSync > 0.15) { lastSync = f.now; syncHud(); if (calcCard && def.calc) { var h = def.calc(ctx); if (h !== lastCalc) { lastCalc = h; calcCard.innerHTML = h; } } ctx.redraw(); def.sync && def.sync(ctx); }
-        ctx.controls.update(); ctx.renderer.render(ctx.scene, ctx.camera); ctx.labelRenderer.render(ctx.scene, ctx.camera);
-      },
-      init: function (k) {
-        kit = k; ctx.kit = k; ctx.kit = k; ctx.kit = k; var cont = k.viewport, v0 = (def.views || [{ pos: [0, 6, 22], target: [0, 3, 0] }])[0];
-        var scene = ctx.scene = new T.Scene(), cam = ctx.camera = new T.PerspectiveCamera(45, 1, 0.1, 400); cam.position.set(v0.pos[0], v0.pos[1], v0.pos[2]);
-        var r = ctx.renderer = new T.WebGLRenderer({ antialias: true }); r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); cont.appendChild(r.domElement);
-        var lr = ctx.labelRenderer = new T.CSS2DRenderer(); lr.domElement.className = 'labels-layer'; cont.appendChild(lr.domElement);
-        var c = ctx.controls = new T.OrbitControls(cam, r.domElement); c.enableDamping = true; c.dampingFactor = 0.06; c.minDistance = def.minDist || 5; c.maxDistance = def.maxDist || 80; c.target.set(v0.target[0], v0.target[1], v0.target[2]);
-        c.addEventListener('start', function () { ctx.P.camGoal = null; });
-        scene.add(new T.AmbientLight(0xffffff, 0.85)); var dl = new T.DirectionalLight(0xffffff, 1.0); dl.position.set(8, 16, 12); scene.add(dl); var dl2 = new T.DirectionalLight(0x88aaff, 0.4); dl2.position.set(-8, 4, -8); scene.add(dl2);
-        k.cfg.onTheme(k.state.theme); def.build(ctx); resize(); ctx.refreshStages(); syncHud(); def.afterInit && def.afterInit(ctx);
-      },
-      help: def.help || { intro: "Follow the lesson with the player or explore freely in the “Lab” tab. With “Back to the lesson” the script takes control again.", items: [] }
-    });
-    ctx.refreshStages();
-    window.__sim = ctx;
-    return ctx;
-  }
-  window.MSim = { create: create, mol: mol, EL: EL, sci: sci };
-})();
 
 /* Constructor de geometrías 3D a partir de una notación tipo SMILES (sin anillos, salvo el fenilo «Ph»).
    MSim.build('CC{ol}O{ol}') -> { a:[[el,x,y,z]], b:[[i,j,orden]], tag:[etiqueta|null por átomo] }
@@ -189,9 +72,9 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   var AK = {
     eteno: { n: "ethene", r: 'C=C', cM: 'CC+', cm: null, pM: 'CCX', pm: null, d: 'BrCCBr', tM: "primary (ethyl)", tm: '' },
     propeno: { n: "propene", r: 'CC=C', cM: 'CC+C', cm: 'C+CC', pM: 'CC(X)C', pm: 'CCCX', d: 'BrCC(Br)C', tM: 'secundario', tm: 'primario' },
-    ib: { n: '2-metilpropeno', r: 'CC(C)=C', cM: 'CC+(C)C', cm: 'CC(C)C+', pM: 'CC(C)(C)X', pm: 'CC(C)CX', d: 'BrCC(Br)(C)C', tM: 'terciario', tm: 'primario' },
-    but1: { n: '1-buteno', r: 'CCC=C', cM: 'CCC+C', cm: 'CCCC+', pM: 'CCC(X)C', pm: 'CCCCX', d: 'BrCC(Br)CC', tM: 'secundario', tm: 'primario' },
-    but2: { n: '2-buteno', r: 'CC=CC', cM: 'CC+CC', cm: null, pM: 'CCC(X)C', pm: null, d: 'CC(Br)C(Br)C', tM: 'secundario', tm: '' }
+    ib: { n: "2-methylpropene", r: 'CC(C)=C', cM: 'CC+(C)C', cm: 'CC(C)C+', pM: 'CC(C)(C)X', pm: 'CC(C)CX', d: 'BrCC(Br)(C)C', tM: 'terciario', tm: 'primario' },
+    but1: { n: "1-butene", r: 'CCC=C', cM: 'CCC+C', cm: 'CCCC+', pM: 'CCC(X)C', pm: 'CCCCX', d: 'BrCC(Br)CC', tM: 'secundario', tm: 'primario' },
+    but2: { n: "2-butene", r: 'CC=CC', cM: 'CC+CC', cm: null, pM: 'CCC(X)C', pm: null, d: 'CC(Br)C(Br)C', tM: 'secundario', tm: '' }
   };
   var RG = { HBr: { n: 'HBr', x: 'Br', col: 0xa0522d, ion: 'Br⁻', len: 1.41, pn: "bromine" }, HCl: { n: 'HCl', x: 'Cl', col: 0x3ddc5a, ion: 'Cl⁻', len: 1.27, pn: "chlorine" }, H2O: { n: 'H₂O / H⁺', x: 'O{ol}', col: 0xff4d4d, ion: 'H₂O', len: 1.0, pn: "hydroxy" }, Br2: { n: 'Br₂', x: 'Br', col: 0xa0522d, ion: 'Br⁻', len: 2.28, pn: "bromine" } };
   var CAT = { "primary (ethyl)": 80, primario: 120, secundario: 80, terciario: 55 }; // energía relativa del carbocatión en disolución (esquema), kJ/mol
@@ -254,10 +137,10 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   var GS = 1.25;
   var PN = {
     eteno: { Br: "bromoethane", Cl: "chloroethane", O: "ethanol", d: "1,2-dibromoethane", m: {} },
-    propeno: { Br: '2-bromopropano', Cl: '2-cloropropano', O: 'propan-2-ol', d: "1,2-dibromopropane", m: { Br: '1-bromopropano', Cl: '1-cloropropano', O: 'propan-1-ol' } },
-    ib: { Br: '2-bromo-2-metilpropano', Cl: '2-cloro-2-metilpropano', O: '2-metilpropan-2-ol', d: "1,2-dibromo-2-methylpropane", m: { Br: '1-bromo-2-metilpropano', Cl: '1-cloro-2-metilpropano', O: '2-metilpropan-1-ol' } },
-    but1: { Br: '2-bromobutano', Cl: '2-clorobutano', O: 'butan-2-ol', d: "1,2-dibromobutane", m: { Br: '1-bromobutano', Cl: '1-clorobutano', O: 'butan-1-ol' } },
-    but2: { Br: '2-bromobutano', Cl: '2-clorobutano', O: 'butan-2-ol', d: "2,3-dibromobutane", m: {} }
+    propeno: { Br: '2-bromopropane', Cl: '2-chloropropane', O: 'propan-2-ol', d: "1,2-dibromopropane", m: { Br: '1-bromopropane', Cl: '1-chloropropane', O: 'propan-1-ol' } },
+    ib: { Br: '2-bromo-2-methylpropane', Cl: '2-cloro-2-methylpropane', O: '2-methylpropan-2-ol', d: "1,2-dibromo-2-methylpropane", m: { Br: '1-bromo-2-methylpropane', Cl: '1-cloro-2-methylpropane', O: '2-metilpropan-1-ol' } },
+    but1: { Br: '2-bromobutane', Cl: '2-chlorobutane', O: 'butan-2-ol', d: "1,2-dibromobutane", m: { Br: '1-bromobutane', Cl: '1-chlorobutane', O: 'butan-1-ol' } },
+    but2: { Br: '2-bromobutane', Cl: '2-chlorobutane', O: 'butan-2-ol', d: "2,3-dibromobutane", m: {} }
   };
   var CATN = { "primary (ethyl)": 'primario', primario: 'primario', secundario: 'secundario', terciario: 'terciario' };
   function xk() { return S.rg === 'HBr' ? 'Br' : (S.rg === 'HCl' ? 'Cl' : 'O'); }
@@ -399,7 +282,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
         curves.forEach(function (cv, k) { var f = interp(cv.pts); cx.strokeStyle = cv.col; cx.lineWidth = 2.6; cx.setLineDash(cv.dash ? [6, 4] : []); cx.beginPath(); for (var j = 0; j <= 120; j++) { var x = j / 120, y = sy(f(x)); if (j === 0) cx.moveTo(sx(x), y); else cx.lineTo(sx(x), y); } cx.stroke(); cx.setLineDash([]); cx.lineWidth = 1; cx.fillStyle = cv.col; cx.textAlign = 'left'; cx.fillText(cv.lab, L + 8, Tp + 12 + k * 14); }); } },
       { title: "Carbocation stability", h: 190, note: "Gas-phase hydride affinity (kJ/mol): the lower, the more stable the cation (hyperconjugation and inductive effects).", draw: function (cx, w, h, c) {
         var ks = ['metilo', 'primario', 'secundario', 'terciario'], cur = S.mode === 'alq' ? CATN[AK[S.ak].tM] : '', ph = (h - 24) / 4, sc = (w - 150) / 450; cx.font = '11px system-ui';
-        ks.forEach(function (k, i) { var y = 8 + i * ph, v = HIA[k]; cx.fillStyle = k === cur ? '#f06595' : '#9aa7b4'; cx.fillRect(86, y, (v - 800) * sc, ph - 8); cx.fillStyle = c.ink; cx.textAlign = 'right'; cx.fillText(k, 80, y + ph / 2); cx.textAlign = 'left'; cx.fillText(v + '', 90 + (v - 800) * sc, y + ph / 2); }); cx.fillStyle = c.muted; cx.textAlign = 'center'; cx.fillText("axis starts at 800 kJ/mol", w / 2, h - 4); } },
+        ks.forEach(function (k, i) { var y = 8 + i * ph, v = HIA[k]; cx.fillStyle = k === cur ? '#f06595' : '#9aa7b4'; cx.fillRect(86, y, (v - 800) * sc, ph - 8); cx.fillStyle = c.ink; cx.textAlign = 'right'; cx.fillText({ metilo: "methyl", primario: "primary", secundario: "secondary", terciario: "tertiary" }[k], 80, y + ph / 2); cx.textAlign = 'left'; cx.fillText(v + '', 90 + (v - 800) * sc, y + ph / 2); }); cx.fillStyle = c.muted; cx.textAlign = 'center'; cx.fillText("axis starts at 800 kJ/mol", w / 2, h - 4); } },
       { title: "SEAr: isomer distribution (nitration)", h: 190, note: "Typical experimental values (% ortho / meta / para).", draw: function (cx, w, h, c) {
         var su = SU[S.su], L = 30, ph = h - 40; cx.font = '11px system-ui'; if (!su.pct) { cx.fillStyle = c.muted; cx.textAlign = 'center'; cx.fillText("Benzene has no isomers: all positions are equivalent.", w / 2, h / 2); return; }
         var names = ["ortho", 'meta', 'para'], cols = ['#ffa94d', '#4dabf7', '#69db7c']; names.forEach(function (n, i) { var bw = (w - 2 * L) / 3 - 14, x = L + i * ((w - 2 * L) / 3) + 7, bh = ph * su.pct[i] / 100; cx.fillStyle = cols[i]; cx.fillRect(x, 12 + ph - bh, bw, bh); cx.fillStyle = c.ink; cx.textAlign = 'center'; cx.fillText(su.pct[i] + ' %', x + bw / 2, 8 + ph - bh); cx.fillText(n, x + bw / 2, h - 10); }); } },
@@ -416,15 +299,15 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     },
     quiz: [
       { q: "Why does an alkene react with electrophiles?", options: ["It has an electron-rich π cloud", "It has a lone pair", "It is a Lewis acid", "It has a positive charge"], answer: 0, why: "The π bond, weaker and more exposed than the σ bond, acts as a nucleophile." },
-      { q: "In the addition of HBr to propene, the H bonds to the…", options: ["carbon with more hydrogens (CH₂)", "central carbon", "bromine", 'metilo'], answer: 0, why: "Markovnikov's rule: the H goes to the carbon with more H atoms; the + charge stays on the 2° carbon." },
-      { q: "The major product of HBr + propene is…", options: ['2-bromopropano', '1-bromopropano', "1,2-dibromopropane", "propane"], answer: 0, why: "It goes through the secondary carbocation, which is more stable." },
+      { q: "In the addition of HBr to propene, the H bonds to the…", options: ["carbon with more hydrogens (CH₂)", "central carbon", "bromine", "methyl"], answer: 0, why: "Markovnikov's rule: the H goes to the carbon with more H atoms; the + charge stays on the 2° carbon." },
+      { q: "The major product of HBr + propene is…", options: ['2-bromopropane', '1-bromopropane', "1,2-dibromopropane", "propane"], answer: 0, why: "It goes through the secondary carbocation, which is more stable." },
       { q: "Order the stability of carbocations.", options: ["tertiary > secondary > primary > methyl", "methyl > primary > secondary > tertiary", "primary > secondary > tertiary", "all equal"], answer: 0, why: "More alkyl groups: more hyperconjugation and donor inductive effect." },
       { q: "The addition of Br₂ to an alkene occurs…", options: ["anti, via a bromonium ion", "syn, via a free carbocation", "by radicals only", "without an intermediate"], answer: 0, why: "Br⁻ attacks the bromonium from the opposite face (SN2)." },
       { q: "Benzene reacts by substitution and not by addition because…", options: ["that way it preserves aromaticity", "it has a leaving group", "it is an alkene", "it has no H"], answer: 0, why: "Addition would destroy the 6 delocalized π electrons (≈ 150 kJ/mol of resonance)." },
       { q: "The –CH₃ in toluene is a group that is…", options: ["activating and ortho/para directing", "deactivating and meta", "activating and meta", "deactivating and ortho/para"], answer: 0, why: "It donates electron density (inductive and hyperconjugation) and stabilizes the σ complexes of o/p attack." },
       { q: "What does –NO₂ direct to in an SEAr?", options: ["Meta (and deactivates the ring)", "Ortho/para (and activates)", "Only ortho", "Only para"], answer: 0, why: "Strong withdrawer: it destabilizes the + charge on the C attached to it, which is present in the o/p complexes." }
     ],
-    help: { intro: "Follow the lesson or choose the alkene/reagent (or substituent and electrophile) in “Lab” and move the reaction progress.", items: [["Arrows", "the curved arrows show the movement of electron pairs."], ["Clouds", "blue: π; orange: empty p orbital; in SEAr the color indicates the substituent effect."], ["Graphs", "energy profiles, cation stability and o/m/p distribution."]] }
+    help: { intro: "Follow the lesson or choose the alkene/reagent (or substituent and electrophile) in “Lab” and move the reaction progress.", items: [["Arrows", "the curved arrows show the movement of electron pairs."], ["Clouds", "blue: π; orange: empty p orbital; in SEAr the color indicates the substituent effect."], ["Graphs", "energy profiles, cation stability and o/m/p distribution."], ['Controls', 'type (addition to alkenes or SEAr); for alkenes, alkene and reagent; for SEAr, ring substituent, electrophile and position attacked (ortho, meta or para); plus reaction progress and T.']], try: ['Add HBr to propene: H goes to the carbon with more H and the secondary carbocation forms (Markovnikov).', 'With Br₂ look at the bromonium ion: the addition is anti.', 'In SEAr compare an activating and a deactivating substituent in the ortho/meta/para distribution.'] }
   };
   MSim.create(def);
 })();

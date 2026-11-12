@@ -916,7 +916,7 @@
           ['Lab', 'cambia de sustancia y mueve la distancia, la formación de la red, el campo eléctrico o el deslizamiento de una capa.'],
           ['Energía', 'curva Coulomb–Born y ciclo de Born–Haber (iónico), curva de Morse y orden de enlace (covalente), propiedades y conductividad (metálico). Haz clic sobre la curva para mover la distancia.'],
           ['Predictor', 'elige dos elementos y descubre qué enlace forman según ΔEN; puedes simular el caso en 3D.']
-        ]
+        ], try: ['En el enlace iónico acerca y aleja los iones: el mínimo de energía marca la distancia de enlace.', 'Compara H₂, O₂ y N₂: a mayor orden de enlace, enlace más corto y más fuerte.', 'En el metálico desliza una capa: el metal se deforma sin romperse (maleabilidad).', 'En «Predictor» prueba Na con Cl y luego C con H, y compara ΔEN.']
       }
     });
     kit.setMode('ion', true);

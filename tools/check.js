@@ -5,7 +5,7 @@ const ROOT = path.resolve(__dirname, '..', 'simulaciones'); const errs = [];
 function walk(d, out = []) { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) walk(p, out); else out.push(p); } return out; }
 const files = walk(ROOT);
 // 1) sintaxis JS (excepto vendor)
-for (const f of files.filter(f => f.endsWith('.js') && !f.includes('/vendor/'))) { try { new vm.Script(fs.readFileSync(f, 'utf8'), { filename: f }); } catch (e) { errs.push('JS ' + path.relative(ROOT, f) + ': ' + e.message); } }
+for (const f of files.filter(f => f.endsWith('.js') && !/[\\/]vendor[\\/]/.test(f))) { try { new vm.Script(fs.readFileSync(f, 'utf8'), { filename: f }); } catch (e) { errs.push('JS ' + path.relative(ROOT, f) + ': ' + e.message); } }
 // 2) JSON / manifest
 for (const f of files.filter(f => /\.(json|webmanifest)$/.test(f))) { try { JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { errs.push('JSON ' + path.relative(ROOT, f) + ': ' + e.message); } }
 // 3) enlaces locales de cada HTML (src/href), con ancla y query ignoradas
@@ -14,7 +14,7 @@ for (const f of files.filter(f => f.endsWith('.html'))) {
   for (const m of h.matchAll(/\s(?:src|href)="([^"]+)"/g)) { let u = m[1]; if (/^(https?:|mailto:|data:|#|javascript:)/.test(u)) continue; u = u.split('#')[0].split('?')[0]; if (!u) continue; const t = path.resolve(dir, u); if (!fs.existsSync(t) && !fs.existsSync(path.join(t, 'index.html'))) errs.push('ENLACE ' + path.relative(ROOT, f) + ' → ' + m[1]); }
 }
 // 4) cada simulación (carpeta con index.html y app.js/js/) tiene versión en inglés y guía docente
-const sims = files.filter(f => path.basename(f) === 'index.html').map(f => path.relative(ROOT, path.dirname(f))).filter(d => d && !d.startsWith('guias') && d.split('/').length === 2);
+const sims = files.filter(f => path.basename(f) === 'index.html').map(f => path.relative(ROOT, path.dirname(f)).split(path.sep).join('/')).filter(d => d && !d.startsWith('guias') && d.split('/').length === 2);
 for (const s of sims) {
   if (!fs.existsSync(path.join(ROOT, s, 'index.en.html'))) errs.push('SIN INGLÉS ' + s);
   if (!fs.existsSync(path.join(ROOT, 'guias', s + '.html'))) errs.push('SIN GUÍA ' + s);

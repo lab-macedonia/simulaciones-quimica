@@ -163,7 +163,7 @@
     help: {
       intro: 'Sigue la lección con el reproductor inferior o explora libremente: gira arrastrando, acerca con la rueda y haz clic en cualquier componente para ver su ficha.',
       items: [['Clic en el modelo', 'selecciona un componente, lo resalta, atenúa el resto y abre su ficha; vuelve a pulsarlo para quitar la selección.'], ['Capas', 'muestra u oculta los sistemas (límite, información, síntesis, energía, digestión, soporte), las etiquetas y el corte.'],
-        ['Corte', 'quita la mitad frontal de la membrana para ver el interior.'], ['Coloreado', '«Funciones» pinta cada componente según el sistema al que pertenece.'], ['Componentes', 'lista completa con acceso directo a cada ficha.'], ['Desafío', 'juego «Identifica en 3D» y preguntas rápidas.']]
+        ['Corte', 'quita la mitad frontal de la membrana para ver el interior.'], ['Coloreado', '«Funciones» pinta cada componente según el sistema al que pertenece.'], ['Componentes', 'lista completa con acceso directo a cada ficha.'], ['Desafío', 'juego «Identifica en 3D» y preguntas rápidas.']], try: ['Sigue la vía de secreción: haz clic en ribosomas, retículo rugoso, Golgi y vesículas, en ese orden.', 'Activa el corte y el coloreado «Funciones»: identifica qué orgánulos forman el sistema de energía.', 'Juega «Identifica en 3D» en «Desafío» con las etiquetas ocultas.']
     }
   });
 })();

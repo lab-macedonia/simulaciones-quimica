@@ -177,7 +177,7 @@
     help: {
       intro: "Follow the lesson with the player below or explore freely: rotate by dragging, zoom with the wheel and click on any component to see its fact sheet.",
       items: [["Click on the model", "selects a component, highlights it and dims the rest; press it again to clear the selection."], ["Layers", "shows or hides systems, labels and the cutaway."],
-        ["Cutaway", "removes the front half of the wall, membrane and vacuole to see the inside; turn it off to see the closed cell."], ["Coloring", "“Functions” paints each component according to its system."], ["Compare", "table with the differences from the animal cell."], ["Challenge", "“Identify in 3D” game and quick questions."]]
+        ["Cutaway", "removes the front half of the wall, membrane and vacuole to see the inside; turn it off to see the closed cell."], ["Coloring", "“Functions” paints each component according to its system."], ["Compare", "table with the differences from the animal cell."], ["Challenge", "“Identify in 3D” game and quick questions."]], try: ['Click the wall, the vacuole and a chloroplast: these three structures set the plant cell apart.', 'Open the comparison tab and note which organelles it shares with the animal cell.', 'Turn the cutaway off to see the closed cell, then on again to find the central vacuole.']
     }
   });
 })();

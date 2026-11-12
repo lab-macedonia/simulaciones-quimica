@@ -51,15 +51,17 @@ footer a{color:var(--accent)}
 <header>
   <div class="eyebrow">Laboratorio MACEDONIA · UMCE</div>
   <h1>Simulaciones interactivas de ciencias</h1>
-  <p>Herramientas 3D y de visualización para la enseñanza de la química, la biología celular y la física, clasificadas por área. Funcionan directamente en el navegador, en computador o celular, sin conexión a internet. Cada una incluye lección guiada, captura de imagen y ayuda.</p>
+  <p>Herramientas 3D y de visualización para la enseñanza de la química, la biología, las ciencias de la Tierra y la física, clasificadas por área. Funcionan directamente en el navegador, en computador o celular, sin conexión a internet. Cada una incluye lección guiada, captura de imagen y ayuda.</p>
   <nav class="tabs" aria-label="Áreas">
     <a href="#organica">Química orgánica</a>
     <a href="#general">Química general</a>
     <a href="#inorganica">Química inorgánica</a>
     <a href="#biologia">Biología</a>
     <a href="#laboratorio">Técnicas de laboratorio</a>
+    <a href="#ciencias-tierra">Ciencias de la Tierra</a>
     <a href="#fisica">Física</a>
     <a href="guias/">Guías docentes</a>
+    <a href="curriculo.html">Cobertura curricular (OA Mineduc)</a>
   </nav>
   <div class="finder"><label for="q">Buscar simulación</label><input id="q" type="search" placeholder="Ej.: titulación, Grignard, PCR…" autocomplete="off"><span id="qn" role="status" aria-live="polite"></span></div>
 </header>
@@ -565,6 +567,24 @@ footer a{color:var(--accent)}
       <div class="tags"><span>3D</span><span>Fármacos</span><span>Lipinski</span></div>
     </a>
   </div>
+  <h3 class="sub">Ecología, microorganismos y salud</h3>
+  <div class="grid">
+    <a class="card" href="biologia/poblaciones-ecosistemas/">
+      <h3>Poblaciones y ecosistemas</h3>
+      <p>Simulador 3D de ecología: niveles de organización, crecimiento exponencial y logístico, capacidad de carga, ciclo depredador–presa (zorro culpeo y degú), competencia con una especie invasora y efectos de la pérdida de hábitat y la caza.</p>
+      <div class="tags"><span>3D</span><span>Ecología</span><span>Poblaciones</span><span>Chile</span></div>
+    </a>
+    <a class="card" href="biologia/epidemias-vacunas/">
+      <h3>Epidemias, sistema inmune y vacunas</h3>
+      <p>Simulador 3D de epidemias: contagio entre personas con el modelo SIR, número reproductivo R₀ y R efectivo, medidas de prevención, defensas del sistema inmune, vacunas e inmunidad de rebaño.</p>
+      <div class="tags"><span>3D</span><span>SIR</span><span>Vacunas</span><span>Salud</span></div>
+    </a>
+    <a class="card" href="biologia/microorganismos/">
+      <h3>Microorganismos y biotecnología</h3>
+      <p>Simulador 3D de microorganismos: estructura y tamaño de bacterias, levaduras y virus, curva de crecimiento bacteriano, ciclo lítico de un virus, hongos, resistencia a antibióticos y biotecnología: fermentación, yogur y biominería del cobre en Chile.</p>
+      <div class="tags"><span>3D</span><span>Bacterias</span><span>Virus</span><span>Biotecnología</span></div>
+    </a>
+  </div>
 </section>
 
 <section id="laboratorio">
@@ -649,14 +669,86 @@ footer a{color:var(--accent)}
   </div>
 </section>
 
+<section id="ciencias-tierra">
+  <h2>Ciencias de la Tierra</h2>
+  <p>Tectónica de placas, sismos y volcanes, rocas y fósiles, y el sistema climático.</p>
+  <div class="grid">
+    <a class="card" href="ciencias-tierra/tectonica-sismos/">
+      <h3>Tectónica de placas y sismos</h3>
+      <p>Simulador 3D de tectónica de placas: bordes convergente (subducción de Nazca bajo Chile), divergente y transformante, convección del manto, ondas sísmicas P y S, sismograma, distancia al epicentro y magnitud.</p>
+      <div class="tags"><span>3D</span><span>Placas</span><span>Sismos</span><span>Chile</span></div>
+    </a>
+    <a class="card" href="ciencias-tierra/volcanes/">
+      <h3>Volcanes y erupciones</h3>
+      <p>Simulador 3D de volcanes: cámara magmática y chimenea, erupciones efusivas y explosivas según la sílice y los gases del magma, ceniza, lahares, alerta técnica y volcanes de Chile, y beneficios como la geotermia.</p>
+      <div class="tags"><span>3D</span><span>Volcanes</span><span>Magma</span><span>Chile</span></div>
+    </a>
+    <a class="card" href="ciencias-tierra/rocas-fosiles/">
+      <h3>Rocas, estratos y fósiles</h3>
+      <p>Simulador 3D de geología: rocas ígneas, sedimentarias y metamórficas, ciclo de las rocas, formación de estratos, fosilización, principio de superposición, intrusiones, fósiles guía, levantamiento y erosión.</p>
+      <div class="tags"><span>3D</span><span>Rocas</span><span>Fósiles</span><span>Estratos</span></div>
+    </a>
+    <a class="card" href="ciencias-tierra/clima/">
+      <h3>Clima y cambio climático</h3>
+      <p>Simulador 3D del sistema climático: balance de energía de la Tierra, albedo, efecto invernadero natural, retroalimentaciones del hielo y del vapor de agua, aumento del CO₂ con datos reales y escenarios futuros.</p>
+      <div class="tags"><span>3D</span><span>Clima</span><span>CO₂</span><span>Datos</span></div>
+    </a>
+  </div>
+</section>
+
 <section id="fisica">
   <h2>Física</h2>
-  <p>Astronomía y mecánica celeste.</p>
+  <p>Movimiento, fuerzas y energía; electricidad, ondas y luz; astronomía y cosmología.</p>
   <div class="grid">
     <a class="card" href="fisica/sistema-solar/">
       <h3>Sistema Solar 3D</h3>
       <p>El Sol, los ocho planetas, Plutón, satélites y cinturones con fichas de cada astro, tamaños a escala, leyes de Kepler, calculadora de peso y desafío.</p>
       <div class="tags"><span>3D</span><span>Planetas</span><span>Kepler</span></div>
+    </a>
+    <a class="card" href="fisica/cinematica/">
+      <h3>Cinemática: MRU y MRUA</h3>
+      <p>Simulador 3D de cinemática: posición, desplazamiento, movimiento rectilíneo uniforme y uniformemente acelerado, gráficos x–t y v–t, distancia de frenado y encuentro de dos móviles.</p>
+      <div class="tags"><span>3D</span><span>MRU</span><span>MRUA</span><span>Gráficos</span></div>
+    </a>
+    <a class="card" href="fisica/fuerzas-newton/">
+      <h3>Fuerzas y leyes de Newton</h3>
+      <p>Simulador 3D de fuerzas: peso y gravedad en distintos astros, fuerza elástica y ley de Hooke, roce estático y cinético, y las tres leyes de Newton con diagrama de cuerpo libre.</p>
+      <div class="tags"><span>3D</span><span>Newton</span><span>Roce</span><span>Hooke</span></div>
+    </a>
+    <a class="card" href="fisica/energia-mecanica/">
+      <h3>Energía mecánica, trabajo y potencia</h3>
+      <p>Simulador 3D de energía: trabajo de una fuerza, energía potencial gravitatoria y cinética en una pista, conservación de la energía mecánica, disipación por roce y potencia de una grúa.</p>
+      <div class="tags"><span>3D</span><span>Energía</span><span>Trabajo</span><span>Potencia</span></div>
+    </a>
+    <a class="card" href="fisica/momentum-choques/">
+      <h3>Cantidad de movimiento y choques</h3>
+      <p>Simulador 3D de cantidad de movimiento: impulso y fuerza media (airbag), choques elásticos, inelásticos y con coeficiente de restitución, masas distintas y retroceso en un riel de aire.</p>
+      <div class="tags"><span>3D</span><span>Momentum</span><span>Impulso</span><span>Choques</span></div>
+    </a>
+    <a class="card" href="fisica/electrostatica/">
+      <h3>Electrostática: electrización y fuerza eléctrica</h3>
+      <p>Simulador 3D de electrostática: carga eléctrica, electrización por frotamiento con serie triboeléctrica, por contacto y por inducción en un electroscopio, conexión a tierra y ley de Coulomb.</p>
+      <div class="tags"><span>3D</span><span>Carga</span><span>Electroscopio</span><span>Coulomb</span></div>
+    </a>
+    <a class="card" href="fisica/circuitos/">
+      <h3>Circuitos eléctricos en serie y en paralelo</h3>
+      <p>Simulador 3D de circuitos: circuito abierto y cerrado, ley de Ohm, conexión en serie y en paralelo con ampolletas, resistencia equivalente, ampolleta fundida y potencia eléctrica.</p>
+      <div class="tags"><span>3D</span><span>Ohm</span><span>Serie</span><span>Paralelo</span></div>
+    </a>
+    <a class="card" href="fisica/ondas-sonido/">
+      <h3>Ondas y sonido</h3>
+      <p>Simulador 3D de ondas sonoras: partículas del aire que forman compresiones y enrarecimientos, amplitud e intensidad, frecuencia y tono, rapidez en distintos medios, eco y funcionamiento del oído, con tono audible.</p>
+      <div class="tags"><span>3D</span><span>Sonido</span><span>Frecuencia</span><span>Eco</span></div>
+    </a>
+    <a class="card" href="fisica/optica-ojo/">
+      <h3>Lentes y el ojo humano</h3>
+      <p>Simulador 3D de óptica: rayos en una lente convergente, imagen real e invertida, lupa, ecuación de la lente delgada, el ojo y la acomodación, miopía e hipermetropía con su lente correctora.</p>
+      <div class="tags"><span>3D</span><span>Lentes</span><span>Ojo</span><span>Visión</span></div>
+    </a>
+    <a class="card" href="fisica/universo-expansion/">
+      <h3>El universo en expansión</h3>
+      <p>Simulador 3D del universo en expansión: corrimiento al rojo de galaxias, ley de Hubble, expansión sin centro, edad del universo, historia desde el Big Bang y astronomía en los observatorios de Chile.</p>
+      <div class="tags"><span>3D</span><span>Hubble</span><span>Big Bang</span><span>Astronomía</span></div>
     </a>
   </div>
 </section>

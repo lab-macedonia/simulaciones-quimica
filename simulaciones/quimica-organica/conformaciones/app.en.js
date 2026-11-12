@@ -1,122 +1,5 @@
 /* Conformaciones: Newman y silla — simulador 3D · Laboratorio MACEDONIA (UMCE). Usa el kit común ../../kit/simkit.js */
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
-/* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
-(function () {
-  "use strict";
-  var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
-  var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
-  var matCache = {}, sphereGeo, cylGeo;
-  function mat(el) { if (!matCache[el]) { var d = EL[el] || [0xcccccc, 1]; matCache[el] = new T.MeshStandardMaterial({ color: d[0], roughness: 0.4, metalness: 0.1 }); } return matCache[el]; }
-  var bondMat = null;
-  /* geo = { a: [[el,x,y,z],...], b: [[i,j],...] }, opts = { gs: escala de coordenadas, ar: escala de radios } */
-  function mol(geo, o) {
-    o = o || {}; var gs = o.gs || 0.5, ar = o.ar || 0.42, g = new T.Group();
-    sphereGeo = sphereGeo || new T.SphereGeometry(1, 16, 12); cylGeo = cylGeo || new T.CylinderGeometry(1, 1, 1, 8, 1, true);
-    bondMat = bondMat || new T.MeshStandardMaterial({ color: 0xbfc7d1, roughness: 0.5 });
-    geo.a.forEach(function (a) { var m = new T.Mesh(sphereGeo, o.mat ? o.mat : mat(a[0])); m.scale.setScalar((EL[a[0]] ? EL[a[0]][1] : 1) * ar * (o.rs || 1)); m.position.set(a[1] * gs, a[2] * gs, a[3] * gs); g.add(m); });
-    (geo.b || []).forEach(function (b) {
-      var p = new T.Vector3(geo.a[b[0]][1], geo.a[b[0]][2], geo.a[b[0]][3]).multiplyScalar(gs), q = new T.Vector3(geo.a[b[1]][1], geo.a[b[1]][2], geo.a[b[1]][3]).multiplyScalar(gs);
-      var d = q.clone().sub(p), len = d.length(), order = b[2] || 1;
-      for (var k = 0; k < order; k++) {
-        var c = new T.Mesh(cylGeo, bondMat), off = new T.Vector3(0, 0, (k - (order - 1) / 2) * 0.16 * (o.bw || 1));
-        c.scale.set(0.055 * (o.bw || 1), len, 0.055 * (o.bw || 1)); c.position.copy(p).add(q).multiplyScalar(0.5).add(off); c.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), d.clone().normalize()); g.add(c);
-      }
-    });
-    return g;
-  }
-  function ease(x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); }
-  function kv(a, b) { return '<div class="kv"><span>' + a + '</span><b>' + b + '</b></div>'; }
-  function sci(x, d) { if (x === 0) return '0'; var e = Math.floor(Math.log(Math.abs(x)) / Math.LN10); if (e > -3 && e < 4) return fmt(x, d == null ? (Math.abs(x) < 1 ? 4 : 2) : d); var m = x / Math.pow(10, e); return fmt(m, 2) + ' × 10' + String(e).replace(/-/g, '⁻').replace(/\d/g, function (c) { return '⁰¹²³⁴⁵⁶⁷⁸⁹'[+c]; }); }
-
-  function create(def) {
-    var ctx = { T: T, THREE: T, fmt: fmt, clamp: clamp, ease: ease, kv: kv, sci: sci, mol: mol, mat: mat, EL: EL, P: { manual: false, camGoal: null }, ui: {}, def: def, now: 0, dt: 0 };
-    var nSt = def.nStages || 6, STAGES = []; for (var q = 0; q < nSt; q++) STAGES.push({ name: '', short: '', title: '', text: '', dur: def.dur || 10 });
-    var kit, labels = [], lastSync = -1, lastHud = '', lastCalc = '', calcCard = null, graphUi = [];
-    ctx.STAGES = STAGES;
-    function applyStageDom() {
-      var s = STAGES[kit.state.stage]; document.querySelectorAll('.step span').forEach(function (b, k) { if (STAGES[k]) b.textContent = STAGES[k].short; });
-      var a = document.getElementById('phName'), b = document.getElementById('pcTitle'), c = document.getElementById('pcText');
-      if (a) a.textContent = s.name; if (b) b.innerHTML = s.title; if (c) c.innerHTML = s.text;
-    }
-    ctx.refreshStages = function () {
-      def.stages(ctx).forEach(function (a, i) { var t = STAGES[i]; if (!t) return; t.name = a[0]; t.short = a[1]; t.title = a[2]; t.text = a[3]; if (a[4]) t.dur = a[4]; });
-      if (kit) applyStageDom();
-    };
-    ctx.goManual = function () { if (!ctx.P.manual) { ctx.P.manual = true; kit.toast("Free mode: you control the simulation"); } if (kit.state.playing) kit.pause(); };
-    ctx.toLesson = function () { ctx.P.manual = false; kit.toast("The lesson controls the simulation"); if (def.onStage) def.onStage(kit.state.stage, ctx); };
-    ctx.layer = function (id) { return kit.layer(id); };
-    ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
-    ctx.btnRow = function (list) {
-      var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
-      return r;
-    };
-    function ui(id, e) { ctx.ui[id] = e; }
-    ctx.label = function (txt, cls) {
-      var d = document.createElement('div'); d.className = 'bond-label ' + (cls || 'bl-d'); d.textContent = txt; var o = new T.CSS2DObject(d); ctx.scene.add(o);
-      var L = { d: d, o: o, set: function (t, c) { if (d.textContent !== t) d.textContent = t; if (c && d.className !== 'bond-label ' + c) d.className = 'bond-label ' + c; return L; }, pos: function (x, y, z) { o.position.set(x, y, z); return L; }, vis: function (b) { o.visible = !!b && (L.force !== false) && ctx.layer('labels') !== false; return L; } };
-      labels.push(L); return L;
-    };
-    ctx.redraw = function () { graphUi.forEach(function (g) { g.redraw(); }); };
-    function resize() {
-      if (!ctx.renderer) return; var w = kit.viewport.clientWidth, h = kit.viewport.clientHeight; if (w < 2 || h < 2) return;
-      var cam = ctx.camera; cam.aspect = w / h; cam.zoom = clamp(cam.aspect / 1.6, 0.4, 1.15) * (w > 900 ? (def.zoom || 1) : 0.9);
-      var off = w > 900 ? Math.min(280, w * (def.offset == null ? 0.25 : def.offset)) : 0; if (off) cam.setViewOffset(w, h, -off, 0, w, h); else cam.clearViewOffset();
-      cam.updateProjectionMatrix(); ctx.renderer.setSize(w, h); ctx.labelRenderer.setSize(w, h);
-    }
-    function syncHud() {
-      if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
-    }
-    var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
-    if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
-      kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
-        var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
-        graphUi.push(cv); if (g.note) c.insertAdjacentHTML('beforeend', '<p class="muted small">' + g.note + '</p>'); el.appendChild(c);
-      });
-    } });
-    if (def.calc) tabs.push({ id: 'calc', label: def.calcLabel || "Calculation", build: function (el, k) { kit = k; ctx.kit = k; calcCard = kit.ui.card(''); el.appendChild(calcCard); lastCalc = ''; calcCard.innerHTML = lastCalc = def.calc(ctx); } });
-    if (def.quiz) tabs.push({ id: 'quiz', label: "Challenge", build: function (el, k) { kit = k; ctx.kit = k; var c = kit.ui.card("Challenge"); kit.ui.quiz(c, { items: def.quiz, intro: def.quizIntro || ("Review questions (" + def.quiz.length + ').') }); el.appendChild(c); } });
-    (def.tabsExtra || []).forEach(function (t) { tabs.push(t); });
-    var bg = def.bg || [0x0e131a, 0xdbe6f1];
-    ctx.kit = null;
-    kit = SimKit.create({
-      key: def.key, title: def.title, subtitle: def.subtitle || "3D Simulator", accent: def.accent || { dark: '#7dd3fc', light: '#0369a1' }, viewLabel: def.viewLabel || ("3D viewer · " + def.title),
-      stages: STAGES, mainTabLabel: "Guide", tabs: tabs, measuresTitle: "Live measurements", measures: function () { return def.measures ? def.measures(ctx) : []; },
-      ideas: def.ideas || [], layers: [{ id: 'labels', label: "Labels", icon: 'Aa' }].concat(def.layers || []),
-      onLayer: function (id, on) { if (id === 'labels') labels.forEach(function (l) { l.vis(l.want !== false); }); if (def.onLayer) def.onLayer(id, on, ctx); },
-      views: (def.views || [{ id: 'libre', label: "Free", pos: [0, 6, 22], target: [0, 3, 0] }]).map(function (v) { return { id: v.id, label: v.label }; }),
-      onView: function (id) { ctx.view(id); },
-      onTheme: function (th) { if (ctx.scene) { ctx.scene.background = new T.Color(th === 'dark' ? bg[0] : bg[1]); } ctx.theme = th; if (def.onTheme) def.onTheme(th, ctx); },
-      onStage: function (i) { ctx.refreshStages(); if (ctx.P.manual) return; if (def.stageViews && def.stageViews[i]) ctx.view(def.stageViews[i]); if (def.onStage) def.onStage(i, ctx); },
-      onGuide: function () { if (ctx.P.manual) ctx.toLesson(); },
-      onResize: resize,
-      render: function () { ctx.renderer.render(ctx.scene, ctx.camera); ctx.labelRenderer.render(ctx.scene, ctx.camera); },
-      onFrame: function (f) {
-        var dt = Math.min(f.dt, 0.05); ctx.now = f.now; ctx.dt = dt; ctx.f = f;
-        def.frame && def.frame(ctx, f, dt);
-        if (ctx.P.camGoal) { ctx.camera.position.lerp(ctx.P.camGoal.pos, 0.08); ctx.controls.target.lerp(ctx.P.camGoal.target, 0.08); if (ctx.camera.position.distanceTo(ctx.P.camGoal.pos) < 0.05) ctx.P.camGoal = null; }
-        if (f.now - lastSync > 0.15) { lastSync = f.now; syncHud(); if (calcCard && def.calc) { var h = def.calc(ctx); if (h !== lastCalc) { lastCalc = h; calcCard.innerHTML = h; } } ctx.redraw(); def.sync && def.sync(ctx); }
-        ctx.controls.update(); ctx.renderer.render(ctx.scene, ctx.camera); ctx.labelRenderer.render(ctx.scene, ctx.camera);
-      },
-      init: function (k) {
-        kit = k; ctx.kit = k; ctx.kit = k; ctx.kit = k; var cont = k.viewport, v0 = (def.views || [{ pos: [0, 6, 22], target: [0, 3, 0] }])[0];
-        var scene = ctx.scene = new T.Scene(), cam = ctx.camera = new T.PerspectiveCamera(45, 1, 0.1, 400); cam.position.set(v0.pos[0], v0.pos[1], v0.pos[2]);
-        var r = ctx.renderer = new T.WebGLRenderer({ antialias: true }); r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); cont.appendChild(r.domElement);
-        var lr = ctx.labelRenderer = new T.CSS2DRenderer(); lr.domElement.className = 'labels-layer'; cont.appendChild(lr.domElement);
-        var c = ctx.controls = new T.OrbitControls(cam, r.domElement); c.enableDamping = true; c.dampingFactor = 0.06; c.minDistance = def.minDist || 5; c.maxDistance = def.maxDist || 80; c.target.set(v0.target[0], v0.target[1], v0.target[2]);
-        c.addEventListener('start', function () { ctx.P.camGoal = null; });
-        scene.add(new T.AmbientLight(0xffffff, 0.85)); var dl = new T.DirectionalLight(0xffffff, 1.0); dl.position.set(8, 16, 12); scene.add(dl); var dl2 = new T.DirectionalLight(0x88aaff, 0.4); dl2.position.set(-8, 4, -8); scene.add(dl2);
-        k.cfg.onTheme(k.state.theme); def.build(ctx); resize(); ctx.refreshStages(); syncHud(); def.afterInit && def.afterInit(ctx);
-      },
-      help: def.help || { intro: "Follow the lesson with the player or explore freely in the “Lab” tab. With “Back to the lesson” the script takes control again.", items: [] }
-    });
-    ctx.refreshStages();
-    window.__sim = ctx;
-    return ctx;
-  }
-  window.MSim = { create: create, mol: mol, EL: EL, sci: sci };
-})();
 
 /* Constructor de geometrías 3D a partir de una notación tipo SMILES (sin anillos, salvo el fenilo «Ph»).
    MSim.build('CC{ol}O{ol}') -> { a:[[el,x,y,z]], b:[[i,j,orden]], tag:[etiqueta|null por átomo] }
@@ -186,7 +69,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
 
 (function () {
   var fmt = SimKit.fmt, R = 8.314, SC = 2.1, PI = Math.PI;
-  var XS = { H: { t: 'H', A: 0, L: 1.09, c: 0xf2f2f2, r: 0.31, n: "hydrogen" }, F: { t: 'F', A: 0.15, L: 1.35, c: 0x7ee08a, r: 0.6, n: "fluorine" }, Cl: { t: 'Cl', A: 0.43, L: 1.77, c: 0x3ddc5a, r: 0.95, n: "chlorine" }, Br: { t: 'Br', A: 0.38, L: 1.94, c: 0xa0522d, r: 1.1, n: "bromine" }, OH: { t: 'OH', A: 0.87, L: 1.43, c: 0xff4d4d, r: 0.65, n: "hydroxyl" }, CH3: { t: 'CH₃', A: 1.74, L: 1.53, c: 0x56606b, r: 0.8, n: "methyl" }, tBu: { t: 'C(CH₃)₃', A: 4.9, L: 1.55, c: 0x3b4450, r: 1.15, n: 'terc-butilo' } };
+  var XS = { H: { t: 'H', A: 0, L: 1.09, c: 0xf2f2f2, r: 0.31, n: "hydrogen" }, F: { t: 'F', A: 0.15, L: 1.35, c: 0x7ee08a, r: 0.6, n: "fluorine" }, Cl: { t: 'Cl', A: 0.43, L: 1.77, c: 0x3ddc5a, r: 0.95, n: "chlorine" }, Br: { t: 'Br', A: 0.38, L: 1.94, c: 0xa0522d, r: 1.1, n: "bromine" }, OH: { t: 'OH', A: 0.87, L: 1.43, c: 0xff4d4d, r: 0.65, n: "hydroxyl" }, CH3: { t: 'CH₃', A: 1.74, L: 1.53, c: 0x56606b, r: 0.8, n: "methyl" }, tBu: { t: 'C(CH₃)₃', A: 4.9, L: 1.55, c: 0x3b4450, r: 1.15, n: "tert-butyl" } };
   var S = { mode: 'ring', phi: 60, T: 298, X: 'CH3', t: 0, tTarget: null, spin: false, but: false, axes: true };
   // ajuste cosenoidal del butano: puntos (φ, E kJ/mol)
   var BC = (function () { var pts = [[0, 19], [60, 3.8], [120, 16], [180, 0]], A = [], y = []; pts.forEach(function (p) { var f = p[0] * PI / 180; A.push([1, Math.cos(f), Math.cos(2 * f), Math.cos(3 * f)]); y.push(p[1]); });
@@ -295,7 +178,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     ideas: ["<b>Staggered</b> is more stable than <b>eclipsed</b> (ethane: 12 kJ/mol).", "Butane: <b>anti</b> &lt; <b>gauche</b> (+3.8) &lt; eclipsed (16 and 19 kJ/mol).", "<b>Chair</b>: strain-free; 6 axial and 6 equatorial H atoms.", "Flip: <b>axial ↔ equatorial</b>; barrier ≈ 45 kJ/mol.", "<b>A-value</b>: equatorial preference due to 1,3-diaxial interactions."],
     lab: function (el, ctx) {
       var kit = ctx.kit, ui = ctx.ui, c = kit.ui.card("Control panel"); el.appendChild(c);
-      ui.mode = kit.ui.options({ label: "System", cols: 3, value: S.mode === 'ring' ? 'ring' : (S.but ? 'but' : 'eth'), options: [{ v: 'eth', label: "Ethane", sub: 'Newman' }, { v: 'but', label: "Butane", sub: 'Newman' }, { v: 'ring', label: "Cyclohexane", sub: 'silla' }], onChange: function (v) { ctx.goManual(); S.mode = v === 'ring' ? 'ring' : 'eth'; S.but = v === 'but'; ctx.view(v === 'ring' ? 'ring' : 'libre'); } });
+      ui.mode = kit.ui.options({ label: "System", cols: 3, value: S.mode === 'ring' ? 'ring' : (S.but ? 'but' : 'eth'), options: [{ v: 'eth', label: "Ethane", sub: 'Newman' }, { v: 'but', label: "Butane", sub: 'Newman' }, { v: 'ring', label: "Cyclohexane", sub: "chair" }], onChange: function (v) { ctx.goManual(); S.mode = v === 'ring' ? 'ring' : 'eth'; S.but = v === 'but'; ctx.view(v === 'ring' ? 'ring' : 'libre'); } });
       c.appendChild(ui.mode);
       ui.sphi = kit.ui.slider({ label: "Dihedral angle φ", min: 0, max: 359, step: 1, value: S.phi, format: function (v) { return v + '°'; }, onInput: function (v) { ctx.goManual(); S.mode = S.mode === 'ring' ? 'eth' : S.mode; S.phi = +v; S.spin = false; } });
       ui.st = kit.ui.slider({ label: "Chair flip", min: 0, max: 100, step: 1, value: 0, format: function (v) { return v + ' %'; }, onInput: function (v) { ctx.goManual(); S.mode = 'ring'; S.t = v / 100; S.tTarget = null; } });
@@ -312,7 +195,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       cx.textAlign = 'center'; cx.fillText(ring ? "inversion coordinate" : "dihedral angle φ (°)  ·  y axis: E (kJ/mol)", L + pw / 2, h - 3); if (!ring) for (i = 0; i <= 6; i++) cx.fillText(i * 60, xs(i / 6), h - B + 12);
       cx.strokeStyle = '#84cc16'; cx.lineWidth = 2.6; cx.beginPath(); for (i = 0; i <= n; i++) { var v = i / n, e = ring ? ringEnergy(v) : Ephi(v * 360); if (i === 0) cx.moveTo(xs(v), ys(e)); else cx.lineTo(xs(v), ys(e)); } cx.stroke(); cx.lineWidth = 1;
       var vv = ring ? S.t : mod(S.phi) / 360, ee = ring ? ringEnergy(S.t) : Ephi(S.phi); cx.fillStyle = '#fff'; cx.strokeStyle = '#ff6b3d'; cx.lineWidth = 2.4; cx.beginPath(); cx.arc(xs(vv), ys(ee), 5.5, 0, 7); cx.fill(); cx.stroke(); cx.lineWidth = 1;
-      if (ring) { cx.fillStyle = c.ink; cx.textAlign = 'center'; cx.fillText('silla', xs(0.02), ys(0) - 8); cx.fillText('silla', xs(0.97), ys(dGring()) - 8); cx.fillText("half-chair", xs(0.15), ys(45) - 6); cx.fillText("boat", xs(0.5), ys(29 + dGring() * 0.5) - 8); } } },
+      if (ring) { cx.fillStyle = c.ink; cx.textAlign = 'center'; cx.fillText("chair", xs(0.02), ys(0) - 8); cx.fillText("chair", xs(0.97), ys(dGring()) - 8); cx.fillText("half-chair", xs(0.15), ys(45) - 6); cx.fillText("boat", xs(0.5), ys(29 + dGring() * 0.5) - 8); } } },
       { title: "A-values and axial/equatorial equilibrium", h: 220, note: "Bars: A-value (kcal/mol). Highlighted: current substituent; on the right % equatorial at the chosen T.", draw: function (cx, w, h, c) {
         var ks = Object.keys(XS), L = 8, Tp = 10, B = 14, ph = (h - Tp - B) / ks.length, sc = (w - 190) / 5.2;
         cx.font = '11px system-ui'; ks.forEach(function (k, i) { var y = Tp + i * ph + 2, A = XS[k].A, sel = k === S.X; cx.globalAlpha = sel ? 1 : 0.5; cx.fillStyle = sel ? '#84cc16' : '#9aa7b4'; cx.fillRect(70, y, Math.max(2, A * sc), ph - 6); cx.globalAlpha = 1; cx.fillStyle = c.ink; cx.textAlign = 'right'; cx.fillText(XS[k].t, 64, y + ph / 2 + 1); cx.textAlign = 'left'; cx.fillText(fmt(A, 2) + ' · ' + fmt(100 / (1 + Math.exp(-A * 4184 / (R * S.T))), 1) + ' % eq', 74 + A * sc, y + ph / 2 + 1); }); } }],
@@ -330,9 +213,9 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       { q: "Which cyclohexane conformation lacks both angle and torsional strain?", options: ["Chair", "Boat", "Twist-boat", "Half-chair"], answer: 0, why: "The chair has angles ≈ 111° and all bonds staggered." },
       { q: "When the chair flips, an equatorial substituent becomes…", options: ['axial', "equatorial", "eclipsed", 'cis'], answer: 0, why: "The flip exchanges axial and equatorial at every carbon." },
       { q: "Methylcyclohexane prefers the equatorial methyl because…", options: ["it avoids 1,3-diaxial interactions with axial H atoms", "the methyl is polar", "the ring is planar", "it avoids hydrogen bonding"], answer: 0, why: "When axial, the CH₃ clashes with the axial H atoms on C3 and C5 (≈ 7.3 kJ/mol)." },
-      { q: "Which substituent has the highest A-value?", options: ['terc-butilo', "methyl", 'OH', 'Cl'], answer: 0, why: "t-Bu (≈ 4.9 kcal/mol) is the bulkiest: it locks the conformation with itself equatorial." }
+      { q: "Which substituent has the highest A-value?", options: ["tert-butyl", "methyl", 'OH', 'Cl'], answer: 0, why: "t-Bu (≈ 4.9 kcal/mol) is the bulkiest: it locks the conformation with itself equatorial." }
     ],
-    help: { intro: "Choose ethane, butane or cyclohexane in “Lab”. Use “Newman view” to look along the C–C bond.", items: [['φ', "dihedral angle between the groups of the front carbon and the back carbon."], ["Orange", "axial H atoms; the orange lines are the 1,3-diaxial interactions."], ["Flip", "moves the ring through the half-chair and twist-boat."], ["Graphs", "energy profile and A-values."]] }
+    help: { intro: "Choose ethane, butane or cyclohexane in “Lab”. Use “Newman view” to look along the C–C bond.", items: [['φ', "dihedral angle between the groups of the front carbon and the back carbon."], ["Orange", "axial H atoms; the orange lines are the 1,3-diaxial interactions."], ["Flip", "moves the ring through the half-chair and twist-boat."], ["Graphs", "energy profile and A-values."], ['Controls', 'system (ethane, butane or cyclohexane), dihedral angle φ, chair flip, T and the substituent on C1; buttons to rotate φ automatically, show the Newman view and flip the chair.']], try: ['In butane rotate φ: anti (180°) is the most stable and gauche (60°) is 3.8 kJ/mol higher.', 'In cyclohexane put a tert-butyl group on and flip the chair: it stays almost always equatorial.', 'Use the Newman view on ethane and compare staggered with eclipsed (12 kJ/mol).'] }
   };
   MSim.create(def);
 })();

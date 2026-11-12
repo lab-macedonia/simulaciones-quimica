@@ -3,7 +3,7 @@
 const fs = require('fs'), path = require('path'), cp = require('child_process');
 const ROOT = path.resolve(__dirname, '..', 'simulaciones'); const filt = process.argv[2] || '';
 function walk(d, out = []) { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) walk(p, out); else if (f.name === 'index.html') out.push(path.dirname(p)); } return out; }
-const dirs = walk(ROOT).filter(d => { const r = path.relative(ROOT, d); return r && !r.startsWith('guias') && r.split('/').length === 2 && r.includes(filt); }).sort(); const handWritten = d => { const w = (x, o = []) => { for (const f of fs.readdirSync(x, { withFileTypes: true })) { const p = path.join(x, f.name); if (f.isDirectory()) { if (f.name !== 'vendor') w(p, o); } else if (/\.js$/.test(f.name) && !/\.en\.js$/.test(f.name)) o.push(p); } return o; }; return !w(d).some(f => fs.readFileSync(f, 'utf8').includes('MSim.create')); };
+const dirs = walk(ROOT).filter(d => { const r = path.relative(ROOT, d); return r && !r.startsWith('guias') && r.split(/[\\/]/).length === 2 && r.includes(filt); }).sort(); const handWritten = d => { const w = (x, o = []) => { for (const f of fs.readdirSync(x, { withFileTypes: true })) { const p = path.join(x, f.name); if (f.isDirectory()) { if (f.name !== 'vendor') w(p, o); } else if (/\.js$/.test(f.name) && !/\.en\.js$/.test(f.name)) o.push(p); } return o; }; return !w(d).some(f => fs.readFileSync(f, 'utf8').includes('MSim.create')); };
 let bad = 0; let browser = null; const BS = require('./browser-smoke.js');
 (async () => {
 for (const d of dirs) for (const page of ['index.html', 'index.en.html']) {

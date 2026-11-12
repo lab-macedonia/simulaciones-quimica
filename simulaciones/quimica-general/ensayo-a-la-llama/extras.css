@@ -17,6 +17,16 @@ html .sk-dock{bottom:168px;width:min(600px,calc(100vw - 780px));min-width:340px}
 #mystery-card .tools button{padding:5px 10px;border-radius:8px;border:1px solid #475569;background:#1e293b;color:#e2e8f0;font-size:.74rem;cursor:pointer}
 #btn-mystery{padding:6px 12px;border-radius:6px;border:1px solid rgba(251,191,36,.5);background:rgba(120,53,15,.5);color:#fde68a;font-size:.75rem;display:flex;align-items:center;gap:6px;cursor:pointer}
 #btn-mystery:hover{background:rgba(146,64,14,.7)}
+/* Paneles colapsables y vista despejada */
+.k-tab{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:7px 11px;border-radius:12px;border:1px solid rgba(71,85,105,.7);background:rgba(15,23,42,.85);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#cbd5e1;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.k-tab:hover{color:#fff;border-color:rgba(129,140,248,.6)}
+.k-tab:focus-visible,#k-clean:focus-visible{outline:2px solid #818cf8;outline-offset:2px}
+.k-tab svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.k-tab[aria-expanded=false] svg{transform:rotate(-90deg)}
+.k-pan.k-col{bottom:auto;width:auto}
+.k-pan.k-col>:not(.k-tab){display:none!important}
+#k-clean[aria-pressed=true]{background:rgba(99,102,241,.35);color:#fff}
+body.k-clean .k-pan,body.k-clean .k-spec{display:none!important}
 @media (max-width:640px){
   body>header{padding-left:8px;padding-right:8px}
   body>header h1{display:none}

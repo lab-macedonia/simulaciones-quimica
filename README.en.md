@@ -2,7 +2,7 @@
 
 *[Versión en español](README.md)*
 
-A collection of 80 interactive simulations for teaching chemistry (general, organic and inorganic), cell and molecular biology, and physics, developed at the **MACEDONIA Laboratory** of the Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. They are published with GitHub Pages in the [`simulaciones/`](simulaciones/index.en.html) folder.
+A collection of 114 interactive simulations for teaching chemistry (general, organic and inorganic), biology, Earth sciences and physics, developed at the **MACEDONIA Laboratory** of the Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. They are published with GitHub Pages in the [`simulaciones/`](simulaciones/index.en.html) folder.
 
 ## Languages
 
@@ -110,11 +110,31 @@ Each simulation is independent; there is no collection home page or progress tra
 | [PCR and gel electrophoresis](simulaciones/biologia/pcr-electroforesis/index.en.html) | Thermocycler with denaturation, primer annealing and extension, 2ⁿ exponential amplification, effect of annealing temperature (Tm) and reading of bands on an agarose gel with a molecular-weight ladder. |
 | [Membrane potential and action potential](simulaciones/biologia/potencial-accion/index.en.html) | Nernst and Goldman equations for K⁺ and Na⁺, resting potential, Hodgkin–Huxley-type model with adjustable stimulus, threshold, refractory period and blockers (TTX, TEA), with a 3D axon where channels open and the impulse propagates. |
 | [Cell signaling: receptor → second messenger](simulaciones/biologia/senalizacion-celular/index.en.html) | Cascade of a G protein-coupled receptor: ligand, receptor occupancy, G protein, adenylyl cyclase, cAMP, PKA and phosphodiesterase, with amplification, dose–response curves (Hill, EC50), partial agonists, antagonists, cholera toxin and comparison with a receptor tyrosine kinase. |
+| [Epidemics, the immune system and vaccines](simulaciones/biologia/epidemias-vacunas/index.en.html) | 3D epidemic simulator: person-to-person transmission with the SIR model, the reproduction number R₀ and effective R, prevention measures, immune defences, vaccines and herd immunity. |
+| [Microorganisms and biotechnology](simulaciones/biologia/microorganismos/index.en.html) | 3D microorganism simulator: structure and size of bacteria, yeasts and viruses, the bacterial growth curve, a virus’s lytic cycle, fungi, antibiotic resistance and biotechnology: fermentation, yoghurt and copper biomining in Chile. |
+| [Populations and ecosystems](simulaciones/biologia/poblaciones-ecosistemas/index.en.html) | 3D ecology simulator: levels of organisation, exponential and logistic growth, carrying capacity, the predator–prey cycle (culpeo fox and degu), competition with an invasive species and the effects of habitat loss and hunting. |
+
+### Earth sciences
+| Simulation | Description |
+|---|---|
+| [Climate and climate change](simulaciones/ciencias-tierra/clima/index.en.html) | 3D simulator of the climate system: Earth’s energy balance, albedo, the natural greenhouse effect, ice and water-vapour feedbacks, rising CO₂ with real data and future scenarios. |
+| [Rocks, strata and fossils](simulaciones/ciencias-tierra/rocas-fosiles/index.en.html) | 3D geology simulator: igneous, sedimentary and metamorphic rocks, the rock cycle, formation of strata, fossilisation, the principle of superposition, intrusions, index fossils, uplift and erosion. |
+| [Plate tectonics and earthquakes](simulaciones/ciencias-tierra/tectonica-sismos/index.en.html) | 3D plate tectonics simulator: convergent (Nazca subduction beneath Chile), divergent and transform boundaries, mantle convection, P and S seismic waves, seismogram, distance to the epicentre and magnitude. |
+| [Volcanoes and eruptions](simulaciones/ciencias-tierra/volcanes/index.en.html) | 3D volcano simulator: magma chamber and vent, effusive and explosive eruptions depending on the magma’s silica and gas content, ash, lahars, technical alerts and Chile’s volcanoes, and benefits such as geothermal energy. |
 
 ### Physics
 | Simulation | Description |
 |---|---|
 | [Solar System 3D](simulaciones/fisica/sistema-solar/index.en.html) | The Sun, the eight planets, Pluto, moons and belts with fact sheets for each body, scale sizes, Kepler's laws, weight calculator and a challenge. |
+| [Kinematics: uniform and accelerated motion](simulaciones/fisica/cinematica/index.en.html) | 3D kinematics simulator: position, displacement, uniform and uniformly accelerated linear motion, x–t and v–t graphs, braking distance and two objects meeting. |
+| [Series and parallel electric circuits](simulaciones/fisica/circuitos/index.en.html) | 3D circuit simulator: open and closed circuits, Ohm’s law, series and parallel connection of bulbs, equivalent resistance, a burnt-out bulb and electric power. |
+| [Electrostatics: charging and electric force](simulaciones/fisica/electrostatica/index.en.html) | 3D electrostatics simulator: electric charge, charging by friction with the triboelectric series, by contact and by induction on an electroscope, grounding and Coulomb’s law. |
+| [Mechanical energy, work and power](simulaciones/fisica/energia-mecanica/index.en.html) | 3D energy simulator: work done by a force, gravitational potential and kinetic energy on a track, conservation of mechanical energy, dissipation by friction and the power of a crane. |
+| [Forces and Newton’s laws](simulaciones/fisica/fuerzas-newton/index.en.html) | 3D simulator of forces: weight and gravity on different bodies, elastic force and Hooke’s law, static and kinetic friction, and Newton’s three laws with a free-body diagram. |
+| [Momentum and collisions](simulaciones/fisica/momentum-choques/index.en.html) | 3D momentum simulator: impulse and average force (airbag), elastic, inelastic and partially elastic collisions, different masses and recoil on an air track. |
+| [Waves and sound](simulaciones/fisica/ondas-sonido/index.en.html) | 3D sound wave simulator: air particles forming compressions and rarefactions, amplitude and intensity, frequency and pitch, speed in different media, echoes and how the ear works, with an audible tone. |
+| [Lenses and the human eye](simulaciones/fisica/optica-ojo/index.en.html) | 3D optics simulator: rays through a converging lens, real inverted images, the magnifying glass, the thin-lens equation, the eye and accommodation, myopia and hyperopia with their corrective lenses. |
+| [The expanding universe](simulaciones/fisica/universo-expansion/index.en.html) | 3D simulator of the expanding universe: galaxy redshift, Hubble’s law, expansion without a centre, the age of the universe, its history since the Big Bang and astronomy at Chile’s observatories. |
 
 ### Inorganic chemistry
 | Simulation | Description |
@@ -130,9 +150,13 @@ Each simulation is independent; there is no collection home page or progress tra
 | [Hard and soft acids and bases (HSAB)](simulaciones/quimica-inorganica/hsab-acidos-bases-duros-blandos/index.en.html) | Classification of cations and bases as hard, borderline or soft according to charge, radius and polarizability; qualitative pair-stability score, prediction of the direction of exchange reactions and mineral examples (Al₂O₃, HgS, Cu₂S). |
 | [Molecular symmetry and point groups](simulaciones/quimica-inorganica/simetria-grupos-puntuales/index.en.html) | Symmetry elements and operations (E, Cn, σ, i, Sn) applied in 3D to H₂O, NH₃, CH₄, BF₃, SF₆, CO₂, HCl, trans-dichloroethene, benzene and a chiral molecule; point-group assignment with a decision diagram and relation to polarity and chirality. |
 
+## Curriculum coverage (Chilean Ministry of Education)
+
+The page [`simulaciones/curriculo.en.html`](simulaciones/curriculo.en.html) maps every simulation to the current Mineduc Learning Objectives (Natural Sciences Grades 7–10 and Grades 11–12 subjects), by objective or by simulation, with filters and search; university-level simulations are flagged. Each simulation also lists its objectives in the «Class» menu. Data lives in `simulaciones/kit/curriculo.js`.
+
 ## Teacher guides and question banks
 
-The [`simulaciones/guias/en/`](simulaciones/guias/en/index.html) folder contains one guide per simulation (80 in total): learning objectives, prior knowledge, walkthrough, classroom activity, common mistakes, question bank (multiple choice and essay) and answer key. Each guide can be printed from the browser. The Spanish originals are in [`simulaciones/guias/`](simulaciones/guias/index.html).
+The [`simulaciones/guias/en/`](simulaciones/guias/en/index.html) folder contains one guide per simulation (114 in total): learning objectives, prior knowledge, walkthrough, classroom activity, common mistakes, question bank (multiple choice and essay) and answer key. Each guide can be printed from the browser. The Spanish originals are in [`simulaciones/guias/`](simulaciones/guias/index.html).
 
 ## Accessibility
 
@@ -153,19 +177,38 @@ All the simulations share an interface kit (`simulaciones/kit/`) that provides, 
 
 - **Guided lesson by stages** (book button or `L` key): each stage moves the simulation itself (tab, molecule, experiment) and highlights the relevant area; with pause, forward, back and speed.
 - **PNG capture** of the current view, **full screen**, **light/dark theme** and **help with shortcuts** (`?`).
+- **Collapsible panels** to see the whole simulation, especially on small screens: the side panel hides with its ✕ button or the `P` key; the floating boxes (live data, layers, legend) collapse by tapping their title, and the playback bar shrinks to just the ▶ button. The eye button (`O` key) turns on the **clear view**, which hides everything except the 3D scene (`Esc` to go back). On narrow screens the boxes start collapsed.
 - **Assessment mode** in the quizzes: no feedback until the end, answer review and a 1.0–7.0 grade (60 % passing threshold), with a button to copy the result.
 - **Offline use (PWA)**: the portal can be installed and visited simulations stay available offline (`simulaciones/sw.js`).
 - Predictors and challenges: mechanism (SN/E), unknown sample (flame test), Werner isomer counter (isomerism) and Δ/Λ challenge (chirality).
+- **Classroom tools** (mortarboard button in the top bar; in simulations with their own interface, a floating «Class» button):
+  - **Generated practice problems** in 66 simulations (every calculation-based general, inorganic and organic chemistry simulation, plus genetics, enzymes, drugs, signaling, β-oxidation, action potential, PCR and the Solar System, and every physics, Earth sciences, ecology and health simulation): every attempt brings new values, two tries are allowed, a factor-of-10 error is flagged and a step-by-step solution is shown.
+  - **Predict → observe → explain** in the guided lesson of 113 simulations (all except SN/E Mechanisms, including the custom-interface ones on SimKit-lite): at key stages the lesson pauses and asks for a prediction (with the stage text blurred), continues, and at the end of the stage compares the prediction with what happened.
+  - **Guided tours** with questions in AtomLab, Electron configuration, Periodic properties, Sigma and pi bonds, GeoMol and LewisLab, and new **challenges** in Flame test and Isomerism of complexes.
+  - **Learning paths**: each simulation shows the path it belongs to (15 paths, from «Atoms and bonding» to «Ecology, microorganisms and health») and links to the previous and next one.
+  - **Shareable scenario**: «Copy link to this scenario» stores in the URL (`?aula=…`) the changed controls, layers, view and the tab or lesson stage; opening the link restores it.
+  - **Activity report** to print or save as PDF: viewer screenshot, live measurements, scenario link, challenge, practice and prediction results, and student notes.
+  - **Projector mode**: larger text, panels and 3D labels; it stays on across simulations until turned off.
 
 ## Requirements and technical notes
 
 - A modern browser with WebGL (Chrome, Edge, Firefox, Safari), on a computer, tablet or phone.
-- **3D engine with Three.js**: the 3D simulations render with Three.js (real lighting and z-buffer). Modules that are 2D diagrams or graphs (LewisLab, Electron configuration, Periodic properties) remain in Canvas 2D. The shared layer is in `simulaciones/kit/mol3d.js`.
+- **3D engine with Three.js**: the 3D simulations render with Three.js (real lighting and z-buffer); 94 of them share the core `kit/msim.js`. Modules that are 2D diagrams or graphs (LewisLab, Electron configuration, Periodic properties) remain in Canvas 2D. The shared layer is in `simulaciones/kit/mol3d.js`.
 - **No simulation depends on a CDN or the internet**: Three.js, Tailwind (compiled), Lucide and the fonts (Inter, JetBrains Mono) are included in each `vendor/` folder.
 
 ## Automated checks
 
 `npm install && npm run check` verifies syntax, links, metadata and that every simulation has an English version and teacher guides; `npm run smoke` loads every page (ES and EN) in jsdom, with the hand-written simulations tested in real Chromium (Playwright). Both run on GitHub Actions (`.github/workflows/check.yml`).
+
+Without Node (for example on Windows), `powershell -ExecutionPolicy Bypass -File tools\verificar.ps1` checks ES/EN parity (same questions and scripts with the same version), the inclusion of `aula.js` and `practica.js`, local links and guides.
+
+## Adding practice, predictions or a tour
+
+Each simulation's classroom content lives in `practica.js`, **a single file for both languages**: every text is a string or a `['español', 'English']` pair, and numbers are written with `H.fmt(x, decimals)` so they use a decimal comma or point depending on the language. The format is documented in the Spanish README and in `simulaciones/kit/aula.js`; identification exercises can use `H.mc(question, right, [wrong], solution)` and `H.bank(items, qFn, answerFn, solutionFn, [extra])`. After adding a new `practica.js`, run `tools\instalar-aula.ps1` to add the `<script>` tags to `index.html` and `index.en.html`, then `node tools/guias-aula.js` to refresh the «Classroom tools» section of the teacher guides. New simulations should follow this bilingual pattern.
+
+## Spanish as the single source (`tools\i18n.ps1`)
+
+Each `X.en.js` is **generated** from `X.js` plus an `X.i18n.json` dictionary. Edit only the Spanish file, then run `tools\i18n.ps1 generar` (rewrites the .en.js files and lists new untranslated strings, to be added under `"lit"`) or `tools\i18n.ps1 comprobar` (flags hand-edited .en.js files; also run by `verificar.ps1`). The dictionaries were extracted from the existing pairs and regeneration reproduces all 121 English files byte for byte, including `kit/simkit.en.js`. There are no exceptions: no .en.js file is edited by hand.
 
 ## Running locally
 

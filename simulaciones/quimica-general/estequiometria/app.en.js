@@ -502,7 +502,7 @@
           ["Graphs", "before and now per species, and product versus the amount of the second reactant (limiting plateau)."],
           ["Calculation (g)", "step-by-step solution with molar masses, leftover, actual yield and mass check."],
           ["Challenge", "eight questions on limiting reagent, yield and conservation of mass."]
-        ]
+        ], try: ['Choose amounts where one reactant runs out first: the red halo marks the limiting reagent.', 'Add more of the excess reactant: the product does not increase (plateau on the chart).', 'In the grams calculation check that the initial mass equals the products plus the leftover.']
       }
     });
     kit.setMode && 0;

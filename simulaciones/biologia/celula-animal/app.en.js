@@ -163,7 +163,7 @@
     help: {
       intro: "Follow the lesson with the player below or explore freely: rotate by dragging, zoom with the wheel and click on any component to see its fact sheet.",
       items: [["Click on the model", "selects a component, highlights it, dims the rest and opens its fact sheet; press it again to clear the selection."], ["Layers", "shows or hides the systems (boundary, information, synthesis, energy, digestion, support), the labels and the cutaway."],
-        ["Cutaway", "removes the front half of the membrane to see the inside."], ["Coloring", "“Functions” paints each component according to the system it belongs to."], ["Components", "complete list with direct access to each fact sheet."], ["Challenge", "“Identify in 3D” game and quick questions."]]
+        ["Cutaway", "removes the front half of the membrane to see the inside."], ["Coloring", "“Functions” paints each component according to the system it belongs to."], ["Components", "complete list with direct access to each fact sheet."], ["Challenge", "“Identify in 3D” game and quick questions."]], try: ['Follow the secretory pathway: click ribosomes, rough ER, Golgi and vesicles, in that order.', 'Turn on the cutaway and the function colouring: find which organelles make up the energy system.', 'Play the 3D identification game in the challenge tab with the labels hidden.']
     }
   });
 })();

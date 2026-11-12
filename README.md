@@ -2,7 +2,7 @@
 
 *[English version](README.en.md)*
 
-Colección de 98 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología celular y molecular y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
+Colección de 114 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología, las ciencias de la Tierra y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
 
 ## Simulaciones por área
 
@@ -106,11 +106,31 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [PCR y electroforesis en gel](simulaciones/biologia/pcr-electroforesis/) | Termociclador con desnaturalización, hibridación de cebadores y extensión, amplificación exponencial 2ⁿ, efecto de la temperatura de hibridación (Tm) y lectura de bandas en un gel de agarosa con escalera de peso molecular. |
 | [Potencial de membrana y potencial de acción](simulaciones/biologia/potencial-accion/) | Ecuación de Nernst y de Goldman para K⁺ y Na⁺, potencial de reposo, modelo tipo Hodgkin–Huxley con estímulo ajustable, umbral, periodo refractario y bloqueadores (TTX, TEA), con un axón 3D donde los canales se abren y el impulso se propaga. |
 | [Señalización celular: receptor → segundo mensajero](simulaciones/biologia/senalizacion-celular/) | Cascada de un receptor acoplado a proteína G: ligando, ocupación del receptor, proteína G, adenilil ciclasa, AMPc, PKA y fosfodiesterasa, con amplificación, curvas dosis–respuesta (Hill, EC50), agonistas parciales, antagonistas, toxina colérica y comparación con un receptor tirosina quinasa. |
+| [Epidemias, sistema inmune y vacunas](simulaciones/biologia/epidemias-vacunas/) | Simulador 3D de epidemias: contagio entre personas con el modelo SIR, número reproductivo R₀ y R efectivo, medidas de prevención, defensas del sistema inmune, vacunas e inmunidad de rebaño. |
+| [Microorganismos y biotecnología](simulaciones/biologia/microorganismos/) | Simulador 3D de microorganismos: estructura y tamaño de bacterias, levaduras y virus, curva de crecimiento bacteriano, ciclo lítico de un virus, hongos, resistencia a antibióticos y biotecnología: fermentación, yogur y biominería del cobre en Chile. |
+| [Poblaciones y ecosistemas](simulaciones/biologia/poblaciones-ecosistemas/) | Simulador 3D de ecología: niveles de organización, crecimiento exponencial y logístico, capacidad de carga, ciclo depredador–presa (zorro culpeo y degú), competencia con una especie invasora y efectos de la pérdida de hábitat y la caza. |
+
+### Ciencias de la Tierra
+| Simulación | Descripción |
+|---|---|
+| [Clima y cambio climático](simulaciones/ciencias-tierra/clima/) | Simulador 3D del sistema climático: balance de energía de la Tierra, albedo, efecto invernadero natural, retroalimentaciones del hielo y del vapor de agua, aumento del CO₂ con datos reales y escenarios futuros. |
+| [Rocas, estratos y fósiles](simulaciones/ciencias-tierra/rocas-fosiles/) | Simulador 3D de geología: rocas ígneas, sedimentarias y metamórficas, ciclo de las rocas, formación de estratos, fosilización, principio de superposición, intrusiones, fósiles guía, levantamiento y erosión. |
+| [Tectónica de placas y sismos](simulaciones/ciencias-tierra/tectonica-sismos/) | Simulador 3D de tectónica de placas: bordes convergente (subducción de Nazca bajo Chile), divergente y transformante, convección del manto, ondas sísmicas P y S, sismograma, distancia al epicentro y magnitud. |
+| [Volcanes y erupciones](simulaciones/ciencias-tierra/volcanes/) | Simulador 3D de volcanes: cámara magmática y chimenea, erupciones efusivas y explosivas según la sílice y los gases del magma, ceniza, lahares, alerta técnica y volcanes de Chile, y beneficios como la geotermia. |
 
 ### Física
 | Simulación | Descripción |
 |---|---|
 | [Sistema Solar 3D](simulaciones/fisica/sistema-solar/) | Sol, 8 planetas, Plutón, 8 satélites y cinturones de asteroides y de Kuiper; fichas con datos de cada astro, modo «a escala», tiempo simulado, leyes de Kepler (áreas barridas y gráfico T–a), calculadora de peso y desafío. |
+| [Cinemática: MRU y MRUA](simulaciones/fisica/cinematica/) | Simulador 3D de cinemática: posición, desplazamiento, movimiento rectilíneo uniforme y uniformemente acelerado, gráficos x–t y v–t, distancia de frenado y encuentro de dos móviles. |
+| [Circuitos eléctricos en serie y en paralelo](simulaciones/fisica/circuitos/) | Simulador 3D de circuitos: circuito abierto y cerrado, ley de Ohm, conexión en serie y en paralelo con ampolletas, resistencia equivalente, ampolleta fundida y potencia eléctrica. |
+| [Electrostática: electrización y fuerza eléctrica](simulaciones/fisica/electrostatica/) | Simulador 3D de electrostática: carga eléctrica, electrización por frotamiento con serie triboeléctrica, por contacto y por inducción en un electroscopio, conexión a tierra y ley de Coulomb. |
+| [Energía mecánica, trabajo y potencia](simulaciones/fisica/energia-mecanica/) | Simulador 3D de energía: trabajo de una fuerza, energía potencial gravitatoria y cinética en una pista, conservación de la energía mecánica, disipación por roce y potencia de una grúa. |
+| [Fuerzas y leyes de Newton](simulaciones/fisica/fuerzas-newton/) | Simulador 3D de fuerzas: peso y gravedad en distintos astros, fuerza elástica y ley de Hooke, roce estático y cinético, y las tres leyes de Newton con diagrama de cuerpo libre. |
+| [Cantidad de movimiento y choques](simulaciones/fisica/momentum-choques/) | Simulador 3D de cantidad de movimiento: impulso y fuerza media (airbag), choques elásticos, inelásticos y con coeficiente de restitución, masas distintas y retroceso en un riel de aire. |
+| [Ondas y sonido](simulaciones/fisica/ondas-sonido/) | Simulador 3D de ondas sonoras: partículas del aire que forman compresiones y enrarecimientos, amplitud e intensidad, frecuencia y tono, rapidez en distintos medios, eco y funcionamiento del oído, con tono audible. |
+| [Lentes y el ojo humano](simulaciones/fisica/optica-ojo/) | Simulador 3D de óptica: rayos en una lente convergente, imagen real e invertida, lupa, ecuación de la lente delgada, el ojo y la acomodación, miopía e hipermetropía con su lente correctora. |
+| [El universo en expansión](simulaciones/fisica/universo-expansion/) | Simulador 3D del universo en expansión: corrimiento al rojo de galaxias, ley de Hubble, expansión sin centro, edad del universo, historia desde el Big Bang y astronomía en los observatorios de Chile. |
 
 ### Química inorgánica
 | Simulación | Descripción |
@@ -137,59 +157,41 @@ Cada página existe en **español** (`index.html`) y en **inglés** (`index.en.h
 - Colores revisados para contraste WCAG 2.1 AA en tema claro y oscuro; se respeta `prefers-reduced-motion`.
 - Revisión automática con axe-core en todas las páginas, en español e inglés. El lienzo 3D es un gráfico: su contenido también se describe en texto en la lección, los paneles y las mediciones en vivo.
 
+## Cobertura curricular (OA del Mineduc)
+
+La página [`simulaciones/curriculo.html`](simulaciones/curriculo.html) relaciona cada simulación con los Objetivos de Aprendizaje vigentes del Mineduc: Ciencias Naturales de 7° básico a 2° medio (Decretos 614/2013 y 369/2015) y 3° y 4° medio (Decreto 193/2019: Ciencias para la Ciudadanía, Química, Biología Celular y Molecular, Física y Ciencias de la Salud). Se puede ver por objetivo (con los OA que aún no tienen simulación) o por simulación, filtrar por nivel y buscar; las simulaciones de nivel universitario se marcan aparte. Cada simulación muestra además sus OA en el menú «Aula». Los datos están en `simulaciones/kit/curriculo.js` (síntesis de cada OA con enlace al texto oficial); cuando el CNED apruebe la actualización curricular de 1° básico a 2° medio basta con editar ese archivo.
+
 ## Guías docentes y bancos de preguntas
 
-La carpeta [`simulaciones/guias/`](simulaciones/guias/index.html) contiene una guía por simulación (80 en total): objetivos de aprendizaje, conocimientos previos, recorrido, actividad de aula, errores frecuentes, banco de preguntas (alternativas y desarrollo) y solucionario. Cada guía se puede imprimir desde el navegador.
+La carpeta [`simulaciones/guias/`](simulaciones/guias/index.html) contiene una guía por simulación (114 en total, también en inglés): objetivos de aprendizaje, conocimientos previos, recorrido, actividad de aula, errores frecuentes, banco de preguntas (alternativas y desarrollo) y solucionario. Cada guía se puede imprimir desde el navegador.
 
 ## Estructura del repositorio
 
 ```
 simulaciones/
-├── index.html                  Portada con las tres áreas
-├── kit/                       Kit común: lección guiada, captura, ayuda, tema
-├── quimica-organica/
-│   ├── mecanismos-sn-e/
-│   ├── carbohidratos-fischer-haworth/
-│   ├── estereoquimica-rs/
-│   ├── conformaciones/
-│   ├── grupos-funcionales/
-│   ├── adicion-electrofila-sear/
-│   ├── carbonilo/
-│   └── espectroscopia/
-├── quimica-general/
-│   ├── atomlab/ configuracion-electronica/ propiedades-periodicas/
-│   ├── lewislab/ geomol/ sigma-pi/
-│   ├── shared/                         (estilos y utilidades comunes de esos seis módulos)
-│   ├── ensayo-a-la-llama/
-│   ├── electrolisis-agua/
-│   ├── enlace-quimico/
-│   ├── colisiones-estado-transicion/
-│   ├── estequiometria/
-│   ├── acido-base-titulacion/
-│   ├── equilibrio-quimico/
-│   ├── gases/
-│   ├── coligativas/
-│   ├── termoquimica/
-│   ├── cinetica-ordenes/
-│   ├── pilas-galvanicas/
-│   ├── diagramas-de-fase/
-│   ├── radiacion-em/
-│   ├── transiciones-electronicas/
-│   └── interacciones-intermoleculares/
-├── quimica-inorganica/
-│   ├── isomeria-complejos/
-│   ├── quiralidad-delta-lambda/
-│   └── campo-cristalino/
-├── biologia/
-│   ├── celula-animal/ celula-vegetal/
-│   ├── aminoacidos-proteinas/
-│   ├── adn/
-│   ├── lipidos-membrana/
-│   ├── enzimas-cinetica/
-│   ├── metabolismo/
-│   └── shared/                         (motor de células en Three.js)
-└── fisica/
-    └── sistema-solar/
+├── index.html, index.en.html   Portada (ES/EN), sw.js (uso sin conexión) y manifest
+├── kit/                        Kit común
+│   ├── simkit.js, simkit.css   Interfaz: barra, panel con pestañas, lección por etapas, desafío, ayuda
+│   ├── msim.js                 Núcleo de los simuladores 3D sobre Three.js (94 simulaciones)
+│   ├── simkit-lite.js          Barra, ayuda y lección con reproductor para las simulaciones con interfaz propia
+│   ├── aula.js                 Funciones de aula (ES y EN en un solo archivo): práctica, predicciones,
+│   │                           rutas, escenario por enlace, informe y modo proyector
+│   ├── mol3d.js, langswitch.js
+│   └── vendor/                 Three.js y complementos
+├── quimica-general/  (37)      cada carpeta: index.html, index.en.html, app.js, app.en.js
+├── quimica-organica/ (33)      y, si corresponde, practica.js (contenido de aula, bilingüe)
+├── quimica-inorganica/ (10)
+├── biologia/ (20)
+├── ciencias-tierra/ (4)
+├── fisica/ (10)
+└── guias/                      Guías docentes (ES) y guias/en/ (EN)
+tools/
+├── check.js, run-smoke.js      Verificación con Node (también en GitHub Actions)
+├── verificar.ps1               Verificación sin Node: paridad ES/EN, scripts, enlaces, guías
+├── instalar-aula.ps1           Inserta aula.js y practica.js en todas las páginas
+├── guias-aula.js               Actualiza en las guías la sección «Herramientas de aula» (práctica, predicciones, OA)
+├── i18n.ps1                    Genera los .en.js desde el español (diccionarios X.i18n.json)
+└── nueva-sim/                  Crear una simulación MSim nueva: páginas, guías, inglés, prueba en Edge y registro (ver LEEME.md)
 ```
 
 Cada simulación vive en su propia carpeta y usa rutas relativas, por lo que funciona igual en la raíz del dominio o bajo `usuario.github.io/repositorio/`.
@@ -208,21 +210,61 @@ Todas las simulaciones comparten un kit de interfaz (`simulaciones/kit/`) que of
 
 - **Lección guiada por etapas** (botón del libro o tecla `L`): cada etapa mueve la propia simulación (pestaña, molécula, experimento) y resalta la zona relevante; con pausa, avance, retroceso y velocidad.
 - **Captura PNG** de la vista actual, **pantalla completa**, **tema claro/oscuro** y **ayuda con atajos** (`?`).
+- **Paneles colapsables** para ver toda la simulación, sobre todo en pantallas pequeñas: el panel lateral se oculta con su botón ✕ o la tecla `P`; las cajas flotantes (datos en vivo, capas, leyenda) se contraen tocando su título, y la barra de reproducción se minimiza a solo el botón ▶. El botón del ojo (tecla `O`) activa la **vista despejada**, que oculta todo menos la escena 3D (`Esc` para volver). En pantallas estrechas las cajas parten contraídas.
 - **Modo evaluación** en los cuestionarios: sin retroalimentación hasta el final, revisión de respuestas y nota 1,0–7,0 (60 % de exigencia), con botón para copiar el resultado.
 - **Uso sin conexión (PWA)**: el portal se puede instalar y las simulaciones visitadas quedan disponibles offline (`simulaciones/sw.js`).
 - Predictores y desafíos: mecanismo (SN/E), muestra problema (ensayo a la llama), contador de isómeros de Werner (isomería) y reto Δ/Λ (quiralidad).
+- **Herramientas de aula** (botón del birrete en la barra superior; en las simulaciones con interfaz propia, botón flotante «Aula»):
+  - **Práctica con problemas generados** en 66 simulaciones (todas las de cálculo de química general, inorgánica y orgánica, además de genética, enzimas, fármacos, señalización, β-oxidación, potencial de acción, PCR y Sistema Solar, y todas las de física, ciencias de la Tierra, ecología y salud): cada intento trae valores nuevos, admite coma o punto decimal, da dos intentos, avisa si el error es un factor de 10 y muestra la solución paso a paso.
+  - **Predice → observa → explica** en la lección guiada de 113 simulaciones (todas menos Mecanismos SN/E, incluidas las de interfaz propia con SimKit-lite): en etapas clave la lección se detiene, pide una predicción (con el texto de la etapa difuminado), continúa y al terminar la etapa compara lo predicho con lo observado.
+  - **Recorridos guiados** con preguntas en AtomLab, Configuración electrónica, Propiedades periódicas, Enlaces σ y π, GeoMol y LewisLab, y **desafíos** nuevos en Ensayo a la llama e Isomería de complejos.
+  - **Rutas de aprendizaje**: cada simulación indica a qué ruta pertenece (15 rutas, de «Átomo y enlace» a «Ecología, microorganismos y salud») y enlaza con la anterior y la siguiente.
+  - **Escenario compartible**: «Copiar enlace a este escenario» guarda en la URL (`?aula=…`) los controles que se cambiaron, las capas, la vista y la pestaña o la etapa de la lección; al abrir el enlace se recupera.
+  - **Informe de la actividad** imprimible o en PDF: captura del visor, medidas en vivo, enlace al escenario, resultados del desafío, de la práctica y de las predicciones, y notas del estudiante.
+  - **Modo proyector**: textos, paneles y etiquetas 3D más grandes; queda activo en todas las simulaciones hasta desactivarlo.
 
 El **Simulador SN1 · SN2 · E1 · E2** es la referencia de nivel de detalle; la **Electrólisis del agua** se reconstruyó completa sobre el kit y las demás incorporan estas funciones sobre su interfaz existente.
 
 ## Requisitos y notas técnicas
 
 - Navegador moderno con WebGL (Chrome, Edge, Firefox, Safari), en computador, tablet o celular.
-- **Motor 3D con Three.js**: *GeoMol*, *Enlaces σ y π*, *Isomería de complejos*, *Quiralidad Δ/Λ*, *AtomLab* (modelos y orbitales), *Mecanismos SN/E*, *Enlace químico*, *Colisiones y estado de transición*, *Célula animal*, *Célula vegetal* y *Sistema Solar* renderizan con Three.js (iluminación real y z-buffer). Los experimentos de AtomLab y los módulos que son diagramas o gráficos 2D (LewisLab, Configuración electrónica, Propiedades periódicas) se mantienen en Canvas 2D, donde Three.js no aporta. La capa compartida está en `simulaciones/kit/mol3d.js`.
+- **Motor 3D con Three.js**: las simulaciones 3D renderizan con Three.js (iluminación real y z-buffer); 94 de ellas comparten el núcleo `kit/msim.js`. Los módulos que son diagramas o gráficos 2D (LewisLab, Configuración electrónica, Propiedades periódicas y los experimentos de AtomLab) se mantienen en Canvas 2D. La capa de moléculas compartida está en `simulaciones/kit/mol3d.js`.
 - **Ninguna simulación depende de CDN ni de internet**: Three.js, Tailwind (compilado), Lucide y las fuentes (Inter, JetBrains Mono) están incluidos en cada carpeta `vendor/`.
 
 ## Verificación automática
 
 `npm install && npm run check` revisa sintaxis, enlaces, metadatos y que cada simulación tenga versión en inglés y guías; `npm run smoke` carga todas las páginas (ES y EN) en jsdom, y las simulaciones escritas a mano en Chromium real (Playwright). Ambos corren en GitHub Actions (`.github/workflows/check.yml`).
+
+Sin Node (por ejemplo en Windows), `powershell -ExecutionPolicy Bypass -File tools\verificar.ps1` revisa la paridad ES/EN (mismas preguntas y scripts con la misma versión), la inclusión de `aula.js` y `practica.js`, los enlaces locales y las guías.
+
+## Agregar práctica, predicciones o un recorrido
+
+El contenido de aula de cada simulación va en `practica.js`, **un solo archivo para los dos idiomas**: cada texto es una cadena o un par `['español', 'English']`, y los números se escriben con `H.fmt(x, decimales)` para que salgan con coma o punto según el idioma.
+
+```js
+SimAula.register({
+  problems: [{ name: ['Ley de Boyle', 'Boyle\'s law'], gen: function (H) {
+    var P1 = H.rnd(1, 3, 2), V1 = H.rnd(2, 10, 1), V2 = H.rnd(1, 9, 1), P2 = P1 * V1 / V2;
+    return { q: H.t('… ¿nueva presión?', '… new pressure?'), a: P2, unit: 'atm', sol: 'P₂ = P₁V₁/V₂ = ' + H.sig(P2, 3) + ' atm' };
+  } }],                                   // opcional: tol (relativa, 0,02 por defecto), abs, aText, hint, options + answer
+  predict: { 1: { q: [..], options: [[..], [..]], answer: 0, why: [..] } },   // índice de la etapa de la lección
+  quiz: [{ q: [..], options: [..], answer: 0, why: [..] }],                  // desafío (simulaciones sin SimKit)
+  tour: [{ t: [..], x: [..], sel: '#idDelElemento', go: function () { SimAula.dom.tab('pestaña'); }, q: [..], ask: { options: [..], answer: 0, why: [..] } }]
+});
+```
+
+Después de crear un `practica.js` nuevo se ejecuta `tools\instalar-aula.ps1`, que agrega las etiquetas `<script>` en `index.html` e `index.en.html`. Para nuevas simulaciones conviene seguir este mismo patrón bilingüe.
+
+## Español como única fuente (`tools\i18n.ps1`)
+
+Cada `X.en.js` se **genera** desde `X.js` y un diccionario `X.i18n.json` (textos traducidos, excepciones por línea y textos que no se traducen). Se edita solo el archivo en español y luego:
+
+```
+powershell -ExecutionPolicy Bypass -File tools\i18n.ps1 generar      # reescribe los .en.js y lista los textos nuevos sin traducir
+powershell -ExecutionPolicy Bypass -File tools\i18n.ps1 comprobar    # avisa si algún .en.js se editó a mano (también lo hace verificar.ps1)
+```
+
+Los textos pendientes se agregan en `"lit"` del `.i18n.json` (`"'texto'": "'text'"`) y se vuelve a generar. Los diccionarios se extrajeron de los pares existentes y la regeneración reproduce los 121 archivos ingleses byte a byte, incluido `kit/simkit.en.js`. Sin excepciones: ningún `.en.js` se edita a mano.
 
 ## Uso local
 

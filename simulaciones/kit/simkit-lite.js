@@ -73,7 +73,7 @@
       dock = h('section', 'sk-dock'); dock.hidden = true; dock.setAttribute('aria-label', 'Lección guiada');
       dock.innerHTML =
         '<div class="sk-dock-head"><span class="sk-kick" id="sk-kick"></span><button class="sk-x" id="sk-close" aria-label="Cerrar lección" title="Cerrar (Esc)">' + ic('close') + '</button></div>' +
-        '<h3 id="sk-title"></h3><div class="sk-text" id="sk-text" aria-live="polite"></div>' +
+        '<h3 id="sk-title"></h3><div class="sk-text" id="sk-text" aria-live="polite"></div><div class="sk-slot" id="sk-slot"></div>' +
         '<div class="sk-ctl">' +
         '<button class="sk-btn sm" id="sk-reset" aria-label="Reiniciar" title="Reiniciar">' + ic('restart') + '</button>' +
         '<button class="sk-btn sm" id="sk-prev" aria-label="Etapa anterior" title="Anterior (Mayús + ←)">' + ic('prev') + '</button>' +
@@ -118,7 +118,11 @@
       dock.querySelectorAll('.sk-seg').forEach(function (b, k) { b.classList.toggle('on', k === i); b.classList.toggle('done', k < i); b.firstChild.style.width = k < i ? '100%' : (k === i ? '0%' : '0%'); });
       if (s.apply) { try { s.apply(api, i); } catch (e) { if (global.console) console.warn('[lección]', e); } }
       focusOn(s.focus);
+      listeners.forEach(function (fn) { try { fn(i, api); } catch (e) { if (global.console) console.warn('[lección]', e); } });
     }
+    var listeners = [];   // avisos de cambio de etapa (p. ej. predicciones de kit/aula.js)
+    function pause() { S.playing = false; updatePlay(); }
+    function play() { if (!S.open) return; S.playing = true; updatePlay(); }
     function focusOn(sel) {
       hideRing();
       if (!sel) return;
@@ -206,13 +210,58 @@
     keys.push(['S', 'Capturar imagen PNG'], ['F', 'Pantalla completa']);
     if (cfg.themeToggle) keys.push(['T', 'Tema claro / oscuro']);
     keys.push(['?', 'Esta ayuda']); (cfg.extraKeys || []).forEach(function (k) { keys.push(k); });
-    dlg.innerHTML = '<form method="dialog"><h2 id="sk-help-title">Cómo usar esta simulación</h2>' +
-      ((cfg.help && cfg.help.intro) ? '<p>' + cfg.help.intro + '</p>' : '') +
-      ((cfg.help && cfg.help.items) ? '<ul>' + cfg.help.items.map(function (i) { return '<li><b>' + i[0] + '</b>: ' + i[1] + '</li>'; }).join('') + '</ul>' : '') +
-      '<table class="sk-keys">' + keys.map(function (k) { return '<tr><td><kbd>' + k[0] + '</kbd></td><td>' + k[1] + '</td></tr>'; }).join('') + '</table>' +
-      '<menu><button class="sk-primary" value="ok">Entendido</button></menu></form>';
     root.appendChild(dlg);
-    function openHelp() { if (dlg.showModal) dlg.showModal(); }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function guideHref() {
+      if (cfg.guide === false) return null;
+      if (cfg.guide) return cfg.guide;
+      var p = location.pathname.split('/').filter(Boolean);
+      if (p.length && /\.html?$/i.test(p[p.length - 1])) p.pop();
+      return p.length >= 2 ? '../../guias/' + p[p.length - 2] + '/' + p[p.length - 1] + '.html' : null;
+    }
+    function pageTabs() {
+      var seen = {}, out = [];
+      [].forEach.call(document.querySelectorAll('[role="tab"], [data-tab]'), function (e) {
+        if (root.contains(e) || !e.offsetParent) return;
+        var t = (e.getAttribute('aria-label') && !e.textContent.trim() ? e.getAttribute('aria-label') : e.textContent).replace(/\s+/g, ' ').trim();
+        if (t && t.length < 40 && !seen[t]) { seen[t] = 1; out.push(t); }
+      });
+      return out.slice(0, 12);
+    }
+    function buildHelp() {
+      var help = cfg.help || {}, html = [], steps = [], parts = [], tabsP = pageTabs();
+      var q = function (a) { return a.map(function (x) { return '«' + esc(x) + '»'; }).join(', '); };
+      html.push('<h2 id="sk-help-title">Ayuda · ' + esc(cfg.title || document.title) + '</h2>');
+      if (help.intro) html.push('<p>' + help.intro + '</p>');
+      if (stages.length) steps.push('Pulsa el botón de <b>lección guiada</b> (el libro de la barra de herramientas, o la tecla <kbd>L</kbd>) para recorrer el tema en ' + stages.length + ' etapas. Un anillo destaca la parte de la pantalla de la que se habla en cada etapa.');
+      if (tabsP.length) steps.push('Recorre las secciones del simulador: ' + q(tabsP) + '.');
+      steps.push('Cambia los controles y observa qué ocurre: puedes cerrar la lección cuando quieras y seguir explorando libremente.');
+      html.push('<h3>Primeros pasos</h3><ol>' + steps.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol>');
+      if (tabsP.length) parts.push('<li><b>Secciones.</b> El simulador se organiza en ' + q(tabsP) + '; pulsa cada una para cambiar de vista.</li>');
+      var tools = ['volver a la colección'];
+      if (stages.length) tools.push('abrir la lección guiada');
+      if (cfg.snapshot !== false) tools.push('capturar una imagen');
+      tools.push('pantalla completa');
+      if (cfg.themeToggle) tools.push('tema claro/oscuro');
+      tools.push('esta ayuda');
+      parts.push('<li><b>Barra de herramientas</b> (esquina inferior derecha): ' + tools.join(', ') + '.</li>');
+      if (stages.length) parts.push('<li><b>Lección guiada.</b> Panel inferior con el texto de cada etapa, botones para reiniciar, ir a la etapa anterior o siguiente y reproducir; cada segmento de la barra es una etapa y se puede pulsar para saltar a ella. Etapas:<ol class="sk-stages">' +
+        stages.map(function (s) { return '<li>' + esc(s.name) + '</li>'; }).join('') + '</ol></li>');
+      html.push('<h3>Partes de la pantalla</h3><ol>' + parts.join('') + '</ol>');
+      if (help.items && help.items.length) html.push('<h3>En este simulador</h3><ul>' + help.items.map(function (i) { return '<li><b>' + i[0] + '</b>: ' + i[1] + '</li>'; }).join('') + '</ul>');
+      if (help.try && help.try.length) html.push('<h3>Prueba esto</h3><ol>' + help.try.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol>');
+      html.push('<details class="sk-keysbox"><summary>Atajos de teclado</summary><table class="sk-keys">' + keys.map(function (k) { return '<tr><td><kbd>' + k[0] + '</kbd></td><td>' + k[1] + '</td></tr>'; }).join('') + '</table></details>');
+      var g = guideHref();
+      html.push('<menu>' + (g ? '<a class="sk-ghost" href="' + esc(g) + '" target="_blank" rel="noopener">Guía docente ↗</a>' : '') + '<button class="sk-primary" value="ok">Entendido</button></menu>');
+      return '<form method="dialog">' + html.join('') + '</form>';
+    }
+    var seenKey = 'sklite:help:' + (cfg.key || location.pathname);
+    function seen(v) { try { if (v) localStorage.setItem(seenKey, '1'); return localStorage.getItem(seenKey) === '1'; } catch (e) { return true; } }
+    function openHelp() {
+      dlg.innerHTML = buildHelp(); seen(true);
+      var hb = document.getElementById('sk-help'); if (hb) hb.classList.remove('sk-attn');
+      if (dlg.showModal) { dlg.showModal(); dlg.scrollTop = 0; }
+    }
 
     window.addEventListener('keydown', function (e) {
       var tg = e.target, tn = tg && tg.tagName;
@@ -230,10 +279,19 @@
       else if (k === '?') openHelp();
     });
 
-    var api = { goStage: goStage, toggleLesson: toggleLesson, toast: toast, snapshot: snapshot, state: S, root: root, focus: focusOn };
+    var api = { goStage: goStage, toggleLesson: toggleLesson, toast: toast, snapshot: snapshot, state: S, root: root, focus: focusOn,
+      pause: pause, play: play, slot: dock && dock.querySelector('#sk-slot'), onStage: function (fn) { listeners.push(fn); } };
+    global.SimKitLite.current = api;
+    global.SimKitLite.hooks.forEach(function (fn) { try { fn(api); } catch (e) { if (global.console) console.warn(e); } });
     if (global.location && /[?&]lesson=1/.test(location.search)) setTimeout(function () { toggleLesson(true); }, 400);
+    if (global.location && /[?&]help=1/.test(location.search)) setTimeout(openHelp, 500);
+    else if (!seen() && !/[?&]embed=1/.test(location.search)) setTimeout(function () {
+      var hb = document.getElementById('sk-help'); if (!hb || seen()) return;
+      hb.classList.add('sk-attn'); toast('¿Primera vez aquí? Pulsa ? para ver las partes del simulador y cómo usarlo');
+    }, 1400);
     return api;
   }
 
-  global.SimKitLite = { attach: attach };
+  // hooks: funciones (api) que se llaman al crear la lección; current: la última api creada
+  global.SimKitLite = { attach: attach, hooks: [], current: null };
 })(window);

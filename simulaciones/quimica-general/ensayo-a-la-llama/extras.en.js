@@ -85,6 +85,61 @@
       dur: 10, focus: '#mystery-card', apply: function () { reset(); setCollar(100); startMystery(); } }
   ];
 
+  /* ---------- Collapsible panels and clear view ---------- */
+  var narrow = window.matchMedia ? window.matchMedia('(max-width: 760px)') : null;
+  var CHEV = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  var EYE = '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>';
+  var EYE_OFF = '<path d="M3 3l18 18M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.8 9.8 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/>';
+  var panels = [
+    { el: $$('elements-grid').closest('.absolute'), label: 'Samples and flame' },
+    { el: $$('quantum-panel'), label: 'Quantum analysis' }
+  ];
+  function setOpen(p, open) {
+    p.el.classList.toggle('k-col', !open);
+    p.btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    // on narrow screens both panels span the full width: only one opens at a time
+    if (open && narrow && narrow.matches) panels.forEach(function (q) { if (q !== p) setOpen(q, false); });
+  }
+  panels.forEach(function (p, i) {
+    p.el.id = p.el.id || 'k-panel-' + i;
+    p.el.classList.add('k-pan');
+    p.btn = document.createElement('button');
+    p.btn.className = 'k-tab'; p.btn.setAttribute('aria-controls', p.el.id); p.btn.title = 'Collapse / expand';
+    p.btn.innerHTML = '<span>' + p.label + '</span>' + CHEV;
+    p.btn.addEventListener('click', function () { setOpen(p, p.el.classList.contains('k-col')); });
+    p.el.insertBefore(p.btn, p.el.firstChild);
+  });
+  function placePanels() { panels.forEach(function (p) { setOpen(p, !(narrow && narrow.matches)); }); }
+  placePanels();
+  if (narrow && narrow.addEventListener) narrow.addEventListener('change', placePanels);
+  // the guided lesson opens the panel it points at
+  stages.forEach(function (s) {
+    var ap = s.apply;
+    s.apply = function () {
+      ap.apply(this, arguments);
+      panels.forEach(function (p) { var f = s.focus && document.querySelector(s.focus); if (f && p.el.contains(f) && p.el.classList.contains('k-col')) setOpen(p, true); });
+    };
+  });
+  var cleanBtn = document.createElement('button');
+  cleanBtn.id = 'k-clean'; cleanBtn.className = 'p-1.5 rounded hover:bg-slate-800 text-slate-300 active:bg-slate-700';
+  function setClean(on) {
+    document.body.classList.toggle('k-clean', on);
+    cleanBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    cleanBtn.title = on ? 'Show the panels (O or Esc)' : 'Hide the panels to see the whole simulation (O)';
+    cleanBtn.setAttribute('aria-label', on ? 'Show the panels' : 'Hide the panels');
+    cleanBtn.innerHTML = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (on ? EYE : EYE_OFF) + '</svg>';
+  }
+  setClean(false);
+  cleanBtn.addEventListener('click', function () { setClean(!document.body.classList.contains('k-clean')); });
+  $$('cam-loop').parentNode.appendChild(cleanBtn);
+  $$('spectrum-bar-wrap').parentNode.classList.add('k-spec');
+  window.addEventListener('keydown', function (e) {
+    var t = e.target && e.target.tagName;
+    if (t === 'INPUT' && e.target.type !== 'range' || t === 'TEXTAREA' || t === 'SELECT' || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 'o' || e.key === 'O') setClean(!document.body.classList.contains('k-clean'));
+    else if (e.key === 'Escape' && document.body.classList.contains('k-clean')) setClean(false);
+  });
+
   SimKitLite.attach({
     key: 'ensayo-a-la-llama', title: "Flame test", home: '../../',
     stages: stages,
@@ -97,8 +152,10 @@
         ["Quantum diagram", "Grotrian: levels and transition; Orbital: excitation → emission cycle."],
         ["Calibrated spectrum", "places the analyte lines between 380 and 750 nm."],
         ["Cobalt filter", "attenuates the yellow Na⁺ doublet."],
-        ["Air collar", "reducing (yellow) or oxidizing (blue) flame."]
+        ["Air collar", "reducing (yellow) or oxidizing (blue) flame."],
+        ["Panels", "tap their title to collapse them; the eye (key O) hides them all to see the whole flame."]
       ]
-    }
+    },
+    extraKeys: [["O", "Hide / show the panels"], ["Esc", "Leave the clear view"]]
   });
 })();

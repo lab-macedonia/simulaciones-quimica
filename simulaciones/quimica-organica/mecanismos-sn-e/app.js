@@ -433,7 +433,8 @@
     const sig = rows.join('');
     if (sig !== lastLegendSig) {
       lastLegendSig = sig;
-      $('#legend').innerHTML = sig;
+      $('#legendBody').innerHTML = sig;
+      $('#legend').hidden = !sig;
     }
   }
 
@@ -586,11 +587,13 @@
       else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
     });
     $('#btnHelp').addEventListener('click', () => $('#helpDlg').showModal());
-    $('#btnPanel').addEventListener('click', e => {
-      const p = $('#panel');
-      const open = p.classList.toggle('open');
-      e.currentTarget.setAttribute('aria-expanded', String(open));
-    });
+    $('#btnPanel').addEventListener('click', () => setPanel(!panelShown()));
+    $('#btnPanelX').addEventListener('click', () => setPanel(false));
+    $('#btnClean').addEventListener('click', () => setClean(!clean));
+    $('#bDockMin').addEventListener('click', () => setDockMini(!$('#dock').classList.contains('mini')));
+    $('#eqBox .eq-head').addEventListener('click', () => setEqOpen($('#eqBox').classList.contains('collapsed')));
+    $('#legendHead').addEventListener('click', () => setLegendOpen($('#legendHead').getAttribute('aria-expanded') !== 'true'));
+    if (narrowMQ && narrowMQ.addEventListener) narrowMQ.addEventListener('change', placeHud);
     $('#layersHead').addEventListener('click', e => {
       const ex = e.currentTarget.getAttribute('aria-expanded') === 'true';
       e.currentTarget.setAttribute('aria-expanded', String(!ex));
@@ -617,6 +620,10 @@
       else if (k === 'r' || k === 'R') seek(0);
       else if (k === 'v' || k === 'V') cycleView();
       else if (k === '?') $('#helpDlg').showModal();
+      else if (k === 'p' || k === 'P') setPanel(!panelShown());
+      else if (k === 'o' || k === 'O') setClean(!clean);
+      else if (k === 'Escape' && clean) setClean(false);
+      else if (k === 'Escape' && isNarrow() && $('#panel').classList.contains('open')) setPanel(false);
       else {
         const L = LAYERS.find(x => x.key === k.toLowerCase());
         if (L) toggleLayer(L.k);
@@ -627,6 +634,64 @@
       if (MECS.includes(h) && h !== state.mech) setMechanism(h);
     });
     document.addEventListener('visibilitychange', () => { last = performance.now(); });
+  }
+
+  /* ---------- Paneles colapsables y vista despejada ---------- */
+  const narrowMQ = window.matchMedia ? window.matchMedia('(max-width: 980px)') : null;
+  const PREFS_KEY = 'mecanismos-sn-e:paneles';
+  const prefs = (() => { try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; } catch (e) { return {}; } })();
+  const savePrefs = () => { try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch (e) { /* sin almacenamiento */ } };
+  let clean = false;
+  function isNarrow() { return !!(narrowMQ && narrowMQ.matches); }
+  function setLayersOpen(open) {
+    $('#layersHead').setAttribute('aria-expanded', String(open));
+    $('#layersBody').hidden = !open;
+    $('.views').hidden = !open;
+  }
+  function setEqOpen(open) {
+    $('#eqBox').classList.toggle('collapsed', !open);
+    $('#eqToggle').setAttribute('aria-expanded', String(open));
+  }
+  function setLegendOpen(open) {
+    $('#legendHead').setAttribute('aria-expanded', String(open));
+    $('#legendBody').hidden = !open;
+  }
+  // En pantallas estrechas la leyenda se apila con las demás cajas y todas parten contraídas
+  function placeHud() {
+    const n = isNarrow(), lg = $('#legend');
+    if (n && lg.parentNode !== $('#hudCol')) $('#hudCol').appendChild(lg);
+    else if (!n && lg.parentNode === $('#hudCol')) $('.stage').insertBefore(lg, $('#panel'));
+    setEqOpen(!n); setLegendOpen(!n); setLayersOpen(!n);
+    syncPanel();
+  }
+  function syncPanel() {
+    $('#app').classList.toggle('k-panel-off', !!prefs.panelOff);
+    const vis = !clean && (isNarrow() ? $('#panel').classList.contains('open') : !prefs.panelOff);
+    $('#btnPanel').setAttribute('aria-expanded', String(vis));
+  }
+  function panelShown() { return $('#btnPanel').getAttribute('aria-expanded') === 'true'; }
+  function setPanel(open) {
+    if (clean) setClean(false);
+    if (isNarrow()) $('#panel').classList.toggle('open', open);
+    else { prefs.panelOff = !open; savePrefs(); }
+    syncPanel();
+    if (open && state.tab === 'ene') requestAnimationFrame(() => { energy.draw(); energy.setProgress(state.t); });
+  }
+  function setDockMini(mini) {
+    $('#dock').classList.toggle('mini', mini);
+    $('#bDockMin').setAttribute('aria-expanded', String(!mini));
+    prefs.dockMini = mini; savePrefs();
+  }
+  function setClean(on) {
+    clean = on;
+    $('#app').classList.toggle('k-clean', on);
+    if (on && isNarrow()) $('#panel').classList.remove('open');
+    const b = $('#btnClean');
+    b.setAttribute('aria-pressed', String(on));
+    b.setAttribute('aria-label', on ? 'Mostrar los paneles' : 'Ocultar los paneles');
+    b.title = on ? 'Mostrar los paneles (O o Esc)' : 'Ocultar los paneles para ver toda la simulación (O)';
+    b.innerHTML = '<svg class="ic"><use href="#i-' + (on ? 'eye' : 'eyeoff') + '"/></svg>';
+    syncPanel();
   }
 
   function selectTab(id) {
@@ -653,11 +718,7 @@
     $('#speed').value = String(state.speed);
     $('#bLoop').setAttribute('aria-pressed', String(state.loop));
     $('#bGuided').setAttribute('aria-pressed', String(state.guided));
-    if (window.matchMedia && window.matchMedia('(max-width: 980px)').matches) {
-      $('#layersHead').setAttribute('aria-expanded', 'false');
-      $('#layersBody').hidden = true;
-      $('.views').hidden = true;
-    }
+    placeHud(); setDockMini(!!prefs.dockMini);
     bindEvents();
     const h = location.hash.replace('#', '');
     setMechanism(MECS.includes(h) ? h : 'sn2');

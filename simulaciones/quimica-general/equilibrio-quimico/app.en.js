@@ -84,7 +84,7 @@
         '<p>' + s.eq + ' (' + s.name + '). ' + s.note + "</p><p>At first only the reactants react; as products appear, the reverse reaction speeds up until it equals the forward one. At equilibrium the <b>rates are equal</b> and the concentrations <b>stop changing</b>, although the molecules keep reacting.</p>"],
       ["Q versus K", 'Q y K', "Q = K: the system is at equilibrium (K = " + fmt(e[1].k, 3) + ')',
         "<p>The <b>reaction quotient Q</b> has the form of Kc with the concentrations of the moment. If <b>Q &lt; K</b> the reaction advances toward products; if <b>Q &gt; K</b>, toward reactants; if <b>Q = K</b>, it is at equilibrium.</p><p>Here Q = K = <b>" + sci(e[1].k) + '</b> a ' + fmt(s.T0, 0) + ' K.</p>'],
-      ["Add reactant", "Concentration", "Added " + r0 + ': Q < K, el sistema avanza ' + dirTxt(e[2].dir),
+      ["Add reactant", "Concentration", "Added " + r0 + ": Q < K, the system shifts " + dirTxt(e[2].dir),
         "<p>On adding <b>" + fmt(s.add, 2) + " mol of " + r0 + "</b>, Q drops to <b>" + sci(e[2].q) + '</b> (K = ' + sci(e[2].k) + "). Since Q &lt; K, the reaction shifts <b>" + dirTxt(e[2].dir) + "</b> to consume part of the excess.</p><p>K does not change: only the composition changes.</p>"],
       ["Volume and pressure", "Pressure", "Compressed to half the volume: " + (dn === 0 ? "Q = K, no shift" : "Q ≠ K, shift " + dirTxt(e[3].dir)),
         "<p>V goes from " + fmt(s.V0, 1) + ' L a <b>' + fmt(s.V0 / 2, 1) + " L</b> (total pressure ×2). Q = <b>" + sci(e[3].q) + "</b> versus K = " + sci(e[3].k) + '.</p><p>' + vtxt + '</p>'],
@@ -229,7 +229,7 @@
       "<div class=\"eqline\"><small>Q now</small>" + sci(q) + '</div>' +
       "<div class=\"eqline\"><small>Spontaneous direction</small>" + dirTxt(dirOf(q, k)) + '</div>' +
       '<small>ΔH = ' + fmt(s.dH, 0) + ' kJ/mol (' + (s.dH < 0 ? "exothermic" : "endothermic") + ') · Δn(gas) = ' + (dnGas() > 0 ? '+' : '') + dnGas() + '</small>' });
-    kit.setLegend(s.sp.map(function (sp) { var g = GEO[sp[0]], el = g.a[0][0], c = '#' + ('000000' + EL[el].c.toString(16)).slice(-6); return { label: fm(sp[0]), color: c, text: sp[1] < 0 ? 'reactivo' : "product" }; }));
+    kit.setLegend(s.sp.map(function (sp) { var g = GEO[sp[0]], el = g.a[0][0], c = '#' + ('000000' + EL[el].c.toString(16)).slice(-6); return { label: fm(sp[0]), color: c, text: sp[1] < 0 ? "reactant" : "product" }; }));
   }
   function updateInfo() {
     if (!ui.info) return; var s = S(), k = Kof(st.T), q = Q(st.n, st.V), P0 = nGas(st.n) * 0.08206 * st.T / st.V;
@@ -307,7 +307,7 @@
   /* ------------------------- Desafío ------------------------- */
   var QUIZ = [
     { q: "In a dynamic chemical equilibrium…", options: ["The forward and reverse rates are equal", "The reactions stop", "The concentrations of reactants and products are equal", "Only the forward reaction occurs"], answer: 0, why: "Equilibrium is dynamic: both reactions keep occurring at the same rate, which is why the concentrations remain constant (not necessarily equal)." },
-    { q: "If Q < K, the system…", options: ["Advances toward the products", "Advances toward the reactants", "Is already at equilibrium", "Changes the value of K"], answer: 0, why: 'Q < K indica pocos productos respecto del equilibrio: la reacción directa predomina hasta que Q = K.' },
+    { q: "If Q < K, the system…", options: ["Advances toward the products", "Advances toward the reactants", "Is already at equilibrium", "Changes the value of K"], answer: 0, why: "Q < K means few products relative to equilibrium: the forward reaction dominates until Q = K." },
     { q: "N₂ + 3 H₂ ⇌ 2 NH₃. When the pressure is increased (volume decreased) the equilibrium…", options: ["Shifts toward NH₃", "Shifts toward N₂ and H₂", "Does not shift", "Changes K"], answer: 0, why: "There are 4 mol of gas on the left and 2 on the right; higher pressure favors the side with fewer gaseous moles, that is, NH₃." },
     { q: "In an exothermic reaction, when the temperature is increased…", options: ["K decreases and the equilibrium shifts toward the reactants", "K increases and it shifts toward the products", "K does not change", "Only the rate changes"], answer: 0, why: "Heating favors the endothermic reaction (here the reverse). It is the only change that modifies the value of K (van 't Hoff)." },
     { q: "A catalyst in a system at equilibrium…", options: ["Speeds up both reactions without changing K or the equilibrium composition", "Increases the yield of products", "Increases K", "Shifts the equilibrium toward the products"], answer: 0, why: "The catalyst lowers the barrier of both directions equally: equilibrium is reached sooner, but its position does not change." },
@@ -382,7 +382,7 @@
       },
       init: function (k) { kit = k; buildScene(); resize(); k.cfg.onTheme(k.state.theme); enterStage(0); refreshStageUI(); syncHud(); syncCtrl(); },
       help: { intro: "Follow the lesson with the player (each stage applies a perturbation) or go to “Lab” to perturb the system yourself. With “Back to the lesson” the script regains control.",
-        items: [["Container", "the molecules are gas particles; the piston changes the volume; the color indicates NO₂ (brown) or I₂ (violet)."], ['Q y K', "Q compares the current state with K; the system moves until Q = K."], ["Graphs", "concentrations over time, Q versus K and K(T) by van 't Hoff."], ["Calculation", "expression of Q, current concentrations and ICE table since the last perturbation."], ["Challenge", "eight questions on equilibrium and Le Châtelier."]] }
+        items: [["Container", "the molecules are gas particles; the piston changes the volume; the color indicates NO₂ (brown) or I₂ (violet)."], ['Q y K', "Q compares the current state with K; the system moves until Q = K."], ["Graphs", "concentrations over time, Q versus K and K(T) by van 't Hoff."], ["Calculation", "expression of Q, current concentrations and ICE table since the last perturbation."], ["Challenge", "eight questions on equilibrium and Le Châtelier."], ['Controls', 'reaction, temperature and volume, plus buttons to add or remove species.']], try: ['Add a reactant: Q < K and the system shifts towards products until Q = K.', 'Reduce the volume: the equilibrium shifts towards the side with fewer moles of gas.', 'Change the temperature: it is the only disturbance that changes K.'] }
     });
     window.__eq = { st: function () { return st; }, Kof: Kof, Q: Q, setSys: setSys, relax: relax, dxEq: dxEq, INFO: function () { return INFO; } };
   }

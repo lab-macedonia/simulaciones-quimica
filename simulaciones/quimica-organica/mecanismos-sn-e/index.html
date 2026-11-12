@@ -6,7 +6,7 @@
   <title>Mecanismos SN1 · SN2 · E1 · E2 — Simulador 3D</title>
   <meta name="description" content="Simulador 3D interactivo de los mecanismos de sustitución nucleofílica y eliminación: geometrías, flechas de electrones, orbitales, perfiles de energía y predictor de mecanismo.">
   <meta name="color-scheme" content="dark light">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261028a">
 <script defer src="../../kit/langswitch.js?v=20261018a"></script>
 </head>
 <body>
@@ -25,6 +25,10 @@
     <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
     <symbol id="i-panel" viewBox="0 0 24 24"><path d="M3.5 5h17v14h-17zM14.5 5v14"/></symbol>
     <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 16.5l9 5 9-5"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></symbol>
+    <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.8 9.8 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
   </defs>
 </svg>
 
@@ -50,7 +54,7 @@
       <button class="icon-btn" id="btnFull" title="Pantalla completa" aria-label="Pantalla completa"><svg class="ic"><use href="#i-expand"/></svg></button>
       <button class="icon-btn" id="btnTheme" title="Cambiar tema claro/oscuro" aria-label="Cambiar tema"><svg class="ic"><use href="#i-sun"/></svg></button>
       <button class="icon-btn" id="btnHelp" title="Ayuda y atajos (?)" aria-label="Ayuda"><svg class="ic"><use href="#i-help"/></svg></button>
-      <button class="icon-btn only-narrow" id="btnPanel" title="Mostrar/ocultar panel" aria-label="Panel" aria-expanded="false"><svg class="ic"><use href="#i-panel"/></svg></button>
+      <button class="icon-btn" id="btnPanel" title="Mostrar/ocultar panel (P)" aria-label="Panel" aria-controls="panel" aria-expanded="true"><svg class="ic"><use href="#i-panel"/></svg></button>
     </div>
   </header>
 
@@ -65,18 +69,20 @@
       <span class="ph-ts" id="phTs" hidden>[‡]</span>
     </div>
 
-    <div class="hud-col">
-    <section class="hud hud-eq" aria-label="Datos en vivo">
+    <button class="icon-btn k-clean-btn" id="btnClean" title="Ocultar los paneles para ver toda la simulación (O)" aria-label="Ocultar los paneles" aria-pressed="false"><svg class="ic"><use href="#i-eyeoff"/></svg></button>
+    <div class="hud-col" id="hudCol">
+    <section class="hud hud-eq" id="eqBox" aria-label="Datos en vivo">
       <div class="eq-head">
         <span class="eq-chip" id="eqChip">SN2</span>
         <span class="eq-name" id="eqName"></span>
+        <button class="hud-x" id="eqToggle" title="Contraer / expandir" aria-label="Datos en vivo" aria-controls="eqBody" aria-expanded="true"><svg class="ic hud-chev"><use href="#i-chev"/></svg></button>
       </div>
       <div class="eq-body" id="eqBody"></div>
       <div class="seg" id="variantSeg" role="group" aria-label="Variante" hidden></div>
     </section>
 
     <section class="hud hud-layers" aria-label="Capas del visor">
-      <button class="layers-head" id="layersHead" aria-expanded="true"><svg class="ic"><use href="#i-layers"/></svg><span>Capas</span></button>
+      <button class="layers-head" id="layersHead" aria-expanded="true"><svg class="ic"><use href="#i-layers"/></svg><span>Capas</span><svg class="ic hud-chev"><use href="#i-chev"/></svg></button>
       <div class="layers-body" id="layersBody"></div>
       <div class="views">
         <span class="lbl">Vista</span>
@@ -87,14 +93,17 @@
     </div>
 
     <!-- HUD: leyenda dinámica -->
-    <section class="hud hud-legend" id="legend" aria-label="Leyenda"></section>
+    <section class="hud hud-legend" id="legend" aria-label="Leyenda" hidden><button class="layers-head" id="legendHead" aria-controls="legendBody" aria-expanded="true"><span>Leyenda</span><svg class="ic hud-chev"><use href="#i-chev"/></svg></button><div class="lg-body" id="legendBody"></div></section>
 
     <!-- Panel lateral -->
     <aside class="panel" id="panel">
+      <div class="panel-head">
       <div class="panel-tabs" role="tablist">
         <button role="tab" class="ptab is-on" data-tab="mec" aria-selected="true">Mecanismo</button>
         <button role="tab" class="ptab" data-tab="ene" aria-selected="false">Energía</button>
         <button role="tab" class="ptab" data-tab="pre" aria-selected="false">¿Cuál predomina?</button>
+      </div>
+      <button class="hud-x panel-x" id="btnPanelX" title="Ocultar panel (P)" aria-label="Ocultar panel" aria-controls="panel"><svg class="ic"><use href="#i-close"/></svg></button>
       </div>
 
       <div class="panel-body" tabindex="0">
@@ -191,7 +200,7 @@
     </aside>
 
     <!-- Barra de control inferior -->
-    <section class="dock" aria-label="Controles de reproducción">
+    <section class="dock" id="dock" aria-label="Controles de reproducción">
       <div class="dock-row">
         <button class="icon-btn" id="bReset" title="Reiniciar (R)" aria-label="Reiniciar"><svg class="ic"><use href="#i-restart"/></svg></button>
         <button class="icon-btn" id="bPrev" title="Etapa anterior (Mayús + ←)" aria-label="Etapa anterior"><svg class="ic"><use href="#i-prev"/></svg></button>
@@ -217,6 +226,7 @@
           </label>
           <button class="chip-btn toggle" id="bGuided" aria-pressed="false" title="Pausa al terminar cada etapa">Por etapas</button>
         </div>
+        <button class="icon-btn dock-min" id="bDockMin" title="Minimizar / expandir la barra" aria-label="Barra de reproducción" aria-expanded="true"><svg class="ic hud-chev"><use href="#i-chev"/></svg></button>
       </div>
     </section>
   </main>
@@ -241,7 +251,7 @@
       <tr><td><kbd>R</kbd></td><td>Reiniciar</td></tr>
       <tr><td><kbd>A</kbd> <kbd>O</kbd> <kbd>C</kbd> <kbd>M</kbd> <kbd>T</kbd></td><td>Flechas, orbitales, cargas, medidas, trayectorias</td></tr>
       <tr><td><kbd>V</kbd></td><td>Cambiar vista de cámara</td></tr>
-    </table>
+    <tr><td><kbd>P</kbd></td><td>Mostrar / ocultar el panel</td></tr><tr><td><kbd>O</kbd></td><td>Vista despejada: ocultar / mostrar todos los paneles</td></tr><tr><td><kbd>Esc</kbd></td><td>Salir de la vista despejada</td></tr></table>
     <menu><button class="btn primary" value="ok">Entendido</button></menu>
   </form>
 </dialog>
@@ -257,6 +267,8 @@
 <script src="chem-predictor.js"></script>
 <script src="viewer.js"></script>
 <script src="energy.js"></script>
-<script src="app.js?v=20261017a"></script>
+<script src="app.js?v=20261102c"></script>
+<script defer src="../../kit/aula.js?v=20261112c"></script>
+<script defer src="practica.js?v=20261112c"></script>
 </body>
 </html>
