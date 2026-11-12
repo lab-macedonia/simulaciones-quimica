@@ -19,7 +19,7 @@ Herramientas con las que se construyeron las 16 simulaciones de física, ciencia
 1. Escribe `simulaciones/<area>/<sim>/app.js` en español sobre `kit/msim.js` (modelo: cualquier simulación de `fisica/` o `ciencias-tierra/`) y `practica.js` con problemas y predicciones bilingües (ver el README principal).
 2. Crea `fichas/<sim>.js` (copia una existente) y `pares/<sim>.js` con las traducciones.
 3. `powershell -ExecutionPolicy Bypass -File tools\nueva-sim\hacer.ps1 -Id <area>/<sim> -Shots` — repite hasta que no falten traducciones ni haya errores; revisa las capturas en `tools\nueva-sim\shots`.
-4. `node tools\nueva-sim\registrar.js`
+4. `node tools\nueva-sim\registrar.js` y luego `node tools\miniaturas.js` (crea la imagen `miniatura.webp` de la tarjeta en la portada; sin argumentos solo genera las que faltan)
 5. `powershell -ExecutionPolicy Bypass -File tools\instalar-aula.ps1` y `node tools\guias-aula.js`
 6. `npm run check`, `powershell -ExecutionPolicy Bypass -File tools\verificar.ps1` y `npm run smoke` (con `$env:CHROMIUM` apuntando a `msedge.exe` si Playwright no tiene su navegador).
 7. Agrega la simulación al README (tabla del área y conteos).

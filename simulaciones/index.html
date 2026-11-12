@@ -7,97 +7,295 @@
 <meta name="description" content="Simulaciones interactivas 3D de química (orgánica, general e inorgánica), biología celular y física (Sistema Solar) del Laboratorio MACEDONIA, UMCE.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232a9d9d'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%23fff'/%3E%3Cellipse cx='32' cy='32' rx='24' ry='9' fill='none' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E">
 <style>
-:root{--bg:#f4f7f8;--card:#fff;--ink:#14232b;--muted:#566872;--line:#d8e2e6;--accent:#136a6a;--chip:#e3f3f3}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d1519;--card:#152228;--ink:#e6f0f2;--muted:#93a9b0;--line:#25373e;--accent:#3ecfcf;--chip:#16363a}}
-:root[data-theme=dark]{--bg:#0d1519;--card:#152228;--ink:#e6f0f2;--muted:#93a9b0;--line:#25373e;--accent:#3ecfcf;--chip:#16363a}
+:root{--bg:#f3f6f8;--card:#fff;--ink:#14232b;--muted:#566872;--line:#d8e2e6;--accent:#136a6a;--chip:#e3f3f3;--top:rgba(255,255,255,.86);--shadow:0 10px 30px rgba(20,35,43,.12);--ph:#e6eef1;
+--c-organica:#7a45c2;--c-general:#0f6e6d;--c-inorganica:#a24b14;--c-biologia:#23772f;--c-laboratorio:#2a62bf;--c-ciencias-tierra:#8b5e2e;--c-fisica:#c03168}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1317;--card:#132026;--ink:#e6f0f2;--muted:#93a9b0;--line:#25373e;--accent:#3ecfcf;--chip:#16363a;--top:rgba(11,19,23,.86);--shadow:0 10px 30px rgba(0,0,0,.45);--ph:#1a2a31;
+--c-organica:#b48cf2;--c-general:#3ecfcf;--c-inorganica:#f0a060;--c-biologia:#6fd07e;--c-laboratorio:#7fb0ff;--c-ciencias-tierra:#d8a46a;--c-fisica:#f27aa6}}
+:root[data-theme=dark]{--bg:#0b1317;--card:#132026;--ink:#e6f0f2;--muted:#93a9b0;--line:#25373e;--accent:#3ecfcf;--chip:#16363a;--top:rgba(11,19,23,.86);--shadow:0 10px 30px rgba(0,0,0,.45);--ph:#1a2a31;
+--c-organica:#b48cf2;--c-general:#3ecfcf;--c-inorganica:#f0a060;--c-biologia:#6fd07e;--c-laboratorio:#7fb0ff;--c-ciencias-tierra:#d8a46a;--c-fisica:#f27aa6}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
-header{padding:40px 0 20px}
-.eyebrow{color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
-h1{margin:6px 0 8px;font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.15}
-header p{margin:0;color:var(--muted);max-width:64ch}
-nav.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 4px}
-nav.tabs a{padding:6px 14px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;font-size:.9rem;background:var(--card)}
-nav.tabs a:hover{border-color:var(--accent)}
-section{margin:34px 0}
-section h2{margin:0 0 4px;font-size:1.35rem}
-section>p{margin:0 0 14px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
-.card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;text-decoration:none;color:inherit;transition:transform .15s,border-color .15s}
-.card:hover,.card:focus-visible{transform:translateY(-2px);border-color:var(--accent);outline:none}
-.card h3{margin:0 0 6px;font-size:1.05rem}
-.card p{margin:0 0 12px;color:var(--muted);font-size:.92rem;flex:1}
-.tags{display:flex;flex-wrap:wrap;gap:6px}
-.tags span{background:var(--chip);color:var(--accent);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:600}
-.sub{margin:22px 0 10px;font-size:1.02rem;color:var(--accent);font-weight:700}
-.finder{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0 0}
-.finder label{font-weight:600;font-size:.9rem}
-.finder input{flex:1 1 240px;max-width:420px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
-.finder input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-#qn{color:var(--muted);font-size:.86rem}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.skip{position:absolute;left:-999px;top:8px;z-index:100;background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px}
+.skip:focus{left:8px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 [hidden]{display:none!important}
-footer{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--muted);font-size:.86rem}
+/* Barra superior */
+.topbar{position:sticky;top:0;z-index:50;background:var(--top);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:10px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:.95rem;white-space:nowrap;margin-right:6px}
+.brand svg{width:32px;height:32px;flex:none}
+.brand b{letter-spacing:.04em}
+.menu{display:flex;gap:4px;flex:1}
+.dd{position:relative}
+.dd-btn,.icon-btn,.lang{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 12px;border:1px solid transparent;border-radius:10px;background:none;color:var(--ink);font:inherit;font-size:.93rem;font-weight:600;cursor:pointer;text-decoration:none}
+.dd-btn:hover,.icon-btn:hover,.lang:hover,.dd-btn[aria-expanded=true]{background:var(--chip);color:var(--accent)}
+.dd-btn svg{width:14px;height:14px;transition:transform .2s}
+.dd-btn[aria-expanded=true] svg{transform:rotate(180deg)}
+.icon-btn{width:40px;padding:0}
+.icon-btn svg{width:20px;height:20px}
+.lang{border-color:var(--line);min-width:44px;letter-spacing:.04em}
+.tools{display:flex;align-items:center;gap:4px;margin-left:auto}
+.dd-panel{position:absolute;top:calc(100% + 8px);left:0;min-width:300px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px;z-index:60}
+.dd-panel>a{display:block;padding:9px 12px;border-radius:9px;text-decoration:none}
+.dd-panel>a:hover,.dd-panel>a:focus-visible{background:var(--chip)}
+.dd-panel small{display:block;color:var(--muted);font-size:.8rem}
+.mega{display:grid;grid-template-columns:repeat(3,minmax(200px,1fr));gap:4px 12px;width:min(820px,calc(100vw - 32px));padding:14px}
+.mega .col{padding:6px 8px 8px;border-radius:10px}
+.mega .col>a{display:flex;align-items:center;gap:8px;font-weight:700;text-decoration:none;padding:4px 0}
+.mega .col>a:hover{color:var(--accent)}
+.mega .col>a i,.chip i{width:10px;height:10px;border-radius:50%;background:var(--ac,var(--accent));flex:none;font-style:normal}
+.mega .col>a span{margin-left:auto;color:var(--muted);font-weight:600;font-size:.78rem}
+.mega ul{list-style:none;margin:2px 0 0;padding:0 0 0 18px}
+.mega li a{display:block;color:var(--muted);text-decoration:none;font-size:.86rem;padding:2px 0}
+.mega li a:hover{color:var(--ink);text-decoration:underline}
+.mega .extra{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
+.mega .extra a{font-size:.88rem;font-weight:600;color:var(--accent);text-decoration:none;padding:4px 10px;border-radius:8px;background:var(--chip)}
+#bMenu{display:none}
+/* Portada */
+.hero{position:relative;padding:48px 0 30px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-40% -10% auto auto;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 22%,transparent),transparent 70%);pointer-events:none}
+.hero-in{position:relative;display:grid;grid-template-columns:1.25fr 1fr;gap:32px;align-items:center}
+.eyebrow{color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
+h1{margin:6px 0 10px;font-size:clamp(1.8rem,4.4vw,2.9rem);line-height:1.1;letter-spacing:-.01em}
+.hero p{margin:0;color:var(--muted);max-width:60ch}
+.stats{display:flex;flex-wrap:wrap;gap:10px 26px;margin:22px 0 0;padding:0;list-style:none}
+.stats b{display:block;font-size:1.5rem;line-height:1.1;color:var(--ink)}
+.stats li{color:var(--muted);font-size:.84rem}
+.mosaic{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;transform:rotate(-3deg)}
+.mosaic a{display:block;aspect-ratio:16/10;border-radius:10px;overflow:hidden;background:var(--ph);box-shadow:var(--shadow);transition:transform .2s}
+.mosaic a:hover{transform:scale(1.05)}
+.mosaic img{width:100%;height:100%;object-fit:cover;display:block}
+/* Barra de filtros */
+.filters{position:sticky;top:60px;z-index:40;background:var(--bg);padding:10px 0 8px;border-bottom:1px solid var(--line)}
+.frow{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.search{position:relative;flex:1 1 260px;max-width:440px}
+.search svg{position:absolute;left:12px;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search input{width:100%;padding:10px 12px 10px 38px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit}
+#qn{color:var(--muted);font-size:.86rem}
+.opts{display:flex;align-items:center;gap:8px;margin-left:auto}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
+.seg button{border:0;background:none;color:var(--muted);font:inherit;font-size:.85rem;font-weight:600;padding:7px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.seg button svg{width:16px;height:16px}
+.seg button[aria-pressed=true]{background:var(--chip);color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;scrollbar-width:thin;padding-bottom:2px}
+.chip{flex:none;display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);font:inherit;font-size:.86rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.chip:hover{border-color:var(--ac,var(--accent))}
+.chip[aria-pressed=true]{background:var(--ac,var(--accent));border-color:var(--ac,var(--accent));color:#fff}
+.chip[aria-pressed=true] i{background:#fff}
+:root[data-theme=dark] .chip[aria-pressed=true]{color:#0b1317}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .chip[aria-pressed=true]{color:#0b1317}}
+.chip small{font-weight:600}
+/* Secciones */
+main{padding-bottom:20px}
+section{margin:38px 0;scroll-margin-top:calc(var(--stick,180px) + 12px)}
+section h2{display:flex;align-items:center;gap:10px;margin:0 0 4px;font-size:1.5rem}
+section h2::before{content:"";width:6px;height:1.1em;border-radius:3px;background:var(--ac,var(--accent))}
+section h2 .n{font-size:.85rem;font-weight:600;color:var(--muted);background:var(--chip);border-radius:999px;padding:1px 9px}
+section>p{margin:0 0 14px;color:var(--muted)}
+.sub{margin:24px 0 12px;font-size:1.02rem;color:var(--ac,var(--accent));font-weight:700;scroll-margin-top:calc(var(--stick,180px) + 12px)}
+#recientes{margin-top:28px}
+#recientes .grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+#recientes .card p,#recientes .card .tags{display:none}
+/* Tarjetas */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s,border-color .15s,box-shadow .15s}
+.card:hover,.card:focus-visible{transform:translateY(-3px);border-color:var(--ac,var(--accent));box-shadow:var(--shadow);outline:none}
+.thumb{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;background:var(--ph);border-bottom:1px solid var(--line)}
+.noimg{display:flex;align-items:center;justify-content:center;aspect-ratio:16/10;background:linear-gradient(135deg,color-mix(in srgb,var(--ac,var(--accent)) 35%,var(--card)),var(--ph));color:var(--ac,var(--accent));font-size:2.4rem;font-weight:800;border-bottom:1px solid var(--line)}
+.card h3{margin:12px 14px 8px;font-size:1rem;line-height:1.3}
+.card p{position:absolute;left:0;right:0;top:0;aspect-ratio:16/10;margin:0;padding:14px;overflow:hidden;background:color-mix(in srgb,var(--card) 94%,transparent);color:var(--ink);font-size:.86rem;line-height:1.45;opacity:0;transition:opacity .2s;pointer-events:none}
+.card:hover p,.card:focus-visible p{opacity:1}
+.card:hover .badges,.card:focus-visible .badges{opacity:0}
+.list .card:hover .badges{opacity:1}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:auto 14px 14px}
+.tags span{background:var(--chip);color:var(--accent);border-radius:6px;padding:2px 8px;font-size:.74rem;font-weight:600}
+.tags .t-hide{display:none}
+.badges{position:absolute;top:8px;left:8px;display:flex;gap:6px;pointer-events:none}
+.badges span{background:rgba(10,20,25,.72);color:#fff;border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700;letter-spacing:.03em}
+.badges .new{background:#b8124f}
+/* Vista de lista */
+.list .grid{grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:10px}
+.list .card{display:grid;grid-template-columns:150px 1fr;grid-template-rows:auto 1fr auto}
+.list .thumb,.list .noimg{grid-row:1/4;height:100%;aspect-ratio:auto;border-bottom:0;border-right:1px solid var(--line)}
+.list .card h3{margin:10px 14px 2px}
+.list .card p{position:static;opacity:1;aspect-ratio:auto;background:none;color:var(--muted);padding:0 14px;font-size:.85rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.list .tags{margin:8px 14px 10px}
+.list .badges{top:6px;left:6px}
+.empty{text-align:center;color:var(--muted);padding:40px 0}
+/* Pie */
+footer{border-top:1px solid var(--line);margin-top:40px;padding:26px 0 44px;color:var(--muted);font-size:.86rem}
+.fgrid{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
 footer a{color:var(--accent)}
-@media (prefers-reduced-motion:reduce){.card{transition:none}}
+footer nav{display:flex;flex-wrap:wrap;gap:6px 16px}
+#toTop{position:fixed;right:16px;bottom:16px;z-index:45;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);box-shadow:var(--shadow);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:opacity .2s,transform .2s;pointer-events:none}
+#toTop.on{opacity:1;transform:none;pointer-events:auto}
+#toTop svg{width:20px;height:20px}
+#organica,[data-area="organica"]{--ac:var(--c-organica)}
+#general,[data-area="general"]{--ac:var(--c-general)}
+#inorganica,[data-area="inorganica"]{--ac:var(--c-inorganica)}
+#biologia,[data-area="biologia"]{--ac:var(--c-biologia)}
+#laboratorio,[data-area="laboratorio"]{--ac:var(--c-laboratorio)}
+#ciencias-tierra,[data-area="ciencias-tierra"]{--ac:var(--c-ciencias-tierra)}
+#fisica,[data-area="fisica"]{--ac:var(--c-fisica)}
+/* Responsivo */
+@media (max-width:900px){
+ .hero-in{grid-template-columns:1fr}.mosaic{display:none}
+ .topbar{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--bg)}
+ #bMenu{display:inline-flex}
+ .chips{flex-wrap:nowrap;overflow-x:auto}
+ .menu{position:fixed;top:60px;left:0;right:0;bottom:0;flex-direction:column;gap:0;padding:12px 16px 30px;background:var(--bg);overflow-y:auto;display:none}
+ .menu.open{display:flex}
+ .dd-btn{width:100%;justify-content:space-between;font-size:1.05rem;min-height:48px}
+ .dd-panel{position:static;box-shadow:none;border:0;background:none;min-width:0;padding:0 0 8px;width:auto}
+ .mega{grid-template-columns:1fr}
+ .brand span{display:none}
+}
+@media (max-width:560px){
+ .hero{padding-top:28px}
+ .frow{flex-wrap:nowrap;gap:8px}
+ .search{flex:1 1 auto;min-width:0}
+ #qn,.seg .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ .seg button{padding:9px 10px}
+ .chips{margin-top:8px}
+ .stats{gap:10px 20px}.stats b{font-size:1.25rem}
+ .grid,#recientes .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .card h3{font-size:.9rem;margin:9px 10px 10px}
+ .tags{display:none}
+ .badges{top:6px;left:6px}.badges span{font-size:.66rem;padding:1px 6px}
+ .list .grid{grid-template-columns:1fr}
+ .list .tags{display:flex}
+ .list .card{grid-template-columns:110px 1fr}
+ .list .card p{-webkit-line-clamp:2}
+}
+@media (hover:none){.card p{display:none}.list .card p{display:-webkit-box}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.mosaic a,#toTop,.dd-btn svg,.card p{transition:none}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f6f6f">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
-<nav aria-label="Language"><a class="lang-switch" href="index.en.html" hreflang="en" lang="en" aria-label="View in English" title="View in English" style="position:fixed;top:8px;right:8px;z-index:60;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;font:600 13px/1 system-ui,sans-serif;letter-spacing:.04em;text-decoration:none;color:#fff;background:#1f6f6f;border:2px solid #fff;border-radius:22px;padding:0 12px;box-shadow:0 1px 6px rgba(0,0,0,.4)">EN</a></nav>
-<div class="wrap">
-<header>
-  <div class="eyebrow">Laboratorio MACEDONIA · UMCE</div>
-  <h1>Simulaciones interactivas de ciencias</h1>
-  <p>Herramientas 3D y de visualización para la enseñanza de la química, la biología, las ciencias de la Tierra y la física, clasificadas por área. Funcionan directamente en el navegador, en computador o celular, sin conexión a internet. Cada una incluye lección guiada, captura de imagen y ayuda.</p>
-  <nav class="tabs" aria-label="Áreas">
-    <a href="#organica">Química orgánica</a>
-    <a href="#general">Química general</a>
-    <a href="#inorganica">Química inorgánica</a>
-    <a href="#biologia">Biología</a>
-    <a href="#laboratorio">Técnicas de laboratorio</a>
-    <a href="#ciencias-tierra">Ciencias de la Tierra</a>
-    <a href="#fisica">Física</a>
-    <a href="guias/">Guías docentes</a>
-    <a href="curriculo.html">Cobertura curricular (OA Mineduc)</a>
+<a class="skip" href="#main">Saltar a las simulaciones</a>
+<header class="topbar">
+<div class="bar wrap">
+  <a class="brand" href="index.html" aria-label="Laboratorio MACEDONIA · UMCE"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#1f8585"/><circle cx="32" cy="32" r="8" fill="#fff"/><ellipse cx="32" cy="32" rx="24" ry="9" fill="none" stroke="#fff" stroke-width="3"/><ellipse cx="32" cy="32" rx="24" ry="9" fill="none" stroke="#fff" stroke-width="3" opacity=".7" transform="rotate(60 32 32)"/><ellipse cx="32" cy="32" rx="24" ry="9" fill="none" stroke="#fff" stroke-width="3" opacity=".7" transform="rotate(-60 32 32)"/></svg><span>Laboratorio <b>MACEDONIA</b></span></a>
+  <nav class="menu" id="menu" aria-label="Principal">
+    <div class="dd">
+      <button class="dd-btn" type="button" aria-expanded="false" aria-controls="dd-areas">Áreas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="dd-panel mega" id="dd-areas" hidden>
+        <div class="col" data-area="organica"><a href="#organica"><i></i>Química orgánica</a></div>
+        <div class="col" data-area="general"><a href="#general"><i></i>Química general</a></div>
+        <div class="col" data-area="inorganica"><a href="#inorganica"><i></i>Química inorgánica</a></div>
+        <div class="col" data-area="biologia"><a href="#biologia"><i></i>Biología</a></div>
+        <div class="col" data-area="laboratorio"><a href="#laboratorio"><i></i>Técnicas de laboratorio</a></div>
+        <div class="col" data-area="ciencias-tierra"><a href="#ciencias-tierra"><i></i>Ciencias de la Tierra</a></div>
+        <div class="col" data-area="fisica"><a href="#fisica"><i></i>Física</a></div>
+      </div>
+    </div>
+    <div class="dd">
+      <button class="dd-btn" type="button" aria-expanded="false" aria-controls="dd-rec">Recursos docentes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="dd-panel" id="dd-rec" hidden>
+        <a href="guias/"><b>Guías docentes</b><small>Guía didáctica y banco de preguntas por simulación</small></a>
+        <a href="curriculo.html"><b>Cobertura curricular</b><small>Objetivos de aprendizaje (OA) del Mineduc</small></a>
+        <a href="https://github.com/lab-macedonia/lab-macedonia.github.io"><b>Código en GitHub</b><small>Proyecto abierto, licencia MIT</small></a>
+      </div>
+    </div>
   </nav>
-  <div class="finder"><label for="q">Buscar simulación</label><input id="q" type="search" placeholder="Ej.: titulación, Grignard, PCR…" autocomplete="off"><span id="qn" role="status" aria-live="polite"></span></div>
+  <div class="tools">
+    <button class="icon-btn" id="bTheme" type="button" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar entre tema claro y oscuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    <a class="lang lang-switch" href="index.en.html" hreflang="en" lang="en" aria-label="View in English" title="View in English">EN</a>
+    <button class="icon-btn" id="bMenu" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</div>
 </header>
 
-<main>
+<div class="hero" role="region" aria-labelledby="hTitle">
+<div class="wrap hero-in">
+  <div>
+    <div class="eyebrow">Laboratorio MACEDONIA · UMCE</div>
+    <h1 id="hTitle">Simulaciones interactivas de ciencias</h1>
+    <p>Herramientas 3D para enseñar y aprender química, biología, ciencias de la Tierra y física. Funcionan en el navegador, en computador o celular y sin conexión a internet. Cada una trae lección guiada, práctica y captura de imagen.</p>
+    <ul class="stats">
+      <li><b id="nSims">114</b>simulaciones</li>
+      <li><b>7</b>áreas</li>
+      <li><b>ES · EN</b>español e inglés</li>
+      <li><b>PWA</b>funciona sin conexión</li>
+    </ul>
+  </div>
+  <div class="mosaic" aria-hidden="true" id="mosaic"></div>
+</div>
+</div>
+
+<div class="filters" role="search">
+<div class="wrap">
+  <div class="frow">
+    <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Buscar: titulación, Grignard, PCR…" aria-label="Buscar simulación" autocomplete="off"></div>
+    <span id="qn" role="status" aria-live="polite"></span>
+    <div class="opts">
+      <div class="seg" role="group" aria-label="Vista">
+        <button type="button" id="vGrid" aria-pressed="true" title="Imágenes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="lbl">Imágenes</span></button>
+        <button type="button" id="vList" aria-pressed="false" title="Lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="6" height="5" rx="1"/><rect x="3" y="15" width="6" height="5" rx="1"/><path d="M13 6h8M13 9h5M13 17h8M13 20h5"/></svg><span class="lbl">Lista</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="chips" role="group" aria-label="Filtrar por área" id="chips">
+    <button type="button" class="chip" data-f="" aria-pressed="true">Todas <small>114</small></button>
+    <button type="button" class="chip" data-f="organica" data-area="organica" aria-pressed="false"><i></i>Química orgánica <small>27</small></button>
+    <button type="button" class="chip" data-f="general" data-area="general" aria-pressed="false"><i></i>Química general <small>32</small></button>
+    <button type="button" class="chip" data-f="inorganica" data-area="inorganica" aria-pressed="false"><i></i>Química inorgánica <small>10</small></button>
+    <button type="button" class="chip" data-f="biologia" data-area="biologia" aria-pressed="false"><i></i>Biología <small>19</small></button>
+    <button type="button" class="chip" data-f="laboratorio" data-area="laboratorio" aria-pressed="false"><i></i>Técnicas de laboratorio <small>13</small></button>
+    <button type="button" class="chip" data-f="ciencias-tierra" data-area="ciencias-tierra" aria-pressed="false"><i></i>Ciencias de la Tierra <small>4</small></button>
+    <button type="button" class="chip" data-f="fisica" data-area="fisica" aria-pressed="false"><i></i>Física <small>10</small></button>
+    <button type="button" class="chip" data-f="nuevo" aria-pressed="false">★ Nuevas</button>
+  </div>
+</div>
+</div>
+
+<div class="wrap">
+<section id="recientes" hidden aria-labelledby="hRec"><h2 id="hRec">Visto recientemente</h2><div class="grid"></div></section>
+
+<main id="main">
 <section id="organica">
   <h2>Química orgánica</h2>
   <p>Estructura, mecanismos de reacción, familias de compuestos, síntesis y espectroscopía orgánica.</p>
   <h3 class="sub">Estructura y estereoquímica</h3>
   <div class="grid">
     <a class="card" href="quimica-organica/estereoquimica-rs/">
+      <img class="thumb" src="quimica-organica/estereoquimica-rs/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Estereoquímica R/S (CIP) 3D</h3>
       <p>Prioridades Cahn–Ingold–Prelog, asignación R/S mirando desde el lado opuesto al grupo de menor prioridad, enantiómeros en espejo y desafío de configuración.</p>
       <div class="tags"><span>3D</span><span>Quiralidad</span><span>CIP</span></div>
     </a>
     <a class="card" href="quimica-organica/conformaciones/">
+      <img class="thumb" src="quimica-organica/conformaciones/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Conformaciones: etano, butano y ciclohexano 3D</h3>
       <p>Proyecciones de Newman con energía torsional, conformaciones anti/gauche/eclipsada, silla del ciclohexano con inversión, valores A y repulsión 1,3-diaxial.</p>
       <div class="tags"><span>3D</span><span>Newman</span><span>Ciclohexano</span></div>
     </a>
     <a class="card" href="quimica-organica/carbohidratos-fischer-haworth/">
+      <img class="thumb" src="quimica-organica/carbohidratos-fischer-haworth/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Carbohidratos: Fischer → Haworth → silla</h3>
       <p>De la proyección de Fischer a la de Haworth: piranosas y furanosas de aldosas y cetosas, carbono anomérico (α/β), conformación silla o sobre y repulsiones 1,3-diaxiales, con lección guiada y desafío.</p>
       <div class="tags"><span>3D</span><span>Estereoquímica</span><span>Carbohidratos</span></div>
     </a>
     <a class="card" href="quimica-organica/grupos-funcionales/">
+      <img class="thumb" src="quimica-organica/grupos-funcionales/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Grupos funcionales 3D</h3>
       <p>Veinte moléculas con quince grupos funcionales resaltados, bandas IR características, prioridad de nomenclatura y desafío de identificación.</p>
       <div class="tags"><span>3D</span><span>Grupos funcionales</span><span>IR</span></div>
     </a>
     <a class="card" href="quimica-organica/nomenclatura-iupac/">
+      <img class="thumb" src="quimica-organica/nomenclatura-iupac/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Nomenclatura IUPAC orgánica</h3>
       <p>Simulador 3D para aprender y practicar la nomenclatura IUPAC orgánica: cadena principal, numeración y localizadores, sustituyentes en orden alfabético y prioridad de grupos funcionales, con moléculas en 3D y modo de práctica.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/aromaticidad-huckel/">
+      <img class="thumb" src="quimica-organica/aromaticidad-huckel/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Aromaticidad y regla de Hückel</h3>
       <p>Simulador 3D de aromaticidad: regla 4n + 2 de Hückel, orbitales moleculares π y círculo de Frost, antiaromaticidad, iones aromáticos y heterociclos (pirrol, piridina, furano).</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
@@ -106,51 +304,61 @@ footer a{color:var(--accent)}
   <h3 class="sub">Mecanismos y reactividad</h3>
   <div class="grid">
     <a class="card" href="quimica-organica/mecanismos-sn-e/">
+      <img class="thumb" src="quimica-organica/mecanismos-sn-e/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Mecanismos SN1 · SN2 · E1 · E2</h3>
       <p>Geometrías 3D, flechas de movimiento de electrones, orbitales, perfiles de energía y un predictor de mecanismo según sustrato, nucleófilo/base y disolvente.</p>
       <div class="tags"><span>3D</span><span>Mecanismos</span><span>Sustitución y eliminación</span></div>
     </a>
     <a class="card" href="quimica-organica/adicion-electrofila-sear/">
+      <img class="thumb" src="quimica-organica/adicion-electrofila-sear/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Adición electrofílica y SEAr 3D</h3>
       <p>Adición de HBr, HCl, H₂O y Br₂ a alquenos (Markovnikov, carbocatión, ion bromonio) y sustitución electrofílica aromática con complejo σ y efecto de sustituyentes (o/m/p).</p>
       <div class="tags"><span>3D</span><span>Alquenos</span><span>Aromáticos</span></div>
     </a>
     <a class="card" href="quimica-organica/carbonilo/">
+      <img class="thumb" src="quimica-organica/carbonilo/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Adición nucleófila al carbonilo 3D</h3>
       <p>Aldehídos y cetonas frente a distintos nucleófilos: ángulo de Bürgi–Dunitz, intermediario tetraédrico, hemiacetal/acetal y sustitución nucleofílica acílica.</p>
       <div class="tags"><span>3D</span><span>Carbonilo</span><span>Mecanismos</span></div>
     </a>
     <a class="card" href="quimica-organica/acidez-pka/">
+      <img class="thumb" src="quimica-organica/acidez-pka/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Acidez orgánica y pKa</h3>
       <p>Simulador 3D de acidez orgánica: pKa, estabilidad de la base conjugada, hibridación, electronegatividad, resonancia y efecto inductivo, con equilibrio ácido–base y ionización según el pH.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/radicales-halogenacion/">
+      <img class="thumb" src="quimica-organica/radicales-halogenacion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Radicales y halogenación en cadena</h3>
       <p>Simulador 3D de la halogenación radicalaria de alcanos: estabilidad de radicales, iniciación, propagación y terminación, selectividad cloración frente a bromación (postulado de Hammond) y reparto de productos del propano.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/enolatos-aldolica/">
+      <img class="thumb" src="quimica-organica/enolatos-aldolica/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Enolatos y condensación aldólica</h3>
       <p>Simulador 3D de enolatos y reacción aldólica: acidez del hidrógeno α, resonancia del enolato, adición aldólica, deshidratación E1cB y condensación cruzada de Claisen–Schmidt, con flechas de electrones.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/derivados-acido/">
+      <img class="thumb" src="quimica-organica/derivados-acido/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Ácidos carboxílicos y derivados</h3>
       <p>Simulador 3D de derivados de ácidos carboxílicos: reactividad (cloruro, anhídrido, éster, amida), resonancia, sustitución nucleófila acílica por adición–eliminación, hidrólisis e interconversión.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/diels-alder/">
+      <img class="thumb" src="quimica-organica/diels-alder/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Reacción de Diels–Alder</h3>
       <p>Simulador 3D de la reacción de Diels–Alder [4+2]: conformación s-cis del dieno, mecanismo concertado, orbitales frontera, efecto de sustituyentes, regla endo y termodinámica (ΔG frente a T).</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/pericliclicas/">
+      <img class="thumb" src="quimica-organica/pericliclicas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Reacciones electrocíclicas y sigmatrópicas</h3>
       <p>Reacciones pericíclicas más allá de Diels–Alder: electrociclaciones de 4, 6 y 8 electrones (conrotatoria y disrotatoria), orbitales frontera, control térmico y fotoquímico, desplazamientos [1,5] de H y transposición de Cope [3,3] con reglas de Woodward–Hoffmann.</p>
       <div class="tags"><span>3D</span><span>Woodward–Hoffmann</span><span>Orbitales</span></div>
     </a>
     <a class="card" href="quimica-organica/oxidacion-reduccion/">
+      <img class="thumb" src="quimica-organica/oxidacion-reduccion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Oxidación y reducción en química orgánica</h3>
       <p>Simulador 3D de oxidación y reducción orgánica: estados de oxidación del carbono, oxidación de alcoholes primarios, secundarios y terciarios con PCC y Jones, reducción de carbonilos con NaBH₄ y LiAlH₄, mecanismo del hidruro y selectividad de los reactivos.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
@@ -159,31 +367,37 @@ footer a{color:var(--accent)}
   <h3 class="sub">Familias de compuestos</h3>
   <div class="grid">
     <a class="card" href="quimica-organica/alcoholes-eteres-aminas/">
+      <img class="thumb" src="quimica-organica/alcoholes-eteres-aminas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Alcoholes, éteres y aminas</h3>
       <p>Simulador 3D de alcoholes, éteres y aminas: polaridad, puentes de hidrógeno (dímeros), puntos de ebullición, solubilidad en agua según la cadena, basicidad de las aminas (pKaH) y reactividad comparada.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/alquinos/">
+      <img class="thumb" src="quimica-organica/alquinos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Alquinos: estructura y reacciones</h3>
       <p>Geometría lineal sp, acidez del alquino terminal y acetiluros, hidrogenación selectiva (Lindlar cis, Na/NH₃ trans, H₂/Pd alcano), hidratación a cetonas o aldehídos y adición de HBr con regioquímica, con sustrato y producto en 3D.</p>
       <div class="tags"><span>3D</span><span>Alquinos</span><span>Reacciones</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/heterociclos/">
+      <img class="thumb" src="quimica-organica/heterociclos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Heterociclos aromáticos</h3>
       <p>Pirrol, furano, tiofeno, piridina, imidazol y pirimidina en 3D: par libre en el sistema π o en el plano, basicidad (pKa del ácido conjugado), reactividad y regioselectividad frente a electrófilos y presencia en biomoléculas.</p>
       <div class="tags"><span>3D</span><span>Heterociclos</span><span>Aromaticidad</span></div>
     </a>
     <a class="card" href="quimica-organica/lipidos-jabon/">
+      <img class="thumb" src="quimica-organica/lipidos-jabon/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Lípidos, saponificación y jabones</h3>
       <p>Triglicéridos con ácidos grasos saturados e insaturados (punto de fusión), saponificación con NaOH y cálculo del índice de saponificación, micelas que emulsionan la grasa y efecto del agua dura sobre el jabón.</p>
       <div class="tags"><span>3D</span><span>Lípidos</span><span>Saponificación</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/polimeros/">
+      <img class="thumb" src="quimica-organica/polimeros/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Polímeros: adición y condensación</h3>
       <p>Cadenas de polietileno, polipropileno, poliestireno, PVC, nailon 6,6 y PET en 3D: polimerización por adición (inicio, propagación, terminación) y por condensación, grado de polimerización, ecuación de Carothers, masa molar promedio y dispersidad.</p>
       <div class="tags"><span>3D</span><span>Polímeros</span><span>Materiales</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/terpenos-esteroides/">
+      <img class="thumb" src="quimica-organica/terpenos-esteroides/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Terpenos y esteroides</h3>
       <p>Regla del isopreno en 3D: monoterpenos, sesquiterpenos y diterpenos lineales con sus unidades C₅, ciclación del escualeno y esqueleto esteroidal (anillos A–D, numeración) con colesterol, testosterona, estradiol y progesterona.</p>
       <div class="tags"><span>3D</span><span>Biosíntesis</span><span>Esteroides</span></div>
@@ -192,11 +406,13 @@ footer a{color:var(--accent)}
   <h3 class="sub">Síntesis</h3>
   <div class="grid">
     <a class="card" href="quimica-organica/grignard-organometalicos/">
+      <img class="thumb" src="quimica-organica/grignard-organometalicos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Reactivos de Grignard y organometálicos</h3>
       <p>Simulador 3D de reactivos de Grignard: formación de RMgX, inversión de polaridad del carbono, adición a aldehídos, cetonas, CO₂ y ésteres, incompatibilidad con protones ácidos y comparación con organolitios y cupratos.</p>
       <div class="tags"><span>3D</span><span>Mecanismos</span><span>Organometálicos</span></div>
     </a>
     <a class="card" href="quimica-organica/retrosintesis/">
+      <img class="thumb" src="quimica-organica/retrosintesis/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Retrosíntesis y síntesis multipaso</h3>
       <p>Análisis retrosintético en 3D: desconexión de enlaces C–C, sintones y equivalentes sintéticos (Grignard), interconversión de grupos funcionales y rendimiento global en síntesis lineales y convergentes.</p>
       <div class="tags"><span>3D</span><span>Síntesis</span><span>Retrosíntesis</span></div>
@@ -205,16 +421,19 @@ footer a{color:var(--accent)}
   <h3 class="sub">Espectroscopía</h3>
   <div class="grid">
     <a class="card" href="quimica-organica/espectroscopia/">
+      <img class="thumb" src="quimica-organica/espectroscopia/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Espectroscopía IR y RMN ¹H 3D</h3>
       <p>Vibraciones animadas de enlaces y bandas IR, desplazamiento químico, integración y multiplicidad (regla n+1) con espectros asignados a átomos de la molécula.</p>
       <div class="tags"><span>3D</span><span>IR</span><span>RMN</span></div>
     </a>
     <a class="card" href="quimica-organica/espectrometria-ms-rmn13c/">
+      <img class="thumb" src="quimica-organica/espectrometria-ms-rmn13c/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Espectrometría de masas y RMN de 13C</h3>
       <p>Simulador 3D de espectrometría de masas (ion molecular, patrón isotópico del Cl y Br, rotura α, McLafferty) y de RMN de 13C (carbonos no equivalentes, desplazamiento químico) para resolver estructuras orgánicas.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/uv-vis-conjugacion/">
+      <img class="thumb" src="quimica-organica/uv-vis-conjugacion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Espectroscopía UV-Vis y conjugación</h3>
       <p>Transición π → π* en polienos: efecto de la conjugación sobre el gap HOMO–LUMO y la longitud de onda máxima, sustituyentes alquilo, color complementario de la disolución, espectro de absorción y ley de Beer–Lambert, desde el eteno hasta el β-caroteno.</p>
       <div class="tags"><span>3D</span><span>Espectroscopía</span><span>UV-Vis</span><span>Nuevo</span></div>
@@ -228,56 +447,67 @@ footer a{color:var(--accent)}
   <h3 class="sub">Estructura atómica y enlace</h3>
   <div class="grid">
     <a class="card" href="quimica-general/atomlab/">
+      <img class="thumb" src="quimica-general/atomlab/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>AtomLab: modelos atómicos</h3>
       <p>Modelos atómicos en 3D de Dalton a Schrödinger, orbitales s, p y d con nodos y fase, y los experimentos de Millikan, Davisson–Germer y el espectro del hidrógeno.</p>
       <div class="tags"><span>Estructura atómica</span><span>Orbitales 3D</span><span>Experimentos</span></div>
     </a>
     <a class="card" href="quimica-general/configuracion-electronica/">
+      <img class="thumb" src="quimica-general/configuracion-electronica/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Configuración electrónica</h3>
       <p>Orbitales, notación completa y reducida, diagramas de orbitales e iones.</p>
       <div class="tags"><span>Estructura atómica</span><span>Orbitales</span></div>
     </a>
     <a class="card" href="quimica-general/propiedades-periodicas/">
+      <img class="thumb" src="quimica-general/propiedades-periodicas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Propiedades periódicas</h3>
       <p>Siete propiedades con datos de referencia (Pauling, ionización, afinidad, radios) y gráfico interactivo para comparar tendencias.</p>
       <div class="tags"><span>Tabla periódica</span><span>Datos</span></div>
     </a>
     <a class="card" href="quimica-general/lewislab/">
+      <img class="thumb" src="quimica-general/lewislab/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>LewisLab: estructuras de Lewis</h3>
       <p>Cargas formales en vivo, polaridad de enlaces, resonancia, excepciones al octeto y enlace directo a GeoMol.</p>
       <div class="tags"><span>Enlace</span><span>Resonancia</span></div>
     </a>
     <a class="card" href="quimica-general/geomol/">
+      <img class="thumb" src="quimica-general/geomol/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>GeoMol: geometría molecular</h3>
       <p>VSEPR en 3D, ángulos, polaridad y dipolo neto vectorial, con modo práctica y exportación.</p>
       <div class="tags"><span>3D</span><span>VSEPR</span><span>Polaridad</span></div>
     </a>
     <a class="card" href="quimica-general/sigma-pi/">
+      <img class="thumb" src="quimica-general/sigma-pi/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Enlaces sigma y pi</h3>
       <p>Hibridación y enlaces simples, dobles y triples en 3D; benceno con π deslocalizado.</p>
       <div class="tags"><span>3D</span><span>Hibridación</span></div>
     </a>
     <a class="card" href="quimica-general/enlace-quimico/">
+      <img class="thumb" src="quimica-general/enlace-quimico/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Enlace químico 3D</h3>
       <p>Enlace iónico (NaCl, LiF, KBr, MgO), covalente (apolar y polar) y metálico (mar de electrones): transferencia, solapamiento, red cristalina, curvas de energía y predictor por ΔEN.</p>
       <div class="tags"><span>3D</span><span>Enlace</span><span>Electronegatividad</span></div>
     </a>
     <a class="card" href="quimica-general/orbitales-moleculares/">
+      <img class="thumb" src="quimica-general/orbitales-moleculares/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Orbitales moleculares en diatómicas</h3>
       <p>Simulador 3D de la teoría de orbitales moleculares (LCAO) en moléculas diatómicas homonucleares del periodo 1 y 2: diagramas de energía, orden de enlace, paramagnetismo y forma de los orbitales σ, σ*, π y π*.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-general/radiacion-em/">
+      <img class="thumb" src="quimica-general/radiacion-em/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Radiación electromagnética 3D</h3>
       <p>Onda E–B en 3D, polarización lineal y circular, vector de Poynting, fotón como paquete de ondas y espectro completo de radio a rayos γ con E = hf y efectos sobre la materia.</p>
       <div class="tags"><span>3D</span><span>Espectro</span><span>Fotones</span></div>
     </a>
     <a class="card" href="quimica-general/transiciones-electronicas/">
+      <img class="thumb" src="quimica-general/transiciones-electronicas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Transiciones electrónicas y átomo de Bohr 3D</h3>
       <p>Niveles de H, He⁺ y Li²⁺, absorción y emisión de fotones, series de Lyman, Balmer y Paschen, ondas de de Broglie, ionización y espectro de líneas.</p>
       <div class="tags"><span>3D</span><span>Bohr</span><span>Espectros</span></div>
     </a>
     <a class="card" href="quimica-general/radiactividad/">
+      <img class="thumb" src="quimica-general/radiactividad/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Radiactividad y química nuclear</h3>
       <p>Simulador 3D de radiactividad: núcleo y notación, banda de estabilidad N/Z, desintegración alfa, beta y captura electrónica, vida media, actividad y datación con carbono-14.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
@@ -286,26 +516,31 @@ footer a{color:var(--accent)}
   <h3 class="sub">Estados de la materia y fuerzas</h3>
   <div class="grid">
     <a class="card" href="quimica-general/gases/">
+      <img class="thumb" src="quimica-general/gases/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Gases ideales y reales 3D</h3>
       <p>Recipiente con partículas: leyes de Boyle, Charles, Gay-Lussac y Avogadro, mezcla de gases (Dalton), distribución de Maxwell–Boltzmann y desviaciones de van der Waals.</p>
       <div class="tags"><span>3D</span><span>Gases</span><span>Maxwell–Boltzmann</span></div>
     </a>
     <a class="card" href="quimica-general/diagramas-de-fase/">
+      <img class="thumb" src="quimica-general/diagramas-de-fase/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Diagramas de fase 3D</h3>
       <p>Diagramas P–T de agua y CO₂: fases, curvas de equilibrio, punto triple y crítico, fluido supercrítico, curva de calentamiento y Clausius–Clapeyron.</p>
       <div class="tags"><span>3D</span><span>Fases</span><span>Triple</span><span>Crítico</span></div>
     </a>
     <a class="card" href="quimica-general/interacciones-intermoleculares/">
+      <img class="thumb" src="quimica-general/interacciones-intermoleculares/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Interacciones intermoleculares 3D</h3>
       <p>38 pares de especies: London, ion–ion, ion–dipolo, dipolo–dipolo, cuadrupolo, puente de H y enlace de halógeno, con curva U(r), promedio térmico y comparador de energías.</p>
       <div class="tags"><span>3D</span><span>Fuerzas</span><span>Energía</span></div>
     </a>
     <a class="card" href="quimica-general/solidos-cristalinos/">
+      <img class="thumb" src="quimica-general/solidos-cristalinos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Sólidos cristalinos y celdas unitarias</h3>
       <p>Simulador 3D de sólidos cristalinos: celdas cúbicas simple, centrada en el cuerpo y centrada en las caras, empaquetamiento compacto hcp y ccp, estructuras iónicas (NaCl, CsCl, ZnS, CaF₂), átomos por celda, número de coordinación, fracción de empaquetamiento y densidad.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-general/semiconductores-bandas/">
+      <img class="thumb" src="quimica-general/semiconductores-bandas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Semiconductores y teoría de bandas</h3>
       <p>Teoría de bandas en 3D: metales, aislantes y semiconductores según el ancho de la banda prohibida, población térmica de electrones, dopaje tipo n y p, unión p–n y color de un LED a partir de la energía de gap.</p>
       <div class="tags"><span>3D</span><span>Bandas</span><span>Semiconductores</span></div>
@@ -314,26 +549,31 @@ footer a{color:var(--accent)}
   <h3 class="sub">Reacciones y estequiometría</h3>
   <div class="grid">
     <a class="card" href="quimica-general/mol-masa-molar/">
+      <img class="thumb" src="quimica-general/mol-masa-molar/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>El mol y la masa molar</h3>
       <p>Masa molar a partir de la tabla periódica, número de Avogadro, conversiones entre gramos, moles y partículas, volumen molar de gases en CNTP y composición porcentual, con moléculas y montones de partículas en 3D.</p>
       <div class="tags"><span>3D</span><span>Mol</span><span>Estequiometría</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-general/estequiometria/">
+      <img class="thumb" src="quimica-general/estequiometria/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Estequiometría y reactivo limitante 3D</h3>
       <p>Reacciones balanceadas por tandas de moléculas: reactivo limitante y en exceso, producto teórico, sobrante, conservación de la masa, calculadora en gramos con % de rendimiento y desafío.</p>
       <div class="tags"><span>3D</span><span>Estequiometría</span><span>Rendimiento</span></div>
     </a>
     <a class="card" href="quimica-general/balanceo-redox/">
+      <img class="thumb" src="quimica-general/balanceo-redox/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Balanceo redox: método ion-electrón</h3>
       <p>Balancea reacciones redox en medio ácido y básico paso a paso: números de oxidación, semirreacciones, balance de O, H y carga con electrones, y suma final, con el flujo de electrones en 3D.</p>
       <div class="tags"><span>3D</span><span>Redox</span><span>Electroquímica</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-general/nomenclatura-inorganica/">
+      <img class="thumb" src="quimica-general/nomenclatura-inorganica/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Nomenclatura inorgánica</h3>
       <p>Fórmulas y nombres de compuestos iónicos en 3D: balance de cargas, nomenclatura Stock, sistemática y tradicional, oxoaniones de los halógenos, ácidos y oxoácidos, con ensamblado de iones.</p>
       <div class="tags"><span>3D</span><span>Nomenclatura</span><span>Estequiometría</span></div>
     </a>
     <a class="card" href="quimica-general/quimica-ambiental-verde/">
+      <img class="thumb" src="quimica-general/quimica-ambiental-verde/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Química ambiental y química verde</h3>
       <p>Capa de ozono y CFC, efecto invernadero (forzamiento radiativo del CO₂), lluvia ácida y química verde en 3D: economía atómica, factor E y doce principios con comparación de rutas sintéticas.</p>
       <div class="tags"><span>3D</span><span>Ambiente</span><span>Química verde</span></div>
@@ -342,21 +582,25 @@ footer a{color:var(--accent)}
   <h3 class="sub">Disoluciones y equilibrio</h3>
   <div class="grid">
     <a class="card" href="quimica-general/coligativas/">
+      <img class="thumb" src="quimica-general/coligativas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Disoluciones y propiedades coligativas 3D</h3>
       <p>Ley de Raoult, descenso de la presión de vapor, ascenso ebulloscópico, descenso crioscópico y presión osmótica con factor de van 't Hoff, en vasos y membrana semipermeable.</p>
       <div class="tags"><span>3D</span><span>Disoluciones</span><span>Coligativas</span></div>
     </a>
     <a class="card" href="quimica-general/equilibrio-quimico/">
+      <img class="thumb" src="quimica-general/equilibrio-quimico/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Equilibrio químico y Le Châtelier 3D</h3>
       <p>Recipiente con émbolo y moléculas: cociente Q frente a K, perturbaciones por concentración, volumen, temperatura (van 't Hoff), catalizador y gas inerte, con tabla ICE, gráficos y desafío.</p>
       <div class="tags"><span>3D</span><span>Equilibrio</span><span>Le Châtelier</span></div>
     </a>
     <a class="card" href="quimica-general/acido-base-titulacion/">
+      <img class="thumb" src="quimica-general/acido-base-titulacion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Ácido–base, pH y titulación 3D</h3>
       <p>Bureta y vaso con indicador: ácidos y bases fuertes, débiles y poliprótico (H₃PO₄), curva de titulación, zona tampón (Henderson–Hasselbalch), distribución de especies, punto de equivalencia y elección del indicador.</p>
       <div class="tags"><span>3D</span><span>pH</span><span>Titulación</span><span>Tampones</span></div>
     </a>
     <a class="card" href="quimica-general/solubilidad-kps/">
+      <img class="thumb" src="quimica-general/solubilidad-kps/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Solubilidad y producto de solubilidad (Kps)</h3>
       <p>Simulador 3D de solubilidad de sales poco solubles: Kps, solubilidad molar, efecto del ion común, efecto del pH, cociente Q frente a Kps y precipitación selectiva (AgI/AgCl).</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
@@ -365,21 +609,25 @@ footer a{color:var(--accent)}
   <h3 class="sub">Termodinámica y cinética</h3>
   <div class="grid">
     <a class="card" href="quimica-general/termoquimica/">
+      <img class="thumb" src="quimica-general/termoquimica/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Termoquímica y calorimetría 3D</h3>
       <p>Calorímetro, calor específico, entalpía de reacción, ley de Hess y entalpías de formación con diagramas de niveles de energía.</p>
       <div class="tags"><span>3D</span><span>Termoquímica</span><span>Hess</span></div>
     </a>
     <a class="card" href="quimica-general/entropia-gibbs/">
+      <img class="thumb" src="quimica-general/entropia-gibbs/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Entropía y energía libre de Gibbs</h3>
       <p>Simulador 3D de entropía y energía libre de Gibbs: microestados y S = k·ln W, expansión espontánea, entropía de los estados de agregación, ΔG = ΔH − TΔS, temperatura de equilibrio y relación con K.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-general/colisiones-estado-transicion/">
+      <img class="thumb" src="quimica-general/colisiones-estado-transicion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Colisiones y estado de transición 3D</h3>
       <p>Teoría de las colisiones (energía, orientación, temperatura, catalizador) y estado de transición con diagrama de coordenada de reacción, postulado de Hammond y gráfico de Arrhenius.</p>
       <div class="tags"><span>3D</span><span>Cinética</span><span>Arrhenius</span></div>
     </a>
     <a class="card" href="quimica-general/cinetica-ordenes/">
+      <img class="thumb" src="quimica-general/cinetica-ordenes/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Cinética: órdenes de reacción 3D</h3>
       <p>Leyes de velocidad integradas de orden 0, 1 y 2, vida media, linealización ([A], ln[A], 1/[A]) y experimento misterioso para determinar el orden por velocidades iniciales.</p>
       <div class="tags"><span>3D</span><span>Cinética</span><span>Órdenes</span></div>
@@ -388,16 +636,19 @@ footer a{color:var(--accent)}
   <h3 class="sub">Electroquímica</h3>
   <div class="grid">
     <a class="card" href="quimica-general/electrolisis-agua/">
+      <img class="thumb" src="quimica-general/electrolisis-agua/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Electrólisis del agua 3D</h3>
       <p>Celda electrolítica con control de voltaje y electrolito, semirreacciones en cátodo y ánodo, y vista molecular del proceso.</p>
       <div class="tags"><span>3D</span><span>Electroquímica</span><span>Redox</span></div>
     </a>
     <a class="card" href="quimica-general/pilas-galvanicas/">
+      <img class="thumb" src="quimica-general/pilas-galvanicas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Pilas galvánicas y ecuación de Nernst 3D</h3>
       <p>Celdas con puente salino y voltímetro: potenciales estándar, E°celda, ecuación de Nernst, Q frente a K, ΔG° = −nFE° y masa transferida al descargar la pila.</p>
       <div class="tags"><span>3D</span><span>Electroquímica</span><span>Nernst</span></div>
     </a>
     <a class="card" href="quimica-general/corrosion-pilas/">
+      <img class="thumb" src="quimica-general/corrosion-pilas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Corrosión y protección del hierro</h3>
       <p>Corrosión del hierro como pila galvánica en una gota de agua: zona anódica y catódica, efecto de la sal, el oxígeno y el pH, recubrimientos de Zn, Sn y Cu, ánodo de sacrificio de Mg y comparación de pilas comerciales.</p>
       <div class="tags"><span>3D</span><span>Electroquímica</span><span>Corrosión</span><span>Nuevo</span></div>
@@ -411,16 +662,19 @@ footer a{color:var(--accent)}
   <h3 class="sub">Fundamentos</h3>
   <div class="grid">
     <a class="card" href="quimica-inorganica/quimica-descriptiva-grupos/">
+      <img class="thumb" src="quimica-inorganica/quimica-descriptiva-grupos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Química descriptiva de los grupos</h3>
       <p>Tendencias y reactividad de alcalinos, alcalinotérreos, halógenos y gases nobles, y carácter ácido–base de los óxidos del periodo 3 en 3D: radio, energía de ionización, reacción con agua y estados de la materia.</p>
       <div class="tags"><span>3D</span><span>Grupos</span><span>Tendencias</span></div>
     </a>
     <a class="card" href="quimica-inorganica/hsab-acidos-bases-duros-blandos/">
+      <img class="thumb" src="quimica-inorganica/hsab-acidos-bases-duros-blandos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Ácidos y bases duros y blandos (HSAB)</h3>
       <p>Clasificación de cationes y bases como duros, frontera o blandos según carga, radio y polarizabilidad; puntaje cualitativo de estabilidad de pares, predicción del sentido de reacciones de intercambio y ejemplos de minerales (Al₂O₃, HgS, Cu₂S).</p>
       <div class="tags"><span>3D</span><span>HSAB</span><span>Enlace</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-inorganica/simetria-grupos-puntuales/">
+      <img class="thumb" src="quimica-inorganica/simetria-grupos-puntuales/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Simetría molecular y grupos puntuales</h3>
       <p>Elementos y operaciones de simetría (E, Cn, σ, i, Sn) aplicados en 3D a H₂O, NH₃, CH₄, BF₃, SF₆, CO₂, HCl, trans-dicloroeteno, benceno y una molécula quiral; asignación del grupo puntual con diagrama de decisión y relación con polaridad y quiralidad.</p>
       <div class="tags"><span>3D</span><span>Simetría</span><span>Grupos puntuales</span><span>Nuevo</span></div>
@@ -429,26 +683,31 @@ footer a{color:var(--accent)}
   <h3 class="sub">Compuestos de coordinación</h3>
   <div class="grid">
     <a class="card" href="quimica-inorganica/isomeria-complejos/">
+      <img class="thumb" src="quimica-inorganica/isomeria-complejos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Isomería · Laboratorio 3D</h3>
       <p>Misma fórmula, distinta estructura: isómeros cis/trans y fac/mer en modelos 3D, y el argumento de Werner para deducir la geometría contando isómeros.</p>
       <div class="tags"><span>3D</span><span>Complejos</span><span>Isomería</span></div>
     </a>
     <a class="card" href="quimica-inorganica/quiralidad-delta-lambda/">
+      <img class="thumb" src="quimica-inorganica/quiralidad-delta-lambda/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Quiralidad Δ / Λ en complejos</h3>
       <p>Origen de la quiralidad en complejos de coordinación y distinción entre las configuraciones Δ y Λ en modelos 3D.</p>
       <div class="tags"><span>3D</span><span>Complejos</span><span>Quiralidad</span></div>
     </a>
     <a class="card" href="quimica-inorganica/campo-cristalino/">
+      <img class="thumb" src="quimica-inorganica/campo-cristalino/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Teoría del campo cristalino 3D</h3>
       <p>Desdoblamiento d en campos octaédrico, tetraédrico y plano-cuadrado, serie espectroquímica, alto/bajo espín, EECC y color del complejo a partir de Δ.</p>
       <div class="tags"><span>3D</span><span>Complejos</span><span>Espectroquímica</span></div>
     </a>
     <a class="card" href="quimica-inorganica/nomenclatura-complejos/">
+      <img class="thumb" src="quimica-inorganica/nomenclatura-complejos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Nomenclatura y fórmulas de complejos</h3>
       <p>Simulador 3D para nombrar y formular compuestos de coordinación: átomo central, ligandos monodentados y quelatos, índice de coordinación, geometría, carga y número de oxidación, orden alfabético, prefijos, complejos aniónicos (-ato) y sales.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-inorganica/om-complejos/">
+      <img class="thumb" src="quimica-inorganica/om-complejos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Orbitales moleculares en complejos octaédricos</h3>
       <p>Simulador 3D de la teoría de orbitales moleculares en complejos octaédricos ML6: enlace σ, orbitales a1g, t1u, eg y t2g, desdoblamiento Δo, efecto π (donor y aceptor), serie espectroquímica, alto y bajo espín, magnetismo y color.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
@@ -457,11 +716,13 @@ footer a{color:var(--accent)}
   <h3 class="sub">Organometálica y bioinorgánica</h3>
   <div class="grid">
     <a class="card" href="quimica-inorganica/organometalica-18e/">
+      <img class="thumb" src="quimica-inorganica/organometalica-18e/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Organometálica: regla de 18 electrones</h3>
       <p>Simulador 3D de química organometálica: regla de los 18 electrones, conteo de electrones por el método neutro, carbonilos metálicos, ferroceno, complejos planos de 16 electrones y ciclo catalítico de Wilkinson (adición oxidante, coordinación, inserción migratoria y eliminación reductora).</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-inorganica/bioinorganica/">
+      <img class="thumb" src="quimica-inorganica/bioinorganica/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Química bioinorgánica: metales en la vida</h3>
       <p>Sitio activo del grupo hemo con Fe²⁺, histidina, O₂ y CO; cooperatividad (Hill), efecto Bohr y envenenamiento por CO; Zn en la anhidrasa carbónica, Mg en la clorofila, Cu en la azurina y Fe en el citocromo c; toxicidad de Pb²⁺, Hg y Cd y quelación.</p>
       <div class="tags"><span>3D</span><span>Bioinorgánica</span><span>Hemoglobina</span><span>Nuevo</span></div>
@@ -475,21 +736,25 @@ footer a{color:var(--accent)}
   <h3 class="sub">Biomoléculas</h3>
   <div class="grid">
     <a class="card" href="biologia/aminoacidos-proteinas/">
+      <img class="thumb" src="biologia/aminoacidos-proteinas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Aminoácidos y estructura de proteínas 3D</h3>
       <p>Aminoácidos con carga según pH y pI, enlace peptídico, mapa de Ramachandran por impedimento estérico, hélice α y lámina β con puentes de hidrógeno.</p>
       <div class="tags"><span>3D</span><span>Péptidos</span><span>Estructura</span></div>
     </a>
     <a class="card" href="biologia/adn/">
+      <img class="thumb" src="biologia/adn/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>ADN: estructura, replicación y transcripción 3D</h3>
       <p>Doble hélice B-DNA con pares de bases, horquilla de replicación, transcripción y traducción con tabla de codones.</p>
       <div class="tags"><span>3D</span><span>ADN</span><span>Código genético</span></div>
     </a>
     <a class="card" href="biologia/lipidos-membrana/">
+      <img class="thumb" src="biologia/lipidos-membrana/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Lípidos y membrana celular 3D</h3>
       <p>Fosfolípidos, bicapa fluida, efecto de temperatura y colesterol, transporte pasivo y activo con canales, GLUT y bomba Na⁺/K⁺.</p>
       <div class="tags"><span>3D</span><span>Membrana</span><span>Transporte</span></div>
     </a>
     <a class="card" href="biologia/nucleotidos-coenzimas/">
+      <img class="thumb" src="biologia/nucleotidos-coenzimas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Nucleótidos y coenzimas</h3>
       <p>ATP, NAD⁺/NADH, FAD/FADH₂ y coenzima A en 3D: estructura modular (base, ribosa, fosfatos), vitaminas precursoras, hidrólisis del ATP, transferencia de hidruro y energía acoplada.</p>
       <div class="tags"><span>3D</span><span>Coenzimas</span><span>Bioquímica</span></div>
@@ -498,16 +763,19 @@ footer a{color:var(--accent)}
   <h3 class="sub">La célula</h3>
   <div class="grid">
     <a class="card" href="biologia/celula-animal/">
+      <img class="thumb" src="biologia/celula-animal/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Célula animal 3D</h3>
       <p>Núcleo, retículos, Golgi, mitocondrias, lisosomas, centrosoma y citoesqueleto en un modelo 3D con corte, etiquetas, funciones por sistema y desafío.</p>
       <div class="tags"><span>3D</span><span>Orgánulos</span><span>Eucariota</span></div>
     </a>
     <a class="card" href="biologia/celula-vegetal/">
+      <img class="thumb" src="biologia/celula-vegetal/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Célula vegetal 3D</h3>
       <p>Pared celular, vacuola central, cloroplastos, plasmodesmos y el resto de los orgánulos, con fotosíntesis animada y comparación con la célula animal.</p>
       <div class="tags"><span>3D</span><span>Cloroplastos</span><span>Pared celular</span></div>
     </a>
     <a class="card" href="biologia/mitosis-meiosis/">
+      <img class="thumb" src="biologia/mitosis-meiosis/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Mitosis y meiosis</h3>
       <p>Simulador 3D de la división celular: ciclo celular e interfase, fases de la mitosis, meiosis I y II, sinapsis y entrecruzamiento, segregación independiente de cromosomas homólogos, contenido de ADN por célula y comparación de ambos procesos.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
@@ -516,21 +784,25 @@ footer a{color:var(--accent)}
   <h3 class="sub">Enzimas y metabolismo</h3>
   <div class="grid">
     <a class="card" href="biologia/enzimas-cinetica/">
+      <img class="thumb" src="biologia/enzimas-cinetica/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Enzimas y cinética enzimática 3D</h3>
       <p>Llave–cerradura y ajuste inducido, ciclo catalítico, Michaelis–Menten con población de enzimas, inhibición competitiva y no competitiva, Lineweaver–Burk, pH y temperatura.</p>
       <div class="tags"><span>3D</span><span>Enzimas</span><span>Cinética</span></div>
     </a>
     <a class="card" href="biologia/metabolismo/">
+      <img class="thumb" src="biologia/metabolismo/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Metabolismo energético 3D</h3>
       <p>Glucólisis, ciclo de Krebs, cadena respiratoria y ATP sintasa, balance aerobio frente a fermentación e inhibidores (rotenona, cianuro, oligomicina, DNP).</p>
       <div class="tags"><span>3D</span><span>ATP</span><span>Respiración</span></div>
     </a>
     <a class="card" href="biologia/fotosintesis/">
+      <img class="thumb" src="biologia/fotosintesis/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Fotosíntesis: reacciones luminosas y ciclo de Calvin</h3>
       <p>Simulador 3D de la fotosíntesis: estructura del cloroplasto, absorción de luz, fotólisis del agua, cadena de transporte de electrones, gradiente de H⁺ y ATP sintasa, producción de NADPH y ciclo de Calvin con fijación de CO₂, reducción y regeneración.</p>
       <div class="tags"><span>3D</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="biologia/metabolismo-lipidos-aminoacidos/">
+      <img class="thumb" src="biologia/metabolismo-lipidos-aminoacidos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Metabolismo de lípidos y aminoácidos</h3>
       <p>β-oxidación de ácidos grasos en 3D (cuatro reacciones por ciclo, FADH₂, NADH y acetil-CoA), balance de ATP según la longitud de la cadena, transporte por carnitina, transaminación con PLP, ciclo de la urea y destino del esqueleto carbonado.</p>
       <div class="tags"><span>3D</span><span>β-oxidación</span><span>Metabolismo</span></div>
@@ -539,11 +811,13 @@ footer a{color:var(--accent)}
   <h3 class="sub">Genética y expresión génica</h3>
   <div class="grid">
     <a class="card" href="biologia/genetica-mendel/">
+      <img class="thumb" src="biologia/genetica-mendel/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Genética mendeliana y Hardy–Weinberg</h3>
       <p>Cuadros de Punnett monohíbrido y dihíbrido con proporciones fenotípicas, prueba de χ² frente a una muestra simulada de descendientes, y equilibrio de Hardy–Weinberg con selección contra el recesivo y deriva genética.</p>
       <div class="tags"><span>3D</span><span>Genética</span><span>Poblaciones</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="biologia/operon-lac/">
+      <img class="thumb" src="biologia/operon-lac/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Operón lac y regulación génica</h3>
       <p>Regulación del operón lac de E. coli: represor LacI, operador, promotor y genes lacZYA, efecto de la lactosa (alolactosa) y de la glucosa (AMPc–CAP), nivel de expresión de β-galactosidasa y mutantes lacI⁻ y lacOᶜ en 3D.</p>
       <div class="tags"><span>3D</span><span>Genética</span><span>Regulación génica</span><span>Nuevo</span></div>
@@ -552,16 +826,19 @@ footer a{color:var(--accent)}
   <h3 class="sub">Fisiología y señalización</h3>
   <div class="grid">
     <a class="card" href="biologia/potencial-accion/">
+      <img class="thumb" src="biologia/potencial-accion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Potencial de membrana y potencial de acción</h3>
       <p>Ecuación de Nernst y de Goldman para K⁺ y Na⁺, potencial de reposo, modelo tipo Hodgkin–Huxley con estímulo ajustable, umbral, periodo refractario y bloqueadores (TTX, TEA), con un axón 3D donde los canales se abren y el impulso se propaga.</p>
       <div class="tags"><span>3D</span><span>Neurobiología</span><span>Electrofisiología</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="biologia/senalizacion-celular/">
+      <img class="thumb" src="biologia/senalizacion-celular/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Señalización celular: receptor → segundo mensajero</h3>
       <p>Cascada de un receptor acoplado a proteína G: ligando, ocupación del receptor, proteína G, adenilil ciclasa, AMPc, PKA y fosfodiesterasa, con amplificación, curvas dosis–respuesta (Hill, EC50), agonistas parciales, antagonistas, toxina colérica y comparación con un receptor tirosina quinasa.</p>
       <div class="tags"><span>3D</span><span>Señalización</span><span>Biología celular</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="biologia/farmacos-receptores/">
+      <img class="thumb" src="biologia/farmacos-receptores/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Fármacos y receptores</h3>
       <p>Interacción fármaco–receptor en 3D: ocupación según Kd, agonistas, agonistas parciales y antagonistas, curvas dosis–respuesta (EC₅₀), antagonismo competitivo con desplazamiento de la curva y reglas de Lipinski para la absorción oral.</p>
       <div class="tags"><span>3D</span><span>Fármacos</span><span>Lipinski</span></div>
@@ -570,16 +847,19 @@ footer a{color:var(--accent)}
   <h3 class="sub">Ecología, microorganismos y salud</h3>
   <div class="grid">
     <a class="card" href="biologia/poblaciones-ecosistemas/">
+      <img class="thumb" src="biologia/poblaciones-ecosistemas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Poblaciones y ecosistemas</h3>
       <p>Simulador 3D de ecología: niveles de organización, crecimiento exponencial y logístico, capacidad de carga, ciclo depredador–presa (zorro culpeo y degú), competencia con una especie invasora y efectos de la pérdida de hábitat y la caza.</p>
       <div class="tags"><span>3D</span><span>Ecología</span><span>Poblaciones</span><span>Chile</span></div>
     </a>
     <a class="card" href="biologia/epidemias-vacunas/">
+      <img class="thumb" src="biologia/epidemias-vacunas/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Epidemias, sistema inmune y vacunas</h3>
       <p>Simulador 3D de epidemias: contagio entre personas con el modelo SIR, número reproductivo R₀ y R efectivo, medidas de prevención, defensas del sistema inmune, vacunas e inmunidad de rebaño.</p>
       <div class="tags"><span>3D</span><span>SIR</span><span>Vacunas</span><span>Salud</span></div>
     </a>
     <a class="card" href="biologia/microorganismos/">
+      <img class="thumb" src="biologia/microorganismos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Microorganismos y biotecnología</h3>
       <p>Simulador 3D de microorganismos: estructura y tamaño de bacterias, levaduras y virus, curva de crecimiento bacteriano, ciclo lítico de un virus, hongos, resistencia a antibióticos y biotecnología: fermentación, yogur y biominería del cobre en Chile.</p>
       <div class="tags"><span>3D</span><span>Bacterias</span><span>Virus</span><span>Biotecnología</span></div>
@@ -593,26 +873,31 @@ footer a{color:var(--accent)}
   <h3 class="sub">Separación y purificación</h3>
   <div class="grid">
     <a class="card" href="quimica-organica/destilacion/">
+      <img class="thumb" src="quimica-organica/destilacion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Destilación simple y fraccionada</h3>
       <p>Montaje 3D de destilación simple y fraccionada de mezclas binarias ideales (ley de Raoult): diagrama temperatura–composición, platos teóricos, composición del destilado y curva de destilación.</p>
       <div class="tags"><span>3D</span><span>Laboratorio</span></div>
     </a>
     <a class="card" href="quimica-organica/extraccion-liquido-liquido/">
+      <img class="thumb" src="quimica-organica/extraccion-liquido-liquido/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Extracción líquido–líquido</h3>
       <p>Embudo de decantación 3D: coeficiente de reparto, fases según densidad, extracciones múltiples con porciones pequeñas y extracción ácido–base según pH y pKa.</p>
       <div class="tags"><span>3D</span><span>Laboratorio</span></div>
     </a>
     <a class="card" href="quimica-organica/recristalizacion/">
+      <img class="thumb" src="quimica-organica/recristalizacion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Recristalización</h3>
       <p>Purificación de sólidos por recristalización: curvas de solubilidad frente a temperatura, volumen mínimo de disolvente caliente, velocidad de enfriamiento, formación de cristales y rendimiento.</p>
       <div class="tags"><span>3D</span><span>Laboratorio</span></div>
     </a>
     <a class="card" href="quimica-organica/cromatografia/">
+      <img class="thumb" src="quimica-organica/cromatografia/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Cromatografía en capa fina y en columna</h3>
       <p>Placa TLC y columna de sílice en 3D: polaridad de compuestos y eluyente, factor de retención Rf, resolución entre manchas y cromatograma de elución en columna.</p>
       <div class="tags"><span>3D</span><span>Laboratorio</span></div>
     </a>
     <a class="card" href="quimica-organica/punto-fusion/">
+      <img class="thumb" src="quimica-organica/punto-fusion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Punto de fusión y pureza</h3>
       <p>Capilar y aparato de punto de fusión en 3D: rango de fusión, depresión por impurezas (eutéctico), velocidad de calentamiento y punto de fusión mixto para identificar compuestos.</p>
       <div class="tags"><span>3D</span><span>Laboratorio</span></div>
@@ -621,11 +906,13 @@ footer a{color:var(--accent)}
   <h3 class="sub">Preparación y síntesis</h3>
   <div class="grid">
     <a class="card" href="quimica-general/disoluciones-diluciones/">
+      <img class="thumb" src="quimica-general/disoluciones-diluciones/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Disoluciones y diluciones</h3>
       <p>Concentración molar, porcentual y molal con un matraz aforado 3D, preparación de disoluciones a partir de un sólido, dilución con C₁V₁ = C₂V₂ y mezcla de disoluciones, con partículas de soluto visibles.</p>
       <div class="tags"><span>3D</span><span>Disoluciones</span><span>Laboratorio</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-organica/sintesis-aspirina/">
+      <img class="thumb" src="quimica-organica/sintesis-aspirina/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Síntesis de la aspirina</h3>
       <p>Acetilación del ácido salicílico con anhídrido acético: mecanismo paso a paso, reactivo limitante y exceso, rendimiento teórico y porcentual, efecto de la temperatura, el tiempo y el catalizador, y prueba de pureza con FeCl₃.</p>
       <div class="tags"><span>3D</span><span>Laboratorio</span><span>Síntesis</span><span>Nuevo</span></div>
@@ -634,21 +921,25 @@ footer a{color:var(--accent)}
   <h3 class="sub">Análisis cuantitativo</h3>
   <div class="grid">
     <a class="card" href="quimica-general/acido-base-titulacion/">
+      <img class="thumb" src="quimica-general/acido-base-titulacion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Ácido–base, pH y titulación 3D</h3>
       <p>Bureta y vaso con indicador: ácidos y bases fuertes, débiles y poliprótico (H₃PO₄), curva de titulación, zona tampón (Henderson–Hasselbalch), distribución de especies, punto de equivalencia y elección del indicador.</p>
       <div class="tags"><span>3D</span><span>pH</span><span>Titulación</span><span>Tampones</span></div>
     </a>
     <a class="card" href="quimica-general/gravimetria/">
+      <img class="thumb" src="quimica-general/gravimetria/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Análisis gravimétrico</h3>
       <p>Determinación gravimétrica de cloruro, sulfato, hierro y níquel: precipitación con reactivo en exceso, digestión, filtración y calcinación a masa constante, factor gravimétrico y efecto de la coprecipitación y la humedad residual.</p>
       <div class="tags"><span>3D</span><span>Análisis</span><span>Laboratorio</span><span>Nuevo</span></div>
     </a>
     <a class="card" href="quimica-general/espectrofotometria/">
+      <img class="thumb" src="quimica-general/espectrofotometria/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Espectrofotometría y ley de Beer–Lambert</h3>
       <p>Espectrofotómetro UV-Vis en 3D: transmitancia y absorbancia, ley de Beer–Lambert, espectro y λmáx, curva de calibración con regresión lineal y determinación de una muestra desconocida.</p>
       <div class="tags"><span>3D</span><span>Laboratorio</span></div>
     </a>
     <a class="card" href="quimica-general/cifras-incertidumbre/">
+      <img class="thumb" src="quimica-general/cifras-incertidumbre/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Cifras significativas e incertidumbre</h3>
       <p>Precisión frente a exactitud con un blanco 3D, error aleatorio y sistemático, instrumentos de laboratorio con su incertidumbre, cifras significativas en sumas y productos y propagación de incertidumbres.</p>
       <div class="tags"><span>3D</span><span>Laboratorio</span></div>
@@ -657,11 +948,13 @@ footer a{color:var(--accent)}
   <h3 class="sub">Análisis cualitativo y biología molecular</h3>
   <div class="grid">
     <a class="card" href="quimica-general/ensayo-a-la-llama/">
+      <img class="thumb" src="quimica-general/ensayo-a-la-llama/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Ensayo a la llama y transiciones cuánticas</h3>
       <p>Relaciona el color de la llama de cada elemento con las transiciones electrónicas entre niveles de energía.</p>
       <div class="tags"><span>3D</span><span>Espectros</span><span>Estructura atómica</span></div>
     </a>
     <a class="card" href="biologia/pcr-electroforesis/">
+      <img class="thumb" src="biologia/pcr-electroforesis/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>PCR y electroforesis en gel</h3>
       <p>Termociclador con desnaturalización, hibridación de cebadores y extensión, amplificación exponencial 2ⁿ, efecto de la temperatura de hibridación (Tm) y lectura de bandas en un gel de agarosa con escalera de peso molecular.</p>
       <div class="tags"><span>3D</span><span>PCR</span><span>Biología molecular</span><span>Nuevo</span></div>
@@ -674,21 +967,25 @@ footer a{color:var(--accent)}
   <p>Tectónica de placas, sismos y volcanes, rocas y fósiles, y el sistema climático.</p>
   <div class="grid">
     <a class="card" href="ciencias-tierra/tectonica-sismos/">
+      <img class="thumb" src="ciencias-tierra/tectonica-sismos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Tectónica de placas y sismos</h3>
       <p>Simulador 3D de tectónica de placas: bordes convergente (subducción de Nazca bajo Chile), divergente y transformante, convección del manto, ondas sísmicas P y S, sismograma, distancia al epicentro y magnitud.</p>
       <div class="tags"><span>3D</span><span>Placas</span><span>Sismos</span><span>Chile</span></div>
     </a>
     <a class="card" href="ciencias-tierra/volcanes/">
+      <img class="thumb" src="ciencias-tierra/volcanes/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Volcanes y erupciones</h3>
       <p>Simulador 3D de volcanes: cámara magmática y chimenea, erupciones efusivas y explosivas según la sílice y los gases del magma, ceniza, lahares, alerta técnica y volcanes de Chile, y beneficios como la geotermia.</p>
       <div class="tags"><span>3D</span><span>Volcanes</span><span>Magma</span><span>Chile</span></div>
     </a>
     <a class="card" href="ciencias-tierra/rocas-fosiles/">
+      <img class="thumb" src="ciencias-tierra/rocas-fosiles/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Rocas, estratos y fósiles</h3>
       <p>Simulador 3D de geología: rocas ígneas, sedimentarias y metamórficas, ciclo de las rocas, formación de estratos, fosilización, principio de superposición, intrusiones, fósiles guía, levantamiento y erosión.</p>
       <div class="tags"><span>3D</span><span>Rocas</span><span>Fósiles</span><span>Estratos</span></div>
     </a>
     <a class="card" href="ciencias-tierra/clima/">
+      <img class="thumb" src="ciencias-tierra/clima/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Clima y cambio climático</h3>
       <p>Simulador 3D del sistema climático: balance de energía de la Tierra, albedo, efecto invernadero natural, retroalimentaciones del hielo y del vapor de agua, aumento del CO₂ con datos reales y escenarios futuros.</p>
       <div class="tags"><span>3D</span><span>Clima</span><span>CO₂</span><span>Datos</span></div>
@@ -701,72 +998,152 @@ footer a{color:var(--accent)}
   <p>Movimiento, fuerzas y energía; electricidad, ondas y luz; astronomía y cosmología.</p>
   <div class="grid">
     <a class="card" href="fisica/sistema-solar/">
+      <img class="thumb" src="fisica/sistema-solar/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Sistema Solar 3D</h3>
       <p>El Sol, los ocho planetas, Plutón, satélites y cinturones con fichas de cada astro, tamaños a escala, leyes de Kepler, calculadora de peso y desafío.</p>
       <div class="tags"><span>3D</span><span>Planetas</span><span>Kepler</span></div>
     </a>
     <a class="card" href="fisica/cinematica/">
+      <img class="thumb" src="fisica/cinematica/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Cinemática: MRU y MRUA</h3>
       <p>Simulador 3D de cinemática: posición, desplazamiento, movimiento rectilíneo uniforme y uniformemente acelerado, gráficos x–t y v–t, distancia de frenado y encuentro de dos móviles.</p>
       <div class="tags"><span>3D</span><span>MRU</span><span>MRUA</span><span>Gráficos</span></div>
     </a>
     <a class="card" href="fisica/fuerzas-newton/">
+      <img class="thumb" src="fisica/fuerzas-newton/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Fuerzas y leyes de Newton</h3>
       <p>Simulador 3D de fuerzas: peso y gravedad en distintos astros, fuerza elástica y ley de Hooke, roce estático y cinético, y las tres leyes de Newton con diagrama de cuerpo libre.</p>
       <div class="tags"><span>3D</span><span>Newton</span><span>Roce</span><span>Hooke</span></div>
     </a>
     <a class="card" href="fisica/energia-mecanica/">
+      <img class="thumb" src="fisica/energia-mecanica/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Energía mecánica, trabajo y potencia</h3>
       <p>Simulador 3D de energía: trabajo de una fuerza, energía potencial gravitatoria y cinética en una pista, conservación de la energía mecánica, disipación por roce y potencia de una grúa.</p>
       <div class="tags"><span>3D</span><span>Energía</span><span>Trabajo</span><span>Potencia</span></div>
     </a>
     <a class="card" href="fisica/momentum-choques/">
+      <img class="thumb" src="fisica/momentum-choques/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Cantidad de movimiento y choques</h3>
       <p>Simulador 3D de cantidad de movimiento: impulso y fuerza media (airbag), choques elásticos, inelásticos y con coeficiente de restitución, masas distintas y retroceso en un riel de aire.</p>
       <div class="tags"><span>3D</span><span>Momentum</span><span>Impulso</span><span>Choques</span></div>
     </a>
     <a class="card" href="fisica/electrostatica/">
+      <img class="thumb" src="fisica/electrostatica/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Electrostática: electrización y fuerza eléctrica</h3>
       <p>Simulador 3D de electrostática: carga eléctrica, electrización por frotamiento con serie triboeléctrica, por contacto y por inducción en un electroscopio, conexión a tierra y ley de Coulomb.</p>
       <div class="tags"><span>3D</span><span>Carga</span><span>Electroscopio</span><span>Coulomb</span></div>
     </a>
     <a class="card" href="fisica/circuitos/">
+      <img class="thumb" src="fisica/circuitos/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Circuitos eléctricos en serie y en paralelo</h3>
       <p>Simulador 3D de circuitos: circuito abierto y cerrado, ley de Ohm, conexión en serie y en paralelo con ampolletas, resistencia equivalente, ampolleta fundida y potencia eléctrica.</p>
       <div class="tags"><span>3D</span><span>Ohm</span><span>Serie</span><span>Paralelo</span></div>
     </a>
     <a class="card" href="fisica/ondas-sonido/">
+      <img class="thumb" src="fisica/ondas-sonido/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Ondas y sonido</h3>
       <p>Simulador 3D de ondas sonoras: partículas del aire que forman compresiones y enrarecimientos, amplitud e intensidad, frecuencia y tono, rapidez en distintos medios, eco y funcionamiento del oído, con tono audible.</p>
       <div class="tags"><span>3D</span><span>Sonido</span><span>Frecuencia</span><span>Eco</span></div>
     </a>
     <a class="card" href="fisica/optica-ojo/">
+      <img class="thumb" src="fisica/optica-ojo/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>Lentes y el ojo humano</h3>
       <p>Simulador 3D de óptica: rayos en una lente convergente, imagen real e invertida, lupa, ecuación de la lente delgada, el ojo y la acomodación, miopía e hipermetropía con su lente correctora.</p>
       <div class="tags"><span>3D</span><span>Lentes</span><span>Ojo</span><span>Visión</span></div>
     </a>
     <a class="card" href="fisica/universo-expansion/">
+      <img class="thumb" src="fisica/universo-expansion/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">
       <h3>El universo en expansión</h3>
       <p>Simulador 3D del universo en expansión: corrimiento al rojo de galaxias, ley de Hubble, expansión sin centro, edad del universo, historia desde el Big Bang y astronomía en los observatorios de Chile.</p>
       <div class="tags"><span>3D</span><span>Hubble</span><span>Big Bang</span><span>Astronomía</span></div>
     </a>
   </div>
 </section>
+<p class="empty" id="empty" hidden>No hay simulaciones que coincidan con la búsqueda.</p>
 </main>
 
 <footer>
-  Desarrolladas en el Laboratorio MACEDONIA, Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Creadas inicialmente con Gemini y ChatGPT; optimizadas y mejoradas con Claude. Licencia MIT.
-  <a href="https://github.com/lab-macedonia/lab-macedonia.github.io">Código en GitHub</a>.
+<div class="fgrid">
+  <p style="margin:0;max-width:70ch">Desarrolladas en el Laboratorio MACEDONIA, Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Creadas inicialmente con Gemini y ChatGPT; optimizadas y mejoradas con Claude. Licencia MIT.</p>
+  <nav aria-label="Recursos docentes"><a href="guias/">Guías docentes</a><a href="curriculo.html">Cobertura curricular</a><a href="https://github.com/lab-macedonia/lab-macedonia.github.io">Código en GitHub</a></nav>
+</div>
 </footer>
 </div>
+<button id="toTop" type="button" aria-label="Volver arriba" title="Volver arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>
 <script>
-(function(){var q=document.getElementById('q'),n=document.getElementById('qn');if(!q)return;
-var norm=function(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')};
-var cards=[].slice.call(document.querySelectorAll('.card'));var idx=cards.map(function(c){return norm(c.textContent)});
-q.addEventListener('input',function(){var t=norm(q.value.trim()),k=0;
-cards.forEach(function(c,i){var ok=!t||t.split(/\s+/).every(function(w){return idx[i].indexOf(w)>-1});c.hidden=!ok;if(ok)k++});
-[].forEach.call(document.querySelectorAll('section'),function(s){var g=[].slice.call(s.querySelectorAll('.grid'));g.forEach(function(x){var v=x.querySelector('.card:not([hidden])');x.hidden=!v;var p=x.previousElementSibling;if(p&&p.classList.contains('sub'))p.hidden=!v});s.hidden=!s.querySelector('.card:not([hidden])')});
-var en=document.documentElement.lang==='en';n.textContent=t?(k+(en?' result':' resultado')+(k===1?'':'s')):''})})();
+(function(){
+'use strict';
+var D=document,en=D.documentElement.lang==='en',$=function(s,r){return (r||D).querySelector(s)},$$=function(s,r){return [].slice.call((r||D).querySelectorAll(s))};
+var store={get:function(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+var slug=function(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')};
+var norm=function(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')};
+/* Tema */
+var root=D.documentElement,th=store.get('portada:tema',null);if(th)root.setAttribute('data-theme',th);
+$('#bTheme').addEventListener('click',function(){var dark=root.getAttribute('data-theme')?root.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme: dark)').matches;th=dark?'light':'dark';root.setAttribute('data-theme',th);store.set('portada:tema',th)});
+/* Tarjetas: miniatura de respaldo e insignias */
+var cards=$$('main section:not(#recientes) .card');
+function prep(c){
+  var img=$('.thumb',c),fail=function(){var d=D.createElement('div');d.className='noimg';d.setAttribute('aria-hidden','true');d.textContent=$('h3',c).textContent.trim().charAt(0);img.replaceWith(d)};
+  if(img){img.addEventListener('error',fail);if(img.complete&&!img.naturalWidth&&img.getAttribute('src'))fail()}
+  var b=D.createElement('div');b.className='badges';
+  $$('.tags span',c).forEach(function(s){var t=s.textContent.trim();if(t==='3D'){b.insertAdjacentHTML('beforeend','<span>3D</span>');s.className='t-hide'}else if(t==='Nuevo'||t==='New'){b.insertAdjacentHTML('afterbegin','<span class="new">'+t+'</span>');s.className='t-hide';c.dataset.nuevo='1'}});
+  if(b.children.length)c.appendChild(b);
+}
+cards.forEach(prep);
+/* Menú de áreas: subtemas generados desde las secciones */
+$$('main section[id]:not(#recientes)').forEach(function(s){
+  var col=$('#dd-areas .col[data-area="'+s.id+'"]');var n=$$('.card',s).length,h2=$('h2',s);
+  h2.insertAdjacentHTML('beforeend',' <span class="n">'+n+'</span>');
+  if(!col)return;var a=$('a',col);a.insertAdjacentHTML('beforeend','<span>'+n+'</span>');
+  var subs=$$('.sub',s);if(!subs.length)return;var ul=D.createElement('ul');
+  subs.forEach(function(h){h.id=h.id||s.id+'-'+slug(h.textContent);ul.insertAdjacentHTML('beforeend','<li><a href="#'+h.id+'">'+h.textContent+'</a></li>')});col.appendChild(ul);
+});
+var ex=D.createElement('div');ex.className='extra';$$('#dd-rec a').slice(0,2).forEach(function(a){var b=D.createElement('a');b.href=a.getAttribute('href');b.textContent=$('b',a).textContent;ex.appendChild(b)});$('#dd-areas').appendChild(ex);
+/* Desplegables */
+var btns=$$('.dd-btn'),menu=$('#menu'),bMenu=$('#bMenu');
+function close(except){btns.forEach(function(b){if(b===except)return;b.setAttribute('aria-expanded','false');$('#'+b.getAttribute('aria-controls')).hidden=true})}
+function closeAll(){close();menu.classList.remove('open');bMenu.setAttribute('aria-expanded','false')}
+btns.forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var o=b.getAttribute('aria-expanded')!=='true';close(b);b.setAttribute('aria-expanded',String(o));$('#'+b.getAttribute('aria-controls')).hidden=!o})});
+bMenu.addEventListener('click',function(e){e.stopPropagation();var o=!menu.classList.contains('open');menu.classList.toggle('open',o);bMenu.setAttribute('aria-expanded',String(o));if(o){var f=btns[0];f.setAttribute('aria-expanded','true');$('#dd-areas').hidden=false}else close()});
+D.addEventListener('click',function(e){if(!e.target.closest('.dd-panel')&&!e.target.closest('#menu.open'))closeAll()});
+$$('.dd-panel a, .menu a').forEach(function(a){a.addEventListener('click',function(){var h=a.getAttribute('href');if(h.charAt(0)==='#')setArea('');closeAll()})});
+D.addEventListener('keydown',function(e){if(e.key==='Escape'){var open=$('.dd-btn[aria-expanded=true]');closeAll();if(open)open.focus()}});
+/* Filtros: búsqueda, área y nuevas */
+var q=$('#q'),qn=$('#qn'),area='',idx=cards.map(function(c){return norm(c.textContent)});
+function apply(){
+  var t=norm(q.value.trim()),ws=t?t.split(/\s+/):[],k=0,seen={};
+  $$('main section[id]:not(#recientes)').forEach(function(s){
+    var inArea=!area||area==='nuevo'||s.id===area;
+    $$('.card',s).forEach(function(c){var i=cards.indexOf(c);var ok=inArea&&(area!=='nuevo'||c.dataset.nuevo)&&ws.every(function(w){return idx[i].indexOf(w)>-1});c.hidden=!ok;if(ok&&!seen[c.getAttribute('href')]){seen[c.getAttribute('href')]=1;k++}});
+    $$('.grid',s).forEach(function(g){var v=!!$('.card:not([hidden])',g);g.hidden=!v;var p=g.previousElementSibling;if(p&&p.classList.contains('sub'))p.hidden=!v});
+    s.hidden=!$('.card:not([hidden])',s);
+  });
+  var filt=!!(t||area);qn.textContent=filt?(k+(en?' result':' resultado')+(k===1?'':'s')):'';$('#empty').hidden=k>0;
+  $('#recientes').hidden=filt||!$('#recientes .card');
+}
+function setArea(a){area=a;$$('#chips .chip').forEach(function(c){c.setAttribute('aria-pressed',String(c.dataset.f===a))});apply()}
+q.addEventListener('input',apply);
+$$('#chips .chip').forEach(function(c){c.addEventListener('click',function(){setArea(c.dataset.f===area?'':c.dataset.f);var m=$('main');if(m.getBoundingClientRect().top<stick()||area)window.scrollTo({top:m.offsetTop-stick()-8,behavior:'smooth'})})});
+D.addEventListener('keydown',function(e){if(e.key==='/'&&!/input|textarea/i.test(D.activeElement.tagName)){e.preventDefault();q.focus()}});
+function stick(){return Math.round($(".filters").getBoundingClientRect().height+$(".topbar").getBoundingClientRect().height)}
+function setStick(){root.style.setProperty("--stick",stick()+"px")}setStick();addEventListener("resize",setStick);
+/* Vista imágenes / lista */
+var vG=$('#vGrid'),vL=$('#vList');function view(v){D.body.classList.toggle('list',v==='list');vG.setAttribute('aria-pressed',String(v!=='list'));vL.setAttribute('aria-pressed',String(v==='list'));store.set('portada:vista',v)}
+vG.addEventListener('click',function(){view('grid')});vL.addEventListener('click',function(){view('list')});view(store.get('portada:vista','grid'));
+/* Visto recientemente (solo en este navegador) */
+var rec=store.get('portada:recientes',[]);
+cards.forEach(function(c){c.addEventListener('click',function(){var h=c.getAttribute('href');rec=[h].concat(rec.filter(function(x){return x!==h})).slice(0,6);store.set('portada:recientes',rec)})});
+var rg=$('#recientes .grid');rec.forEach(function(h){var c=cards.filter(function(x){return x.getAttribute('href')===h})[0];if(c){var k=c.cloneNode(true);k.dataset.area=c.closest('section').id;rg.appendChild(k)}});
+$('#recientes').hidden=!rg.children.length;
+/* Mosaico de la portada */
+var pool=cards.filter(function(c){return $('img.thumb',c)}),m=$('#mosaic'),used={};
+for(var i=0;i<9&&pool.length;i++){var j=Math.floor(Math.random()*pool.length),c=pool.splice(j,1)[0];if(used[c.getAttribute('href')]){i--;continue}used[c.getAttribute('href')]=1;
+  var a=D.createElement('a');a.href=c.getAttribute('href');a.tabIndex=-1;a.title=$('h3',c).textContent;var im=D.createElement('img');im.alt='';im.src=$('img.thumb',c).getAttribute('src');im.onerror=function(){this.parentNode.remove()};a.appendChild(im);m.appendChild(a)}
+/* Volver arriba */
+var tt=$('#toTop');addEventListener('scroll',function(){tt.classList.toggle('on',scrollY>900)},{passive:true});tt.addEventListener('click',function(){scrollTo({top:0,behavior:'smooth'});q.focus({preventScroll:true})});
+/* Sin conexión (PWA) */
+try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}catch(e){}
+})();
 </script>
 </body>
 </html>

@@ -33,7 +33,7 @@ F.forEach(m => {
 W('simulaciones/kit/aula.js', au);
 
 // 3) portada ES/EN
-function card(m, en) { const L = en ? m.en : m.es; return '    <a class="card" href="' + m.id + '/' + (en ? 'index.en.html' : '') + '">\n      <h3>' + esc(L.title) + '</h3>\n      <p>' + esc(L.desc) + '</p>\n      <div class="tags">' + L.tags.map(t => '<span>' + esc(t) + '</span>').join('') + '</div>\n    </a>'; }
+function card(m, en) { const L = en ? m.en : m.es; return '    <a class="card" href="' + m.id + '/' + (en ? 'index.en.html' : '') + '">\n      <img class="thumb" src="' + m.id + '/miniatura.webp" alt="" loading="lazy" decoding="async" width="560" height="350">\n      <h3>' + esc(L.title) + '</h3>\n      <p>' + esc(L.desc) + '</p>\n      <div class="tags">' + L.tags.map(t => '<span>' + esc(t) + '</span>').join('') + '</div>\n    </a>'; }
 for (const en of [false, true]) {
   const p = 'simulaciones/' + (en ? 'index.en.html' : 'index.html'); let h = R(p), n = 0;
   F.forEach(m => {

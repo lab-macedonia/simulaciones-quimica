@@ -191,6 +191,7 @@ tools/
 ├── instalar-aula.ps1           Inserta aula.js y practica.js en todas las páginas
 ├── guias-aula.js               Actualiza en las guías la sección «Herramientas de aula» (práctica, predicciones, OA)
 ├── i18n.ps1                    Genera los .en.js desde el español (diccionarios X.i18n.json)
+├── miniaturas.js               Captura con Edge la imagen de portada (miniatura.webp) de cada simulación
 └── nueva-sim/                  Crear una simulación MSim nueva: páginas, guías, inglés, prueba en Edge y registro (ver LEEME.md)
 ```
 
