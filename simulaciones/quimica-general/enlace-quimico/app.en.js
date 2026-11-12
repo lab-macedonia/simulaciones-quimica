@@ -916,7 +916,7 @@
           ["Lab", "change the substance and move the distance, the lattice formation, the electric field or the sliding of a layer."],
           ["Energy", "Coulomb–Born curve and Born–Haber cycle (ionic), Morse curve and bond order (covalent), properties and conductivity (metallic). Click on the curve to move the distance."],
           ['Predictor', "choose two elements and discover which bond they form according to ΔEN; you can simulate the case in 3D."]
-        ]
+        ], try: ['In the ionic bond move the ions closer and further apart: the energy minimum marks the bond distance.', 'Compare H₂, O₂ and N₂: the higher the bond order, the shorter and stronger the bond.', 'In the metallic bond slide a layer: the metal deforms without breaking (malleability).', 'In the predictor try Na with Cl and then C with H, and compare ΔEN.']
       }
     });
     kit.setMode('ion', true);

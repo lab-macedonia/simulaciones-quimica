@@ -1,128 +1,11 @@
 /* Termoquímica y calorimetría — simulador 3D · Laboratorio MACEDONIA (UMCE). Usa el kit común ../../kit/simkit.js */
 var fmt = SimKit.fmt, clamp = SimKit.clamp;
-/* Núcleo común de los simuladores 3D · Laboratorio MACEDONIA (UMCE) — construido sobre ../../kit/simkit.js */
-(function () {
-  "use strict";
-  var T = THREE, fmt = SimKit.fmt, clamp = SimKit.clamp;
-  var EL = { H: [0xf2f2f2, 0.31], C: [0x56606b, 0.76], N: [0x4f7cff, 0.71], O: [0xff4d4d, 0.66], S: [0xe6c229, 1.0], P: [0xff9a3d, 1.07], F: [0x7ee08a, 0.57], Cl: [0x3ddc5a, 1.02], Br: [0xa0522d, 1.2], I: [0x9a4fd0, 1.33], Na: [0xab5cf2, 1.5], K: [0x8f40d4, 1.9], Cu: [0xc88033, 1.3], Zn: [0x7d80b0, 1.2], Ag: [0xc0c0c0, 1.4], Fe: [0xe06633, 1.3], Co: [0xf090a0, 1.25], Ni: [0x50d050, 1.25], Cr: [0x8a99c7, 1.3], Mn: [0x9c7ac7, 1.3], Ti: [0xbfc2c7, 1.4], Ca: [0x3dff00, 1.8], Mg: [0x8aff00, 1.5], Pt: [0xd0d0e0, 1.35], Li: [0xcc80ff, 1.3] };
-  var matCache = {}, sphereGeo, cylGeo;
-  function mat(el) { if (!matCache[el]) { var d = EL[el] || [0xcccccc, 1]; matCache[el] = new T.MeshStandardMaterial({ color: d[0], roughness: 0.4, metalness: 0.1 }); } return matCache[el]; }
-  var bondMat = null;
-  /* geo = { a: [[el,x,y,z],...], b: [[i,j],...] }, opts = { gs: escala de coordenadas, ar: escala de radios } */
-  function mol(geo, o) {
-    o = o || {}; var gs = o.gs || 0.5, ar = o.ar || 0.42, g = new T.Group();
-    sphereGeo = sphereGeo || new T.SphereGeometry(1, 16, 12); cylGeo = cylGeo || new T.CylinderGeometry(1, 1, 1, 8, 1, true);
-    bondMat = bondMat || new T.MeshStandardMaterial({ color: 0xbfc7d1, roughness: 0.5 });
-    geo.a.forEach(function (a) { var m = new T.Mesh(sphereGeo, o.mat ? o.mat : mat(a[0])); m.scale.setScalar((EL[a[0]] ? EL[a[0]][1] : 1) * ar * (o.rs || 1)); m.position.set(a[1] * gs, a[2] * gs, a[3] * gs); g.add(m); });
-    (geo.b || []).forEach(function (b) {
-      var p = new T.Vector3(geo.a[b[0]][1], geo.a[b[0]][2], geo.a[b[0]][3]).multiplyScalar(gs), q = new T.Vector3(geo.a[b[1]][1], geo.a[b[1]][2], geo.a[b[1]][3]).multiplyScalar(gs);
-      var d = q.clone().sub(p), len = d.length(), order = b[2] || 1;
-      for (var k = 0; k < order; k++) {
-        var c = new T.Mesh(cylGeo, bondMat), off = new T.Vector3(0, 0, (k - (order - 1) / 2) * 0.16 * (o.bw || 1));
-        c.scale.set(0.055 * (o.bw || 1), len, 0.055 * (o.bw || 1)); c.position.copy(p).add(q).multiplyScalar(0.5).add(off); c.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), d.clone().normalize()); g.add(c);
-      }
-    });
-    return g;
-  }
-  function ease(x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); }
-  function kv(a, b) { return '<div class="kv"><span>' + a + '</span><b>' + b + '</b></div>'; }
-  function sci(x, d) { if (x === 0) return '0'; var e = Math.floor(Math.log(Math.abs(x)) / Math.LN10); if (e > -3 && e < 4) return fmt(x, d == null ? (Math.abs(x) < 1 ? 4 : 2) : d); var m = x / Math.pow(10, e); return fmt(m, 2) + ' × 10' + String(e).replace(/-/g, '⁻').replace(/\d/g, function (c) { return '⁰¹²³⁴⁵⁶⁷⁸⁹'[+c]; }); }
-
-  function create(def) {
-    var ctx = { T: T, THREE: T, fmt: fmt, clamp: clamp, ease: ease, kv: kv, sci: sci, mol: mol, mat: mat, EL: EL, P: { manual: false, camGoal: null }, ui: {}, def: def, now: 0, dt: 0 };
-    var nSt = def.nStages || 6, STAGES = []; for (var q = 0; q < nSt; q++) STAGES.push({ name: '', short: '', title: '', text: '', dur: def.dur || 10 });
-    var kit, labels = [], lastSync = -1, lastHud = '', lastCalc = '', calcCard = null, graphUi = [];
-    ctx.STAGES = STAGES;
-    function applyStageDom() {
-      var s = STAGES[kit.state.stage]; document.querySelectorAll('.step span').forEach(function (b, k) { if (STAGES[k]) b.textContent = STAGES[k].short; });
-      var a = document.getElementById('phName'), b = document.getElementById('pcTitle'), c = document.getElementById('pcText');
-      if (a) a.textContent = s.name; if (b) b.innerHTML = s.title; if (c) c.innerHTML = s.text;
-    }
-    ctx.refreshStages = function () {
-      def.stages(ctx).forEach(function (a, i) { var t = STAGES[i]; if (!t) return; t.name = a[0]; t.short = a[1]; t.title = a[2]; t.text = a[3]; if (a[4]) t.dur = a[4]; });
-      if (kit) applyStageDom();
-    };
-    ctx.goManual = function () { if (!ctx.P.manual) { ctx.P.manual = true; kit.toast("Free mode: you control the simulation"); } if (kit.state.playing) kit.pause(); };
-    ctx.toLesson = function () { ctx.P.manual = false; kit.toast("The lesson controls the simulation"); if (def.onStage) def.onStage(kit.state.stage, ctx); };
-    ctx.layer = function (id) { return kit.layer(id); };
-    ctx.view = function (id) { var v = (def.views || []).filter(function (x) { return x.id === id; })[0]; if (v) ctx.P.camGoal = { pos: new T.Vector3(v.pos[0], v.pos[1], v.pos[2]), target: new T.Vector3(v.target[0], v.target[1], v.target[2]) }; };
-    ctx.btnRow = function (list) {
-      var r = document.createElement('div'); r.className = 'row';
-      list.forEach(function (b) { var e = document.createElement('button'); e.className = 'btn' + (b.primary ? " primary" : ''); e.textContent = b.t; e.addEventListener('click', b.fn); if (b.id) ui(b.id, e); r.appendChild(e); });
-      return r;
-    };
-    function ui(id, e) { ctx.ui[id] = e; }
-    ctx.label = function (txt, cls) {
-      var d = document.createElement('div'); d.className = 'bond-label ' + (cls || 'bl-d'); d.textContent = txt; var o = new T.CSS2DObject(d); ctx.scene.add(o);
-      var L = { d: d, o: o, set: function (t, c) { if (d.textContent !== t) d.textContent = t; if (c && d.className !== 'bond-label ' + c) d.className = 'bond-label ' + c; return L; }, pos: function (x, y, z) { o.position.set(x, y, z); return L; }, vis: function (b) { o.visible = !!b && (L.force !== false) && ctx.layer('labels') !== false; return L; } };
-      labels.push(L); return L;
-    };
-    ctx.redraw = function () { graphUi.forEach(function (g) { g.redraw(); }); };
-    function resize() {
-      if (!ctx.renderer) return; var w = kit.viewport.clientWidth, h = kit.viewport.clientHeight; if (w < 2 || h < 2) return;
-      var cam = ctx.camera; cam.aspect = w / h; cam.zoom = clamp(cam.aspect / 1.6, 0.4, 1.15) * (w > 900 ? (def.zoom || 1) : 0.9);
-      var off = w > 900 ? Math.min(280, w * (def.offset == null ? 0.25 : def.offset)) : 0; if (off) cam.setViewOffset(w, h, -off, 0, w, h); else cam.clearViewOffset();
-      cam.updateProjectionMatrix(); ctx.renderer.setSize(w, h); ctx.labelRenderer.setSize(w, h);
-    }
-    function syncHud() {
-      if (!def.hud) return; var h = def.hud(ctx), key = JSON.stringify(h); if (key === lastHud) return; lastHud = key; if (h.eq) kit.setEq(h.eq); if (h.legend) kit.setLegend(h.legend);
-    }
-    var tabs = [];
-    if (def.lab) tabs.push({ id: 'lab', label: "Lab", build: function (el, k) { kit = k; ctx.kit = k; def.lab(el, ctx); } });
-    if (def.graphs) tabs.push({ id: 'graf', label: "Graphs", build: function (el, k) {
-      kit = k; ctx.kit = k; def.graphs.forEach(function (g) {
-        var c = kit.ui.card(g.title); var cv = kit.ui.canvas(c, { height: g.h || 220, label: g.label || g.title, draw: function (cx, w, h, col) { g.draw(cx, w, h, col, ctx); } });
-        graphUi.push(cv); if (g.note) c.insertAdjacentHTML('beforeend', '<p class="muted small">' + g.note + '</p>'); el.appendChild(c);
-      });
-    } });
-    if (def.calc) tabs.push({ id: 'calc', label: def.calcLabel || "Calculation", build: function (el, k) { kit = k; ctx.kit = k; calcCard = kit.ui.card(''); el.appendChild(calcCard); lastCalc = ''; calcCard.innerHTML = lastCalc = def.calc(ctx); } });
-    if (def.quiz) tabs.push({ id: 'quiz', label: "Challenge", build: function (el, k) { kit = k; ctx.kit = k; var c = kit.ui.card("Challenge"); kit.ui.quiz(c, { items: def.quiz, intro: def.quizIntro || ("Review questions (" + def.quiz.length + ').') }); el.appendChild(c); } });
-    (def.tabsExtra || []).forEach(function (t) { tabs.push(t); });
-    var bg = def.bg || [0x0e131a, 0xdbe6f1];
-    ctx.kit = null;
-    kit = SimKit.create({
-      key: def.key, title: def.title, subtitle: def.subtitle || "3D Simulator", accent: def.accent || { dark: '#7dd3fc', light: '#0369a1' }, viewLabel: def.viewLabel || ("3D viewer · " + def.title),
-      stages: STAGES, mainTabLabel: "Guide", tabs: tabs, measuresTitle: "Live measurements", measures: function () { return def.measures ? def.measures(ctx) : []; },
-      ideas: def.ideas || [], layers: [{ id: 'labels', label: "Labels", icon: 'Aa' }].concat(def.layers || []),
-      onLayer: function (id, on) { if (id === 'labels') labels.forEach(function (l) { l.vis(l.want !== false); }); if (def.onLayer) def.onLayer(id, on, ctx); },
-      views: (def.views || [{ id: 'libre', label: "Free", pos: [0, 6, 22], target: [0, 3, 0] }]).map(function (v) { return { id: v.id, label: v.label }; }),
-      onView: function (id) { ctx.view(id); },
-      onTheme: function (th) { if (ctx.scene) { ctx.scene.background = new T.Color(th === 'dark' ? bg[0] : bg[1]); } ctx.theme = th; if (def.onTheme) def.onTheme(th, ctx); },
-      onStage: function (i) { ctx.refreshStages(); if (ctx.P.manual) return; if (def.stageViews && def.stageViews[i]) ctx.view(def.stageViews[i]); if (def.onStage) def.onStage(i, ctx); },
-      onGuide: function () { if (ctx.P.manual) ctx.toLesson(); },
-      onResize: resize,
-      render: function () { ctx.renderer.render(ctx.scene, ctx.camera); ctx.labelRenderer.render(ctx.scene, ctx.camera); },
-      onFrame: function (f) {
-        var dt = Math.min(f.dt, 0.05); ctx.now = f.now; ctx.dt = dt; ctx.f = f;
-        def.frame && def.frame(ctx, f, dt);
-        if (ctx.P.camGoal) { ctx.camera.position.lerp(ctx.P.camGoal.pos, 0.08); ctx.controls.target.lerp(ctx.P.camGoal.target, 0.08); if (ctx.camera.position.distanceTo(ctx.P.camGoal.pos) < 0.05) ctx.P.camGoal = null; }
-        if (f.now - lastSync > 0.15) { lastSync = f.now; syncHud(); if (calcCard && def.calc) { var h = def.calc(ctx); if (h !== lastCalc) { lastCalc = h; calcCard.innerHTML = h; } } ctx.redraw(); def.sync && def.sync(ctx); }
-        ctx.controls.update(); ctx.renderer.render(ctx.scene, ctx.camera); ctx.labelRenderer.render(ctx.scene, ctx.camera);
-      },
-      init: function (k) {
-        kit = k; ctx.kit = k; ctx.kit = k; ctx.kit = k; var cont = k.viewport, v0 = (def.views || [{ pos: [0, 6, 22], target: [0, 3, 0] }])[0];
-        var scene = ctx.scene = new T.Scene(), cam = ctx.camera = new T.PerspectiveCamera(45, 1, 0.1, 400); cam.position.set(v0.pos[0], v0.pos[1], v0.pos[2]);
-        var r = ctx.renderer = new T.WebGLRenderer({ antialias: true }); r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); cont.appendChild(r.domElement);
-        var lr = ctx.labelRenderer = new T.CSS2DRenderer(); lr.domElement.className = 'labels-layer'; cont.appendChild(lr.domElement);
-        var c = ctx.controls = new T.OrbitControls(cam, r.domElement); c.enableDamping = true; c.dampingFactor = 0.06; c.minDistance = def.minDist || 5; c.maxDistance = def.maxDist || 80; c.target.set(v0.target[0], v0.target[1], v0.target[2]);
-        c.addEventListener('start', function () { ctx.P.camGoal = null; });
-        scene.add(new T.AmbientLight(0xffffff, 0.85)); var dl = new T.DirectionalLight(0xffffff, 1.0); dl.position.set(8, 16, 12); scene.add(dl); var dl2 = new T.DirectionalLight(0x88aaff, 0.4); dl2.position.set(-8, 4, -8); scene.add(dl2);
-        k.cfg.onTheme(k.state.theme); def.build(ctx); resize(); ctx.refreshStages(); syncHud(); def.afterInit && def.afterInit(ctx);
-      },
-      help: def.help || { intro: "Follow the lesson with the player or explore freely in the “Lab” tab. With “Back to the lesson” the script takes control again.", items: [] }
-    });
-    ctx.refreshStages();
-    window.__sim = ctx;
-    return ctx;
-  }
-  window.MSim = { create: create, mol: mol, EL: EL, sci: sci };
-})();
 
 (function () {
   var fmt = SimKit.fmt, f1 = function (x) { return fmt(x, 1); }, f2 = function (x) { return fmt(x, 2); };
   var METAL = { Cu: { n: "copper", c: 0.385, col: 0xc88033 }, Fe: { n: "iron", c: 0.449, col: 0x8b8f98 }, Al: { n: "aluminium", c: 0.897, col: 0xc9d1d9 }, Pb: { n: "lead", c: 0.129, col: 0x6b7280 } };
   var RXN = { neu: { n: 'HCl + NaOH → NaCl + H₂O', dH: -57.1, desc: "neutralization" }, naoh: { n: 'NaOH(s) → Na⁺(aq) + OH⁻(aq)', dH: -44.5, desc: "NaOH dissolution" }, cacl2: { n: 'CaCl₂(s) → Ca²⁺(aq) + 2 Cl⁻(aq)', dH: -82.8, desc: "CaCl₂ dissolution" }, nh4no3: { n: 'NH₄NO₃(s) → NH₄⁺(aq) + NO₃⁻(aq)', dH: 25.7, desc: "NH₄NO₃ dissolution" } };
-  var FUEL = { ch4: { f: 'CH₄', n: "methane", hf: -74.8, co2: 1, h2o: 2, o2: 2 }, c3h8: { f: 'C₃H₈', n: "propane", hf: -103.8, co2: 3, h2o: 4, o2: 5 }, etoh: { f: 'C₂H₅OH', n: "ethanol", hf: -277.7, co2: 2, h2o: 3, o2: 3 }, glu: { f: 'C₆H₁₂O₆', n: 'glucosa', hf: -1273, co2: 6, h2o: 6, o2: 6 } };
+  var FUEL = { ch4: { f: 'CH₄', n: "methane", hf: -74.8, co2: 1, h2o: 2, o2: 2 }, c3h8: { f: 'C₃H₈', n: "propane", hf: -103.8, co2: 3, h2o: 4, o2: 5 }, etoh: { f: 'C₂H₅OH', n: "ethanol", hf: -277.7, co2: 2, h2o: 3, o2: 3 }, glu: { f: 'C₆H₁₂O₆', n: "glucose", hf: -1273, co2: 6, h2o: 6, o2: 6 } };
   var HF_CO2 = -393.5, HF_H2O = -285.8;
   var S = { mode: 'metal', metal: 'Cu', mm: 100, Tm: 100, mw: 100, Tw: 20, rx: 'neu', n: 0.05, V: 100, Ccal: 10, fuel: 'ch4', pr: 0, run: false, hess: 0 };
   var G = {}, lab = {}, LAD, cupG, blockM, liqM, haloM, therm, thermCol, dots, dpos = [];
@@ -136,7 +19,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   function TmNow() { return S.Tm + (Tfin() - S.Tm) * sprog(); }
   var HESS = [
     { t: 'C(s) + O₂(g) → CO₂(g)', levels: [['C(s) + O₂(g)', 0], ['CO(g) + ½ O₂(g)', -110.5], ['CO₂(g)', -393.5]], arrows: [[0, 1, 'ΔH₁ = −110,5'], [1, 2, 'ΔH₂ = −283,0'], [0, 2, 'ΔH = −393,5']], sum: "ΔH = ΔH₁ + ΔH₂ = −110.5 + (−283.0) = −393.5 kJ" },
-    { t: '2 C(s) + 2 H₂(g) → C₂H₄(g) + …', levels: [['C(graf) + O₂(g)', 0], ['CO(g) + ½ O₂(g)', -110.5], ['CO₂(g)', -393.5]], arrows: [], sum: '' }
+    { t: '2 C(s) + 2 H₂(g) → C₂H₄(g) + …', levels: [["C(graphite) + O₂(g)", 0], ['CO(g) + ½ O₂(g)', -110.5], ['CO₂(g)', -393.5]], arrows: [], sum: '' }
   ];
 
   function ladder(ctx) {
@@ -297,14 +180,14 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
     quiz: [
       { q: "How much heat do 100 g of water absorb when heated from 20 °C to 30 °C? (c = 4.18 J/g·°C)", options: ["4.18 kJ", '418 kJ', "41.8 kJ", "0.418 kJ"], answer: 0, why: "q = m·c·ΔT = 100 × 4.18 × 10 = 4180 J = 4.18 kJ." },
       { q: "A 100 g block of copper (c = 0.385 J/g·°C) at 100 °C is immersed in 100 g of water at 20 °C. What is the approximate final temperature?", options: ['26,7 °C', '60 °C', '35,4 °C', '20,0 °C'], answer: 0, why: "Tf = (100·0.385·100 + 100·4.18·20)/(100·0.385 + 100·4.18) = 12,210/456.5 = 26.7 °C." },
-      { q: "In an exothermic reaction, what sign does ΔH have and what happens to the surroundings?", options: ['ΔH < 0 y el entorno se calienta', "ΔH > 0 and the surroundings warm up", 'ΔH < 0 y el entorno se enfría', 'ΔH = 0'], answer: 0, why: "The system releases heat (q < 0, ΔH < 0) and gives it to the surroundings, which warm up." },
+      { q: "In an exothermic reaction, what sign does ΔH have and what happens to the surroundings?", options: ["ΔH < 0 and the surroundings warm up", "ΔH > 0 and the surroundings warm up", "ΔH < 0 and the surroundings cool down", 'ΔH = 0'], answer: 0, why: "The system releases heat (q < 0, ΔH < 0) and gives it to the surroundings, which warm up." },
       { q: "The neutralization HCl + NaOH has ΔH = −57.1 kJ/mol. With 0.050 mol in 100 g of solution (c = 4.18 J/g·°C, no losses), how much does the temperature rise?", options: ['6,8 °C', '57 °C', '0,68 °C', '13,7 °C'], answer: 0, why: "q = 57.1 × 0.050 = 2.855 kJ = 2855 J; ΔT = 2855/(100 × 4.18) = 6.8 °C." },
       { q: "C(s) + ½O₂ → CO has ΔH = −110.5 kJ and CO + ½O₂ → CO₂ has ΔH = −283.0 kJ. What is ΔH of C(s) + O₂ → CO₂?", options: ["−393.5 kJ", "−172.5 kJ", '+393,5 kJ', "−110.5 kJ"], answer: 0, why: "Hess's law: the equations and their ΔH are added: −110.5 + (−283.0) = −393.5 kJ." },
       { q: "With ΔH°f(CO₂) = −393.5, ΔH°f(H₂O,l) = −285.8 and ΔH°f(CH₄) = −74.8 kJ/mol, what is ΔH° of CH₄ + 2 O₂ → CO₂ + 2 H₂O(l)?", options: ["−890.3 kJ", '+890,3 kJ', "−1180.3 kJ", "−604.5 kJ"], answer: 0, why: "ΔH° = [−393.5 + 2(−285.8)] − [−74.8 + 0] = −965.1 + 74.8 = −890.3 kJ/mol." },
       { q: "If a reaction is reversed and the coefficients are doubled, ΔH…", options: ["Changes sign and doubles", "Only changes sign", "Only doubles", "Does not change"], answer: 0, why: "ΔH is extensive (proportional to the amounts) and changes sign when the direction is reversed." },
       { q: "When NH₄NO₃ is dissolved in water (ΔH = +25.7 kJ/mol) the solution…", options: ["Cools down", "Warms up", "Does not change temperature", "Boils"], answer: 0, why: "Endothermic process: it absorbs heat from the solution (and the surroundings), which cools down." }
     ],
-    help: { intro: "Choose the experiment in “Lab” or follow the lesson. “Start” animates the process.", items: [["Calorimeter", "the water temperature (thermometer) changes according to the heat exchanged; the red/blue halo indicates release/absorption."], ["Diagrams", "the enthalpy levels show exo/endothermicity, Hess's law and enthalpies of formation."], ["Graphs", "T(t) curves and ΔH comparison."], ["Calculation", "step-by-step solution of the current experiment."]] }
+    help: { intro: "Choose the experiment in “Lab” or follow the lesson. “Start” animates the process.", items: [["Calorimeter", "the water temperature (thermometer) changes according to the heat exchanged; the red/blue halo indicates release/absorption."], ["Diagrams", "the enthalpy levels show exo/endothermicity, Hess's law and enthalpies of formation."], ["Graphs", "T(t) curves and ΔH comparison."], ["Calculation", "step-by-step solution of the current experiment."], ['Controls', 'the experiment (metal in water, enthalpy, Hess’s law or ΔH°f) and its data: masses and temperatures, reaction, n, volume, calorimeter heat capacity and fuel.']], try: ['In metal in water drop the hot metal in: the heat it gives off equals the heat the water gains.', 'In Hess’s law compare the direct path with the two-step one: the total ΔH is the same.', 'With ΔH°f work out the combustion ΔH of a fuel and compare it with the panel.'] }
   };
   MSim.create(def);
 })();

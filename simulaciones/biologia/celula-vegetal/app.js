@@ -177,7 +177,7 @@
     help: {
       intro: 'Sigue la lección con el reproductor inferior o explora libremente: gira arrastrando, acerca con la rueda y haz clic en cualquier componente para ver su ficha.',
       items: [['Clic en el modelo', 'selecciona un componente, lo resalta y atenúa el resto; vuelve a pulsarlo para quitar la selección.'], ['Capas', 'muestra u oculta sistemas, etiquetas y el corte.'],
-        ['Corte', 'quita la mitad frontal de la pared, membrana y vacuola para ver el interior; apágalo para ver la célula cerrada.'], ['Coloreado', '«Funciones» pinta cada componente según su sistema.'], ['Comparar', 'tabla con las diferencias frente a la célula animal.'], ['Desafío', 'juego «Identifica en 3D» y preguntas rápidas.']]
+        ['Corte', 'quita la mitad frontal de la pared, membrana y vacuola para ver el interior; apágalo para ver la célula cerrada.'], ['Coloreado', '«Funciones» pinta cada componente según su sistema.'], ['Comparar', 'tabla con las diferencias frente a la célula animal.'], ['Desafío', 'juego «Identifica en 3D» y preguntas rápidas.']], try: ['Haz clic en la pared, la vacuola y un cloroplasto: son las tres estructuras que distinguen a la célula vegetal.', 'Abre «Comparar» y anota qué orgánulos comparte con la célula animal.', 'Apaga el corte para ver la célula cerrada y vuelve a encenderlo para ubicar la vacuola central.']
     }
   });
 })();

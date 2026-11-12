@@ -1,0 +1,1 @@
+{"nota":"Diccionario ES→EN. El inglés se genera con tools\\i18n.ps1 generar; no editar el .en.js a mano. keep: textos que no se traducen.","lit":{"\u00272p (eje x)\u0027":"\"2p (x axis)\"","\u00272p (eje y)\u0027":"\"2p (y axis)\"","\u00272p (eje z)\u0027":"\"2p (z axis)\"","\u00273p (eje z)\u0027":"\"3p (z axis)\"","\u0027use strict\u0027":"\"use strict\""},"lines":{},"keep":[]}

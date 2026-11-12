@@ -31,7 +31,7 @@ simulador-configuracion-electronica/
 ├── index.html
 ├── css/styles.css
 ├── js/app.js
-├── data/elements.js
+├── ../shared/elements.js   (datos compartidos con propiedades-periodicas)
 ├── README.md
 └── LICENSE
 ```

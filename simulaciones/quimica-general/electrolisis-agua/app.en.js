@@ -859,7 +859,7 @@
           ["Tubes", "show the volume of H₂ and O₂ collected (2 : 1 ratio)."],
           ["Graphs", "current–voltage curve (click to set V) and volume versus time."],
           ['Predictor', "choose an electrolyte and discover what is produced at each electrode."]
-        ]
+        ], try: ['Lower the voltage below the threshold: there is no current and no bubbles.', 'Let the electrolysis run: the volume of H₂ is twice that of O₂.', 'Switch from acidic to basic medium: the half-reactions change, but the overall reaction is the same.']
       }
     });
     // modo inicial

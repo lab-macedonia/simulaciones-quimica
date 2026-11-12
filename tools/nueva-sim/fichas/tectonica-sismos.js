@@ -1,0 +1,19 @@
+module.exports = {
+  id: 'ciencias-tierra/tectonica-sismos', color: '#c2410c', iconPath: 'M8 30h14l4-8 6 16 4-8h20', oa: ['CN07 OA 09', 'CN1M OA 13', 'FG-CISA OA 03'], route: 'tie',
+  es: {
+    title: 'Tectónica de placas y sismos', short: 'Tectónica y sismos', desc: 'Simulador 3D de tectónica de placas: bordes convergente (subducción de Nazca bajo Chile), divergente y transformante, convección del manto, ondas sísmicas P y S, sismograma, distancia al epicentro y magnitud.',
+    tags: ['3D', 'Placas', 'Sismos', 'Chile'],
+    guide: { min: 45, nivel: '7° básico y 1° medio', obj: ['Explicar el movimiento de las placas y los fenómenos de cada tipo de borde.', 'Describir el origen de un sismo y la propagación de las ondas P y S.', 'Estimar la distancia al epicentro y comparar sismos por su magnitud, relacionándolo con la prevención en Chile.'], prev: ['Capas de la Tierra.', 'Rapidez como distancia/tiempo.'],
+      act: { t: 'Somos la red sismológica', steps: ['Genera un sismo y registra la diferencia S − P en tres distancias distintas.', 'Calcula cada distancia con d ≈ 8,4·(t_S − t_P).', 'Con un compás, dibuja tres círculos en un mapa y ubica el epicentro.', 'Investiga qué medidas de prevención tiene tu escuela ante sismos y tsunamis.'] },
+      err: [['«Los continentes flotan sobre lava».', 'El manto es sólido, aunque se deforma lentamente; el magma se forma solo en zonas puntuales.'], ['«El epicentro está bajo tierra».', 'El hipocentro está en profundidad; el epicentro es su proyección en la superficie.'], ['«Un sismo de magnitud 8 es el doble que uno de 4».', 'La escala es logarítmica: libera unas 10⁶ veces más energía.']],
+      open: [['Explica por qué Chile tiene tantos sismos y volcanes.', 'Está sobre la zona de subducción de la placa de Nazca bajo la Sudamericana.'], ['Una estación registra S − P = 20 s. ¿A qué distancia ocurrió el sismo? ¿Cuántas estaciones se necesitan para ubicar el epicentro?', '≈ 168 km; se necesitan al menos tres estaciones (triangulación).']] }
+  },
+  en: {
+    title: 'Plate tectonics and earthquakes', short: 'Plate tectonics', desc: '3D plate tectonics simulator: convergent (Nazca subduction beneath Chile), divergent and transform boundaries, mantle convection, P and S seismic waves, seismogram, distance to the epicentre and magnitude.',
+    tags: ['3D', 'Plates', 'Earthquakes', 'Chile'],
+    guide: { min: 45, nivel: 'Grades 7 and 9', obj: ['Explain plate motion and the features of each boundary type.', 'Describe the origin of an earthquake and how P and S waves travel.', 'Estimate the distance to the epicentre and compare earthquakes by magnitude, linking it to prevention in Chile.'], prev: ['Layers of the Earth.', 'Speed as distance/time.'],
+      act: { t: 'We are the seismic network', steps: ['Trigger an earthquake and record the S − P difference at three different distances.', 'Calculate each distance with d ≈ 8.4·(t_S − t_P).', 'With a compass, draw three circles on a map and locate the epicentre.', 'Find out what prevention measures your school has for earthquakes and tsunamis.'] },
+      err: [['“Continents float on lava.”', 'The mantle is solid, although it deforms slowly; magma forms only in particular places.'], ['“The epicentre is underground.”', 'The focus is deep down; the epicentre is the point above it on the surface.'], ['“A magnitude 8 earthquake is twice a magnitude 4 one.”', 'The scale is logarithmic: it releases about 10⁶ times more energy.']],
+      open: [['Explain why Chile has so many earthquakes and volcanoes.', 'It lies over the subduction zone of the Nazca plate beneath the South American plate.'], ['A station records S − P = 20 s. How far away was the earthquake? How many stations are needed to locate the epicentre?', '≈ 168 km; at least three stations are needed (triangulation).']] }
+  }
+};

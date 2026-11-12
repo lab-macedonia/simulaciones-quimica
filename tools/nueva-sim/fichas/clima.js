@@ -1,0 +1,19 @@
+module.exports = {
+  id: 'ciencias-tierra/clima', color: '#1864ab', iconPath: 'M32 12v24M26 40a6 6 0 1 0 12 0V14a6 6 0 0 0-12 0z', oa: ['CN07 OA 12', 'FISI OA 01', 'FISI OA 05'], route: 'tie',
+  es: {
+    title: 'Clima y cambio climático', short: 'Clima y cambio climático', desc: 'Simulador 3D del sistema climático: balance de energía de la Tierra, albedo, efecto invernadero natural, retroalimentaciones del hielo y del vapor de agua, aumento del CO₂ con datos reales y escenarios futuros.',
+    tags: ['3D', 'Clima', 'CO₂', 'Datos'],
+    guide: { min: 50, nivel: '7° básico y 3°–4° medio', obj: ['Describir el clima como un sistema dinámico de componentes que interactúan.', 'Explicar el balance de energía, el albedo y el efecto invernadero.', 'Analizar datos de CO₂ y temperatura y evaluar escenarios futuros y medidas de mitigación.'], prev: ['Radiación electromagnética (visible e infrarroja).', 'Lectura de gráficos de series de tiempo.'],
+      act: { t: 'Leer el planeta con datos', steps: ['En el gráfico de datos, calcula cuánto aumentó el CO₂ por década desde 1960.', 'Compara con la anomalía de temperatura: ¿qué relación observas?', 'En el modelo, busca qué CO₂ produce +1,5 °C y +2 °C (metas del Acuerdo de París).', 'Propón tres medidas de mitigación posibles en tu comunidad.'] },
+      err: [['«El efecto invernadero es malo».', 'El natural es esencial para la vida; el problema es su intensificación.'], ['«Si hace frío un día, no hay calentamiento global».', 'El clima se mide en promedios de décadas, no en días.'], ['«El agujero de la capa de ozono causa el calentamiento».', 'Son problemas distintos; el calentamiento se debe a los gases de efecto invernadero.']],
+      open: [['Explica la retroalimentación hielo–albedo con un ejemplo del Ártico.', 'Al derretirse el hielo marino queda océano oscuro que absorbe más luz, se calienta y derrite más hielo.'], ['El CO₂ pasó de 280 a 420 ppm. Calcula el forzamiento y el calentamiento de equilibrio con 0,8 K por W/m².', 'ΔF = 5,35·ln(1,5) = 2,17 W/m²; ΔT ≈ 1,7 °C (parte aún no se ha manifestado).']] }
+  },
+  en: {
+    title: 'Climate and climate change', short: 'Climate change', desc: '3D simulator of the climate system: Earth’s energy balance, albedo, the natural greenhouse effect, ice and water-vapour feedbacks, rising CO₂ with real data and future scenarios.',
+    tags: ['3D', 'Climate', 'CO₂', 'Data'],
+    guide: { min: 50, nivel: 'Grades 7 and 11–12', obj: ['Describe climate as a dynamic system of interacting components.', 'Explain the energy balance, albedo and the greenhouse effect.', 'Analyse CO₂ and temperature data and evaluate future scenarios and mitigation measures.'], prev: ['Electromagnetic radiation (visible and infrared).', 'Reading time-series graphs.'],
+      act: { t: 'Reading the planet with data', steps: ['In the data graph, calculate how much CO₂ rose per decade since 1960.', 'Compare it with the temperature anomaly: what relationship do you see?', 'In the model, find which CO₂ level gives +1.5 °C and +2 °C (Paris Agreement targets).', 'Propose three mitigation measures that are possible in your community.'] },
+      err: [['“The greenhouse effect is bad.”', 'The natural one is essential for life; the problem is its intensification.'], ['“If one day is cold, there is no global warming.”', 'Climate is measured in averages over decades, not days.'], ['“The ozone hole causes global warming.”', 'They are different problems; warming is due to greenhouse gases.']],
+      open: [['Explain the ice–albedo feedback with an example from the Arctic.', 'As sea ice melts, dark ocean is exposed that absorbs more light, warms and melts more ice.'], ['CO₂ rose from 280 to 420 ppm. Calculate the forcing and the equilibrium warming with 0.8 K per W/m².', 'ΔF = 5.35·ln(1.5) = 2.17 W/m²; ΔT ≈ 1.7 °C (part of it has not yet appeared).']] }
+  }
+};

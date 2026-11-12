@@ -603,7 +603,7 @@
           ["Views", "the suggested view goes with each stage; there are also front, side and top views (key V)."],
           ["Lab", "six D-series sugars (D-ribose, D-glucose, D-mannose, D-galactose, D-fructose, D-ribulose), α/β and a button to flip the chair or change the envelope pucker."],
           ["Direct link", "the address saves your choice: …/#glucosa/piranosa/beta"]
-        ]
+        ], try: ['With D-glucose as a pyranose switch from α to β: in the β chair all the large substituents are equatorial.', 'Turn on 1,3-diaxial repulsion and flip the chair: compare which of the two is more stable.', 'Pick D-ribulose: it can only form a furanose.']
       }
     });
   }

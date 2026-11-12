@@ -688,7 +688,7 @@
           ['Capas', 'zona reactiva, perfil de energía 3D, orden de enlace, etiquetas y giro.'],
           ['Gráficos', 'distribución de Maxwell–Boltzmann, cantidades en el tiempo, diagrama de coordenada de reacción, órdenes de enlace y gráfico de Arrhenius.'],
           ['Predictor', 'calculadora de Arrhenius (k₂/k₁ entre dos temperaturas) y modo desafío.']
-        ]
+        ], try: ['Sube la temperatura: aparecen más destellos verdes porque más choques superan Ea.', 'Agrega el catalizador: baja Ea y aumenta k sin cambiar ΔH.', 'En «Estado de transición» lleva ξ al máximo de energía: los dos enlaces quedan parciales.']
       }
     });
     kit.setMode('col', true);

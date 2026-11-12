@@ -603,7 +603,7 @@
           ['Vistas', 'la vista sugerida acompaña a cada etapa; también hay vistas frontal, lateral y superior (tecla V).'],
           ['Lab', 'seis azúcares de la serie D (D-ribosa, D-glucosa, D-manosa, D-galactosa, D-fructosa, D-ribulosa), α/β y botón para invertir la silla o cambiar el pliegue del sobre.'],
           ['Enlace directo', 'la dirección guarda tu elección: …/#glucosa/piranosa/beta']
-        ]
+        ], try: ['Con D-glucosa en piranosa cambia de α a β: en la silla β todos los sustituyentes grandes quedan ecuatoriales.', 'Activa la repulsión 1,3-diaxial e invierte la silla: compara cuál de las dos es más estable.', 'Elige D-ribulosa: sólo puede formar furanosa.']
       }
     });
   }

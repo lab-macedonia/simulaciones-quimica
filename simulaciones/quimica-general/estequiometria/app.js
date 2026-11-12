@@ -502,7 +502,7 @@
           ['Gráficos', 'antes y ahora por especie, y producto frente a la cantidad del segundo reactivo (meseta del limitante).'],
           ['Cálculo (g)', 'resolución paso a paso con masas molares, sobrante, rendimiento real y verificación de la masa.'],
           ['Desafío', 'ocho preguntas de reactivo limitante, rendimiento y conservación de la masa.']
-        ]
+        ], try: ['Elige cantidades en que un reactivo se agote primero: el halo rojo marca el limitante.', 'Agrega más del reactivo en exceso: el producto no aumenta (meseta en el gráfico).', 'En «Cálculo (g)» comprueba que la masa inicial es igual a la de los productos más el sobrante.']
       }
     });
     kit.setMode && 0;

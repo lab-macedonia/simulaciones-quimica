@@ -517,7 +517,7 @@
   function legendRows() {
     var rows = [];
     if (P.mode === 'col') {
-      rows.push({ color: hex(COLA), label: 'A', text: 'reactivo' }, { color: hex(COLB), label: 'B', text: 'reactivo' }, { color: hex(COLP), label: 'AB', text: "product" });
+      rows.push({ color: hex(COLA), label: 'A', text: "reactant" }, { color: hex(COLB), label: 'B', text: "reactant" }, { color: hex(COLP), label: 'AB', text: "product" });
       if (kit.layer('orient')) rows.push({ color: hex(COLPATCH), label: "Patch", text: "reactive zone (orientation)" });
       rows.push({ color: '#9aa4b2', label: "Flash", text: "gray: no E · orange: poorly oriented · green: effective" });
     } else {
@@ -688,7 +688,7 @@
           ["Layers", "reactive zone, 3D energy profile, bond order, labels and rotation."],
           ["Graphs", "Maxwell–Boltzmann distribution, quantities over time, reaction-coordinate diagram, bond orders and Arrhenius graph."],
           ['Predictor', "Arrhenius calculator (k₂/k₁ between two temperatures) and challenge mode."]
-        ]
+        ], try: ['Raise the temperature: more green flashes appear because more collisions exceed Ea.', 'Add the catalyst: Ea drops and k rises without changing ΔH.', 'In the transition-state model take ξ to the energy maximum: both bonds are partial.']
       }
     });
     kit.setMode('col', true);

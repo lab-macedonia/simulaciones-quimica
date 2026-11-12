@@ -1,0 +1,19 @@
+module.exports = {
+  id: 'biologia/microorganismos', color: '#087f5b', iconPath: 'M18 32a14 8 0 1 0 28 0a14 8 0 1 0-28 0M46 32c4 0 6 4 10 2', oa: ['CN07 OA 05', 'CN07 OA 06'], route: 'eco',
+  es: {
+    title: 'Microorganismos y biotecnología', short: 'Microorganismos', desc: 'Simulador 3D de microorganismos: estructura y tamaño de bacterias, levaduras y virus, curva de crecimiento bacteriano, ciclo lítico de un virus, hongos, resistencia a antibióticos y biotecnología: fermentación, yogur y biominería del cobre en Chile.',
+    tags: ['3D', 'Bacterias', 'Virus', 'Biotecnología'],
+    guide: { min: 45, nivel: '7° básico', obj: ['Comparar la estructura y el tamaño de bacterias, hongos y virus.', 'Explicar el crecimiento bacteriano, la acción de los antibióticos y la resistencia.', 'Describir usos biotecnológicos de bacterias y hongos, incluida la biominería en Chile.'], prev: ['La célula: procariota y eucariota.', 'Potencias de 2 y escala logarítmica (nociones).'],
+      act: { t: 'Uso responsable de antibióticos', steps: ['Cultiva bacterias sin antibiótico e identifica las cuatro fases de la curva.', 'Repite aplicando el antibiótico y registra el porcentaje de resistentes.', 'Prueba una dosis baja y una alta: ¿cuál deja más resistentes?', 'Redacta tres recomendaciones para el uso responsable de antibióticos.'] },
+      err: [['«Todos los microorganismos son dañinos».', 'La mayoría son inofensivos o útiles: digestión, alimentos, ciclos de la materia.'], ['«Los antibióticos sirven contra los virus».', 'Solo actúan sobre bacterias.'], ['«La bacteria se vuelve resistente porque se acostumbra al antibiótico».', 'Ya existían bacterias resistentes; el antibiótico las selecciona.']],
+      open: [['Explica por qué el pan sube y por qué el alcohol desaparece al hornearlo.', 'La levadura fermenta la glucosa y produce CO₂ (burbujas en la masa) y etanol, que se evapora con el calor.'], ['Una bacteria se duplica cada 30 min. ¿Cuántas habrá tras 5 h a partir de 10?', '10 generaciones: 10·2¹⁰ = 10 240.']] }
+  },
+  en: {
+    title: 'Microorganisms and biotechnology', short: 'Microorganisms', desc: '3D microorganism simulator: structure and size of bacteria, yeasts and viruses, the bacterial growth curve, a virus’s lytic cycle, fungi, antibiotic resistance and biotechnology: fermentation, yoghurt and copper biomining in Chile.',
+    tags: ['3D', 'Bacteria', 'Viruses', 'Biotechnology'],
+    guide: { min: 45, nivel: 'Grade 7', obj: ['Compare the structure and size of bacteria, fungi and viruses.', 'Explain bacterial growth, how antibiotics act and resistance.', 'Describe biotechnological uses of bacteria and fungi, including biomining in Chile.'], prev: ['The cell: prokaryotic and eukaryotic.', 'Powers of 2 and the idea of a logarithmic scale.'],
+      act: { t: 'Responsible use of antibiotics', steps: ['Grow bacteria without antibiotic and identify the four phases of the curve.', 'Repeat applying the antibiotic and record the percentage of resistant bacteria.', 'Try a low and a high dose: which leaves more resistant bacteria?', 'Write three recommendations for the responsible use of antibiotics.'] },
+      err: [['“All microorganisms are harmful.”', 'Most are harmless or useful: digestion, food, cycling of matter.'], ['“Antibiotics work against viruses.”', 'They only act on bacteria.'], ['“A bacterium becomes resistant because it gets used to the antibiotic.”', 'Resistant bacteria already existed; the antibiotic selects them.']],
+      open: [['Explain why bread rises and why the alcohol disappears when it is baked.', 'Yeast ferments glucose producing CO₂ (bubbles in the dough) and ethanol, which evaporates in the heat.'], ['A bacterium doubles every 30 min. How many will there be after 5 h, starting from 10?', '10 generations: 10·2¹⁰ = 10,240.']] }
+  }
+};

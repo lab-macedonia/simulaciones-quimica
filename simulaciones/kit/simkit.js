@@ -20,9 +20,14 @@
     expand: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
     panel: '<path d="M3.5 5h17v14h-17zM14.5 5v14"/>',
     layers: '<path d="M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 16.5l9 5 9-5"/>',
-    home: '<path d="M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10"/>'
+    home: '<path d="M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10"/>',
+    chev: '<path d="M6 9l6 6 6-6"/>',
+    close: '<path d="M6 6l12 12M18 6L6 18"/>',
+    eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>',
+    eyeOff: '<path d="M3 3l18 18M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.8 9.8 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/>'
   };
   function icon(id) { return '<svg class="ic" aria-hidden="true" viewBox="0 0 24 24">' + ICONS[id] + '</svg>'; }
+  function chev() { return '<svg class="ic hud-chev" aria-hidden="true" viewBox="0 0 24 24">' + ICONS.chev + '</svg>'; }
 
   function $(s, r) { return (r || document).querySelector(s); }
   function h(tag, attrs, html) {
@@ -97,34 +102,34 @@
           '<button class="icon-btn" id="kFull" title="Pantalla completa (F)" aria-label="Pantalla completa">' + icon('expand') + '</button>' +
           '<button class="icon-btn" id="kTheme" title="Cambiar tema claro/oscuro (T)" aria-label="Cambiar tema">' + icon('sun') + '</button>' +
           '<button class="icon-btn" id="kHelp" title="Ayuda y atajos (?)" aria-label="Ayuda">' + icon('help') + '</button>' +
-          '<button class="icon-btn only-narrow" id="kPanelBtn" title="Mostrar/ocultar panel" aria-label="Panel" aria-expanded="false">' + icon('panel') + '</button>' +
+          '<button class="icon-btn" id="kPanelBtn" title="Mostrar/ocultar panel (P)" aria-label="Panel" aria-controls="panel" aria-expanded="true">' + icon('panel') + '</button>' +
         '</div>' +
       '</header>' +
       '<main class="stage" id="main"><div class="sr-only" id="srLive" role="status" aria-live="polite" aria-atomic="true"></div>' +
         '<div id="canvas-container" class="viewport" role="group" tabindex="0" aria-roledescription="visor 3D" aria-label="' + (cfg.viewLabel || 'Visor interactivo') + '" aria-describedby="' + (stages.length ? 'phName ' : '') + 'viewHint"></div><span class="sr-only" id="viewHint">Con el visor enfocado: flechas para girar la cámara, más y menos para acercar o alejar.</span>' +
         '<div class="vignette" aria-hidden="true"></div>' +
         (stages.length ? '<div class="hud hud-phase" id="phaseBadge"><span class="ph-step" id="phStep"></span><span class="ph-name" id="phName"></span><span class="ph-ts" id="phTs" hidden>[‡]</span></div>' : '') +
-        '<div class="hud-col">' +
-          '<section class="hud hud-eq" id="eqBox" aria-label="Datos en vivo" hidden><div class="eq-head"><span class="eq-chip" id="eqChip"></span><span class="eq-name" id="eqName"></span></div><div class="eq-body" id="eqBody"></div></section>' +
+        '<button class="icon-btn k-clean-btn" id="kClean" title="Ocultar los paneles para ver toda la simulación (O)" aria-label="Ocultar los paneles" aria-pressed="false">' + icon('eyeOff') + '</button>' +
+        '<div class="hud-col" id="hudCol">' +
+          '<section class="hud hud-eq" id="eqBox" aria-label="Datos en vivo" hidden><div class="eq-head"><span class="eq-chip" id="eqChip"></span><span class="eq-name" id="eqName"></span>' +
+            '<button class="hud-x" id="eqToggle" title="Contraer / expandir" aria-label="Datos en vivo" aria-controls="eqBody" aria-expanded="true">' + chev() + '</button></div><div class="eq-body" id="eqBody"></div></section>' +
           '<section class="hud hud-layers" id="layersBox" aria-label="Capas del visor" hidden>' +
-            '<button class="layers-head" id="layersHead" aria-expanded="true">' + icon('layers') + '<span>Capas</span></button>' +
+            '<button class="layers-head" id="layersHead" aria-expanded="true">' + icon('layers') + '<span>Capas</span>' + chev() + '</button>' +
             '<div class="layers-body" id="layersBody"></div>' +
             '<div class="views" id="viewsBox" hidden><span class="lbl">Vista</span><div class="seg" id="viewSeg" role="group" aria-label="Vista de cámara"></div></div>' +
           '</section>' +
         '</div>' +
-        '<section class="hud hud-legend" id="legend" aria-label="Leyenda" hidden></section>' +
-        '<aside class="panel" id="panel" aria-label="Panel de la simulación"><div class="panel-tabs" role="tablist" id="ptabs"></div><div class="panel-body" id="pbody" tabindex="0"></div></aside>' +
+        '<section class="hud hud-legend" id="legend" aria-label="Leyenda" hidden>' +
+          '<button class="layers-head" id="legendHead" aria-controls="legendBody" aria-expanded="true"><span>Leyenda</span>' + chev() + '</button><div class="lg-body" id="legendBody"></div></section>' +
+        '<aside class="panel" id="panel" aria-label="Panel de la simulación"><div class="panel-head"><div class="panel-tabs" role="tablist" id="ptabs"></div>' +
+          '<button class="hud-x panel-x" id="kPanelX" title="Ocultar panel (P)" aria-label="Ocultar panel" aria-controls="panel">' + icon('close') + '</button></div>' +
+          '<div class="panel-body" id="pbody" tabindex="0"></div></aside>' +
         (stages.length ? dockHTML() : '') +
       '</main>';
     document.body.innerHTML = '';
     document.body.appendChild(app);
 
-    var dlg = h('dialog', { id: 'helpDlg', 'aria-labelledby': 'helpTitle' });
-    dlg.innerHTML = '<form method="dialog" class="dlg"><h2 id="helpTitle">Cómo usar el simulador</h2>' +
-      (cfg.help && cfg.help.intro ? '<p>' + cfg.help.intro + '</p>' : '') +
-      (cfg.help && cfg.help.items ? '<ul>' + cfg.help.items.map(function (i) { return '<li><b>' + i[0] + '</b>: ' + i[1] + '</li>'; }).join('') + '</ul>' : '') +
-      '<table class="keys">' + keyRows() + '</table>' +
-      '<menu><button class="btn primary" value="ok">Entendido</button></menu></form>';
+    var dlg = h('dialog', { id: 'helpDlg', class: 'help-dlg', 'aria-labelledby': 'helpTitle' });
     document.body.appendChild(dlg);
 
     function dockHTML() {
@@ -140,6 +145,7 @@
         '<div class="dock-opts"><label class="mini-select" title="Velocidad de reproducción"><select id="speed" aria-label="Velocidad">' +
         '<option value="0.25">0,25×</option><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>' +
         '<button class="chip-btn toggle" id="bGuided" aria-pressed="false" title="Pausa al terminar cada etapa">Por etapas</button></div>' +
+        '<button class="icon-btn dock-min" id="bDockMin" title="Minimizar / expandir la barra" aria-label="Barra de reproducción" aria-controls="dock" aria-expanded="true">' + chev() + '</button>' +
         '</div></section>';
     }
     function keyRows() {
@@ -147,6 +153,7 @@
       if (stages.length) rows.push(['Espacio', 'Reproducir / pausar'], ['Mayús + ← →', 'Etapa anterior / siguiente'], ['← →', 'Retroceder / avanzar un poco'], ['R', 'Reiniciar']);
       if (cfg.layers && cfg.layers.length) rows.push(['1 – 9', 'Activar o desactivar capas']);
       if (cfg.views && cfg.views.length) rows.push(['V', 'Cambiar vista de cámara']);
+      rows.push(['P', 'Mostrar / ocultar el panel'], ['O', 'Vista despejada: ocultar / mostrar todos los paneles'], ['Esc', 'Salir de la vista despejada']);
       rows.push(['T', 'Tema claro / oscuro'], ['S', 'Capturar imagen PNG'], ['F', 'Pantalla completa'], ['?', 'Esta ayuda']);
       (cfg.extraKeys || []).forEach(function (r) { rows.push(r); });
       return rows.map(function (r) { return '<tr><td><kbd>' + r[0] + '</kbd></td><td>' + r[1] + '</td></tr>'; }).join('');
@@ -539,7 +546,6 @@
       }
       $('#layersHead').addEventListener('click', function () { setLayersOpen($('#layersHead').getAttribute('aria-expanded') !== 'true'); });
       kit.setLayersOpen = setLayersOpen;
-      if (global.matchMedia && global.matchMedia('(max-width: 980px)').matches) setTimeout(function () { setLayersOpen(false); }, 0);
     }
     function toggleLayer(id, val) {
       var on = val == null ? !S.layers[id] : !!val;
@@ -589,15 +595,73 @@
       if (o.body != null) $('#eqBody').innerHTML = o.body;
     };
     kit.setLegend = function (rows) {
-      var lg = $('#legend');
-      if (!rows || !rows.length) { lg.hidden = true; lg.innerHTML = ''; return; }
+      var lg = $('#legend'), lb = $('#legendBody');
+      if (!rows || !rows.length) { lg.hidden = true; lb.innerHTML = ''; return; }
       lg.hidden = false;
-      lg.innerHTML = rows.map(function (r) {
+      lb.innerHTML = rows.map(function (r) {
         var mark = r.arrow ? '<span class="lg-arrow" style="color:' + r.color + ';border-color:' + r.color + '"></span>' : '<span class="lg-dot" style="background:' + r.color + '"></span>';
         return '<div class="lg-row">' + mark + '<span><b>' + r.label + '</b>' + (r.text ? ' ' + r.text : '') + '</span></div>';
       }).join('');
     };
-    $('#eqBox .eq-head').addEventListener('click', function () { $('#eqBox').classList.toggle('open'); });
+    /* ---------- Cajas colapsables ---------- */
+    var narrowMQ = global.matchMedia ? global.matchMedia('(max-width: 980px)') : null;
+    function isNarrow() { return !!(narrowMQ && narrowMQ.matches); }
+    function setEqOpen(open) {
+      $('#eqBox').classList.toggle('collapsed', !open);
+      $('#eqToggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    function setLegendOpen(open) {
+      $('#legendHead').setAttribute('aria-expanded', open ? 'true' : 'false');
+      $('#legendBody').hidden = !open;
+    }
+    $('#eqBox .eq-head').addEventListener('click', function () { setEqOpen($('#eqBox').classList.contains('collapsed')); });
+    $('#legendHead').addEventListener('click', function () { setLegendOpen($('#legendHead').getAttribute('aria-expanded') !== 'true'); });
+    kit.setEqOpen = setEqOpen; kit.setLegendOpen = setLegendOpen;
+    // En pantallas estrechas la leyenda se apila con las demás cajas y todas parten contraídas
+    function placeHud() {
+      var n = isNarrow(), lg = $('#legend');
+      if (n && lg.parentNode !== $('#hudCol')) $('#hudCol').appendChild(lg);
+      else if (!n && lg.parentNode === $('#hudCol')) $('#main').insertBefore(lg, kit.panel);
+      setEqOpen(!n); setLegendOpen(!n);
+      if (kit.setLayersOpen) kit.setLayersOpen(!n);
+      syncPanel();
+    }
+
+    /* ---------- Panel, barra y vista despejada ---------- */
+    var panelOff = !!prefs.panelOff;
+    S.clean = false;
+    function syncPanel() {
+      app.classList.toggle('k-panel-off', panelOff);
+      var vis = !S.clean && (isNarrow() ? kit.panel.classList.contains('open') : !panelOff);
+      $('#kPanelBtn').setAttribute('aria-expanded', vis ? 'true' : 'false');
+    }
+    function setPanel(open) {
+      if (S.clean) setClean(false);
+      if (isNarrow()) kit.panel.classList.toggle('open', open);
+      else { panelOff = !open; prefs.panelOff = panelOff; store.set(key, prefs); }
+      syncPanel();
+      if (open) kit.redrawCanvases();
+    }
+    function panelShown() { return $('#kPanelBtn').getAttribute('aria-expanded') === 'true'; }
+    function setDockMini(mini) {
+      if (!kit.dock) return;
+      kit.dock.classList.toggle('mini', mini);
+      $('#bDockMin').setAttribute('aria-expanded', mini ? 'false' : 'true');
+      prefs.dockMini = mini; store.set(key, prefs);
+    }
+    function setClean(on) {
+      S.clean = on;
+      app.classList.toggle('k-clean', on);
+      if (on && isNarrow()) kit.panel.classList.remove('open');
+      var b = $('#kClean');
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.setAttribute('aria-label', on ? 'Mostrar los paneles' : 'Ocultar los paneles');
+      b.title = on ? 'Mostrar los paneles (O o Esc)' : 'Ocultar los paneles para ver toda la simulación (O)';
+      b.innerHTML = icon(on ? 'eye' : 'eyeOff');
+      syncPanel();
+      kit.announce(on ? 'Vista despejada: paneles ocultos' : 'Paneles visibles');
+    }
+    kit.setPanel = setPanel; kit.setClean = setClean; kit.setDockMini = setDockMini;
     kit.toast = function (msg) {
       var t = h('div', { class: 'toast', role: 'status', text: msg }); document.body.appendChild(t);
       setTimeout(function () { t.remove(); }, 2200);
@@ -627,17 +691,108 @@
       if (!d.fullscreenElement) { (d.documentElement.requestFullscreen || function () {}).call(d.documentElement); }
       else d.exitFullscreen();
     }
-    kit.help = function () { if (dlg.showModal) dlg.showModal(); };
+    /* ---------- Ayuda: guía de las partes, generada desde la configuración y la interfaz real ---------- */
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function txt(el) { return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : ''; }
+    function uniq(a, max) { var o = [], seen = {}; a.forEach(function (x) { if (x && !seen[x]) { seen[x] = 1; o.push(x); } }); return o.slice(0, max || 99); }
+    function quoted(a) { return a.map(function (x) { return '«' + esc(x) + '»'; }).join(', '); }
+    function texts(el, sel, max) { return uniq([].map.call(el.querySelectorAll(sel), txt), max); }
+    function guideHref() {
+      if (cfg.guide === false) return null;
+      if (cfg.guide) return cfg.guide;
+      var p = location.pathname.split('/').filter(Boolean);
+      if (p.length && /\.html?$/i.test(p[p.length - 1])) p.pop();
+      return p.length >= 2 ? '../../guias/' + p[p.length - 2] + '/' + p[p.length - 1] + '.html' : null;
+    }
+    function tabHelp(t) {
+      if (t.def.help) return t.def.help;
+      var id = t.def.id, pane = t.pane, kick = texts(pane, '.card-kicker', 8), ctrls = texts(pane, '.sl > span, .fld > .lbl', 10);
+      if (id === 'main') {
+        var parts = [];
+        if (stages.length) parts.push('el texto de la <b>etapa actual</b> de la lección y botones numerados para saltar a cualquier etapa');
+        if (cfg.measures) parts.push('las <b>' + esc((cfg.measuresTitle || 'medidas en vivo').toLowerCase()) + '</b>, que cambian mientras la simulación avanza');
+        if (cfg.ideas && cfg.ideas.length) parts.push('las <b>ideas clave</b> del tema');
+        return parts.length ? 'Muestra ' + parts.join('; ') + '.' : 'Información principal del simulador.';
+      }
+      if (id === 'lab') return 'Controles para experimentar por tu cuenta' + (ctrls.length ? ': ' + quoted(ctrls) : (kick.length ? ' (' + quoted(kick) + ')' : '')) + '.' +
+        (cfg.onGuide && stages.length ? ' Al usarlos, la simulación pasa a <b>modo libre</b> y la lección deja de controlarla; pulsa ▶ o elige una etapa para que la lección retome el control.' : '');
+      if (id === 'graf') return 'Gráficos que se actualizan en tiempo real con lo que ocurre en el visor' + (kick.length ? ': ' + quoted(kick) : '') + '. Cambia algo en «Lab» y mira cómo responden.';
+      if (id === 'calc') return 'Cálculo paso a paso con los valores actuales de la simulación; se rehace solo cuando cambias un control.';
+      if (id === 'quiz') return 'Preguntas de repaso con dos modos. <b>Práctica</b>: ves al instante si acertaste y por qué. <b>Evaluación</b>: las respuestas se revelan al final, con nota (escala 1,0–7,0, 60 % de exigencia) y un resultado que se puede copiar para entregarlo.';
+      return 'Contenido complementario' + (kick.length ? ': ' + quoted(kick) : (ctrls.length ? ' con los controles ' + quoted(ctrls) : '')) + '.';
+    }
+    function helpMap() {
+      var hasHud = !$('#eqBox').hidden || !$('#layersBox').hidden || !$('#legend').hidden;
+      function n(x, y, k) { return '<circle cx="' + x + '" cy="' + y + '" r="9" class="hm-n"/><text x="' + x + '" y="' + (y + 3.5) + '" class="hm-t">' + k + '</text>'; }
+      return '<svg class="help-map" viewBox="0 0 320 180" role="img" aria-label="Esquema de la pantalla con sus partes numeradas">' +
+        '<rect x="1" y="1" width="318" height="178" rx="10" class="hm-v"/>' +
+        '<rect x="1" y="1" width="318" height="24" rx="10" class="hm-b"/>' + n(20, 13, 1) +
+        n(110, 92, 2) +
+        (hasHud ? '<rect x="10" y="34" width="70" height="44" rx="6" class="hm-b"/>' + n(45, 56, 3) : '') +
+        '<rect x="222" y="32" width="90" height="140" rx="8" class="hm-b"/>' + n(267, 102, 4) +
+        (stages.length ? '<rect x="10" y="146" width="204" height="26" rx="8" class="hm-b"/>' + n(112, 159, 5) : '') +
+        '</svg>';
+    }
+    function buildHelp() {
+      var help = cfg.help || {}, html = [], sec = [];
+      var labTab = tabs.filter(function (t) { return t.def.id === 'lab'; })[0], quizTab = tabs.filter(function (t) { return t.def.id === 'quiz'; })[0], grafTab = tabs.filter(function (t) { return t.def.id === 'graf'; })[0];
+      html.push('<h2 id="helpTitle">Ayuda · ' + esc(cfg.title) + '</h2>');
+      if (help.intro) html.push('<p class="help-lead">' + help.intro + '</p>');
+
+      // Primeros pasos
+      var steps = [];
+      if (stages.length) steps.push('Pulsa <b>▶</b> en la barra inferior para seguir la <b>lección guiada</b> (' + stages.length + ' etapas). Lee la explicación de cada etapa en la pestaña «' + esc(tabs[0].def.label) + '». Activa «Por etapas» si quieres que se detenga al final de cada una.');
+      if (labTab) steps.push('Abre la pestaña «' + esc(labTab.def.label) + '» y cambia los controles para <b>explorar libremente</b>.');
+      if (grafTab) steps.push('Revisa «' + esc(grafTab.def.label) + '» para ver los resultados en gráficos.');
+      if (quizTab) steps.push('Cuando termines, pon a prueba lo aprendido en «' + esc(quizTab.def.label) + '».');
+      if (steps.length) html.push('<h3>Primeros pasos</h3><ol class="help-steps">' + steps.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol>');
+
+      // Partes de la pantalla
+      var modes = (cfg.modes || []).map(function (m) { return m.label; });
+      sec.push('<li><b>Barra superior.</b> Nombre del simulador' + (modes.length ? ' y los <b>modos</b> ' + quoted(modes) + ', que cambian lo que se estudia' : '') +
+        '. A la derecha: volver a la colección, capturar imagen, pantalla completa, tema claro/oscuro, esta ayuda y mostrar u ocultar el panel.</li>');
+      var s3d = global.__sim && global.__sim.controls;
+      sec.push('<li><b>Visor.</b> ' + (s3d ? 'Escena 3D: <b>arrastra</b> para girarla, usa la <b>rueda</b> o pellizca para acercar, y arrastra con el <b>botón derecho</b> (o dos dedos) para desplazarla. ' : 'Muestra la simulación. ') +
+        (stages.length ? 'Arriba se indica la etapa en curso. ' : '') + 'El botón del ojo oculta todos los paneles para ver la escena completa (tecla O).</li>');
+      var hud = [];
+      if (!$('#eqBox').hidden) hud.push('<b>datos en vivo</b> (' + (txt($('#eqName')) ? '«' + esc(txt($('#eqName'))) + '»' : 'ecuación y valores actuales') + ')');
+      if (cfg.layers && cfg.layers.length) hud.push('<b>capas</b> que muestran u ocultan elementos: ' + cfg.layers.map(function (l, i) { return (i < 9 ? '<kbd>' + (i + 1) + '</kbd> ' : '') + esc(l.label) + (l.title && l.title !== l.label ? ' <span class="muted">(' + esc(l.title) + ')</span>' : ''); }).join(', '));
+      if (cfg.views && cfg.views.length > 1) hud.push('<b>vistas</b> de cámara predefinidas: ' + quoted(cfg.views.map(function (v) { return v.label; })) + ' (tecla V)');
+      if (!$('#legend').hidden) hud.push('la <b>leyenda</b> de colores y símbolos');
+      if (hud.length) sec.push('<li><b>Cajas flotantes.</b> Sobre el visor aparecen ' + hud.join('; ') + '. Pulsa el título de cada caja para contraerla o expandirla.</li>');
+      sec.push('<li><b>Panel lateral.</b> Organizado en pestañas:<ul class="help-tabs">' + tabs.map(function (t) { return '<li><b>' + esc(t.def.label) + '</b>: ' + tabHelp(t) + '</li>'; }).join('') + '</ul></li>');
+      if (stages.length) sec.push('<li><b>Reproductor.</b> Reiniciar, etapa anterior, reproducir/pausar y etapa siguiente; la línea de tiempo (cada color es una etapa) se puede arrastrar. También eliges la velocidad, «Por etapas» (pausa al final de cada etapa) y el bucle; la flecha minimiza la barra.' +
+        '<ol class="help-stages">' + stages.map(function (s) { return '<li>' + esc(s.name || s.short || '') + '</li>'; }).join('') + '</ol></li>');
+      html.push('<h3>Partes de la pantalla</h3><div class="help-parts">' + helpMap() + '<ol class="help-list">' + sec.join('') + '</ol></div>');
+
+      // Específico del simulador
+      if (help.items && help.items.length) html.push('<h3>En este simulador</h3><ul class="help-list">' + help.items.map(function (i) { return '<li><b>' + i[0] + '</b>: ' + i[1] + '</li>'; }).join('') + '</ul>');
+      if (help.try && help.try.length) html.push('<h3>Prueba esto</h3><ol class="help-try">' + help.try.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol>');
+
+      html.push('<details class="help-keys"><summary>Atajos de teclado</summary><table class="keys">' + keyRows() + '</table></details>');
+      var g = guideHref();
+      html.push('<menu>' + (g ? '<a class="btn" href="' + esc(g) + '" target="_blank" rel="noopener">Guía docente ↗</a>' : '') + '<button class="btn primary" value="ok">Entendido</button></menu>');
+      return '<form method="dialog" class="dlg">' + html.join('') + '</form>';
+    }
+    kit.help = function () {
+      dlg.innerHTML = buildHelp();
+      var hb = $('#kHelp'); if (hb) hb.classList.remove('k-attn');
+      if (!prefs.helpSeen) { prefs.helpSeen = true; store.set(key, prefs); }
+      if (dlg.showModal) { dlg.showModal(); dlg.scrollTop = 0; }
+    };
 
     /* ---------- Eventos ---------- */
     $('#kSnap').addEventListener('click', kit.snapshot);
     $('#kFull').addEventListener('click', fullscreen);
     $('#kTheme').addEventListener('click', function () { S.theme = S.theme === 'dark' ? 'light' : 'dark'; applyTheme(); });
     $('#kHelp').addEventListener('click', kit.help);
-    $('#kPanelBtn').addEventListener('click', function () {
-      var open = kit.panel.classList.toggle('open'); $('#kPanelBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
-      kit.redrawCanvases();
-    });
+    $('#kPanelBtn').addEventListener('click', function () { setPanel(!panelShown()); });
+    $('#kPanelX').addEventListener('click', function () { setPanel(false); });
+    $('#kClean').addEventListener('click', function () { setClean(!S.clean); });
+    if (kit.dock) $('#bDockMin').addEventListener('click', function () { setDockMini(!kit.dock.classList.contains('mini')); });
+    if (narrowMQ) {
+      if (narrowMQ.addEventListener) narrowMQ.addEventListener('change', placeHud); else if (narrowMQ.addListener) narrowMQ.addListener(placeHud);
+    }
     if (stages.length) {
       $('#bPlay').addEventListener('click', toggle);
       $('#bReset').addEventListener('click', function () { pause(); seek(0); });
@@ -665,6 +820,10 @@
       else if (k === 's' || k === 'S') kit.snapshot();
       else if (k === 'f' || k === 'F') fullscreen();
       else if (k === 'v' || k === 'V') cycleView();
+      else if (k === 'p' || k === 'P') setPanel(!panelShown());
+      else if (k === 'o' || k === 'O') setClean(!S.clean);
+      else if (k === 'Escape' && S.clean) setClean(false);
+      else if (k === 'Escape' && isNarrow() && kit.panel.classList.contains('open')) setPanel(false);
       else if (k === '?' || k === 'h' || k === 'H') kit.help();
       else if (/^[1-9]$/.test(k) && cfg.layers && cfg.layers[+k - 1]) toggleLayer(cfg.layers[+k - 1].id);
       else if (cfg.onKey) cfg.onKey(e, kit);
@@ -674,12 +833,18 @@
 
     /* ---------- Arranque ---------- */
     buildStepper(); buildTimeline();
+    placeHud(); setDockMini(!!prefs.dockMini);
     updatePlayIcon();
     applyTheme();
     if (cfg.modes && cfg.modes.length) kit.setMode(S.mode, true);
     if (cfg.views && cfg.views.length) selectView(cfg.views[0].id);
     if (cfg.layers) cfg.layers.forEach(function (l) { if (cfg.onLayer) cfg.onLayer(l.id, S.layers[l.id], kit); });
     if (cfg.init) cfg.init(kit);
+    if (params.get('help') === '1') setTimeout(kit.help, 300);
+    else if (!prefs.helpSeen && !document.body.classList.contains('embed')) setTimeout(function () {
+      var hb = $('#kHelp'); if (!hb || prefs.helpSeen) return;
+      hb.classList.add('k-attn'); kit.toast('¿Primera vez aquí? Pulsa ? para ver las partes del simulador y cómo usarlo');
+    }, 1400);
     sync('stage');
     refreshMeasures(true);
     requestAnimationFrame(tick);

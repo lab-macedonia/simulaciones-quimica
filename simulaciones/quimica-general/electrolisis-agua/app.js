@@ -859,7 +859,7 @@
           ['Probetas', 'muestran el volumen de H₂ y O₂ recogidos (relación 2 : 1).'],
           ['Gráficos', 'curva corriente–voltaje (clic para fijar V) y volumen frente al tiempo.'],
           ['Predictor', 'elige un electrolito y descubre qué se produce en cada electrodo.']
-        ]
+        ], try: ['Baja el voltaje bajo el umbral: no hay corriente ni burbujas.', 'Deja correr la electrólisis: el volumen de H₂ es el doble que el de O₂.', 'Cambia el medio de ácido a básico: cambian las semirreacciones, pero la reacción global es la misma.']
       }
     });
     // modo inicial
