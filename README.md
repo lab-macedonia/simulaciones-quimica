@@ -270,8 +270,8 @@ Los textos pendientes se agregan en `"lit"` del `.i18n.json` (`"'texto'": "'text
 ## Uso local
 
 ```bash
-git clone https://github.com/lab-macedonia/lab-macedonia.github.io.git
-cd lab-macedonia.github.io
+git clone https://github.com/lab-macedonia/simulaciones-quimica.git
+cd simulaciones-quimica
 python3 -m http.server 8000
 # abrir http://localhost:8000/simulaciones/
 ```

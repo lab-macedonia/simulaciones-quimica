@@ -213,8 +213,8 @@ Each `X.en.js` is **generated** from `X.js` plus an `X.i18n.json` dictionary. Ed
 ## Running locally
 
 ```bash
-git clone https://github.com/lab-macedonia/lab-macedonia.github.io.git
-cd lab-macedonia.github.io
+git clone https://github.com/lab-macedonia/simulaciones-quimica.git
+cd simulaciones-quimica
 python3 -m http.server 8000
 # open http://localhost:8000/simulaciones/index.en.html
 ```
