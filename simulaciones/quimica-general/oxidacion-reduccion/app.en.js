@@ -44,6 +44,19 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   function zOx(r, p) { return SP[r.oxd].z0 - gained(r, 0, p); }
   function orbit(out, c, rd, j, now) { var th = now * 2.2 + j * 2.4, rho = rd + 0.55; return out.set(c.x + rho * Math.cos(th), c.y + rho * 0.5 * Math.sin(th), c.z + rho * 0.87 * Math.sin(th)); }
 
+  /* Encuadra la escena en el espacio libre entre el panel izquierdo (HUD) y el derecho, sea cual sea el tamaño de la ventana */
+  function fit(ctx) {
+    var cv = ctx.renderer.domElement.getBoundingClientRect(), W = cv.width, H = cv.height, L = 0, Rt = W;
+    if (W < 10 || H < 10) return;
+    var hud = document.querySelector('.hud-col'), pan = document.querySelector('.panel'), a, b;
+    if (hud) { a = hud.getBoundingClientRect(); if (a.width > 0 && a.width < 0.6 * W && a.right > cv.left) L = Math.max(L, a.right - cv.left + 8); }
+    if (pan) { b = pan.getBoundingClientRect(); if (b.width > 0 && b.width < 0.6 * W && b.left < cv.right - 5) Rt = Math.min(Rt, b.left - cv.left - 8); }
+    if (Rt - L < 200) { L = 0; Rt = W; }
+    var s16 = H / (0.8284 * 16), z = Math.min(0.95 * (Rt - L) / (13.5 * s16), 0.9 * H / (12.5 * s16));
+    ctx.camera.zoom = clamp(z, 0.3, 3);
+    ctx.camera.setViewOffset(W, H, -((L + Rt) / 2 - W / 2), 0, W, H); ctx.camera.updateProjectionMatrix();
+  }
+
   function stages() {
     return [
       ['Before reacting', 'Reactants', 'Every species has an oxidation number',
@@ -62,7 +75,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
   var def = {
     key: 'oxidacion-reduccion', title: 'Oxidation and reduction: electron transfer', subtitle: '3D simulator · general chemistry', accent: { dark: '#ffa94d', light: '#d9480f' },
     stages: stages, nStages: 5, dur: 10,
-    views: [{ id: 'libre', label: 'Free', pos: [-2.9, 4, 16], target: [-2.9, 2.3, 0] }, { id: 'reductor', label: 'Reducing agent', pos: [-4.8, 4, 11], target: [-4.8, 2.3, 0] }, { id: 'oxidante', label: 'Oxidizing agent', pos: [2.2, 4, 11], target: [2.2, 2.3, 0] }],
+    views: [{ id: 'libre', label: 'Free', pos: [2.3, 4, 16], target: [2.3, 2.3, 0] }, { id: 'reductor', label: 'Reducing agent', pos: [-1.2, 4, 11], target: [-1.2, 2.3, 0] }, { id: 'oxidante', label: 'Oxidizing agent', pos: [5.8, 4, 11], target: [5.8, 2.3, 0] }],
     layers: [{ id: 'e', label: 'Electrons', icon: 'e⁻' }, { id: 'n', label: 'Oxidation number', icon: '+2' }, { id: 'ag', label: 'Agents', icon: '⟳' }],
     build: function (ctx) {
       g = new T.Group(); ctx.scene.add(g); var i, sph = new T.SphereGeometry(1, 32, 24), ring = new T.TorusGeometry(1, 0.05, 8, 48);
@@ -76,7 +89,7 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       }
       var em = new T.MeshStandardMaterial({ color: 0xffd43b, emissive: 0x8a6d00 });
       for (i = 0; i < 6; i++) { var e = new T.Mesh(sph, em); e.scale.setScalar(0.24); g.add(e); el.push(e); }
-      lab.hr = ctx.label('', 'bl-warn'); lab.ho = ctx.label('', 'bl-lead'); lab.mid = ctx.label('', 'bl-d');
+      lab.hr = ctx.label('', 'bl-warn'); lab.ho = ctx.label('', 'bl-lead');
     },
     frame: function (ctx, f, dt) {
       var P = ctx.P, i = f.i, u = ctx.ease(f.local), k, j;
@@ -119,9 +132,8 @@ var fmt = SimKit.fmt, clamp = SimKit.clamp;
       var topY = YC + 3 + 2.2;
       lab.hr.pos(CXR, topY, 0).set(nl === 0 ? 'About to be oxidized' : (p < 0.999 ? 'Being oxidized: loses e⁻' : 'Oxidized · reducing agent'), 'bl-warn').vis(true);
       lab.ho.pos(CXO, topY, 0).set(ng === 0 ? 'About to be reduced' : (p < 0.999 ? 'Being reduced: gains e⁻' : 'Reduced · oxidizing agent'), 'bl-lead').vis(true);
-      lab.mid.pos((CXR + CXO) / 2, topY + 1.4, 0).set('e⁻ lost: ' + nl + ' · e⁻ gained: ' + ng + ' (of ' + r.E + ')', 'bl-d').vis(p > 0.001);
+      fit(ctx);
     },
-    afterInit: function (ctx) { if (document.body.classList.contains('embed')) { def.views[0].pos = [2.3, 4, 16]; def.views[0].target = [2.3, 2.3, 0]; ctx.camera.position.set(2.3, 4, 16); ctx.controls.target.set(2.3, 2.3, 0); ctx.P.camGoal = null; } },
     sync: function (ctx) { var u = ctx.ui; if (u.r) u.r.set(S.r); if (u.p) u.p.set(Math.round(S.p * 100)); },
     hud: function () {
       var r = R[S.r];
