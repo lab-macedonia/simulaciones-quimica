@@ -225,4 +225,4 @@ Distributed under the **MIT** license. See the [LICENSE](LICENSE) file. The thir
 
 ## Credits
 
-MACEDONIA Laboratory · Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile.
+MACEDONIA Laboratory ([website](https://lab-macedonia.github.io/sitio-web/)) · Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile.

@@ -282,4 +282,4 @@ Distribuido bajo licencia **MIT**. Consulta el archivo [LICENSE](LICENSE). Las l
 
 ## Créditos
 
-Laboratorio MACEDONIA · Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile.
+Laboratorio MACEDONIA ([sitio web](https://lab-macedonia.github.io/sitio-web/)) · Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile.
