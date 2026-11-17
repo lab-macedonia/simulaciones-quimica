@@ -1,0 +1,14 @@
+.viewport canvas { position: absolute; inset: 0; }
+.labels-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.bond-label { padding: 3px 9px; border-radius: 12px; font: 700 0.72rem system-ui, sans-serif; white-space: nowrap; pointer-events: none; border: 1px solid rgba(255,255,255,.18); box-shadow: 0 2px 6px rgba(0,0,0,.35); transform: translateY(-4px); }
+.bl-pos { background: rgba(255,170,90,.93); color: #2a1200; }
+.bl-neg { background: rgba(94,227,162,.93); color: #04210f; }
+.bl-d { background: rgba(255,255,255,.16); color: var(--ink); backdrop-filter: blur(4px); }
+.bl-warn { background: rgba(255,107,94,.95); color: #210302; }
+.bl-lead { background: rgba(179,146,240,.95); color: #170a2b; }
+.calc-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+.calc-table th, .calc-table td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.calc-table th { font-weight: 650; color: var(--muted); width: 38%; }
+.calc-step { margin: 10px 0 4px; font-weight: 700; font-size: 0.82rem; color: color-mix(in srgb, var(--accent) 70%, var(--ink)); }
+.calc-hi { color: #ff6b5e; font-weight: 700; }
+.calc-ok { color: var(--ok); font-weight: 700; }

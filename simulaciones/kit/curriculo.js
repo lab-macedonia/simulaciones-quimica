@@ -251,7 +251,8 @@
     'ciencias-tierra/clima': ['CN07 OA 12', 'FISI OA 01', 'FISI OA 05'],
     'biologia/poblaciones-ecosistemas': ['CN1M OA 04', 'CN1M OA 05', 'CN1M OA 08'],
     'biologia/epidemias-vacunas': ['CN07 OA 04', 'FG-CIBS OA 03'],
-    'biologia/microorganismos': ['CN07 OA 05', 'CN07 OA 06']
+    'biologia/microorganismos': ['CN07 OA 05', 'CN07 OA 06'],
+    'quimica-general/oxidacion-reduccion': ['QUIM OA 02', 'CN1M OA 18']
   };
   var BY = {}; OA.forEach(function (o) { BY[o[0]] = { code: o[0], group: o[1], es: o[2], en: o[3] }; });
   function entry(id) { var m = MAP[id]; if (!m) return null; return Array.isArray(m) ? { U: false, oa: m } : m; }

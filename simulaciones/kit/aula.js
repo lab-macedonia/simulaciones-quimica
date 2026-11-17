@@ -180,14 +180,15 @@
     'ciencias-tierra/clima': ['Clima y cambio climático', 'Climate change'],
     'biologia/poblaciones-ecosistemas': ['Poblaciones y ecosistemas', 'Populations and ecosystems'],
     'biologia/epidemias-vacunas': ['Epidemias y vacunas', 'Epidemics and vaccines'],
-    'biologia/microorganismos': ['Microorganismos', 'Microorganisms']
+    'biologia/microorganismos': ['Microorganismos', 'Microorganisms'],
+    'quimica-general/oxidacion-reduccion': ['Oxidación y reducción', 'Oxidation and reduction']
   };
   function R(name, base, list) { return { name: name, items: list.map(function (s) { return base + '/' + s; }) }; }
   var ROUTES = [
     R(['Átomo y enlace', 'Atoms and bonding'], 'quimica-general', ['atomlab', 'transiciones-electronicas', 'ensayo-a-la-llama', 'configuracion-electronica', 'propiedades-periodicas', 'enlace-quimico', 'lewislab', 'geomol', 'sigma-pi', 'orbitales-moleculares', 'interacciones-intermoleculares', 'solidos-cristalinos', 'semiconductores-bandas']),
     R(['Materia y cálculo químico', 'Matter and chemical calculations'], 'quimica-general', ['cifras-incertidumbre', 'mol-masa-molar', 'nomenclatura-inorganica', 'estequiometria', 'disoluciones-diluciones', 'gases', 'coligativas', 'gravimetria', 'espectrofotometria']),
     R(['Energía, cinética y equilibrio', 'Energy, kinetics and equilibrium'], 'quimica-general', ['termoquimica', 'entropia-gibbs', 'diagramas-de-fase', 'colisiones-estado-transicion', 'cinetica-ordenes', 'equilibrio-quimico', 'solubilidad-kps', 'acido-base-titulacion']),
-    R(['Electroquímica, radiación y ambiente', 'Electrochemistry, radiation and environment'], 'quimica-general', ['balanceo-redox', 'pilas-galvanicas', 'corrosion-pilas', 'electrolisis-agua', 'radiacion-em', 'radiactividad', 'quimica-ambiental-verde']),
+    R(['Electroquímica, radiación y ambiente', 'Electrochemistry, radiation and environment'], 'quimica-general', ['oxidacion-reduccion', 'balanceo-redox', 'pilas-galvanicas', 'corrosion-pilas', 'electrolisis-agua', 'radiacion-em', 'radiactividad', 'quimica-ambiental-verde']),
     R(['Química de coordinación', 'Coordination chemistry'], 'quimica-inorganica', ['nomenclatura-complejos', 'isomeria-complejos', 'quiralidad-delta-lambda', 'simetria-grupos-puntuales', 'campo-cristalino', 'om-complejos', 'organometalica-18e', 'hsab-acidos-bases-duros-blandos', 'quimica-descriptiva-grupos', 'bioinorganica']),
     R(['Estructura orgánica', 'Organic structure'], 'quimica-organica', ['grupos-funcionales', 'nomenclatura-iupac', 'conformaciones', 'estereoquimica-rs', 'acidez-pka', 'aromaticidad-huckel', 'heterociclos']),
     R(['Reacciones orgánicas', 'Organic reactions'], 'quimica-organica', ['mecanismos-sn-e', 'radicales-halogenacion', 'adicion-electrofila-sear', 'alquinos', 'alcoholes-eteres-aminas', 'oxidacion-reduccion', 'carbonilo', 'grignard-organometalicos', 'derivados-acido', 'enolatos-aldolica', 'diels-alder', 'pericliclicas', 'retrosintesis']),

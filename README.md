@@ -2,7 +2,7 @@
 
 *[English version](README.en.md)*
 
-Colección de 114 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología, las ciencias de la Tierra y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
+Colección de 115 simulaciones interactivas para la enseñanza de la química (general, orgánica e inorgánica), la biología, las ciencias de la Tierra y la física, desarrolladas en el **Laboratorio MACEDONIA** de la Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. Se publican con GitHub Pages en la carpeta [`simulaciones/`](simulaciones/index.html).
 
 ## Simulaciones por área
 
@@ -85,6 +85,7 @@ Cada simulación es independiente; no hay portada de colección ni seguimiento d
 | [Disoluciones y diluciones](simulaciones/quimica-general/disoluciones-diluciones/) | Concentración molar, porcentual y molal con un matraz aforado 3D, preparación de disoluciones a partir de un sólido, dilución con C₁V₁ = C₂V₂ y mezcla de disoluciones, con partículas de soluto visibles. |
 | [Análisis gravimétrico](simulaciones/quimica-general/gravimetria/) | Determinación gravimétrica de cloruro, sulfato, hierro y níquel: precipitación con reactivo en exceso, digestión, filtración y calcinación a masa constante, factor gravimétrico y efecto de la coprecipitación y la humedad residual. |
 | [El mol y la masa molar](simulaciones/quimica-general/mol-masa-molar/) | Masa molar a partir de la tabla periódica, número de Avogadro, conversiones entre gramos, moles y partículas, volumen molar de gases en CNTP y composición porcentual, con moléculas y montones de partículas en 3D. |
+| [Oxidación y reducción: transferencia de electrones](simulaciones/quimica-general/oxidacion-reduccion/) | Simulador 3D que explica qué es oxidarse y reducirse: electrones que pasan del reductor al oxidante, cambio del número de oxidación, tamaño de cationes y aniones, semirreacciones y agentes oxidante y reductor en seis reacciones. |
 
 ### Biología
 | Simulación | Descripción |
@@ -163,7 +164,7 @@ La página [`simulaciones/curriculo.html`](simulaciones/curriculo.html) relacion
 
 ## Guías docentes y bancos de preguntas
 
-La carpeta [`simulaciones/guias/`](simulaciones/guias/index.html) contiene una guía por simulación (114 en total, también en inglés): objetivos de aprendizaje, conocimientos previos, recorrido, actividad de aula, errores frecuentes, banco de preguntas (alternativas y desarrollo) y solucionario. Cada guía se puede imprimir desde el navegador.
+La carpeta [`simulaciones/guias/`](simulaciones/guias/index.html) contiene una guía por simulación (115 en total, también en inglés): objetivos de aprendizaje, conocimientos previos, recorrido, actividad de aula, errores frecuentes, banco de preguntas (alternativas y desarrollo) y solucionario. Cada guía se puede imprimir desde el navegador.
 
 ## Estructura del repositorio
 

@@ -2,7 +2,7 @@
 
 *[Versión en español](README.md)*
 
-A collection of 114 interactive simulations for teaching chemistry (general, organic and inorganic), biology, Earth sciences and physics, developed at the **MACEDONIA Laboratory** of the Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. They are published with GitHub Pages in the [`simulaciones/`](simulaciones/index.en.html) folder.
+A collection of 115 interactive simulations for teaching chemistry (general, organic and inorganic), biology, Earth sciences and physics, developed at the **MACEDONIA Laboratory** of the Universidad Metropolitana de Ciencias de la Educación (UMCE), Chile. They are published with GitHub Pages in the [`simulaciones/`](simulaciones/index.en.html) folder.
 
 ## Languages
 
@@ -89,6 +89,7 @@ Each simulation is independent; there is no collection home page or progress tra
 | [Solutions and dilutions](simulaciones/quimica-general/disoluciones-diluciones/index.en.html) | Molar, percent and molal concentration with a 3D volumetric flask, preparing solutions from a solid, dilution with C₁V₁ = C₂V₂ and mixing of solutions, with visible solute particles. |
 | [Gravimetric analysis](simulaciones/quimica-general/gravimetria/index.en.html) | Gravimetric determination of chloride, sulfate, iron and nickel: precipitation with excess reagent, digestion, filtration and ignition to constant mass, gravimetric factor and the effect of coprecipitation and residual moisture. |
 | [The mole and molar mass](simulaciones/quimica-general/mol-masa-molar/index.en.html) | Molar mass from the periodic table, Avogadro's number, conversions among grams, moles and particles, molar volume of gases at STP and percent composition, with molecules and piles of particles in 3D. |
+| [Oxidation and reduction: electron transfer](simulaciones/quimica-general/oxidacion-reduccion/index.en.html) | 3D simulator that explains what it means to be oxidized and reduced: electrons moving from the reducing to the oxidizing agent, changing oxidation number, size of cations and anions, half-reactions and oxidizing and reducing agents in six reactions. |
 
 ### Biology
 | Simulation | Description |
@@ -156,7 +157,7 @@ The page [`simulaciones/curriculo.en.html`](simulaciones/curriculo.en.html) maps
 
 ## Teacher guides and question banks
 
-The [`simulaciones/guias/en/`](simulaciones/guias/en/index.html) folder contains one guide per simulation (114 in total): learning objectives, prior knowledge, walkthrough, classroom activity, common mistakes, question bank (multiple choice and essay) and answer key. Each guide can be printed from the browser. The Spanish originals are in [`simulaciones/guias/`](simulaciones/guias/index.html).
+The [`simulaciones/guias/en/`](simulaciones/guias/en/index.html) folder contains one guide per simulation (115 in total): learning objectives, prior knowledge, walkthrough, classroom activity, common mistakes, question bank (multiple choice and essay) and answer key. Each guide can be printed from the browser. The Spanish originals are in [`simulaciones/guias/`](simulaciones/guias/index.html).
 
 ## Accessibility
 
