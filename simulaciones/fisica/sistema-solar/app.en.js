@@ -279,8 +279,8 @@
       }
       if (d.a) helio(d, tv, it.orbit.position);
       else if (d.parent) {
-        var th = TAU * (tv / d.P) + it.ph, inc = d.inc * rad, r = it.orR, x = Math.cos(th) * r, z = Math.sin(th) * r;
-        it.orbit.position.set(x, z * Math.sin(inc), z * Math.cos(inc)).add(it.parent.orbit.position);
+        var th = TAU * (tv / d.P) + it.ph, inc = d.inc * rad, r = it.orR, x = Math.cos(th) * r, z = -Math.sin(th) * r;
+        it.orbit.position.set(x, -z * Math.sin(inc), z * Math.cos(inc)).add(it.parent.orbit.position);
       }
       if (S.run) { var sp = d.rs * dt; if (it.spin) it.spin.rotation.y += sp; if (it.cloud) it.cloud.rotation.y += sp * 0.12; }
     });
